@@ -31,7 +31,11 @@ export function PageHero({
                 <div className={`absolute inset-0 opacity-${backgroundOpacity}`}>
                     <div
                         className="absolute inset-0 bg-cover bg-center"
-                        style={{ backgroundImage: `url('${backgroundImage}')` }}
+                        style={{
+                            backgroundImage: `url('${backgroundImage.startsWith('/')
+                                ? import.meta.env.BASE_URL + backgroundImage.slice(1)
+                                : backgroundImage}')`
+                        }}
                     />
                 </div>
             )}

@@ -24,7 +24,7 @@ function AboutPage() {
                     <div className="absolute inset-0 opacity-20">
                         <div
                             className="absolute inset-0 bg-cover bg-center"
-                            style={{ backgroundImage: "url('/images/about-hero.png')" }}
+                            style={{ backgroundImage: `url('${import.meta.env.BASE_URL}images/about-hero.png')` }}
                         />
                     </div>
 

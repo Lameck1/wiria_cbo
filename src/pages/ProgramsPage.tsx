@@ -50,7 +50,7 @@ function ProgramsPage() {
                         <div
                             className="absolute inset-0"
                             style={{
-                                backgroundImage: "url('/images/programs-hero.png')",
+                                backgroundImage: `url('${import.meta.env.BASE_URL}images/programs-hero.png')`,
                                 backgroundSize: 'cover',
                                 backgroundPosition: 'center',
                             }}
