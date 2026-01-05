@@ -129,7 +129,7 @@ export function Header() {
                                 className="flex items-center gap-3 hover:opacity-90 transition-all duration-300"
                             >
                                 <img
-                                    src="/images/Wiria_CBO_Logo_NEW_IV.png"
+                                    src={`${import.meta.env.BASE_URL}images/Wiria_CBO_Logo_NEW_IV.png`}
                                     alt="WIRIA CBO"
                                     className={`transition-all duration-300 ${isScrolled ? 'h-14' : 'h-16'}`}
                                 />
@@ -272,7 +272,7 @@ export function Header() {
                         className="flex items-center gap-2 hover:opacity-90 transition-opacity"
                     >
                         <img
-                            src="/images/Wiria_CBO_Logo_NEW_IV.png"
+                            src={`${import.meta.env.BASE_URL}images/Wiria_CBO_Logo_NEW_IV.png`}
                             alt="WIRIA CBO"
                             className={`transition-all duration-300 ${isScrolled ? 'h-8' : 'h-10'}`}
                         />

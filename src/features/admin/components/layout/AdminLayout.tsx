@@ -44,7 +44,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
                 <div className="p-6 border-b border-white border-opacity-10 flex-shrink-0">
                     <Link to={ROUTES.ADMIN} className="flex items-center gap-3 mb-3">
                         <img
-                            src="/images/Wiria_CBO_Logo_NEW_IV.png"
+                            src={`${import.meta.env.BASE_URL}images/Wiria_CBO_Logo_NEW_IV.png`}
                             alt="WIRIA CBO Logo"
                             className="w-10 h-10 rounded-lg bg-white p-1"
                         />

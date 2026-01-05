@@ -19,7 +19,7 @@ export function Footer() {
                     <div className="lg:max-w-sm text-center lg:text-left">
                         <Link to={ROUTES.HOME} className="inline-flex items-center gap-3 mb-4">
                             <img
-                                src="/images/Wiria_CBO_Logo_NEW_IV.png"
+                                src={`${import.meta.env.BASE_URL}images/Wiria_CBO_Logo_NEW_IV.png`}
                                 alt="WIRIA CBO"
                                 className="h-14 w-auto"
                             />

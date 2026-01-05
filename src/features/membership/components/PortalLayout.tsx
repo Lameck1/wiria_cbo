@@ -31,7 +31,7 @@ export function PortalLayout({ children, title, subtitle, showNavigation = true 
                 <nav className="container mx-auto px-4 lg:px-6 py-4 flex justify-between items-center">
                     <Link to="/member-portal" className="flex items-center gap-2">
                         <img
-                            src="/images/Wiria_CBO_Logo_NEW_IV.png"
+                            src={`${import.meta.env.BASE_URL}images/Wiria_CBO_Logo_NEW_IV.png`}
                             alt="WIRIA CBO"
                             className="h-10"
                         />
