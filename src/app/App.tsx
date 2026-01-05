@@ -1,5 +1,5 @@
 import { QueryClientProvider } from '@tanstack/react-query';
-import { HashRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { Suspense } from 'react';
 import { queryClient } from './config/queryClient';
 import AppRouter from './router';
@@ -12,8 +12,8 @@ function App() {
     return (
         <QueryClientProvider client={queryClient}>
             <BackendStatusProvider>
-                {/* Using HashRouter for GitHub Pages compatibility */}
-                <HashRouter
+                {/* Using BrowserRouter for clean URLs - 404.html handles SPA redirects */}
+                <BrowserRouter
                     future={{
                         v7_startTransition: true,
                         v7_relativeSplatPath: true,
@@ -27,7 +27,7 @@ function App() {
                         </Suspense>
                         <ToastContainer />
                     </AuthProvider>
-                </HashRouter>
+                </BrowserRouter>
             </BackendStatusProvider>
         </QueryClientProvider>
     );
