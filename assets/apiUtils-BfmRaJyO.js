@@ -1,0 +1,2 @@
+function n(t,a){if(Array.isArray(t))return t;if(t&&typeof t=="object"){const r=t;if(a&&Array.isArray(r[a]))return r[a];if(Array.isArray(r.data))return r.data;if(r.data&&typeof r.data=="object"){const i=r.data;if(Array.isArray(i.data))return i.data;if(a&&Array.isArray(i[a]))return i[a]}}return[]}function f(t,a="An error occurred"){return t instanceof Error?t.message:typeof t=="string"?t:t&&typeof t=="object"&&"message"in t?String(t.message):a}export{n as e,f as g};
+//# sourceMappingURL=apiUtils-BfmRaJyO.js.map
