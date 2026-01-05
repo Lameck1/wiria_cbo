@@ -1,0 +1,211 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --wiria-blue-dark: #002057;
+    --wiria-yellow: #F5A721;
+    --wiria-green-light: #DFF0D8;
+  }
+
+  /* Set body background to match pages - prevents white flash */
+  html,
+  body {
+    @apply bg-gray-50 text-gray-900;
+    min-height: 100vh;
+  }
+
+  /* Ensure root div takes full height */
+  #root {
+    min-height: 100vh;
+  }
+
+  /* Global Page Scrollbar - Sleek & Modern */
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 32, 87, 0.3) transparent;
+  }
+
+  html::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  html::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  html::-webkit-scrollbar-thumb {
+    background: rgba(0, 32, 87, 0.3);
+    border-radius: 4px;
+  }
+
+  html::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 32, 87, 0.5);
+  }
+
+  /* Global Select Styling - Modern dropdown appearance */
+  select {
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e") !important;
+    background-position: right 0.75rem center !important;
+    background-repeat: no-repeat !important;
+    background-size: 1.25rem 1.25rem !important;
+    padding-right: 2.5rem !important;
+    padding-left: 1rem;
+    padding-top: 0.625rem;
+    padding-bottom: 0.625rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    background-color: white;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    min-height: 2.75rem;
+  }
+
+  select:hover {
+    border-color: #9ca3af;
+  }
+
+  select:focus {
+    outline: none;
+    border-color: #002057;
+    box-shadow: 0 0 0 3px rgba(0, 32, 87, 0.1);
+  }
+}
+
+@layer components {
+
+  /* Section Backgrounds - Matching Original HTML */
+  .section-gradient-light {
+    @apply bg-gradient-to-br from-gray-50 via-blue-50/30 to-green-50/20;
+  }
+
+  .section-gradient-green {
+    @apply bg-gradient-to-br from-green-50 via-blue-50/40 to-gray-50;
+  }
+
+  /* Card Styles - Matching Original HTML */
+  .card-elevated {
+    @apply bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100;
+  }
+
+  .card-glass {
+    @apply bg-white/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 text-center;
+  }
+
+  /* Icon Circles */
+  .icon-circle-lg {
+    @apply w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center transition-all duration-300;
+  }
+
+  /* Heading Decorations */
+  .heading-center-decorated {
+    @apply relative;
+  }
+
+  .heading-center-decorated::after {
+    content: '';
+    @apply block w-24 h-1 bg-gradient-to-r from-wiria-yellow to-wiria-green-light mx-auto rounded-full mt-4;
+  }
+
+  /* Animation Classes */
+  .stagger-children>* {
+    animation: fadeInUp 0.6s ease-out forwards;
+    opacity: 0;
+  }
+
+  .stagger-children>*:nth-child(1) {
+    animation-delay: 0.1s;
+  }
+
+  .stagger-children>*:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+
+  .stagger-children>*:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+
+  .stagger-children>*:nth-child(4) {
+    animation-delay: 0.4s;
+  }
+}
+
+@layer utilities {
+
+  /* Floating Animation for Decorative Elements */
+  @keyframes float {
+
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  /* Custom Scrollbar - Sleek & Modern */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+  }
+
+  .scrollbar-thin:hover::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.4);
+  }
+
+  /* Hide scrollbar by default, show on hover */
+  .scrollbar-hidden {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .scrollbar-hidden::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scrollbar-hidden:hover {
+    scrollbar-width: thin;
+  }
+
+  .scrollbar-hidden:hover::-webkit-scrollbar {
+    display: block;
+    width: 4px;
+  }
+}

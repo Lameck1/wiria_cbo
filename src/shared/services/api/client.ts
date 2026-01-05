@@ -1,0 +1,169 @@
+/**
+ * API Client
+ * Centralized HTTP client with TypeScript support
+ */
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
+
+class ApiClient {
+    private baseURL: string;
+    private authToken: string | null;
+
+    constructor(baseURL: string = API_BASE_URL) {
+        this.baseURL = baseURL;
+        this.authToken = localStorage.getItem('wiria_auth_token');
+    }
+
+    setAuthToken(token: string | null) {
+        this.authToken = token;
+        if (token) {
+            localStorage.setItem('wiria_auth_token', token);
+        } else {
+            localStorage.removeItem('wiria_auth_token');
+        }
+    }
+
+    private onUnauthorizedCallback?: () => void;
+
+    setUnauthorizedCallback(callback: () => void) {
+        this.onUnauthorizedCallback = callback;
+    }
+
+    private getHeaders(): Record<string, string> {
+        const headers: Record<string, string> = {
+            'Content-Type': 'application/json',
+        };
+
+        if (this.authToken) {
+            headers['Authorization'] = `Bearer ${this.authToken}`;
+        }
+
+        return headers;
+    }
+
+    async request<T>(
+        endpoint: string,
+        options: RequestInit = {}
+    ): Promise<T> {
+        const url = `${this.baseURL}${endpoint}`;
+        const config: RequestInit = {
+            ...options,
+            headers: {
+                ...this.getHeaders(),
+                ...options.headers,
+            },
+        };
+
+        try {
+            const response = await fetch(url, config);
+
+            // Check if response is empty (e.g. 204 No Content or logout)
+            const text = await response.text();
+            const data = text ? JSON.parse(text) : {};
+
+            if (!response.ok) {
+                // Handle 401 Unauthorized
+                if (response.status === 401) {
+                    console.warn('[ApiClient] Unauthorized access detected');
+
+                    // Only trigger callback if we're not currently attempting to login
+                    // to avoid redirecting while the user is typing credentials
+                    const isLoginEndpoint = endpoint.includes('/login');
+                    if (!isLoginEndpoint && this.onUnauthorizedCallback) {
+                        this.onUnauthorizedCallback();
+                    }
+                }
+
+                const errorMessage = data.message ||
+                    data.error?.message ||
+                    (typeof data.error === 'string' ? data.error : null) ||
+                    (response.status === 401 ? 'Session expired or unauthorized' : 'An unexpected error occurred');
+
+                throw new ApiError(errorMessage, response.status, data);
+            }
+
+            return data as T;
+        } catch (error) {
+            if (error instanceof ApiError) {
+                throw error;
+            }
+            throw new ApiError('Network error occurred', 0, error);
+        }
+    }
+
+    async get<T>(endpoint: string, params?: Record<string, string>): Promise<T> {
+        const queryString = params ? `?${new URLSearchParams(params)}` : '';
+        return this.request<T>(`${endpoint}${queryString}`, { method: 'GET' });
+    }
+
+    async post<T>(endpoint: string, data?: unknown): Promise<T> {
+        return this.request<T>(endpoint, {
+            method: 'POST',
+            body: JSON.stringify(data),
+        });
+    }
+
+    async put<T>(endpoint: string, data?: unknown): Promise<T> {
+        return this.request<T>(endpoint, {
+            method: 'PUT',
+            body: JSON.stringify(data),
+        });
+    }
+
+    async patch<T>(endpoint: string, data?: unknown): Promise<T> {
+        return this.request<T>(endpoint, {
+            method: 'PATCH',
+            body: JSON.stringify(data),
+        });
+    }
+
+    async delete<T>(endpoint: string): Promise<T> {
+        return this.request<T>(endpoint, { method: 'DELETE' });
+    }
+}
+
+export class ApiError extends Error {
+    constructor(
+        message: string,
+        public status: number,
+        public data?: unknown
+    ) {
+        super(message);
+        this.name = 'ApiError';
+    }
+
+    get isNetworkError(): boolean {
+        return this.status === 0;
+    }
+
+    get isClientError(): boolean {
+        return this.status >= 400 && this.status < 500;
+    }
+
+    get isServerError(): boolean {
+        return this.status >= 500;
+    }
+
+    get userMessage(): string {
+        if (this.isNetworkError) {
+            return 'Network error: Please check your internet connection and try again.';
+        }
+
+        if (this.status === 404) {
+            return 'Not found: The requested resource could not be found.';
+        }
+
+        if (this.status === 429) {
+            return 'Too many requests: Please slow down and try again.';
+        }
+
+        if (this.isServerError) {
+            return 'Server error: Please try again later.';
+        }
+
+        return this.message || 'An unexpected error occurred.';
+    }
+}
+
+export const apiClient = new ApiClient();
+export default apiClient;

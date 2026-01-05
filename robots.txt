@@ -1,0 +1,20 @@
+# Robots.txt for WIRIA CBO Website
+# https://www.wiriacbo.org/robots.txt
+
+User-agent: *
+Allow: /
+
+# Allow all major search engines
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# Disallow staff/admin areas
+Disallow: /staff-login.html
+Disallow: /admin/
+Disallow: /api/
+
+# Sitemap location
+Sitemap: https://wiriacbo.org/sitemap.xml

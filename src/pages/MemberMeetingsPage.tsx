@@ -1,0 +1,216 @@
+/**
+ * Member Meetings Page
+ * View and RSVP to meetings
+ */
+
+import { useEffect, useState } from 'react';
+import { PortalLayout } from '@/features/membership/components/PortalLayout';
+import { useMemberData, Meeting } from '@/features/membership/hooks/useMemberData';
+import { Card, CardBody } from '@/shared/components/ui/Card';
+import { Button } from '@/shared/components/ui/Button';
+import { Spinner } from '@/shared/components/ui/Spinner';
+import { notificationService } from '@/shared/services/notification/notificationService';
+
+type Tab = 'my-meetings' | 'available-meetings';
+
+function MemberMeetingsPage() {
+    const {
+        meetings,
+        availableMeetings,
+        isLoading,
+        fetchMeetings,
+        fetchAvailableMeetings,
+        rsvpToMeeting,
+        cancelRsvp,
+    } = useMemberData();
+
+    const [activeTab, setActiveTab] = useState<Tab>('my-meetings');
+    const [loadingMeetingId, setLoadingMeetingId] = useState<string | null>(null);
+
+    useEffect(() => {
+        fetchMeetings();
+        fetchAvailableMeetings();
+    }, [fetchMeetings, fetchAvailableMeetings]);
+
+    const handleRsvp = async (meetingId: string) => {
+        setLoadingMeetingId(meetingId);
+        try {
+            await rsvpToMeeting(meetingId);
+            notificationService.success('Successfully RSVP\'d to meeting!');
+        } catch {
+            notificationService.error('Failed to RSVP. Please try again.');
+        } finally {
+            setLoadingMeetingId(null);
+        }
+    };
+
+    const handleCancelRsvp = async (meetingId: string) => {
+        setLoadingMeetingId(meetingId);
+        try {
+            await cancelRsvp(meetingId);
+            notificationService.success('RSVP cancelled');
+        } catch {
+            notificationService.error('Failed to cancel RSVP. Please try again.');
+        } finally {
+            setLoadingMeetingId(null);
+        }
+    };
+
+    const MeetingCard = ({ meeting, showRsvpButton = true }: { meeting: Meeting; showRsvpButton?: boolean }) => (
+        <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100 hover:shadow-lg transition-shadow">
+            <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+                <div className="flex-1">
+                    <div className="flex items-center gap-3 mb-2">
+                        <span className={`text-xs font-bold uppercase px-2 py-1 rounded ${meeting.type === 'AGM' ? 'bg-purple-100 text-purple-800' :
+                                meeting.type === 'SPECIAL' ? 'bg-red-100 text-red-800' :
+                                    meeting.type === 'TRAINING' ? 'bg-green-100 text-green-800' :
+                                        'bg-blue-100 text-blue-800'
+                            }`}>
+                            {meeting.type}
+                        </span>
+                        <span className={`text-xs font-semibold px-2 py-1 rounded ${meeting.status === 'UPCOMING' ? 'bg-blue-50 text-blue-700' :
+                                meeting.status === 'ONGOING' ? 'bg-green-50 text-green-700' :
+                                    meeting.status === 'COMPLETED' ? 'bg-gray-50 text-gray-600' :
+                                        'bg-red-50 text-red-700'
+                            }`}>
+                            {meeting.status}
+                        </span>
+                    </div>
+                    <h3 className="text-lg font-bold text-wiria-blue-dark mb-2">{meeting.title}</h3>
+                    {meeting.description && (
+                        <p className="text-sm text-gray-600 mb-3">{meeting.description}</p>
+                    )}
+                    <div className="flex flex-wrap gap-4 text-sm text-gray-500">
+                        <div className="flex items-center gap-1">
+                            <span>📅</span>
+                            <span>{new Date(meeting.date).toLocaleDateString()}</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                            <span>⏰</span>
+                            <span>{meeting.time}</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                            <span>📍</span>
+                            <span>{meeting.location}</span>
+                        </div>
+                        {meeting.attendeesCount !== undefined && (
+                            <div className="flex items-center gap-1">
+                                <span>👥</span>
+                                <span>{meeting.attendeesCount} attending</span>
+                            </div>
+                        )}
+                    </div>
+                </div>
+                {showRsvpButton && meeting.status === 'UPCOMING' && (
+                    <div className="flex-shrink-0">
+                        {meeting.isRsvpd ? (
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => handleCancelRsvp(meeting.id)}
+                                isLoading={loadingMeetingId === meeting.id}
+                            >
+                                Cancel RSVP
+                            </Button>
+                        ) : (
+                            <Button
+                                variant="primary"
+                                size="sm"
+                                onClick={() => handleRsvp(meeting.id)}
+                                isLoading={loadingMeetingId === meeting.id}
+                            >
+                                RSVP Now
+                            </Button>
+                        )}
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+
+    const currentMeetings = activeTab === 'my-meetings' ? meetings : availableMeetings;
+
+    if (isLoading && meetings.length === 0) {
+        return (
+            <PortalLayout title="Meetings & Events">
+                <div className="flex items-center justify-center py-20">
+                    <Spinner size="lg" />
+                </div>
+            </PortalLayout>
+        );
+    }
+
+    return (
+        <PortalLayout title="Meetings & Events" subtitle="View upcoming events, RSVP, and manage your schedule">
+            {/* Tabs */}
+            <Card className="rounded-b-none border-b-0 mb-0">
+                <CardBody className="py-0 px-0">
+                    <div className="flex border-b border-gray-200">
+                        <button
+                            onClick={() => setActiveTab('my-meetings')}
+                            className={`pb-4 pt-4 px-6 border-b-2 font-bold text-sm transition-colors ${activeTab === 'my-meetings'
+                                    ? 'border-wiria-blue-dark text-wiria-blue-dark'
+                                    : 'border-transparent text-gray-500 hover:text-gray-700'
+                                }`}
+                        >
+                            My Meetings
+                            {meetings.length > 0 && (
+                                <span className={`ml-2 text-xs py-0.5 px-2 rounded-full ${activeTab === 'my-meetings'
+                                        ? 'bg-wiria-blue-dark text-white'
+                                        : 'bg-gray-200 text-gray-700'
+                                    }`}>
+                                    {meetings.length}
+                                </span>
+                            )}
+                        </button>
+                        <button
+                            onClick={() => setActiveTab('available-meetings')}
+                            className={`pb-4 pt-4 px-6 border-b-2 font-bold text-sm transition-colors ${activeTab === 'available-meetings'
+                                    ? 'border-wiria-blue-dark text-wiria-blue-dark'
+                                    : 'border-transparent text-gray-500 hover:text-gray-700'
+                                }`}
+                        >
+                            Available Meetings
+                            {availableMeetings.length > 0 && (
+                                <span className={`ml-2 text-xs py-0.5 px-2 rounded-full ${activeTab === 'available-meetings'
+                                        ? 'bg-wiria-blue-dark text-white'
+                                        : 'bg-gray-200 text-gray-700'
+                                    }`}>
+                                    {availableMeetings.length}
+                                </span>
+                            )}
+                        </button>
+                    </div>
+                </CardBody>
+            </Card>
+
+            {/* Content */}
+            <Card className="rounded-t-none border-t-0">
+                <CardBody className="min-h-[400px]">
+                    {currentMeetings.length === 0 ? (
+                        <div className="text-center py-12">
+                            <div className="text-6xl mb-4">📅</div>
+                            <p className="text-gray-500">
+                                {activeTab === 'my-meetings'
+                                    ? 'You haven\'t RSVP\'d to any meetings yet'
+                                    : 'No available meetings at this time'}
+                            </p>
+                        </div>
+                    ) : (
+                        <div className="space-y-4">
+                            {currentMeetings.map((meeting) => (
+                                <MeetingCard
+                                    key={meeting.id}
+                                    meeting={meeting}
+                                    showRsvpButton={activeTab === 'available-meetings'}
+                                />
+                            ))}
+                        </div>
+                    )}
+                </CardBody>
+            </Card>
+        </PortalLayout>
+    );
+}
+
+export default MemberMeetingsPage;
