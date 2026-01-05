@@ -4,8 +4,8 @@ import { resolve } from 'path';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  // Base path for GitHub Pages deployment - set to '/' if using custom domain
-  base: '/wiria_cbo/',
+  // Base path: use '/' for custom domain (wiriacbo.org), '/wiria_cbo/' for GitHub Pages subdomain
+  base: '/',
   plugins: [
     react({
       // Babel options for React 19
