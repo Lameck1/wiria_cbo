@@ -64,10 +64,10 @@ export function LocationMap() {
                     </div>
                     <div className="space-y-1.5 text-sm">
                         <a
-                            href="mailto:mwiriacbo@gmail.com"
+                            href="mailto:wiriacbo@gmail.com"
                             className="flex items-center gap-2 text-gray-600 hover:text-wiria-yellow transition-colors"
                         >
-                            mwiriacbo@gmail.com
+                            wiriacbo@gmail.com
                         </a>
                         <a
                             href="tel:+254700000000"

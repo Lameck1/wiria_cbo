@@ -92,7 +92,7 @@ export function ActiveTendersSection() {
                                 There are currently no open tenders. New opportunities are posted regularly.
                             </p>
                             <a
-                                href="mailto:mwiriacbo@gmail.com?subject=Tender%20Inquiry"
+                                href="mailto:wiriacbo@gmail.com?subject=Tender%20Inquiry"
                                 className="inline-flex items-center gap-2 text-wiria-blue-dark font-semibold hover:text-wiria-yellow transition-colors"
                             >
                                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
