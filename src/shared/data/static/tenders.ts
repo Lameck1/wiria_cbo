@@ -88,7 +88,7 @@ export const staticTenders: Tender[] = [
         ],
         submissionMethod: 'Physical submission in sealed envelope',
         submissionAddress: 'WIRIA CBO Offices, Mwangaza Center, Homa Bay Town - Tender Box',
-        submissionEmail: 'mwiriacbo@gmail.com',
+        submissionEmail: 'wiriacbo@gmail.com',
         contactPerson: 'Projects Coordinator',
         contactPhone: '+254 734 567 890',
         downloadUrl: '',
