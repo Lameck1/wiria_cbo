@@ -126,7 +126,7 @@ export const SECRETARIAT_TEAM: SecretariatDepartment[] = [
         title: 'Finance & Administration',
         members: [
             {
-                name: 'Dan Mbira',
+                name: 'Dan Otieno',
                 roles: ['Finance & Administration Officer', 'Procurement Officer'],
                 image: 'https://picsum.photos/400/400?image=1012'
             }
