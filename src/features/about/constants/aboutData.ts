@@ -98,7 +98,7 @@ export const SECRETARIAT_TEAM: SecretariatDepartment[] = [
             {
                 name: 'Elly Bwana',
                 roles: ['Executive Director & Head of Programs'],
-                image: 'https://picsum.photos/400/400?image=1011'
+                image: '/images/secretariat/elly_bwana.png'
             }
         ]
     },
@@ -108,17 +108,17 @@ export const SECRETARIAT_TEAM: SecretariatDepartment[] = [
             {
                 name: 'Nicholas Mbira',
                 roles: ['Program Officer / Field Officer'],
-                image: 'https://picsum.photos/400/400?image=1005'
+                image: '/images/secretariat/nicholas_mbira.png'
             },
             {
                 name: 'Faith Tom',
                 roles: ['Monitoring & Evaluation (M&E) Officer'],
-                image: 'https://picsum.photos/400/400?image=1006'
+                image: '/images/secretariat/faith_tom.png'
             },
             {
                 name: 'Risper Amolo',
                 roles: ['Social Worker / Counselor'],
-                image: 'https://picsum.photos/400/400?image=1008'
+                image: '/images/secretariat/risper_amolo.png'
             }
         ]
     },
@@ -128,7 +128,7 @@ export const SECRETARIAT_TEAM: SecretariatDepartment[] = [
             {
                 name: 'Dan Otieno',
                 roles: ['Finance & Administration Officer', 'Procurement Officer'],
-                image: 'https://picsum.photos/400/400?image=1012'
+                image: '/images/secretariat/dan_otieno.png'
             }
         ]
     },
@@ -138,7 +138,7 @@ export const SECRETARIAT_TEAM: SecretariatDepartment[] = [
             {
                 name: 'Lameck Odhiambo',
                 roles: ['Communications & Public Relations Officer', 'ICT & Data Management Officer'],
-                image: 'https://picsum.photos/400/400?image=1013'
+                image: '/images/secretariat/lameck_odhiambo.png'
             }
         ]
     }
