@@ -3,11 +3,27 @@
  * Global footer matching original index.html exactly
  */
 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ROUTES } from '@/shared/constants/routes';
+import { useBackendStatus } from '@/shared/services/backendStatus';
+import { notificationService } from '@/shared/services/notification/notificationService';
 
 export function Footer() {
     const currentYear = new Date().getFullYear();
+    const { isBackendConnected } = useBackendStatus();
+    const navigate = useNavigate();
+
+    const handleProtectedLink = (e: React.MouseEvent, route: string, label: string) => {
+        if (!isBackendConnected) {
+            e.preventDefault();
+            notificationService.info(
+                `${label} is temporarily unavailable while we finalize our server setup. Please check back soon!`,
+                5000
+            );
+        } else {
+            navigate(route);
+        }
+    };
 
     return (
         <footer className="bg-gradient-to-b from-wiria-blue-dark to-slate-900 text-white">
@@ -86,8 +102,13 @@ export function Footer() {
                                 </Link>
                             </li>
                             <li>
-                                <Link to={ROUTES.MEMBER_MEETINGS} className="text-gray-300 hover:text-white transition-colors">
+                                <Link
+                                    to={ROUTES.MEMBER_MEETINGS}
+                                    onClick={(e) => handleProtectedLink(e, ROUTES.MEMBER_MEETINGS, 'Member Meetings')}
+                                    className={`text-gray-300 hover:text-white transition-colors flex items-center gap-2 ${!isBackendConnected && 'opacity-60 cursor-not-allowed'}`}
+                                >
                                     Meetings
+                                    {!isBackendConnected && <span className="text-[10px] bg-wiria-yellow/20 text-wiria-yellow px-1.5 py-0.5 rounded border border-wiria-yellow/30 uppercase tracking-tighter">Soon</span>}
                                 </Link>
                             </li>
                             <li>
@@ -158,8 +179,13 @@ export function Footer() {
                         </h4>
                         <ul className="space-y-3 text-sm">
                             <li>
-                                <Link to={ROUTES.STAFF_LOGIN} className="text-gray-300 hover:text-white transition-colors">
+                                <Link
+                                    to={ROUTES.STAFF_LOGIN}
+                                    onClick={(e) => handleProtectedLink(e, ROUTES.STAFF_LOGIN, 'Staff Portal')}
+                                    className={`text-gray-300 hover:text-white transition-colors flex items-center gap-2 ${!isBackendConnected && 'opacity-60 cursor-not-allowed'}`}
+                                >
                                     Staff Portal
+                                    {!isBackendConnected && <span className="text-[10px] bg-wiria-yellow/20 text-wiria-yellow px-1.5 py-0.5 rounded border border-wiria-yellow/30 uppercase tracking-tighter">Soon</span>}
                                 </Link>
                             </li>
                             <li>
