@@ -66,7 +66,12 @@ export function SafeguardingReportForm() {
     const [showSuccess, setShowSuccess] = useState(false);
     const formRef = useRef<HTMLFormElement>(null);
 
-    const { submitReport, isSubmitting, submittedReference, resetSubmission } = useSafeguardingReport();
+    const {
+        submitReport,
+        isSubmitting,
+        submittedReference,
+        resetSubmission,
+    } = useSafeguardingReport();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         setFormData(prev => ({
@@ -426,8 +431,8 @@ export function SafeguardingReportForm() {
                                         onClick={() => handleCategorySelect(cat.value)}
                                         disabled={isSubmitting}
                                         className={`p-3 rounded-xl border-2 text-left transition-all ${formData.category === cat.value
-                                                ? 'border-slate-600 bg-slate-50 shadow-md'
-                                                : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                                            ? 'border-slate-600 bg-slate-50 shadow-md'
+                                            : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
                                             } disabled:opacity-50`}
                                     >
                                         <span className="text-xl">{cat.icon}</span>
@@ -598,6 +603,7 @@ export function SafeguardingReportForm() {
                     </motion.div>
                 )}
             </AnimatePresence>
+
         </form>
     );
 }

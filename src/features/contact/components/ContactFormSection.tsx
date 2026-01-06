@@ -35,7 +35,10 @@ export function ContactFormSection() {
     const [touched, setTouched] = useState<Set<string>>(new Set());
     const [showSuccess, setShowSuccess] = useState(false);
 
-    const { submitContactForm, isSubmitting } = useContactForm();
+    const {
+        submitContactForm,
+        isSubmitting,
+    } = useContactForm();
 
     // Real-time validation
     useEffect(() => {
@@ -423,6 +426,7 @@ export function ContactFormSection() {
                     </AnimatePresence>
                 </motion.div>
             </form>
+
         </motion.div>
     );
 }
