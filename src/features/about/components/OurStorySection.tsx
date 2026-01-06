@@ -53,9 +53,11 @@ export function OurStorySection() {
                         className="space-y-5 text-gray-700 text-base md:text-lg leading-relaxed ml-0 md:ml-13"
                     >
                         <p>
-                            In the heart of Homa Bay County, Western Kenya, one of the regions most affected by preventable disease
-                            and social inequality, communities face overlapping health and human rights challenges that demand urgent
-                            action—especially for girls and young women.
+                            Homa Bay County, Kenya, has some of the highest rates of HIV at <strong>15.2%</strong>, adolescent pregnancy at <strong>23.2%</strong>, and child marriage at <strong>37%</strong> in the country (National AIDS Control Council [NACC], 2023; Kenya National Bureau of Statistics [KNBS] & ICF, 2022; KELIN, 2023).
+                        </p>
+
+                        <p>
+                            These factors place girls at increased risk of sexual abuse, exploitation, and continued violations of their rights (Government of Kenya, 2023). In the heart of Western Kenya, communities face overlapping health and human rights challenges that demand urgent action—especially for girls and young women.
                         </p>
 
                         {/* Stat Highlight Box */}
@@ -64,26 +66,27 @@ export function OurStorySection() {
                             whileInView={{ opacity: 1, scale: 1 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.5, delay: 0.3 }}
-                            className="bg-gradient-to-r from-red-50 to-orange-50 border-l-4 border-red-500 p-5 rounded-r-lg shadow-md my-6"
+                            className="bg-gradient-to-r from-red-50 to-orange-50 border-l-4 border-red-500 p-6 rounded-r-lg shadow-md my-8"
                         >
                             <div className="flex items-start gap-4">
                                 <div className="text-3xl">📊</div>
-                                <div>
-                                    <p className="font-bold text-red-700 text-lg mb-2">Devastating Statistics</p>
-                                    <ul className="space-y-2 text-gray-800">
-                                        <li className="flex items-start">
-                                            <span className="text-red-500 mr-2">•</span>
-                                            <span>HIV prevalence <strong className="text-red-700">4x the national average</strong></span>
-                                        </li>
-                                        <li className="flex items-start">
-                                            <span className="text-red-500 mr-2">•</span>
-                                            <span>Girls married before finishing childhood</span>
-                                        </li>
-                                        <li className="flex items-start">
-                                            <span className="text-red-500 mr-2">•</span>
-                                            <span>Teenage pregnancy and GBV stealing futures</span>
-                                        </li>
-                                    </ul>
+                                <div className="flex-1">
+                                    <p className="font-bold text-red-700 text-lg mb-3">Critical Regional Challenges</p>
+                                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                        <div className="bg-white/50 p-3 rounded-xl border border-red-100">
+                                            <p className="text-red-700 font-black text-2xl">15.2%</p>
+                                            <p className="text-xs font-bold text-gray-600 uppercase tracking-tighter">HIV Prevalence</p>
+                                        </div>
+                                        <div className="bg-white/50 p-3 rounded-xl border border-red-100">
+                                            <p className="text-red-700 font-black text-2xl">23.2%</p>
+                                            <p className="text-xs font-bold text-gray-600 uppercase tracking-tighter">Teen Pregnancy</p>
+                                        </div>
+                                        <div className="bg-white/50 p-3 rounded-xl border border-red-100">
+                                            <p className="text-red-700 font-black text-2xl">37%</p>
+                                            <p className="text-xs font-bold text-gray-600 uppercase tracking-tighter">Child Marriage</p>
+                                        </div>
+                                    </div>
+                                    <p className="mt-4 text-[10px] text-gray-400 font-bold uppercase tracking-widest italic">Source: NACC 2023, KNBS 2022, Govt of Kenya 2023</p>
                                 </div>
                             </div>
                         </motion.div>
