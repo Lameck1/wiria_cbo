@@ -70,10 +70,10 @@ export function LocationMap() {
                             wiriacbo@gmail.com
                         </a>
                         <a
-                            href="tel:+254700000000"
+                            href="tel:+254705929293"
                             className="flex items-center gap-2 text-gray-600 hover:text-wiria-yellow transition-colors"
                         >
-                            +254 700 000 000
+                            +254 705 929 293
                         </a>
                     </div>
                 </div>
@@ -88,8 +88,7 @@ export function LocationMap() {
                     </div>
                     <p className="text-sm text-gray-600">
                         Mon - Fri: 8AM - 5PM<br />
-                        Sat: 9AM - 1PM<br />
-                        <span className="text-red-500">Sun: Closed</span>
+                        Sat & Sun: <span className="text-red-500 font-semibold">Closed</span>
                     </p>
                 </div>
             </div>
