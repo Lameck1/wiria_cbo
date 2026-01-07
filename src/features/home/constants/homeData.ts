@@ -8,7 +8,8 @@ export interface HeroSlide {
     subtitle: string;
     badge: string;
     gradient: string;
-    theme: 'health' | 'rights' | 'livelihoods';
+    theme: 'health' | 'rights' | 'livelihoods' | 'impact';
+    backgroundImage?: string;
 }
 
 export interface FocusArea {
@@ -40,6 +41,15 @@ export interface Update {
 export const ENHANCED_HERO_SLIDES: HeroSlide[] = [
     {
         id: 1,
+        title: 'Empowering Communities, Enhancing Lives',
+        subtitle: 'WIRIA CBO is at the forefront of championing health equity, human rights, and sustainable livelihoods for vulnerable populations in Western Kenya.',
+        badge: '🌍 Our Mission',
+        gradient: 'linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6))',
+        backgroundImage: 'https://res.cloudinary.com/dy0nzibcm/image/upload/v1767812993/600534431_122154771818875978_5799959723367633766_n.jpg_qfnivw.jpg',
+        theme: 'impact',
+    },
+    {
+        id: 2,
         title: 'Born from Pain. Built for Change.',
         subtitle: 'In the heart of Western Kenya, communities face intersecting health, human rights challenges, and economic exclusion that demand urgent action—particularly for girls and young women. WIRIA emerged as a community-driven response to these overlapping vulnerabilities.',
         badge: '🌟 Our Story',
@@ -47,7 +57,7 @@ export const ENHANCED_HERO_SLIDES: HeroSlide[] = [
         theme: 'health',
     },
     {
-        id: 2,
+        id: 3,
         title: 'Championing Rights for All',
         subtitle: 'Advocating for the rights of women, girls, and vulnerable populations through education, empowerment, and community action.',
         badge: '✊ Rights & Advocacy',
@@ -55,7 +65,7 @@ export const ENHANCED_HERO_SLIDES: HeroSlide[] = [
         theme: 'rights',
     },
     {
-        id: 3,
+        id: 4,
         title: 'Enhancing Livelihoods & Prosperity',
         subtitle: 'Building sustainable futures through agribusiness, table banking, skills training, and economic empowerment programs.',
         badge: '🌾 Economic Empowerment',

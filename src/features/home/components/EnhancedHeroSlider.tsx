@@ -14,7 +14,8 @@ interface HeroSlide {
     subtitle: string;
     badge: string;
     gradient: string; // CSS gradient background
-    theme: 'health' | 'rights' | 'livelihoods';
+    theme: 'health' | 'rights' | 'livelihoods' | 'impact';
+    backgroundImage?: string;
 }
 
 interface EnhancedHeroSliderProps {
@@ -86,7 +87,7 @@ export function EnhancedHeroSlider({
             onMouseLeave={() => setIsPaused(false)}
             aria-label="Hero slider"
         >
-            {/* Background with gradient - Crossfade transition */}
+            {/* Background Layer - Crossfade transition */}
             <AnimatePresence initial={false}>
                 <motion.div
                     key={currentIndex}
@@ -95,8 +96,26 @@ export function EnhancedHeroSlider({
                     exit={{ opacity: 0 }}
                     transition={{ duration: 1.2, ease: 'easeInOut' }}
                     className="absolute inset-0"
-                    style={{ background: currentSlide.gradient }}
-                />
+                >
+                    {currentSlide.backgroundImage ? (
+                        <div className="relative w-full h-full">
+                            <motion.div
+                                initial={{ scale: 1.1 }}
+                                animate={{ scale: 1 }}
+                                transition={{ duration: 6, ease: "linear" }}
+                                className="absolute inset-0 bg-cover bg-center"
+                                style={{ backgroundImage: `url(${currentSlide.backgroundImage})` }}
+                            />
+                            {/* Professional overlay - Gradient from dark to transparent */}
+                            <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/70 md:bg-gradient-to-r md:from-black/80 md:via-black/30 md:to-transparent" />
+                        </div>
+                    ) : (
+                        <div
+                            className="w-full h-full"
+                            style={{ background: currentSlide.gradient }}
+                        />
+                    )}
+                </motion.div>
             </AnimatePresence>
 
             {/* Content Container - Centered */}
