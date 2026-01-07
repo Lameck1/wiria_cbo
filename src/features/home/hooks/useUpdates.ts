@@ -14,6 +14,7 @@ export interface Update {
     fullContent: string;
     category: string;
     imageUrl: string;
+    images?: string[];
     publishedAt?: string;
     date?: string;
 }

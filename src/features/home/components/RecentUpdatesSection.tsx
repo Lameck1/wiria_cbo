@@ -8,6 +8,7 @@ import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { useUpdates, Update } from '../hooks/useUpdates';
 import { UpdateModal } from './UpdateModal';
+import { ImageCarousel } from '@/shared/components/ImageCarousel';
 
 export function RecentUpdatesSection() {
     const { data: allUpdates = [], isLoading, isError } = useUpdates(20);
@@ -17,10 +18,11 @@ export function RecentUpdatesSection() {
     const [isVisible, setIsVisible] = useState(false);
 
     const updatesPerPage = 4;
-    const totalPages = Math.ceil(allUpdates.length / updatesPerPage);
+    const displayUpdates = [...allUpdates].reverse();
+    const totalPages = Math.ceil(displayUpdates.length / updatesPerPage);
     const startIndex = (currentPage - 1) * updatesPerPage;
-    const endIndex = Math.min(startIndex + updatesPerPage, allUpdates.length);
-    const pageUpdates = allUpdates.slice(startIndex, endIndex);
+    const endIndex = Math.min(startIndex + updatesPerPage, displayUpdates.length);
+    const pageUpdates = displayUpdates.slice(startIndex, endIndex);
 
     // Show section only if updates exist - matching original HTML behavior
     useEffect(() => {
@@ -106,7 +108,10 @@ export function RecentUpdatesSection() {
                                             transition={{ duration: 0.5, delay: index * 0.1 }}
                                             className="group bg-white rounded-2xl overflow-hidden shadow-md transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border border-gray-100"
                                         >
-                                            <img src={update.imageUrl} alt={update.title} className="w-full aspect-[16/9] object-cover" />
+                                            <ImageCarousel
+                                                images={update.images || [update.imageUrl]}
+                                                title={update.title}
+                                            />
                                             <div className="p-6">
                                                 <p className="text-sm text-gray-500 mb-2">
                                                     {update.category}
