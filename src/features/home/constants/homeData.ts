@@ -41,7 +41,7 @@ export const ENHANCED_HERO_SLIDES: HeroSlide[] = [
     {
         id: 1,
         title: 'Born from Pain. Built for Change.',
-        subtitle: 'In Homa Bay County, where HIV prevalence is four times the national average and girls face devastating challenges, WIRIA emerged as a community-driven response. We don\'t just deliver programs—we build movements, restore dignity, and turn pain into power.',
+        subtitle: 'In the heart of Western Kenya, communities face intersecting health and human rights challenges that demand urgent action—particularly for girls and young women. WIRIA emerged as a community-driven response to these overlapping vulnerabilities.',
         badge: '🌟 Our Story',
         gradient: 'linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #f59e0b 100%)', // Blue to Yellow (WIRIA colors)
         theme: 'health',

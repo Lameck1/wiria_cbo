@@ -50,14 +50,18 @@ export function OurStorySection() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6, delay: 0.2 }}
-                        className="space-y-5 text-gray-700 text-base md:text-lg leading-relaxed ml-0 md:ml-13"
+                        className="space-y-6 text-gray-700 text-base md:text-lg leading-relaxed ml-0 md:ml-13"
                     >
                         <p>
-                            Homa Bay County, Kenya, has some of the highest rates of HIV at <strong>15.2%</strong>, adolescent pregnancy at <strong>23.2%</strong>, and child marriage at <strong>37%</strong> in the country (National AIDS Control Council [NACC], 2023; Kenya National Bureau of Statistics [KNBS] & ICF, 2022; KELIN, 2023).
+                            In the heart of Western Kenya, communities face intersecting health and human rights challenges that demand urgent action—particularly for girls and young women.
                         </p>
 
                         <p>
-                            These factors place girls at increased risk of sexual abuse, exploitation, and continued violations of their rights (Government of Kenya, 2023). In the heart of Western Kenya, communities face overlapping health and human rights challenges that demand urgent action—especially for girls and young women.
+                            Homa Bay County bears a disproportionate burden, with some of the highest rates in the country: <strong>HIV prevalence at 15.2%</strong>, <strong>adolescent pregnancy at 23.2%</strong>, and <strong>child marriage at 37%</strong> (National AIDS Control Council [NACC], 2023; Kenya National Bureau of Statistics [KNBS] & ICF, 2022; KELIN, 2023).
+                        </p>
+
+                        <p>
+                            These overlapping vulnerabilities significantly increase girls’ risk of sexual abuse, exploitation, and persistent violations of their fundamental rights (Government of Kenya, 2023).
                         </p>
 
                         {/* Stat Highlight Box */}
@@ -92,8 +96,7 @@ export function OurStorySection() {
                         </motion.div>
 
                         <p>
-                            For girls and young women, the consequences are devastating. Poverty pushes them into transactional sex
-                            just to eat, stay in school, or survive—deepening cycles of infection, abuse, and exclusion.
+                            For girls and young women, the consequences are devastating. Poverty often forces them into transactional sex simply to access food, remain in school, or survive—perpetuating cycles of HIV infection, abuse, and social exclusion.
                         </p>
                     </motion.div>
                 </div>
