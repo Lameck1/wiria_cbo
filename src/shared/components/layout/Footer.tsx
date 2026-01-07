@@ -85,7 +85,7 @@ export function Footer() {
                         <h4 className="font-bold text-wiria-yellow mb-4 text-sm uppercase tracking-wider">
                             Explore
                         </h4>
-                        <ul className="space-y-3 text-sm">
+                        <ul className="space-y-3 text-sm flex flex-col items-center lg:items-start">
                             <li>
                                 <Link to={ROUTES.ABOUT} className="text-gray-300 hover:text-white transition-colors">
                                     About Us
@@ -124,7 +124,7 @@ export function Footer() {
                         <h4 className="font-bold text-wiria-yellow mb-4 text-sm uppercase tracking-wider">
                             Opportunities
                         </h4>
-                        <ul className="space-y-3 text-sm">
+                        <ul className="space-y-3 text-sm flex flex-col items-center lg:items-start">
                             <li>
                                 <Link to={ROUTES.CAREERS} className="text-gray-300 hover:text-white transition-colors">
                                     Careers
@@ -153,7 +153,7 @@ export function Footer() {
                         <h4 className="font-bold text-wiria-yellow mb-4 text-sm uppercase tracking-wider">
                             Resources
                         </h4>
-                        <ul className="space-y-3 text-sm">
+                        <ul className="space-y-3 text-sm flex flex-col items-center lg:items-start">
                             <li>
                                 <Link to={ROUTES.RESOURCES} className="text-gray-300 hover:text-white transition-colors">
                                     Documents
@@ -177,7 +177,7 @@ export function Footer() {
                         <h4 className="font-bold text-wiria-yellow mb-4 text-sm uppercase tracking-wider">
                             Transparency
                         </h4>
-                        <ul className="space-y-3 text-sm">
+                        <ul className="space-y-3 text-sm flex flex-col items-center lg:items-start">
                             <li>
                                 <Link
                                     to={ROUTES.STAFF_LOGIN}
@@ -194,7 +194,7 @@ export function Footer() {
                                 </Link>
                             </li>
                             <li>
-                                <Link to={ROUTES.SAFEGUARDING} className="text-gray-300 hover:text-white transition-colors inline-flex items-center gap-2">
+                                <Link to={ROUTES.SAFEGUARDING} className="text-gray-300 hover:text-white transition-colors flex items-center gap-2">
                                     <span className="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse" />
                                     Report a Concern
                                 </Link>
