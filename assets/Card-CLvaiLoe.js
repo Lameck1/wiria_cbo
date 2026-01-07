@@ -1,0 +1,2 @@
+import{j as o}from"./query-vendor-DD8i-cqI.js";import{d as s}from"./index-ByeBMh7d.js";function t({children:r,className:a,hover:e=!1}){return o.jsx("div",{className:s("bg-white rounded-lg shadow-md overflow-hidden",e&&"transition-transform duration-300 hover:scale-105 hover:shadow-xl",a),children:r})}function i({children:r,className:a}){return o.jsx("div",{className:s("p-6 border-b border-gray-100",a),children:r})}function m({children:r,className:a}){return o.jsx("div",{className:s("p-6",a),children:r})}export{t as C,m as a,i as b};
+//# sourceMappingURL=Card-CLvaiLoe.js.map
