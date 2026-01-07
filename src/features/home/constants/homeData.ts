@@ -41,7 +41,7 @@ export const ENHANCED_HERO_SLIDES: HeroSlide[] = [
     {
         id: 1,
         title: 'Born from Pain. Built for Change.',
-        subtitle: 'In the heart of Western Kenya, communities face intersecting health and human rights challenges that demand urgent action—particularly for girls and young women. WIRIA emerged as a community-driven response to these overlapping vulnerabilities.',
+        subtitle: 'In the heart of Western Kenya, communities face intersecting health, human rights challenges, and economic exclusion that demand urgent action—particularly for girls and young women. WIRIA emerged as a community-driven response to these overlapping vulnerabilities.',
         badge: '🌟 Our Story',
         gradient: 'linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #f59e0b 100%)', // Blue to Yellow (WIRIA colors)
         theme: 'health',
