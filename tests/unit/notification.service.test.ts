@@ -1,7 +1,10 @@
 // @vitest-environment jsdom
 
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
-import { notificationService, useNotificationStore } from '@/shared/services/notification/notificationService';
+import {
+  notificationService,
+  useNotificationStore,
+} from '@/shared/services/notification/notificationService';
 
 describe('notificationService (Zustand)', () => {
   beforeEach(() => {

@@ -49,7 +49,14 @@ describe('TenderManagementPage', () => {
     const getTendersMock = vi.mocked(getTenders);
     getTendersMock.mockResolvedValue({
       data: [
-        { id: '1', title: 'Tender 1', refNo: 'REF01', deadline: new Date().toISOString(), status: 'OPEN', downloadUrl: undefined },
+        {
+          id: '1',
+          title: 'Tender 1',
+          refNo: 'REF01',
+          deadline: new Date().toISOString(),
+          status: 'OPEN',
+          downloadUrl: undefined,
+        },
       ] as any,
     });
 

@@ -36,8 +36,22 @@ describe('NewsManagementPage', () => {
     const getAdminUpdatesMock = vi.mocked(getAdminUpdates);
     getAdminUpdatesMock.mockResolvedValue({
       data: [
-        { id: '1', title: 'News 1', fullContent: 'Content 1', category: 'GENERAL', status: 'PUBLISHED', createdAt: new Date().toISOString() },
-        { id: '2', title: 'News 2', fullContent: 'Content 2', category: 'EVENT', status: 'DRAFT', createdAt: new Date().toISOString() },
+        {
+          id: '1',
+          title: 'News 1',
+          fullContent: 'Content 1',
+          category: 'GENERAL',
+          status: 'PUBLISHED',
+          createdAt: new Date().toISOString(),
+        },
+        {
+          id: '2',
+          title: 'News 2',
+          fullContent: 'Content 2',
+          category: 'EVENT',
+          status: 'DRAFT',
+          createdAt: new Date().toISOString(),
+        },
       ],
     });
 
@@ -60,14 +74,8 @@ describe('NewsManagementPage', () => {
     await user.click(await screen.findByRole('button', { name: /post new update/i }));
     expect(screen.getByRole('heading', { name: /post new update/i })).toBeInTheDocument();
 
-    await user.type(
-      screen.getByPlaceholderText(/new community program launch/i),
-      'New Title'
-    );
-    await user.type(
-      screen.getByPlaceholderText(/describe the update in detail/i),
-      'New Content'
-    );
+    await user.type(screen.getByPlaceholderText(/new community program launch/i), 'New Title');
+    await user.type(screen.getByPlaceholderText(/describe the update in detail/i), 'New Content');
 
     await user.click(screen.getByRole('button', { name: /save post/i }));
 
@@ -93,7 +101,14 @@ describe('NewsManagementPage', () => {
 
     getAdminUpdatesMock.mockResolvedValue({
       data: [
-        { id: '1', title: 'Delete Me', fullContent: '...', category: 'GENERAL', status: 'PUBLISHED', createdAt: new Date().toISOString() },
+        {
+          id: '1',
+          title: 'Delete Me',
+          fullContent: '...',
+          category: 'GENERAL',
+          status: 'PUBLISHED',
+          createdAt: new Date().toISOString(),
+        },
       ],
     });
     deleteUpdateMock.mockResolvedValue({ success: true } as any);

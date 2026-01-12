@@ -4,8 +4,28 @@ import { describe, it, beforeEach, vi, expect } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import HRManagementPage from '@/pages/admin/HRManagementPage';
+
+// Create a fresh QueryClient for tests
+function createTestQueryClient() {
+  return new QueryClient({
+    defaultOptions: {
+      queries: { retry: false },
+      mutations: { retry: false },
+    },
+  });
+}
+
+// Test wrapper with required providers
+function TestWrapper({ children }: { children: React.ReactNode }) {
+  return (
+    <QueryClientProvider client={createTestQueryClient()}>
+      <MemoryRouter initialEntries={['/admin/hr']}>{children}</MemoryRouter>
+    </QueryClientProvider>
+  );
+}
 
 vi.mock('@/features/admin/api/careers.api', () => ({
   getAdminCareers: vi.fn(),
@@ -83,13 +103,9 @@ describe('HRManagementPage (careers + applications)', () => {
       ],
     });
 
-    render(
-      <MemoryRouter initialEntries={['/admin/hr']}>
-        <HRManagementPage />
-      </MemoryRouter>
-    );
+    render(<HRManagementPage />, { wrapper: TestWrapper });
 
-    expect(await screen.findByText('HR & Careers Management')).toBeInTheDocument();
+    expect(await screen.findByText('HR & Talent Management')).toBeInTheDocument();
     expect(await screen.findByText('Job 1')).toBeInTheDocument();
 
     const user = userEvent.setup();

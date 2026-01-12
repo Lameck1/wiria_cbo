@@ -10,118 +10,134 @@ import { DonationImpactSection } from '@/features/donations/components/DonationI
 import { motion, AnimatePresence } from 'framer-motion';
 
 function DonationsPage() {
-    return (
-        <Layout>
-            {/* Hero Section - Refined Blue Gradient with Pattern */}
-            <section className="relative bg-wiria-blue-dark py-28 overflow-hidden">
-                <div className="absolute inset-0 opacity-20">
-                    <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
-                </div>
-                {/* Decorative Blobs */}
-                <div className="absolute top-0 right-0 w-96 h-96 bg-wiria-yellow/10 rounded-full blur-3xl -mr-48 -mt-48" />
-                <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl -ml-48 -mb-48" />
+  return (
+    <Layout>
+      {/* Hero Section - Refined Blue Gradient with Pattern */}
+      <section className="relative overflow-hidden bg-wiria-blue-dark py-28">
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
+        </div>
+        {/* Decorative Blobs */}
+        <div className="absolute right-0 top-0 -mr-48 -mt-48 h-96 w-96 rounded-full bg-wiria-yellow/10 blur-3xl" />
+        <div className="absolute bottom-0 left-0 -mb-48 -ml-48 h-96 w-96 rounded-full bg-blue-600/10 blur-3xl" />
 
-                <div className="container mx-auto px-4 lg:px-6 relative z-10">
-                    <div className="max-w-4xl mx-auto text-center">
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6 }}
-                        >
-                            <span className="inline-block px-5 py-2 bg-wiria-yellow text-wiria-blue-dark rounded-full text-xs font-bold uppercase tracking-widest mb-8 shadow-lg shadow-wiria-yellow/20">
-                                Make an Impact
-                            </span>
-                            <h1 className="text-5xl md:text-7xl font-black text-white mb-8 tracking-tight">
-                                Your Support <span className="text-wiria-yellow">Saves Lives</span>
-                            </h1>
-                            <p className="text-xl md:text-2xl text-blue-100 font-medium leading-relaxed max-w-2xl mx-auto">
-                                Join us in our mission to empower communities, enhance health, and champion
-                                human rights in Homa Bay County.
-                            </p>
-                        </motion.div>
+        <div className="container relative z-10 mx-auto px-4 lg:px-6">
+          <div className="mx-auto max-w-4xl text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <span className="mb-8 inline-block rounded-full bg-wiria-yellow px-5 py-2 text-xs font-bold uppercase tracking-widest text-wiria-blue-dark shadow-lg shadow-wiria-yellow/20">
+                Make an Impact
+              </span>
+              <h1 className="mb-8 text-5xl font-black tracking-tight text-white md:text-7xl">
+                Your Support <span className="text-wiria-yellow">Saves Lives</span>
+              </h1>
+              <p className="mx-auto max-w-2xl text-xl font-medium leading-relaxed text-blue-100 md:text-2xl">
+                Join us in our mission to empower communities, enhance health, and champion human
+                rights in Homa Bay County.
+              </p>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Donation Section */}
+      <section className="relative z-20 -mt-10 rounded-t-[3rem] bg-gray-50 py-20 shadow-2xl">
+        <div className="container mx-auto px-4 lg:px-6">
+          <div className="mx-auto max-w-3xl">
+            <AnimatePresence mode="wait">
+              {/* System Maintenance Notice */}
+              <motion.div
+                key="maintenance"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+              >
+                <Card className="group relative overflow-hidden rounded-[3rem] border-none bg-white shadow-2xl">
+                  {/* Top Branding Accent */}
+                  <div className="absolute left-0 top-0 h-1.5 w-full bg-gradient-to-r from-wiria-yellow via-amber-500 to-wiria-yellow opacity-80" />
+
+                  <CardBody className="p-8 text-center sm:p-16">
+                    {/* Maintenance Icon */}
+                    <div className="relative mb-10 inline-block">
+                      <div className="flex h-24 w-24 animate-pulse items-center justify-center rounded-3xl bg-wiria-yellow/10 text-5xl">
+                        ⚙️
+                      </div>
+                      <div className="absolute -bottom-2 -right-2 flex h-10 w-10 items-center justify-center rounded-full border-4 border-white bg-wiria-blue-dark text-xl text-white">
+                        !
+                      </div>
                     </div>
-                </div>
-            </section>
 
-            {/* Donation Section */}
-            <section className="py-20 bg-gray-50 relative -mt-10 rounded-t-[3rem] shadow-2xl z-20">
-                <div className="container mx-auto px-4 lg:px-6">
-                    <div className="max-w-3xl mx-auto">
-                        <AnimatePresence mode="wait">
-                            {/* System Maintenance Notice */}
-                            <motion.div
-                                key="maintenance"
-                                initial={{ opacity: 0, y: 30 }}
-                                animate={{ opacity: 1, y: 0 }}
-                            >
-                                <Card className="bg-white shadow-2xl rounded-[3rem] overflow-hidden border-none relative group">
-                                    {/* Top Branding Accent */}
-                                    <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-wiria-yellow via-amber-500 to-wiria-yellow opacity-80" />
+                    <h2 className="mb-6 text-3xl font-black tracking-tight text-wiria-blue-dark md:text-5xl">
+                      Online Payments <span className="text-wiria-yellow">Under Maintenance</span>
+                    </h2>
 
-                                    <CardBody className="p-8 sm:p-16 text-center">
-                                        {/* Maintenance Icon */}
-                                        <div className="relative inline-block mb-10">
-                                            <div className="w-24 h-24 bg-wiria-yellow/10 rounded-3xl flex items-center justify-center text-5xl animate-pulse">
-                                                ⚙️
-                                            </div>
-                                            <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-wiria-blue-dark text-white rounded-full flex items-center justify-center text-xl border-4 border-white">
-                                                !
-                                            </div>
-                                        </div>
+                    <p className="mx-auto mb-10 max-w-2xl text-xl leading-relaxed text-gray-600">
+                      To serve you better, we are currently upgrading our M-Pesa and online payment
+                      gateway. Direct online donations are temporarily switched off.
+                    </p>
 
-                                        <h2 className="text-3xl md:text-5xl font-black text-wiria-blue-dark mb-6 tracking-tight">
-                                            Online Payments <span className="text-wiria-yellow">Under Maintenance</span>
-                                        </h2>
+                    <div className="mb-10 rounded-[2rem] border border-blue-100/50 bg-blue-50/50 p-8">
+                      <p className="mb-4 text-lg font-bold text-wiria-blue-dark">
+                        You can still make your impact today!
+                      </p>
+                      <p className="mb-8 font-medium text-gray-500">
+                        We are currently accepting donations exclusively via **Direct Bank Deposit**
+                        to our official Co-operative Bank account.
+                      </p>
 
-                                        <p className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto leading-relaxed">
-                                            To serve you better, we are currently upgrading our M-Pesa and online payment gateway. Direct online donations are temporarily switched off.
-                                        </p>
-
-                                        <div className="bg-blue-50/50 rounded-[2rem] p-8 border border-blue-100/50 mb-10">
-                                            <p className="text-wiria-blue-dark font-bold text-lg mb-4">
-                                                You can still make your impact today!
-                                            </p>
-                                            <p className="text-gray-500 mb-8 font-medium">
-                                                We are currently accepting donations exclusively via **Direct Bank Deposit** to our official Co-operative Bank account.
-                                            </p>
-
-                                            {/* CTA Arrow Button */}
-                                            <button
-                                                onClick={() => document.getElementById('bank-details')?.scrollIntoView({ behavior: 'smooth' })}
-                                                className="inline-flex items-center gap-3 bg-wiria-blue-dark text-white font-black py-4 px-10 rounded-2xl hover:bg-blue-900 transition-all shadow-xl shadow-blue-900/20 group"
-                                            >
-                                                <span>View Bank Details</span>
-                                                <svg className="w-6 h-6 group-hover:translate-y-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-                                                </svg>
-                                            </button>
-                                        </div>
-
-                                        <p className="text-sm text-gray-400 font-bold uppercase tracking-widest">
-                                            Online Giving will return soon
-                                        </p>
-                                    </CardBody>
-                                </Card>
-                            </motion.div>
-                        </AnimatePresence>
-
-                        {/* Alternate Payment Methods */}
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            whileInView={{ opacity: 1 }}
-                            viewport={{ once: true }}
-                            className="mt-12"
+                      {/* CTA Arrow Button */}
+                      <button
+                        onClick={() =>
+                          document
+                            .getElementById('bank-details')
+                            ?.scrollIntoView({ behavior: 'smooth' })
+                        }
+                        className="group inline-flex items-center gap-3 rounded-2xl bg-wiria-blue-dark px-10 py-4 font-black text-white shadow-xl shadow-blue-900/20 transition-all hover:bg-blue-900"
+                      >
+                        <span>View Bank Details</span>
+                        <svg
+                          className="h-6 w-6 transition-transform group-hover:translate-y-1"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
                         >
-                            <AlternatePaymentMethods />
-                        </motion.div>
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={3}
+                            d="M19 14l-7 7m0 0l-7-7m7 7V3"
+                          />
+                        </svg>
+                      </button>
                     </div>
-                </div>
-            </section>
 
-            {/* Impact Section */}
-            <DonationImpactSection />
-        </Layout>
-    );
+                    <p className="text-sm font-bold uppercase tracking-widest text-gray-400">
+                      Online Giving will return soon
+                    </p>
+                  </CardBody>
+                </Card>
+              </motion.div>
+            </AnimatePresence>
+
+            {/* Alternate Payment Methods */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              className="mt-12"
+            >
+              <AlternatePaymentMethods />
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Impact Section */}
+      <DonationImpactSection />
+    </Layout>
+  );
 }
 
 export default DonationsPage;

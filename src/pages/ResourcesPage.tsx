@@ -8,50 +8,50 @@ import { useLocation } from 'react-router-dom';
 import { Layout } from '@/shared/components/layout/Layout';
 import { PageHero } from '@/shared/components/sections/PageHero';
 import {
-    DocumentRepositorySection,
-    ActiveTendersSection,
-    ResourcesHeroStats
+  DocumentRepositorySection,
+  ActiveTendersSection,
+  ResourcesHeroStats,
 } from '@/features/resources';
 
 function ResourcesPage() {
-    const location = useLocation();
+  const location = useLocation();
 
-    // Handle hash-based scrolling (e.g., /resources#tenders)
-    useEffect(() => {
-        if (location.hash) {
-            // Small delay to ensure the page has rendered
-            const timeoutId = setTimeout(() => {
-                const elementId = location.hash.substring(1);
-                const element = document.getElementById(elementId);
-                if (element) {
-                    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            }, 100);
-            return () => clearTimeout(timeoutId);
+  // Handle hash-based scrolling (e.g., /resources#tenders)
+  useEffect(() => {
+    if (location.hash) {
+      // Small delay to ensure the page has rendered
+      const timeoutId = setTimeout(() => {
+        const elementId = location.hash.substring(1);
+        const element = document.getElementById(elementId);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
-        return undefined;
-    }, [location.hash]);
-    return (
-        <Layout>
-            <main>
-                {/* Hero Section */}
-                <PageHero
-                    badge="Documents & Reports"
-                    title="Resources & Transparency"
-                    subtitle="Access our key documents and procurement notices"
-                    backgroundImage="/images/resources-hero.png"
-                >
-                    <ResourcesHeroStats />
-                </PageHero>
+      }, 100);
+      return () => clearTimeout(timeoutId);
+    }
+    return undefined;
+  }, [location.hash]);
+  return (
+    <Layout>
+      <main>
+        {/* Hero Section */}
+        <PageHero
+          badge="Documents & Reports"
+          title="Resources & Transparency"
+          subtitle="Access our key documents and procurement notices"
+          backgroundImage="/images/resources-hero.png"
+        >
+          <ResourcesHeroStats />
+        </PageHero>
 
-                {/* Document Repository */}
-                <DocumentRepositorySection />
+        {/* Document Repository */}
+        <DocumentRepositorySection />
 
-                {/* Active Tenders */}
-                <ActiveTendersSection />
-            </main>
-        </Layout>
-    );
+        {/* Active Tenders */}
+        <ActiveTendersSection />
+      </main>
+    </Layout>
+  );
 }
 
 export default ResourcesPage;

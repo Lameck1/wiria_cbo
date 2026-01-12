@@ -35,8 +35,10 @@ describe('User Management UI', () => {
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       submitted = true;
-      const identifier = (form.querySelector('input[name="identifier"]') as HTMLInputElement | null)?.value;
-      const password = (form.querySelector('input[name="password"]') as HTMLInputElement | null)?.value;
+      const identifier = (form.querySelector('input[name="identifier"]') as HTMLInputElement | null)
+        ?.value;
+      const password = (form.querySelector('input[name="password"]') as HTMLInputElement | null)
+        ?.value;
       if (!identifier || !password) {
         errorDiv.textContent = 'All fields required';
       }
@@ -134,7 +136,8 @@ describe('User Management UI', () => {
     expect(editForm).not.toBeNull();
     expect(profileView).not.toBeNull();
     expect(successDiv).not.toBeNull();
-    if (!editBtn || !editForm || !profileView || !successDiv) throw new Error('Test DOM not initialized');
+    if (!editBtn || !editForm || !profileView || !successDiv)
+      throw new Error('Test DOM not initialized');
 
     editBtn.addEventListener('click', () => {
       profileView.style.display = 'none';
@@ -171,7 +174,8 @@ describe('User Management UI', () => {
 
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-      const email = (form.querySelector('input[name="email"]') as HTMLInputElement | null)?.value ?? '';
+      const email =
+        (form.querySelector('input[name="email"]') as HTMLInputElement | null)?.value ?? '';
       if (!email.includes('@')) {
         errorDiv.textContent = 'Invalid email';
       }

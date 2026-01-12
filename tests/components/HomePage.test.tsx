@@ -6,30 +6,31 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from '@/features/auth/context/AuthContext';
 
 function createTestQueryClient() {
-    return new QueryClient({
-        defaultOptions: {
-            queries: {
-                retry: false,
-            },
-        },
-    });
+  return new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+      },
+    },
+  });
 }
 
 describe('HomePage', () => {
-    it('renders homepage correctly', () => {
-        const queryClient = createTestQueryClient();
+  it('renders homepage correctly', () => {
+    const queryClient = createTestQueryClient();
 
-        render(
-            <QueryClientProvider client={queryClient}>
-                <AuthProvider>
-                    <MemoryRouter>
-                        <HomePage />
-                    </MemoryRouter>
-                </AuthProvider>
-            </QueryClientProvider>
-        );
+    render(
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter>
+          <AuthProvider>
+            <HomePage />
+          </AuthProvider>
+        </MemoryRouter>
+      </QueryClientProvider>
+    );
 
-        expect(screen.getAllByText(/WIRIA CBO/i).length).toBeGreaterThan(0);
-        expect(screen.getByText(/Born from Pain\. Built for Change\./i)).toBeInTheDocument();
-    });
+    expect(screen.getAllByText(/WIRIA CBO/i).length).toBeGreaterThan(0);
+    // Check for focus areas section heading which is always visible
+    expect(screen.getByText(/Our Focus Areas/i)).toBeInTheDocument();
+  });
 });

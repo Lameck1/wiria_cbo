@@ -93,13 +93,17 @@ describe('Validators', () => {
     it('should reject amounts below minimum', () => {
       const result = validateAmount(5);
       expect(result.valid).toBe(false);
-      expect(result).toEqual(expect.objectContaining({ error: expect.stringContaining('Minimum donation amount') }));
+      expect(result).toEqual(
+        expect.objectContaining({ error: expect.stringContaining('Minimum donation amount') })
+      );
     });
 
     it('should reject amounts above maximum', () => {
       const result = validateAmount(2000000);
       expect(result.valid).toBe(false);
-      expect(result).toEqual(expect.objectContaining({ error: expect.stringContaining('Maximum donation amount') }));
+      expect(result).toEqual(
+        expect.objectContaining({ error: expect.stringContaining('Maximum donation amount') })
+      );
     });
 
     it('should reject non-numeric amounts', () => {
@@ -118,7 +122,9 @@ describe('Validators', () => {
     it('should reject empty values', () => {
       const result = validateRequired('');
       expect(result.valid).toBe(false);
-      expect(result).toEqual(expect.objectContaining({ error: expect.stringContaining('required') }));
+      expect(result).toEqual(
+        expect.objectContaining({ error: expect.stringContaining('required') })
+      );
     });
 
     it('should use custom field name in error', () => {

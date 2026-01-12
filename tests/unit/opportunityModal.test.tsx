@@ -39,12 +39,7 @@ describe('ApplicationFormModal (opportunity application submission)', () => {
     };
 
     return render(
-      <ApplicationFormModal
-        opportunity={opportunity}
-        isOpen
-        onClose={() => {}}
-        onBack={() => {}}
-      />
+      <ApplicationFormModal opportunity={opportunity} isOpen onClose={() => {}} onBack={() => {}} />
     );
   }
 
@@ -59,15 +54,29 @@ describe('ApplicationFormModal (opportunity application submission)', () => {
     renderModal();
 
     fireEvent.change(screen.getByLabelText(/full name/i), { target: { value: 'Test User' } });
-    fireEvent.change(screen.getByLabelText(/email address/i), { target: { value: 'test@example.com' } });
+    fireEvent.change(screen.getByLabelText(/email address/i), {
+      target: { value: 'test@example.com' },
+    });
     fireEvent.change(screen.getByLabelText(/phone number/i), { target: { value: '0712345678' } });
     fireEvent.change(screen.getByLabelText(/location\/county/i), { target: { value: 'Nairobi' } });
-    fireEvent.change(screen.getByLabelText(/highest education level/i), { target: { value: 'bachelors' } });
-    fireEvent.change(screen.getByLabelText(/field of study/i), { target: { value: 'Computer Science' } });
-    fireEvent.change(screen.getByLabelText(/years of relevant experience/i), { target: { value: '1-3' } });
-    fireEvent.change(screen.getByLabelText(/why are you interested in this position/i), { target: { value: 'Motivation text' } });
-    fireEvent.change(screen.getByLabelText(/cv\/resume/i), { target: { value: 'https://drive.google.com/cv' } });
-    fireEvent.change(screen.getByLabelText(/cover letter/i), { target: { value: 'https://drive.google.com/cover' } });
+    fireEvent.change(screen.getByLabelText(/highest education level/i), {
+      target: { value: 'bachelors' },
+    });
+    fireEvent.change(screen.getByLabelText(/field of study/i), {
+      target: { value: 'Computer Science' },
+    });
+    fireEvent.change(screen.getByLabelText(/years of relevant experience/i), {
+      target: { value: '1-3' },
+    });
+    fireEvent.change(screen.getByLabelText(/why are you interested in this position/i), {
+      target: { value: 'Motivation text' },
+    });
+    fireEvent.change(screen.getByLabelText(/cv\/resume/i), {
+      target: { value: 'https://drive.google.com/cv' },
+    });
+    fireEvent.change(screen.getByLabelText(/cover letter/i), {
+      target: { value: 'https://drive.google.com/cover' },
+    });
     await user.click(screen.getByRole('checkbox'));
 
     await user.click(screen.getByRole('button', { name: /submit application/i }));
@@ -106,15 +115,29 @@ describe('ApplicationFormModal (opportunity application submission)', () => {
     renderModal();
 
     fireEvent.change(screen.getByLabelText(/full name/i), { target: { value: 'Test User' } });
-    fireEvent.change(screen.getByLabelText(/email address/i), { target: { value: 'test@example.com' } });
+    fireEvent.change(screen.getByLabelText(/email address/i), {
+      target: { value: 'test@example.com' },
+    });
     fireEvent.change(screen.getByLabelText(/phone number/i), { target: { value: '0712345678' } });
     fireEvent.change(screen.getByLabelText(/location\/county/i), { target: { value: 'Nairobi' } });
-    fireEvent.change(screen.getByLabelText(/highest education level/i), { target: { value: 'bachelors' } });
-    fireEvent.change(screen.getByLabelText(/field of study/i), { target: { value: 'Computer Science' } });
-    fireEvent.change(screen.getByLabelText(/years of relevant experience/i), { target: { value: '1-3' } });
-    fireEvent.change(screen.getByLabelText(/why are you interested in this position/i), { target: { value: 'Motivation text' } });
-    fireEvent.change(screen.getByLabelText(/cv\/resume/i), { target: { value: 'https://drive.google.com/cv' } });
-    fireEvent.change(screen.getByLabelText(/cover letter/i), { target: { value: 'https://drive.google.com/cover' } });
+    fireEvent.change(screen.getByLabelText(/highest education level/i), {
+      target: { value: 'bachelors' },
+    });
+    fireEvent.change(screen.getByLabelText(/field of study/i), {
+      target: { value: 'Computer Science' },
+    });
+    fireEvent.change(screen.getByLabelText(/years of relevant experience/i), {
+      target: { value: '1-3' },
+    });
+    fireEvent.change(screen.getByLabelText(/why are you interested in this position/i), {
+      target: { value: 'Motivation text' },
+    });
+    fireEvent.change(screen.getByLabelText(/cv\/resume/i), {
+      target: { value: 'https://drive.google.com/cv' },
+    });
+    fireEvent.change(screen.getByLabelText(/cover letter/i), {
+      target: { value: 'https://drive.google.com/cover' },
+    });
     await user.click(screen.getByRole('checkbox'));
 
     const maybeSubmit = screen.queryByRole('button', { name: /submit application/i });

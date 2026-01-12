@@ -43,7 +43,9 @@ describe('ResetPasswordPage flow', () => {
 
     await waitFor(() => {
       expect(apiClient.post).toHaveBeenCalled();
-      expect(notificationService.success).toHaveBeenCalledWith('Password reset link sent to your email!');
+      expect(notificationService.success).toHaveBeenCalledWith(
+        'Password reset link sent to your email!'
+      );
     });
 
     expect(await screen.findByText(/check your email/i)).toBeInTheDocument();

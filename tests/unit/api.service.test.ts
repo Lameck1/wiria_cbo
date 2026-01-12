@@ -81,7 +81,9 @@ describe('apiClient', () => {
       const fetchMock = vi.mocked(fetch);
       fetchMock.mockRejectedValueOnce(new Error('Network error'));
 
-      await expect(apiClient.request('/test')).rejects.toEqual(expect.objectContaining({ status: 0 }));
+      await expect(apiClient.request('/test')).rejects.toEqual(
+        expect.objectContaining({ status: 0 })
+      );
     });
   });
 

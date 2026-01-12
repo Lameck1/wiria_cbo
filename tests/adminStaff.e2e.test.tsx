@@ -4,9 +4,30 @@
 import { describe, it, beforeEach, vi, expect } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { MemoryRouter } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import UserManagementPage from '@/pages/admin/UserManagementPage';
 import { UserRole } from '@/shared/types';
+
+// Create a fresh QueryClient for tests
+function createTestQueryClient() {
+  return new QueryClient({
+    defaultOptions: {
+      queries: { retry: false },
+      mutations: { retry: false },
+    },
+  });
+}
+
+// Test wrapper with required providers
+function TestWrapper({ children }: { children: React.ReactNode }) {
+  return (
+    <QueryClientProvider client={createTestQueryClient()}>
+      <MemoryRouter initialEntries={['/admin/users']}>{children}</MemoryRouter>
+    </QueryClientProvider>
+  );
+}
 
 vi.mock('@/features/admin/api/users.api', () => ({
   getUsers: vi.fn(),
@@ -59,7 +80,7 @@ describe('UserManagementPage (staff & admin management)', () => {
       },
     ]);
 
-    render(<UserManagementPage />);
+    render(<UserManagementPage />, { wrapper: TestWrapper });
 
     expect(await screen.findByText('staff1@wiria.org')).toBeInTheDocument();
     expect(await screen.findByText('admin@wiria.org')).toBeInTheDocument();
@@ -73,7 +94,7 @@ describe('UserManagementPage (staff & admin management)', () => {
     getUsersMock.mockResolvedValue([]);
     inviteUserMock.mockResolvedValue({ success: true } as any);
 
-    render(<UserManagementPage />);
+    render(<UserManagementPage />, { wrapper: TestWrapper });
 
     await user.click(await screen.findByRole('button', { name: /invite new user/i }));
     expect(screen.getByRole('heading', { name: /invite new user/i })).toBeInTheDocument();
@@ -129,7 +150,7 @@ describe('UserManagementPage (staff & admin management)', () => {
     ]);
     updateUserStatusMock.mockResolvedValue({ success: true } as any);
 
-    render(<UserManagementPage />);
+    render(<UserManagementPage />, { wrapper: TestWrapper });
 
     await user.click(await screen.findByRole('button', { name: /deactivate/i }));
 
