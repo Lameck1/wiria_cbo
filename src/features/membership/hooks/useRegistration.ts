@@ -10,85 +10,85 @@ import { RegistrationFormData, RegistrationResponse } from '../types';
 import { PaymentStatusResponse } from '@/features/donations/types';
 
 export function useRegistration() {
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [memberId, setMemberId] = useState<string | null>(null);
-    const [membershipNumber, setMembershipNumber] = useState<string | null>(null);
-    const [checkoutRequestId, setCheckoutRequestId] = useState<string | null>(null);
-    const [paymentStatus, setPaymentStatus] = useState<
-        'PENDING' | 'COMPLETED' | 'FAILED' | 'CANCELLED' | null
-    >(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [memberId, setMemberId] = useState<string | null>(null);
+  const [membershipNumber, setMembershipNumber] = useState<string | null>(null);
+  const [checkoutRequestId, setCheckoutRequestId] = useState<string | null>(null);
+  const [paymentStatus, setPaymentStatus] = useState<
+    'PENDING' | 'COMPLETED' | 'FAILED' | 'CANCELLED' | null
+  >(null);
 
-    const submitRegistration = async (data: RegistrationFormData) => {
-        setIsSubmitting(true);
-        setPaymentStatus(null);
+  const submitRegistration = async (data: RegistrationFormData) => {
+    setIsSubmitting(true);
+    setPaymentStatus(null);
 
-        try {
-            const response = await apiClient.post<RegistrationResponse>(
-                API_ENDPOINTS.MEMBERS_REGISTER,
-                data
-            );
+    try {
+      const response = await apiClient.post<RegistrationResponse>(
+        API_ENDPOINTS.MEMBERS_REGISTER,
+        data
+      );
 
-            const { member, checkoutRequestId: reqId, message } = response.data;
+      const { member, checkoutRequestId: reqId, message } = response.data;
 
-            setMemberId(member.id);
-            setMembershipNumber(member.membershipNumber);
+      setMemberId(member.id);
+      setMembershipNumber(member.membershipNumber);
 
-            if (data.paymentMethod === 'STK_PUSH' && reqId) {
-                setCheckoutRequestId(reqId);
-                setPaymentStatus('PENDING');
-                notificationService.info('STK push sent to your phone. Please complete the payment.');
-            } else {
-                notificationService.success(message || 'Registration successful!');
-            }
+      if (data.paymentMethod === 'STK_PUSH' && reqId) {
+        setCheckoutRequestId(reqId);
+        setPaymentStatus('PENDING');
+        notificationService.info('STK push sent to your phone. Please complete the payment.');
+      } else {
+        notificationService.success(message || 'Registration successful!');
+      }
 
-            return { success: true, memberId: member.id, membershipNumber: member.membershipNumber };
-        } catch (_error) {
-            notificationService.error('Registration failed. Please try again.');
-            return { success: false };
-        } finally {
-            setIsSubmitting(false);
-        }
-    };
+      return { success: true, memberId: member.id, membershipNumber: member.membershipNumber };
+    } catch (_error) {
+      notificationService.error('Registration failed. Please try again.');
+      return { success: false };
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
-    const checkPaymentStatus = async (memberIdToCheck: string) => {
-        try {
-            const response = await apiClient.get<PaymentStatusResponse>(
-                `${API_ENDPOINTS.PAYMENTS_STATUS}/${memberIdToCheck}`
-            );
+  const checkPaymentStatus = async (memberIdToCheck: string) => {
+    try {
+      const response = await apiClient.get<PaymentStatusResponse>(
+        `${API_ENDPOINTS.PAYMENTS_STATUS}/${memberIdToCheck}`
+      );
 
-            const { status } = response.data;
-            setPaymentStatus(status);
+      const { status } = response.data;
+      setPaymentStatus(status);
 
-            if (status === 'COMPLETED') {
-                notificationService.success('Payment completed! Your membership is now active.');
-                return 'COMPLETED';
-            } else if (status === 'FAILED') {
-                notificationService.error('Payment failed. Please try again.');
-                return 'FAILED';
-            }
+      if (status === 'COMPLETED') {
+        notificationService.success('Payment completed! Your membership is now active.');
+        return 'COMPLETED';
+      } else if (status === 'FAILED') {
+        notificationService.error('Payment failed. Please try again.');
+        return 'FAILED';
+      }
 
-            return status;
-        } catch (_error) {
-            return 'PENDING';
-        }
-    };
+      return status;
+    } catch (_error) {
+      return 'PENDING';
+    }
+  };
 
-    const resetRegistration = () => {
-        setMemberId(null);
-        setMembershipNumber(null);
-        setCheckoutRequestId(null);
-        setPaymentStatus(null);
-        setIsSubmitting(false);
-    };
+  const resetRegistration = () => {
+    setMemberId(null);
+    setMembershipNumber(null);
+    setCheckoutRequestId(null);
+    setPaymentStatus(null);
+    setIsSubmitting(false);
+  };
 
-    return {
-        submitRegistration,
-        checkPaymentStatus,
-        resetRegistration,
-        isSubmitting,
-        memberId,
-        membershipNumber,
-        checkoutRequestId,
-        paymentStatus,
-    };
+  return {
+    submitRegistration,
+    checkPaymentStatus,
+    resetRegistration,
+    isSubmitting,
+    memberId,
+    membershipNumber,
+    checkoutRequestId,
+    paymentStatus,
+  };
 }

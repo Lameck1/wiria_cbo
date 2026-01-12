@@ -6,53 +6,53 @@
 import { useEffect, useRef } from 'react';
 
 interface UsePaymentPollerProps {
-    donationId: string | null;
-    isActive: boolean;
-    onStatusCheck: (donationId: string) => Promise<string>;
-    interval?: number;
+  donationId: string | null;
+  isActive: boolean;
+  onStatusCheck: (donationId: string) => Promise<string>;
+  interval?: number;
 }
 
 export function usePaymentPoller({
-    donationId,
-    isActive,
-    onStatusCheck,
-    interval = 5000, // 5 seconds
+  donationId,
+  isActive,
+  onStatusCheck,
+  interval = 5000, // 5 seconds
 }: UsePaymentPollerProps) {
-    const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-    useEffect(() => {
-        if (!isActive || !donationId) {
-            if (intervalRef.current) {
-                clearInterval(intervalRef.current);
-                intervalRef.current = null;
-            }
-            return;
+  useEffect(() => {
+    if (!isActive || !donationId) {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+      return;
+    }
+
+    // Initial check
+    const checkStatus = async () => {
+      const status = await onStatusCheck(donationId);
+
+      // Stop polling if payment is complete or failed
+      if (status === 'COMPLETED' || status === 'FAILED') {
+        if (intervalRef.current) {
+          clearInterval(intervalRef.current);
+          intervalRef.current = null;
         }
+      }
+    };
 
-        // Initial check
-        const checkStatus = async () => {
-            const status = await onStatusCheck(donationId);
+    checkStatus();
 
-            // Stop polling if payment is complete or failed
-            if (status === 'COMPLETED' || status === 'FAILED') {
-                if (intervalRef.current) {
-                    clearInterval(intervalRef.current);
-                    intervalRef.current = null;
-                }
-            }
-        };
+    // Set up polling interval
+    intervalRef.current = setInterval(checkStatus, interval);
 
-        checkStatus();
-
-        // Set up polling interval
-        intervalRef.current = setInterval(checkStatus, interval);
-
-        // Cleanup on unmount
-        return () => {
-            if (intervalRef.current) {
-                clearInterval(intervalRef.current);
-                intervalRef.current = null;
-            }
-        };
-    }, [donationId, isActive, onStatusCheck, interval]);
+    // Cleanup on unmount
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+    };
+  }, [donationId, isActive, onStatusCheck, interval]);
 }
