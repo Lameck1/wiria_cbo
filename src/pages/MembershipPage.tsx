@@ -1,4 +1,3 @@
-import { Layout } from '@/shared/components/layout/Layout';
 import { Card, CardBody } from '@/shared/components/ui/Card';
 import { Button } from '@/shared/components/ui/Button';
 import { Input } from '@/shared/components/ui/Input';
@@ -123,7 +122,7 @@ function MembershipPage() {
   const isFormDisabled = isSubmitting || paymentStatus === 'PENDING';
 
   return (
-    <Layout>
+    <>
       <MembershipHero />
 
       <section className="py-16">
@@ -162,22 +161,20 @@ function MembershipPage() {
                           <button
                             type="button"
                             onClick={() => setValue('membershipType', 'INDIVIDUAL')}
-                            className={`rounded-lg px-4 py-2 text-sm font-semibold transition-all duration-200 ${
-                              membershipType === 'INDIVIDUAL'
+                            className={`rounded-lg px-4 py-2 text-sm font-semibold transition-all duration-200 ${membershipType === 'INDIVIDUAL'
                                 ? 'bg-white text-wiria-blue-dark shadow-sm'
                                 : 'text-gray-500 hover:text-gray-700'
-                            }`}
+                              }`}
                           >
                             Individual
                           </button>
                           <button
                             type="button"
                             onClick={() => setValue('membershipType', 'GROUP')}
-                            className={`rounded-lg px-4 py-2 text-sm font-semibold transition-all duration-200 ${
-                              membershipType === 'GROUP'
+                            className={`rounded-lg px-4 py-2 text-sm font-semibold transition-all duration-200 ${membershipType === 'GROUP'
                                 ? 'bg-white text-wiria-blue-dark shadow-sm'
                                 : 'text-gray-500 hover:text-gray-700'
-                            }`}
+                              }`}
                           >
                             Group
                           </button>
@@ -405,7 +402,7 @@ function MembershipPage() {
           </div>
         </div>
       </section>
-    </Layout>
+    </>
   );
 }
 

@@ -5,7 +5,6 @@
 
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Layout } from '@/shared/components/layout/Layout';
 import { PageHero } from '@/shared/components/sections/PageHero';
 import {
   DocumentRepositorySection,
@@ -32,25 +31,23 @@ function ResourcesPage() {
     return undefined;
   }, [location.hash]);
   return (
-    <Layout>
-      <main>
-        {/* Hero Section */}
-        <PageHero
-          badge="Documents & Reports"
-          title="Resources & Transparency"
-          subtitle="Access our key documents and procurement notices"
-          backgroundImage="/images/resources-hero.png"
-        >
-          <ResourcesHeroStats />
-        </PageHero>
+    <main>
+      {/* Hero Section */}
+      <PageHero
+        badge="Documents & Reports"
+        title="Resources & Transparency"
+        subtitle="Access our key documents and procurement notices"
+        backgroundImage="/images/resources-hero.png"
+      >
+        <ResourcesHeroStats />
+      </PageHero>
 
-        {/* Document Repository */}
-        <DocumentRepositorySection />
+      {/* Document Repository */}
+      <DocumentRepositorySection />
 
-        {/* Active Tenders */}
-        <ActiveTendersSection />
-      </main>
-    </Layout>
+      {/* Active Tenders */}
+      <ActiveTendersSection />
+    </main>
   );
 }
 

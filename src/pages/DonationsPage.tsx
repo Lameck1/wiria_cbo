@@ -3,7 +3,6 @@
  * Focuses on Direct Bank Deposits while online systems are under maintenance.
  */
 
-import { Layout } from '@/shared/components/layout/Layout';
 import { Card, CardBody } from '@/shared/components/ui/Card';
 import { AlternatePaymentMethods } from '@/features/donations/components/AlternatePaymentMethods';
 import { DonationImpactSection } from '@/features/donations/components/DonationImpactSection';
@@ -11,7 +10,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 function DonationsPage() {
   return (
-    <Layout>
+    <>
       {/* Hero Section - Refined Blue Gradient with Pattern */}
       <section className="relative overflow-hidden bg-wiria-blue-dark py-28">
         <div className="absolute inset-0 opacity-20">
@@ -136,7 +135,7 @@ function DonationsPage() {
 
       {/* Impact Section */}
       <DonationImpactSection />
-    </Layout>
+    </>
   );
 }
 

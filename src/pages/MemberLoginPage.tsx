@@ -4,7 +4,6 @@
 
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Layout } from '@/shared/components/layout/Layout';
 import { LoginForm } from '@/features/auth/components/LoginForm';
 import { useAuth } from '@/features/auth/context/AuthContext';
 import { UserRole } from '@/shared/types';
@@ -21,15 +20,13 @@ function MemberLoginPage() {
   }, [isAuthenticated, user, navigate]);
 
   return (
-    <Layout>
-      <div className="flex min-h-[70vh] items-center justify-center px-4 py-12">
-        <LoginForm
-          isMember
-          title="Member Portal Login"
-          subtitle="Access your WIRIA CBO membership account"
-        />
-      </div>
-    </Layout>
+    <div className="flex min-h-[70vh] items-center justify-center px-4 py-12">
+      <LoginForm
+        isMember
+        title="Member Portal Login"
+        subtitle="Access your WIRIA CBO membership account"
+      />
+    </div>
   );
 }
 

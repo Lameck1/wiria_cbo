@@ -2,7 +2,6 @@
  * Home Page
  */
 
-import { Layout } from '@/shared/components/layout/Layout';
 import {
   ImpactStatsSection,
   RecentUpdatesSection,
@@ -15,7 +14,7 @@ import { FocusAreasSection } from '@/shared/components/sections/FocusAreasSectio
 
 export function HomePage() {
   return (
-    <Layout>
+    <>
       {/* Hero Slider */}
       <HeroSlider slides={HERO_SLIDES} />
 
@@ -30,7 +29,7 @@ export function HomePage() {
 
       {/* Partners Logo Strip */}
       <PartnersSection />
-    </Layout>
+    </>
   );
 }
 
