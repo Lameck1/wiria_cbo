@@ -1,0 +1,38 @@
+import { ReactNode } from 'react';
+import { useForm, FormProvider, UseFormReturn, DefaultValues, FieldValues } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+
+interface FormProps<T extends FieldValues> {
+    schema: z.ZodType<T, any, any>;
+    defaultValues?: DefaultValues<T>;
+    children: (methods: UseFormReturn<T>) => ReactNode;
+    onSubmit: (data: T) => void | Promise<void>;
+    className?: string;
+}
+
+export function Form<T extends FieldValues>({
+    schema,
+    defaultValues,
+    children,
+    onSubmit,
+    className = '',
+}: FormProps<T>) {
+    const methods = useForm<T>({
+        resolver: zodResolver(schema),
+        defaultValues,
+        mode: 'onBlur', // Validate on blur for better UX
+    });
+
+    return (
+        <FormProvider {...methods}>
+            <form
+                onSubmit={methods.handleSubmit(onSubmit)}
+                className={`space-y-6 ${className}`}
+                noValidate
+            >
+                {children(methods)}
+            </form>
+        </FormProvider>
+    );
+}

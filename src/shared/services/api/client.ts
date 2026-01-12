@@ -5,21 +5,33 @@
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
 
+type TokenResolver = () => string | null;
+
 class ApiClient {
   private baseURL: string;
-  private authToken: string | null;
+  private tokenResolver?: TokenResolver;
 
   constructor(baseURL: string = API_BASE_URL) {
     this.baseURL = baseURL;
-    this.authToken = localStorage.getItem('wiria_auth_token');
   }
 
+  /**
+   * Registers a function to resolve the current auth token.
+   * This decouples the client from specific storage implementations.
+   */
+  setTokenResolver(resolver: TokenResolver) {
+    this.tokenResolver = resolver;
+  }
+
+  /**
+   * Deprecated: Use setTokenResolver instead for better decoupling.
+   * Keeping for backward compatibility during migration.
+   */
   setAuthToken(token: string | null) {
-    this.authToken = token;
     if (token) {
-      localStorage.setItem('wiria_auth_token', token);
+      this.tokenResolver = () => token;
     } else {
-      localStorage.removeItem('wiria_auth_token');
+      this.tokenResolver = undefined;
     }
   }
 
@@ -34,8 +46,9 @@ class ApiClient {
       'Content-Type': 'application/json',
     };
 
-    if (this.authToken) {
-      headers['Authorization'] = `Bearer ${this.authToken}`;
+    const token = this.tokenResolver?.();
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
     }
 
     return headers;
