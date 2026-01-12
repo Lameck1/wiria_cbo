@@ -5,15 +5,17 @@
 
 // Hooks
 export { useOpportunities, type Opportunity } from './hooks/useOpportunities';
-export { useApplicationForm, type ApplicationFormData, type SubmitStatus } from './hooks/useApplicationForm';
+export {
+  useApplicationForm,
+  type ApplicationFormData,
+  type SubmitStatus,
+} from './hooks/useApplicationForm';
 
 // Page-level Sections
 export { CurrentOpeningsSection } from './components/CurrentOpeningsSection';
 export { VolunteerInternshipSection } from './components/VolunteerInternshipSection';
 export { BenefitsSection } from './components/BenefitsSection';
 export { ApplicationTipsSection } from './components/ApplicationTipsSection';
-export { TestimonialsSection } from './components/TestimonialsSection';
-export { FAQSection } from './components/FAQSection';
 export { OpportunityHeroStats } from './components/OpportunityHeroStats';
 
 // Modal Components
