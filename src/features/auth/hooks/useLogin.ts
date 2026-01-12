@@ -12,47 +12,47 @@ import { UserRole } from '@/shared/types';
 import { ROUTES } from '@/shared/constants/routes';
 
 export function useLogin(isMember = false) {
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
-    const { login } = useAuth();
-    const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
-    const handleLogin = async (credentials: { identifier: string; password: string }) => {
-        setIsLoading(true);
-        setError(null);
+  const handleLogin = async (credentials: { identifier: string; password: string }) => {
+    setIsLoading(true);
+    setError(null);
 
-        try {
-            const loggedInUser = await login(credentials, isMember);
+    try {
+      const loggedInUser = await login(credentials, isMember);
 
-            notificationService.success('Login successful!');
+      notificationService.success('Login successful!');
 
-            // Redirect based on role - Use fresh user data!
-            const role = loggedInUser.role;
+      // Redirect based on role - Use fresh user data!
+      const role = loggedInUser.role;
 
-            if (role === UserRole.MEMBER) {
-                navigate(ROUTES.MEMBER_PORTAL, { replace: true });
-            } else if (
-                [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.STAFF].includes(role as UserRole)
-            ) {
-                navigate(ROUTES.ADMIN, { replace: true });
-            } else {
-                navigate(ROUTES.HOME, { replace: true });
-            }
-        } catch (err) {
-            const message =
-                err instanceof ApiError
-                    ? err.message || 'Invalid credentials'
-                    : 'Login failed. Please try again.';
-            setError(message);
-            notificationService.error(message);
-        } finally {
-            setIsLoading(false);
-        }
-    };
+      if (role === UserRole.MEMBER) {
+        navigate(ROUTES.MEMBER_PORTAL, { replace: true });
+      } else if (
+        [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.STAFF].includes(role as UserRole)
+      ) {
+        navigate(ROUTES.ADMIN, { replace: true });
+      } else {
+        navigate(ROUTES.HOME, { replace: true });
+      }
+    } catch (err) {
+      const message =
+        err instanceof ApiError
+          ? err.message || 'Invalid credentials'
+          : 'Login failed. Please try again.';
+      setError(message);
+      notificationService.error(message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-    return {
-        handleLogin,
-        isLoading,
-        error,
-    };
+  return {
+    handleLogin,
+    isLoading,
+    error,
+  };
 }

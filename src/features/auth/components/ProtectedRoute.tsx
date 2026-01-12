@@ -9,29 +9,29 @@ import { UserRole } from '@/shared/types';
 import { ROUTES } from '@/shared/constants/routes';
 
 interface ProtectedRouteProps {
-    children: React.ReactNode;
-    allowedRoles: UserRole[];
-    redirectTo: string;
+  children: React.ReactNode;
+  allowedRoles: UserRole[];
+  redirectTo: string;
 }
 
 export function ProtectedRoute({ children, allowedRoles, redirectTo }: ProtectedRouteProps) {
-    const { user, isAuthenticated, isLoading } = useAuth();
+  const { user, isAuthenticated, isLoading } = useAuth();
 
-    // While checking auth, render nothing (instant - no spinner)
-    if (isLoading) {
-        return null;
-    }
+  // While checking auth, render nothing (instant - no spinner)
+  if (isLoading) {
+    return null;
+  }
 
-    // Not authenticated - redirect to login
-    if (!isAuthenticated || !user) {
-        return <Navigate to={redirectTo} replace />;
-    }
+  // Not authenticated - redirect to login
+  if (!isAuthenticated || !user) {
+    return <Navigate to={redirectTo} replace />;
+  }
 
-    // Check if user has required role
-    if (!allowedRoles.includes(user.role)) {
-        return <Navigate to={ROUTES.HOME} replace />;
-    }
+  // Check if user has required role
+  if (!allowedRoles.includes(user.role)) {
+    return <Navigate to={ROUTES.HOME} replace />;
+  }
 
-    // Authorized - render children
-    return <>{children}</>;
+  // Authorized - render children
+  return <>{children}</>;
 }

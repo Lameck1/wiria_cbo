@@ -46,133 +46,118 @@ const MeetingManagementPage = lazy(() => import('@/pages/admin/MeetingManagement
 import { ROUTES } from '@/shared/constants/routes';
 
 function AppRouter() {
-    const { isBackendConnected } = useBackendStatus();
+  const { isBackendConnected } = useBackendStatus();
 
-    return (
-        <Routes>
-            {/* Public routes - always available */}
-            <Route path={ROUTES.HOME} element={<HomePage />} />
-            <Route path={ROUTES.ABOUT} element={<AboutPage />} />
-            <Route path={ROUTES.CONTACT} element={<ContactPage />} />
-            <Route path={ROUTES.PROGRAMS} element={<ProgramsPage />} />
-            <Route path={ROUTES.RESOURCES} element={<ResourcesPage />} />
-            <Route path={ROUTES.OPPORTUNITIES} element={<OpportunitiesPage />} />
-            <Route path={ROUTES.CAREERS} element={<CareersPage />} />
-            <Route path={ROUTES.DONATIONS} element={<DonationsPage />} />
-            <Route path={ROUTES.MEMBERSHIP} element={<MembershipPage />} />
-            <Route path={ROUTES.SAFEGUARDING} element={<SafeguardingPage />} />
+  return (
+    <Routes>
+      {/* Public routes - always available */}
+      <Route path={ROUTES.HOME} element={<HomePage />} />
+      <Route path={ROUTES.ABOUT} element={<AboutPage />} />
+      <Route path={ROUTES.CONTACT} element={<ContactPage />} />
+      <Route path={ROUTES.PROGRAMS} element={<ProgramsPage />} />
+      <Route path={ROUTES.RESOURCES} element={<ResourcesPage />} />
+      <Route path={ROUTES.OPPORTUNITIES} element={<OpportunitiesPage />} />
+      <Route path={ROUTES.CAREERS} element={<CareersPage />} />
+      <Route path={ROUTES.DONATIONS} element={<DonationsPage />} />
+      <Route path={ROUTES.MEMBERSHIP} element={<MembershipPage />} />
+      <Route path={ROUTES.SAFEGUARDING} element={<SafeguardingPage />} />
 
-            {/* Auth routes - only available when backend is connected */}
-            {isBackendConnected && (
-                <>
-                    <Route path={ROUTES.MEMBER_LOGIN} element={<MemberLoginPage />} />
-                    <Route path={ROUTES.STAFF_LOGIN} element={<StaffLoginPage />} />
-                    <Route path={ROUTES.RESET_PASSWORD} element={<ResetPasswordPage />} />
-                    <Route path={ROUTES.ACCEPT_INVITE} element={<AcceptInvitePage />} />
+      {/* Auth routes - only available when backend is connected */}
+      {isBackendConnected && (
+        <>
+          <Route path={ROUTES.MEMBER_LOGIN} element={<MemberLoginPage />} />
+          <Route path={ROUTES.STAFF_LOGIN} element={<StaffLoginPage />} />
+          <Route path={ROUTES.RESET_PASSWORD} element={<ResetPasswordPage />} />
+          <Route path={ROUTES.ACCEPT_INVITE} element={<AcceptInvitePage />} />
 
-                    {/* Protected routes - Member Portal */}
-                    <Route
-                        path={ROUTES.MEMBER_PORTAL}
-                        element={
-                            <ProtectedRoute
-                                allowedRoles={[UserRole.MEMBER]}
-                                redirectTo={ROUTES.MEMBER_LOGIN}
-                            >
-                                <MemberPortalPage />
-                            </ProtectedRoute>
-                        }
-                    />
-                    <Route
-                        path={ROUTES.MEMBER_PROFILE}
-                        element={
-                            <ProtectedRoute
-                                allowedRoles={[UserRole.MEMBER]}
-                                redirectTo={ROUTES.MEMBER_LOGIN}
-                            >
-                                <MemberProfilePage />
-                            </ProtectedRoute>
-                        }
-                    />
-                    <Route
-                        path={ROUTES.MEMBER_RENEWAL}
-                        element={
-                            <ProtectedRoute
-                                allowedRoles={[UserRole.MEMBER]}
-                                redirectTo={ROUTES.MEMBER_LOGIN}
-                            >
-                                <MemberRenewalPage />
-                            </ProtectedRoute>
-                        }
-                    />
-                    <Route
-                        path={ROUTES.MEMBER_PAYMENTS}
-                        element={
-                            <ProtectedRoute
-                                allowedRoles={[UserRole.MEMBER]}
-                                redirectTo={ROUTES.MEMBER_LOGIN}
-                            >
-                                <MemberPaymentsPage />
-                            </ProtectedRoute>
-                        }
-                    />
-                    <Route
-                        path={ROUTES.MEMBER_MEETINGS}
-                        element={
-                            <ProtectedRoute
-                                allowedRoles={[UserRole.MEMBER]}
-                                redirectTo={ROUTES.MEMBER_LOGIN}
-                            >
-                                <MemberMeetingsPage />
-                            </ProtectedRoute>
-                        }
-                    />
+          {/* Protected routes - Member Portal */}
+          <Route
+            path={ROUTES.MEMBER_PORTAL}
+            element={
+              <ProtectedRoute allowedRoles={[UserRole.MEMBER]} redirectTo={ROUTES.MEMBER_LOGIN}>
+                <MemberPortalPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path={ROUTES.MEMBER_PROFILE}
+            element={
+              <ProtectedRoute allowedRoles={[UserRole.MEMBER]} redirectTo={ROUTES.MEMBER_LOGIN}>
+                <MemberProfilePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path={ROUTES.MEMBER_RENEWAL}
+            element={
+              <ProtectedRoute allowedRoles={[UserRole.MEMBER]} redirectTo={ROUTES.MEMBER_LOGIN}>
+                <MemberRenewalPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path={ROUTES.MEMBER_PAYMENTS}
+            element={
+              <ProtectedRoute allowedRoles={[UserRole.MEMBER]} redirectTo={ROUTES.MEMBER_LOGIN}>
+                <MemberPaymentsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path={ROUTES.MEMBER_MEETINGS}
+            element={
+              <ProtectedRoute allowedRoles={[UserRole.MEMBER]} redirectTo={ROUTES.MEMBER_LOGIN}>
+                <MemberMeetingsPage />
+              </ProtectedRoute>
+            }
+          />
 
-                    {/* Protected routes - Staff/Admin */}
-                    <Route
-                        path={ROUTES.ADMIN}
-                        element={
-                            <ProtectedRoute
-                                allowedRoles={[UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.STAFF]}
-                                redirectTo={ROUTES.STAFF_LOGIN}
-                            >
-                                <AdminLayout>
-                                    <Outlet />
-                                </AdminLayout>
-                            </ProtectedRoute>
-                        }
-                    >
-                        <Route index element={<AdminDashboardPage />} />
-                        <Route path="members" element={<MemberManagementPage />} />
-                        <Route path="news" element={<NewsManagementPage />} />
-                        <Route path="tenders" element={<TenderManagementPage />} />
-                        <Route path="hr" element={<HRManagementPage />} />
-                        <Route path="donations" element={<DonationManagementPage />} />
-                        <Route path="safeguarding" element={<SafeguardingManagementPage />} />
-                        <Route path="contacts" element={<ContactManagementPage />} />
-                        <Route path="users" element={<UserManagementPage />} />
-                        <Route path="resources" element={<ResourceManagementPage />} />
-                        <Route path="meetings" element={<MeetingManagementPage />} />
-                    </Route>
-                </>
-            )}
+          {/* Protected routes - Staff/Admin */}
+          <Route
+            path={ROUTES.ADMIN}
+            element={
+              <ProtectedRoute
+                allowedRoles={[UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.STAFF]}
+                redirectTo={ROUTES.STAFF_LOGIN}
+              >
+                <AdminLayout>
+                  <Outlet />
+                </AdminLayout>
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<AdminDashboardPage />} />
+            <Route path="members" element={<MemberManagementPage />} />
+            <Route path="news" element={<NewsManagementPage />} />
+            <Route path="tenders" element={<TenderManagementPage />} />
+            <Route path="hr" element={<HRManagementPage />} />
+            <Route path="donations" element={<DonationManagementPage />} />
+            <Route path="safeguarding" element={<SafeguardingManagementPage />} />
+            <Route path="contacts" element={<ContactManagementPage />} />
+            <Route path="users" element={<UserManagementPage />} />
+            <Route path="resources" element={<ResourceManagementPage />} />
+            <Route path="meetings" element={<MeetingManagementPage />} />
+          </Route>
+        </>
+      )}
 
-            {/* 404 */}
-            <Route
-                path="*"
-                element={
-                    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-                        <div className="text-center">
-                            <h1 className="text-6xl font-bold text-gray-300 mb-4">404</h1>
-                            <p className="text-2xl text-gray-600">Page Not Found</p>
-                            <Link to={ROUTES.HOME} className="text-wiria-blue-dark hover:underline mt-4 block">
-                                Back to Home
-                            </Link>
-                        </div>
-                    </div>
-                }
-            />
-        </Routes>
-    );
+      {/* 404 */}
+      <Route
+        path="*"
+        element={
+          <div className="flex min-h-screen items-center justify-center bg-gray-50">
+            <div className="text-center">
+              <h1 className="mb-4 text-6xl font-bold text-gray-300">404</h1>
+              <p className="text-2xl text-gray-600">Page Not Found</p>
+              <Link to={ROUTES.HOME} className="mt-4 block text-wiria-blue-dark hover:underline">
+                Back to Home
+              </Link>
+            </div>
+          </div>
+        }
+      />
+    </Routes>
+  );
 }
 
 export default AppRouter;
