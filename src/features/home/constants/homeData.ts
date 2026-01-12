@@ -140,19 +140,19 @@ export const IMPACT_STATS: ImpactStat[] = [
 export const PARTNERS: Partner[] = [
     {
         name: 'Ministry of Health Kenya',
-        logo: 'https://via.placeholder.com/150x80?text=MOH+Kenya',
+        logo: '/images/ministry_of_health_kenya_i.png',
     },
     {
         name: 'County Government Homa Bay',
-        logo: 'https://via.placeholder.com/150x80?text=Homa+Bay+County',
+        logo: '/images/homabay_county_government.png',
     },
     {
-        name: 'USAID',
-        logo: 'https://via.placeholder.com/150x80?text=USAID',
+        name: 'Amref Health Africa',
+        logo: '/images/amref_health_africa_kenya.webp',
     },
     {
-        name: 'WHO',
-        logo: 'https://via.placeholder.com/150x80?text=WHO',
+        name: 'Kenya Red Cross',
+        logo: '/images/redcross_kenya.png',
     },
 ];
 

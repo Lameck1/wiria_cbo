@@ -5,7 +5,7 @@
 
 import { Layout } from '@/shared/components/layout/Layout';
 import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { PROGRAMS_DATA, CROSS_CUTTING_THEMES } from '@/features/programs/constants/programsData';
 import { ProgramDetail } from '@/features/programs/components/ProgramDetail';
@@ -231,44 +231,52 @@ function ProgramsPage() {
                             </p>
                             <div className="flex flex-col sm:flex-row gap-4 justify-center">
                                 {isAuthenticated && user?.role === UserRole.MEMBER ? (
-                                    <motion.a
-                                        href="/member-portal"
+                                    <motion.div
                                         whileHover={{ scale: 1.05, y: -4 }}
                                         whileTap={{ scale: 0.95 }}
-                                        transition={{ duration: 0.2 }}
-                                        className="bg-wiria-blue-dark text-white font-bold py-4 px-8 rounded-full shadow-lg hover:shadow-xl sm:w-64 text-center"
                                     >
-                                        Go to Dashboard
-                                    </motion.a>
+                                        <Link
+                                            to="/member-portal"
+                                            className="bg-wiria-blue-dark text-white font-bold py-4 px-8 rounded-full shadow-lg hover:shadow-xl sm:w-64 text-center block"
+                                        >
+                                            Go to Dashboard
+                                        </Link>
+                                    </motion.div>
                                 ) : (
-                                    <motion.a
-                                        href="/membership"
+                                    <motion.div
                                         whileHover={{ scale: 1.05, y: -4 }}
                                         whileTap={{ scale: 0.95 }}
-                                        transition={{ duration: 0.2 }}
-                                        className="bg-wiria-blue-dark text-white font-bold py-4 px-8 rounded-full shadow-lg hover:shadow-xl sm:w-64 text-center"
                                     >
-                                        Join as a Member
-                                    </motion.a>
+                                        <Link
+                                            to="/membership"
+                                            className="bg-wiria-blue-dark text-white font-bold py-4 px-8 rounded-full shadow-lg hover:shadow-xl sm:w-64 text-center block"
+                                        >
+                                            Join as a Member
+                                        </Link>
+                                    </motion.div>
                                 )}
-                                <motion.a
-                                    href="/opportunities"
+                                <motion.div
                                     whileHover={{ scale: 1.05, y: -4 }}
                                     whileTap={{ scale: 0.95 }}
-                                    transition={{ duration: 0.2 }}
-                                    className="bg-wiria-yellow text-white font-bold py-4 px-8 rounded-full shadow-lg hover:shadow-xl sm:w-64 text-center"
                                 >
-                                    Volunteer With Us
-                                </motion.a>
-                                <motion.a
-                                    href="/contact"
+                                    <Link
+                                        to="/opportunities"
+                                        className="bg-wiria-yellow text-white font-bold py-4 px-8 rounded-full shadow-lg hover:shadow-xl sm:w-64 text-center block"
+                                    >
+                                        Volunteer With Us
+                                    </Link>
+                                </motion.div>
+                                <motion.div
                                     whileHover={{ scale: 1.05, y: -4 }}
                                     whileTap={{ scale: 0.95 }}
-                                    transition={{ duration: 0.2 }}
-                                    className="bg-white text-wiria-blue-dark font-bold py-4 px-8 rounded-full shadow-lg hover:shadow-xl sm:w-64 text-center"
                                 >
-                                    Contact Us
-                                </motion.a>
+                                    <Link
+                                        to="/contact"
+                                        className="bg-white text-wiria-blue-dark font-bold py-4 px-8 rounded-full shadow-lg hover:shadow-xl sm:w-64 text-center block"
+                                    >
+                                        Contact Us
+                                    </Link>
+                                </motion.div>
                             </div>
                         </motion.div>
                     </div>
