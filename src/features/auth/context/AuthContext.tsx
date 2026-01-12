@@ -42,7 +42,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const userData = storageService.get<User | Member>(STORAGE_KEYS.USER_DATA);
 
     if (token && userData) {
-      apiClient.setAuthToken(token);
+      // Register token resolver with ApiClient
+      apiClient.setTokenResolver(() => storageService.get<string>(STORAGE_KEYS.AUTH_TOKEN));
       setUser(userData);
     } else {
       setUser(null);
@@ -66,8 +67,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       } catch (error) {
         console.error('Logout API call failed:', error);
       } finally {
-        // Clear local state regardless of API success
-        apiClient.setAuthToken(null);
+        // Clear local state
+        apiClient.setTokenResolver(() => null);
         storageService.clear();
         setUser(null);
 
@@ -93,7 +94,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     });
 
     // Clean up callback on unmount
-    return () => apiClient.setUnauthorizedCallback(() => {});
+    return () => apiClient.setUnauthorizedCallback(() => { });
   }, [checkAuth, logout]);
 
   const login = useCallback(

@@ -1,13 +1,13 @@
 /**
- * LoginForm Component
- * Reusable login form for members and staff
+ * LoginForm Component (Refactored)
+ * Uses the unified Form abstraction for boilerplate-free validation and state management.
  */
 
-import { useState, FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/shared/components/ui/Button';
-import { Input } from '@/shared/components/ui/Input';
+import { Form, FormField } from '@/shared/components/ui/form';
 import { useLogin } from '../hooks/useLogin';
+import { loginSchema, LoginData } from '../schemas/auth.schema';
 
 interface LoginFormProps {
   isMember?: boolean;
@@ -16,13 +16,10 @@ interface LoginFormProps {
 }
 
 export function LoginForm({ isMember = false, title, subtitle }: LoginFormProps) {
-  const [identifier, setIdentifier] = useState('');
-  const [password, setPassword] = useState('');
-  const { handleLogin, isLoading, error } = useLogin(isMember);
+  const { handleLogin, isLoading, error: apiError } = useLogin(isMember);
 
-  const onSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    await handleLogin({ identifier, password });
+  const onSubmit = async (data: LoginData) => {
+    await handleLogin(data);
   };
 
   return (
@@ -34,56 +31,57 @@ export function LoginForm({ isMember = false, title, subtitle }: LoginFormProps)
         {subtitle && <p className="text-gray-600">{subtitle}</p>}
       </div>
 
-      <form onSubmit={onSubmit} className="space-y-6 rounded-lg bg-white p-8 shadow-lg">
-        <Input
-          type="text"
-          id="identifier"
-          label={isMember ? 'Email or Phone' : 'Username or Email'}
-          value={identifier}
-          onChange={(e) => setIdentifier(e.target.value)}
-          required
-          placeholder={isMember ? 'your@email.com or 0712345678' : 'username'}
-          disabled={isLoading}
-        />
+      <Form
+        schema={loginSchema}
+        onSubmit={onSubmit}
+        className="rounded-lg bg-white p-8 shadow-lg"
+      >
+        {() => (
+          <>
+            <FormField
+              name="identifier"
+              label={isMember ? 'Email or Phone' : 'Username or Email'}
+              placeholder={isMember ? 'your@email.com or 0712345678' : 'username'}
+              disabled={isLoading}
+            />
 
-        <Input
-          type="password"
-          id="password"
-          label="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          placeholder="Enter your password"
-          disabled={isLoading}
-        />
+            <FormField
+              name="password"
+              label="Password"
+              type="password"
+              placeholder="Enter your password"
+              disabled={isLoading}
+            />
 
-        {error && (
-          <div className="rounded-lg border border-red-200 bg-red-50 p-3">
-            <p className="text-sm text-red-800">{error}</p>
-          </div>
-        )}
+            {apiError && (
+              <div className="rounded-lg border border-red-200 bg-red-50 p-3">
+                <p className="text-sm text-red-800">{apiError}</p>
+              </div>
+            )}
 
-        <Button type="submit" fullWidth isLoading={isLoading}>
-          {isLoading ? 'Logging in...' : 'Login'}
-        </Button>
+            <Button type="submit" fullWidth isLoading={isLoading}>
+              {isLoading ? 'Logging in...' : 'Login'}
+            </Button>
 
-        <div className="space-y-2 text-center text-sm">
-          <Link
-            to="/reset-password"
-            className="block text-wiria-blue-dark transition-colors hover:text-wiria-yellow"
-          >
-            Forgot password?
-          </Link>
-          {isMember && (
-            <p className="text-gray-600">
-              Not a member?{' '}
-              <Link to="/membership" className="text-wiria-yellow hover:underline">
-                Register here
+            <div className="space-y-2 text-center text-sm">
+              <Link
+                to="/reset-password"
+                className="block text-wiria-blue-dark transition-colors hover:text-wiria-yellow"
+              >
+                Forgot password?
               </Link>
-            </p>
-          )}
-        </div>
-      </form>
+              {isMember && (
+                <p className="text-gray-600">
+                  Not a member?{' '}
+                  <Link to="/membership" className="text-wiria-yellow hover:underline">
+                    Register here
+                  </Link>
+                </p>
+              )}
+            </div>
+          </>
+        )}
+      </Form>
     </div>
   );
 }
