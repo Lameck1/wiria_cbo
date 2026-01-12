@@ -11,26 +11,26 @@ import { UserRole } from '@/shared/types';
 import { ROUTES } from '@/shared/constants/routes';
 
 function MemberLoginPage() {
-    const { isAuthenticated, user } = useAuth();
-    const navigate = useNavigate();
+  const { isAuthenticated, user } = useAuth();
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        if (isAuthenticated && user?.role === UserRole.MEMBER) {
-            navigate(ROUTES.MEMBER_PORTAL, { replace: true });
-        }
-    }, [isAuthenticated, user, navigate]);
+  useEffect(() => {
+    if (isAuthenticated && user?.role === UserRole.MEMBER) {
+      navigate(ROUTES.MEMBER_PORTAL, { replace: true });
+    }
+  }, [isAuthenticated, user, navigate]);
 
-    return (
-        <Layout>
-            <div className="min-h-[70vh] flex items-center justify-center py-12 px-4">
-                <LoginForm
-                    isMember
-                    title="Member Portal Login"
-                    subtitle="Access your WIRIA CBO membership account"
-                />
-            </div>
-        </Layout>
-    );
+  return (
+    <Layout>
+      <div className="flex min-h-[70vh] items-center justify-center px-4 py-12">
+        <LoginForm
+          isMember
+          title="Member Portal Login"
+          subtitle="Access your WIRIA CBO membership account"
+        />
+      </div>
+    </Layout>
+  );
 }
 
 export default MemberLoginPage;

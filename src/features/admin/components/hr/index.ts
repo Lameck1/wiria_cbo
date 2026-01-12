@@ -7,12 +7,12 @@ export { CareersTab } from './CareersTab';
 export { OpportunitiesTab } from './OpportunitiesTab';
 export { ApplicationsList } from './ApplicationsList';
 export type {
-    CareersTabProps,
-    OpportunitiesTabProps,
-    ApplicationsListProps,
-    CareerModalProps,
-    OpportunityModalProps,
-    Career,
-    Opportunity,
-    Application,
+  CareersTabProps,
+  OpportunitiesTabProps,
+  ApplicationsListProps,
+  CareerModalProps,
+  OpportunityModalProps,
+  Career,
+  Opportunity,
+  Application,
 } from './types';
