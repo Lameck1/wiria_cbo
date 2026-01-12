@@ -8,44 +8,44 @@ import { useBackendStatus } from '@/shared/services/backendStatus';
 import { staticPartners } from '@/shared/data/static';
 
 export interface Partner {
-    id: string;
-    name: string;
-    logoUrl: string;
-    websiteUrl?: string;
-    type?: string;
-    description?: string;
+  id: string;
+  name: string;
+  logoUrl: string;
+  websiteUrl?: string;
+  type?: string;
+  description?: string;
 }
 
 interface PartnersResponse {
-    data: {
-        data: Partner[];
-    };
+  data: {
+    data: Partner[];
+  };
 }
 
 async function fetchPartners(): Promise<Partner[]> {
-    const response = await fetch('/api/partners');
+  const response = await fetch('/api/partners');
 
-    if (!response.ok) {
-        throw new Error('Failed to fetch partners');
-    }
+  if (!response.ok) {
+    throw new Error('Failed to fetch partners');
+  }
 
-    const data: PartnersResponse = await response.json();
-    return data.data?.data || data.data || [];
+  const data: PartnersResponse = await response.json();
+  return data.data?.data || data.data || [];
 }
 
 export function usePartners() {
-    const { isBackendConnected, isChecking } = useBackendStatus();
+  const { isBackendConnected, isChecking } = useBackendStatus();
 
-    return useQuery({
-        queryKey: ['partners', isBackendConnected],
-        queryFn: () => {
-            // Use static data when backend is offline
-            if (!isBackendConnected) {
-                return Promise.resolve(staticPartners);
-            }
-            return fetchPartners();
-        },
-        staleTime: 5 * 60 * 1000, // 5 minutes
-        enabled: !isChecking, // Wait until backend status is determined
-    });
+  return useQuery({
+    queryKey: ['partners', isBackendConnected],
+    queryFn: () => {
+      // Use static data when backend is offline
+      if (!isBackendConnected) {
+        return Promise.resolve(staticPartners);
+      }
+      return fetchPartners();
+    },
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    enabled: !isChecking, // Wait until backend status is determined
+  });
 }
