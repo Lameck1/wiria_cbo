@@ -8,83 +8,83 @@ import clsx, { ClassValue } from 'clsx';
  * Merge class names conditionally
  */
 export function cn(...inputs: ClassValue[]) {
-    return clsx(inputs);
+  return clsx(inputs);
 }
 
 /**
  * Format currency in KES
  */
 export function formatCurrency(amount: number): string {
-    return new Intl.NumberFormat('en-KE', {
-        style: 'currency',
-        currency: 'KES',
-        minimumFractionDigits: 0,
-    }).format(amount);
+  return new Intl.NumberFormat('en-KE', {
+    style: 'currency',
+    currency: 'KES',
+    minimumFractionDigits: 0,
+  }).format(amount);
 }
 
 /**
  * Format date
  */
 export function formatDate(date: string | Date): string {
-    return new Intl.DateTimeFormat('en-KE', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-    }).format(new Date(date));
+  return new Intl.DateTimeFormat('en-KE', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  }).format(new Date(date));
 }
 
 /**
  * Format phone number to standard format
  */
 export function formatPhoneNumber(phone: string): string {
-    // Remove all non-digits
-    const cleaned = phone.replace(/\D/g, '');
+  // Remove all non-digits
+  const cleaned = phone.replace(/\D/g, '');
 
-    // Convert to international format if Kenyan number
-    if (cleaned.startsWith('0') && cleaned.length === 10) {
-        return `+254${cleaned.substring(1)}`;
-    }
-    if (cleaned.startsWith('254') && cleaned.length === 12) {
-        return `+${cleaned}`;
-    }
-    if (cleaned.startsWith('7') && cleaned.length === 9) {
-        return `+254${cleaned}`;
-    }
+  // Convert to international format if Kenyan number
+  if (cleaned.startsWith('0') && cleaned.length === 10) {
+    return `+254${cleaned.substring(1)}`;
+  }
+  if (cleaned.startsWith('254') && cleaned.length === 12) {
+    return `+${cleaned}`;
+  }
+  if (cleaned.startsWith('7') && cleaned.length === 9) {
+    return `+254${cleaned}`;
+  }
 
-    return phone;
+  return phone;
 }
 
 /**
  * Truncate text with ellipsis
  */
 export function truncate(text: string, maxLength: number): string {
-    if (text.length <= maxLength) return text;
-    return `${text.substring(0, maxLength)}...`;
+  if (text.length <= maxLength) return text;
+  return `${text.substring(0, maxLength)}...`;
 }
 
 /**
  * Debounce function
  */
 export function debounce<T extends (...args: unknown[]) => unknown>(
-    func: T,
-    wait: number
+  func: T,
+  wait: number
 ): (...args: Parameters<T>) => void {
-    let timeout: NodeJS.Timeout | null = null;
+  let timeout: NodeJS.Timeout | null = null;
 
-    return function executedFunction(...args: Parameters<T>) {
-        const later = () => {
-            timeout = null;
-            func(...args);
-        };
-
-        if (timeout) clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
+  return function executedFunction(...args: Parameters<T>) {
+    const later = () => {
+      timeout = null;
+      func(...args);
     };
+
+    if (timeout) clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
 }
 
 /**
  * Sleep/delay utility
  */
 export function sleep(ms: number): Promise<void> {
-    return new Promise((resolve) => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
