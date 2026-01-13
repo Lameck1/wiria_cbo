@@ -35,6 +35,7 @@ export function MeetingFormModal({ meeting, onClose, onSuccess }: MeetingFormMod
       isVirtual,
       virtualLink: isVirtual ? (formData.get('virtualLink') as string) : undefined,
       agenda: formData.get('agenda') as string,
+      capacity: formData.get('capacity') ? parseInt(formData.get('capacity') as string) : undefined,
     };
 
     try {
@@ -134,18 +135,33 @@ export function MeetingFormModal({ meeting, onClose, onSuccess }: MeetingFormMod
             />
           </div>
         </div>
-        <div>
-          <label htmlFor="meetingLocation" className="mb-2 block text-sm font-bold">
-            Location *
-          </label>
-          <input
-            id="meetingLocation"
-            name="location"
-            defaultValue={meeting?.location}
-            className="w-full rounded-lg border p-3"
-            placeholder="e.g. WIRIA CBO Office, Nairobi"
-            required
-          />
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label htmlFor="meetingLocation" className="mb-2 block text-sm font-bold">
+              Location *
+            </label>
+            <input
+              id="meetingLocation"
+              name="location"
+              defaultValue={meeting?.location}
+              className="w-full rounded-lg border p-3"
+              placeholder="e.g. WIRIA CBO Office, Nairobi"
+              required
+            />
+          </div>
+          <div>
+            <label htmlFor="meetingCapacity" className="mb-2 block text-sm font-bold">
+              Capacity (Optional)
+            </label>
+            <input
+              id="meetingCapacity"
+              type="number"
+              name="capacity"
+              defaultValue={meeting?.capacity || ''}
+              className="w-full rounded-lg border p-3"
+              placeholder="e.g. 50"
+            />
+          </div>
         </div>
         <div className="flex items-center gap-2">
           <input

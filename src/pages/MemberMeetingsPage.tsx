@@ -68,28 +68,26 @@ function MemberMeetingsPage() {
         <div className="flex-1">
           <div className="mb-2 flex items-center gap-3">
             <span
-              className={`rounded px-2 py-1 text-xs font-bold uppercase ${
-                meeting.type === 'AGM'
+              className={`rounded px-2 py-1 text-xs font-bold uppercase ${meeting.type === 'AGM'
                   ? 'bg-purple-100 text-purple-800'
                   : meeting.type === 'SPECIAL'
                     ? 'bg-red-100 text-red-800'
                     : meeting.type === 'TRAINING'
                       ? 'bg-green-100 text-green-800'
                       : 'bg-blue-100 text-blue-800'
-              }`}
+                }`}
             >
               {meeting.type}
             </span>
             <span
-              className={`rounded px-2 py-1 text-xs font-semibold ${
-                meeting.status === 'UPCOMING'
+              className={`rounded px-2 py-1 text-xs font-semibold ${meeting.status === 'UPCOMING'
                   ? 'bg-blue-50 text-blue-700'
                   : meeting.status === 'ONGOING'
                     ? 'bg-green-50 text-green-700'
                     : meeting.status === 'COMPLETED'
                       ? 'bg-gray-50 text-gray-600'
                       : 'bg-red-50 text-red-700'
-              }`}
+                }`}
             >
               {meeting.status}
             </span>
@@ -114,7 +112,10 @@ function MemberMeetingsPage() {
             {meeting.attendeesCount !== undefined && (
               <div className="flex items-center gap-1">
                 <span>👥</span>
-                <span>{meeting.attendeesCount} attending</span>
+                <span>
+                  {meeting.attendeesCount}
+                  {meeting.capacity ? ` / ${meeting.capacity}` : ''} attending
+                </span>
               </div>
             )}
           </div>
@@ -132,12 +133,13 @@ function MemberMeetingsPage() {
               </Button>
             ) : (
               <Button
-                variant="primary"
+                variant={meeting.capacity && (meeting.attendeesCount || 0) >= meeting.capacity ? "outline" : "primary"}
                 size="sm"
                 onClick={() => handleRsvp(meeting.id)}
                 isLoading={loadingMeetingId === meeting.id}
+                disabled={meeting.capacity ? (meeting.attendeesCount || 0) >= meeting.capacity : false}
               >
-                RSVP Now
+                {meeting.capacity && (meeting.attendeesCount || 0) >= meeting.capacity ? "Fully Booked" : "RSVP Now"}
               </Button>
             )}
           </div>
@@ -169,20 +171,18 @@ function MemberMeetingsPage() {
           <div className="flex border-b border-gray-200">
             <button
               onClick={() => setActiveTab('my-meetings')}
-              className={`border-b-2 px-6 pb-4 pt-4 text-sm font-bold transition-colors ${
-                activeTab === 'my-meetings'
+              className={`border-b-2 px-6 pb-4 pt-4 text-sm font-bold transition-colors ${activeTab === 'my-meetings'
                   ? 'border-wiria-blue-dark text-wiria-blue-dark'
                   : 'border-transparent text-gray-500 hover:text-gray-700'
-              }`}
+                }`}
             >
               My Meetings
               {meetings.length > 0 && (
                 <span
-                  className={`ml-2 rounded-full px-2 py-0.5 text-xs ${
-                    activeTab === 'my-meetings'
+                  className={`ml-2 rounded-full px-2 py-0.5 text-xs ${activeTab === 'my-meetings'
                       ? 'bg-wiria-blue-dark text-white'
                       : 'bg-gray-200 text-gray-700'
-                  }`}
+                    }`}
                 >
                   {meetings.length}
                 </span>
@@ -190,20 +190,18 @@ function MemberMeetingsPage() {
             </button>
             <button
               onClick={() => setActiveTab('available-meetings')}
-              className={`border-b-2 px-6 pb-4 pt-4 text-sm font-bold transition-colors ${
-                activeTab === 'available-meetings'
+              className={`border-b-2 px-6 pb-4 pt-4 text-sm font-bold transition-colors ${activeTab === 'available-meetings'
                   ? 'border-wiria-blue-dark text-wiria-blue-dark'
                   : 'border-transparent text-gray-500 hover:text-gray-700'
-              }`}
+                }`}
             >
               Available Meetings
               {availableMeetings.length > 0 && (
                 <span
-                  className={`ml-2 rounded-full px-2 py-0.5 text-xs ${
-                    activeTab === 'available-meetings'
+                  className={`ml-2 rounded-full px-2 py-0.5 text-xs ${activeTab === 'available-meetings'
                       ? 'bg-wiria-blue-dark text-white'
                       : 'bg-gray-200 text-gray-700'
-                  }`}
+                    }`}
                 >
                   {availableMeetings.length}
                 </span>

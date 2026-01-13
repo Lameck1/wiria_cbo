@@ -21,6 +21,7 @@ export interface Meeting {
   minutes?: string;
   status: 'SCHEDULED' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED';
   attendanceCount?: number;
+  capacity?: number | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -48,6 +49,7 @@ export interface CreateMeetingData {
   isVirtual: boolean;
   virtualLink?: string;
   agenda?: string;
+  capacity?: number;
 }
 
 export const getMeetings = async (params?: {

@@ -33,6 +33,7 @@ export function LoginForm({ isMember = false, title, subtitle }: LoginFormProps)
 
       <Form
         schema={loginSchema}
+        defaultValues={{ identifier: '', password: '' }}
         onSubmit={onSubmit}
         className="rounded-lg bg-white p-8 shadow-lg"
       >

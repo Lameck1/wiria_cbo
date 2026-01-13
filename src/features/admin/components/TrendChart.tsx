@@ -73,19 +73,19 @@ interface DualTrendChartProps {
   memberData: { month: string; count: number }[];
 }
 
-export function DashboardTrendCharts({ donationData, memberData }: DualTrendChartProps) {
+export function DashboardTrendCharts({ donationData = [], memberData = [] }: DualTrendChartProps) {
   const formatCurrency = (v: number) => (v >= 1000 ? `${(v / 1000).toFixed(0)}K` : v.toString());
 
   return (
     <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-2">
       <TrendChart
-        data={donationData.map((d) => ({ month: d.month, value: d.amount }))}
+        data={(donationData || []).map((d) => ({ month: d.month, value: d.amount }))}
         title="📈 Donations Trend (Last 6 Months)"
         color="bg-green-500"
         formatValue={formatCurrency}
       />
       <TrendChart
-        data={memberData.map((d) => ({ month: d.month, value: d.count }))}
+        data={(memberData || []).map((d) => ({ month: d.month, value: d.count }))}
         title="👥 New Members (Last 6 Months)"
         color="bg-blue-500"
       />

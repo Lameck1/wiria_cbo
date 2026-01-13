@@ -1,5 +1,6 @@
 import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import { getDashboardStats, DashboardStats } from '../api/dashboard.api';
+import { extractData } from '@/shared/utils/apiUtils';
 import { apiClient } from '@/shared/services/api/client';
 import { UserRole } from '@/shared/types';
 
@@ -63,7 +64,8 @@ export function useSuspenseDashboardTrends() {
     return useSuspenseQuery<TrendData>({
         queryKey: DASHBOARD_KEYS.trends(),
         queryFn: async () => {
-            return apiClient.get<TrendsResponse>('/admin/trends');
+            const response = await apiClient.get<TrendsResponse>('/admin/trends');
+            return extractData<TrendData>(response) || { donations: [], members: [] };
         },
         staleTime: 1000 * 60 * 10,
     });

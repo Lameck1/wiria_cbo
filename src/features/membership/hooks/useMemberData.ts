@@ -63,6 +63,7 @@ export interface Meeting {
   status: 'UPCOMING' | 'ONGOING' | 'COMPLETED' | 'CANCELLED';
   isRsvpd?: boolean;
   attendeesCount?: number;
+  capacity?: number | null;
 }
 
 export interface Document {

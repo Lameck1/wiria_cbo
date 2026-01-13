@@ -37,7 +37,7 @@ export class ErrorBoundary extends Component<Props, State> {
       }
 
       return (
-        <div className="rounded-lg border border-red-200 bg-red-50 p-6">
+        <div className="rounded-lg border border-red-200 bg-red-50 p-6 shadow-sm text-left">
           <div className="flex items-start">
             <div className="flex-shrink-0">
               <svg
@@ -57,20 +57,21 @@ export class ErrorBoundary extends Component<Props, State> {
             <div className="ml-3 flex-1">
               <h3 className="text-sm font-bold text-red-800">Something went wrong</h3>
               <div className="mt-2 text-sm text-red-700">
-                <p>We encountered an error loading this section. Please try again.</p>
-                {this.state.error && process.env['NODE_ENV'] === 'development' && (
-                  <details className="mt-2">
-                    <summary className="cursor-pointer font-semibold">Error details</summary>
+                <p>We encountered an error while rendering this component. Please try again or contact support if the issue persists.</p>
+                {this.state.error && import.meta.env.DEV && (
+                  <details className="mt-2 text-left">
+                    <summary className="cursor-pointer font-semibold underline">Error details (Development Mode)</summary>
                     <pre className="mt-2 overflow-auto rounded bg-red-100 p-2 text-xs">
-                      {this.state.error.toString()}
+                      {this.state.error.stack || this.state.error.toString()}
                     </pre>
                   </details>
                 )}
               </div>
               <div className="mt-4">
                 <button
+                  type="button"
                   onClick={this.handleReset}
-                  className="rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-red-700"
+                  className="rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
                 >
                   Try Again
                 </button>
