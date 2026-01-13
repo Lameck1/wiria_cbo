@@ -8,7 +8,7 @@ import { useState, useCallback } from 'react';
 import { useCareers, Job } from '../hooks/useCareers';
 import { JobCard } from './JobCard';
 import { JobModal } from './JobModal';
-import { JobApplicationModal } from './JobApplicationModal';
+import { ApplicationModal } from '@/features/applications/components/ApplicationModal';
 import { NoOpeningsView } from './NoOpeningsView';
 import { SectionHeader } from '@/shared/components/sections/SectionHeader';
 
@@ -98,12 +98,14 @@ export function CurrentJobsSection() {
         onApply={handleApplyNow}
       />
 
-      {/* Job Application Modal */}
-      <JobApplicationModal
-        job={selectedJob}
+      {/* Unified Application Modal */}
+      <ApplicationModal
         isOpen={modalView === 'apply'}
         onClose={handleCloseModal}
         onBack={handleBackToDetails}
+        title={selectedJob?.title || ''}
+        itemId={selectedJob?.id || ''}
+        type="CAREER"
       />
     </>
   );

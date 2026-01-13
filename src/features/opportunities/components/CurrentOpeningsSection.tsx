@@ -9,7 +9,7 @@ import { motion } from 'framer-motion';
 import { useOpportunities, Opportunity } from '../hooks/useOpportunities';
 import { OpportunityCard } from './OpportunityCard';
 import { OpportunityModal } from './OpportunityModal';
-import { ApplicationFormModal } from './ApplicationFormModal';
+import { ApplicationModal } from '@/features/applications/components/ApplicationModal';
 import { OpportunityFilters, OpportunityTypeFilter } from './OpportunityFilters';
 import { EmptyStateView } from './EmptyStateView';
 
@@ -132,12 +132,14 @@ export function CurrentOpeningsSection({ initialTypeFilter = 'ALL' }: CurrentOpe
         onApply={handleApplyNow}
       />
 
-      {/* Application Form Modal */}
-      <ApplicationFormModal
-        opportunity={selectedOpportunity}
+      {/* Unified Application Modal */}
+      <ApplicationModal
         isOpen={modalView === 'apply'}
         onClose={handleCloseModal}
         onBack={handleBackToDetails}
+        title={selectedOpportunity?.title || ''}
+        itemId={selectedOpportunity?.id || ''}
+        type="OPPORTUNITY"
       />
     </>
   );
