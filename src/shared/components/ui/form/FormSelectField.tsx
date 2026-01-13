@@ -1,52 +1,46 @@
 import { useFormContext, Controller } from 'react-hook-form';
-import { Input } from '../Input';
-import { cn } from '@/shared/utils/helpers';
+import { Select, SelectOption } from '../Select';
 
-interface FormFieldProps {
+interface FormSelectFieldProps {
     name: string;
     label: string;
-    type?: string;
-    placeholder?: string;
+    options: readonly SelectOption[];
     className?: string;
-    description?: string;
     disabled?: boolean;
     required?: boolean;
+    description?: string;
 }
 
-export function FormField({
+export function FormSelectField({
     name,
     label,
-    type = 'text',
-    placeholder,
+    options,
     className = '',
-    description,
     disabled = false,
     required = false,
-}: FormFieldProps) {
+    description,
+}: FormSelectFieldProps) {
     const {
         control,
-        formState: { errors, touchedFields },
+        formState: { errors },
     } = useFormContext();
 
     const error = errors[name]?.message as string | undefined;
-    const isTouched = !!touchedFields[name];
-    const hasError = !!(error && isTouched);
 
     return (
-        <div className={cn('space-y-1.5', className)}>
+        <div className={className}>
             <Controller
                 name={name}
                 control={control}
                 render={({ field }) => (
-                    <Input
+                    <Select
                         {...field}
                         label={label}
-                        type={type}
-                        placeholder={placeholder}
+                        options={options}
                         disabled={disabled}
                         required={required}
-                        error={hasError ? error : undefined}
-                        helperText={!hasError ? description : undefined}
+                        error={error}
+                        helperText={description}
                     />
                 )}
             />

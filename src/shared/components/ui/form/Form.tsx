@@ -9,6 +9,7 @@ interface FormProps<T extends FieldValues> {
     children: (methods: UseFormReturn<T>) => ReactNode;
     onSubmit: (data: T) => void | Promise<void>;
     className?: string;
+    id?: string;
 }
 
 export function Form<T extends FieldValues>({
@@ -17,6 +18,7 @@ export function Form<T extends FieldValues>({
     children,
     onSubmit,
     className = '',
+    id,
 }: FormProps<T>) {
     const methods = useForm<T>({
         resolver: zodResolver(schema),
@@ -27,6 +29,7 @@ export function Form<T extends FieldValues>({
     return (
         <FormProvider {...methods}>
             <form
+                id={id}
                 onSubmit={methods.handleSubmit(onSubmit)}
                 className={`space-y-6 ${className}`}
                 noValidate

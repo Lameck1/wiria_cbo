@@ -3,7 +3,7 @@
  * Accessible modal dialog with backdrop
  */
 
-import { ReactNode, useEffect } from 'react';
+import { ReactNode, useEffect, useId } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/shared/utils/helpers';
 
@@ -28,6 +28,7 @@ export function Modal({
   noPadding = false,
   className = '',
 }: ModalProps) {
+  const titleId = useId();
   // Close on Escape key
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -76,6 +77,9 @@ export function Modal({
 
           {/* Modal */}
           <motion.div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby={title ? titleId : undefined}
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -89,7 +93,7 @@ export function Modal({
             {/* Header */}
             {title && (
               <div className="flex flex-shrink-0 items-center justify-between border-b border-gray-200 p-6">
-                <h2 className="text-2xl font-bold text-wiria-blue-dark">{title}</h2>
+                <h2 id={titleId} className="text-2xl font-bold text-wiria-blue-dark">{title}</h2>
                 <button
                   onClick={onClose}
                   className="text-gray-400 transition-colors hover:text-gray-600"

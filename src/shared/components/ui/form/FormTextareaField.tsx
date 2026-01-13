@@ -1,52 +1,49 @@
 import { useFormContext, Controller } from 'react-hook-form';
-import { Input } from '../Input';
-import { cn } from '@/shared/utils/helpers';
+import { Textarea } from '../Textarea';
 
-interface FormFieldProps {
+interface FormTextareaFieldProps {
     name: string;
     label: string;
-    type?: string;
     placeholder?: string;
     className?: string;
-    description?: string;
     disabled?: boolean;
     required?: boolean;
+    description?: string;
+    rows?: number;
 }
 
-export function FormField({
+export function FormTextareaField({
     name,
     label,
-    type = 'text',
     placeholder,
     className = '',
-    description,
     disabled = false,
     required = false,
-}: FormFieldProps) {
+    description,
+    rows = 4,
+}: FormTextareaFieldProps) {
     const {
         control,
-        formState: { errors, touchedFields },
+        formState: { errors },
     } = useFormContext();
 
     const error = errors[name]?.message as string | undefined;
-    const isTouched = !!touchedFields[name];
-    const hasError = !!(error && isTouched);
 
     return (
-        <div className={cn('space-y-1.5', className)}>
+        <div className={className}>
             <Controller
                 name={name}
                 control={control}
                 render={({ field }) => (
-                    <Input
+                    <Textarea
                         {...field}
                         label={label}
-                        type={type}
                         placeholder={placeholder}
                         disabled={disabled}
                         required={required}
-                        error={hasError ? error : undefined}
-                        helperText={!hasError ? description : undefined}
+                        error={error}
+                        helperText={description}
+                        rows={rows}
                     />
                 )}
             />

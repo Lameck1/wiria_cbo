@@ -12,6 +12,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   isLoading?: boolean;
   children: ReactNode;
   fullWidth?: boolean;
+  ref?: React.Ref<HTMLButtonElement>;
 }
 
 export function Button({
@@ -22,6 +23,7 @@ export function Button({
   fullWidth = false,
   className,
   disabled,
+  ref,
   ...props
 }: ButtonProps) {
   const baseStyles =
@@ -45,6 +47,7 @@ export function Button({
 
   return (
     <button
+      ref={ref}
       className={cn(
         baseStyles,
         variantStyles[variant],

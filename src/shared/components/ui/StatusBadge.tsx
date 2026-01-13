@@ -21,12 +21,14 @@ const statusTypeMap: Record<string, BadgeType> = {
   RESPONDED: 'success',
   PUBLISHED: 'success',
   OPEN: 'success',
+  APPROVED: 'success',
 
   // Warning
   PENDING: 'warning',
   UNDER_REVIEW: 'warning',
   INVESTIGATING: 'warning',
   DRAFT: 'warning',
+  SUSPENDED: 'warning',
 
   // Danger
   REJECTED: 'danger',
@@ -34,11 +36,15 @@ const statusTypeMap: Record<string, BadgeType> = {
   CRITICAL: 'danger',
   CANCELLED: 'danger',
   CLOSED: 'danger',
+  EXPIRED: 'danger',
 
   // Info
   SHORTLISTED: 'info',
   IN_PROGRESS: 'info',
   AWARDED: 'info',
+  INTERVIEWED: 'info',
+  STAFF: 'info',
+  ADMIN: 'info',
 };
 
 export function getStatusType(status: string): BadgeType {
