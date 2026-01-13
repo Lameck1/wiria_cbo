@@ -1,0 +1,2 @@
+import{j as o}from"./query-vendor-CM55eWOT.js";import{c as s}from"./index-Ck6qqv4n.js";function t({children:r,className:a,hover:e=!1}){return o.jsx("div",{className:s("overflow-hidden rounded-lg bg-white shadow-md",e&&"transition-transform duration-300 hover:scale-105 hover:shadow-xl",a),children:r})}function i({children:r,className:a}){return o.jsx("div",{className:s("border-b border-gray-100 p-6",a),children:r})}function m({children:r,className:a}){return o.jsx("div",{className:s("p-6",a),children:r})}export{t as C,m as a,i as b};
+//# sourceMappingURL=Card-C-jJKiAv.js.map
