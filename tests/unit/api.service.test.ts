@@ -17,15 +17,45 @@ describe('apiClient', () => {
   });
 
   describe('setAuthToken', () => {
-    it('stores token in localStorage', () => {
+    it('uses token in Authorization header after setAuthToken', async () => {
+      const fetchMock = vi.mocked(fetch);
+      fetchMock.mockResolvedValueOnce({
+        ok: true,
+        status: 200,
+        text: async () => JSON.stringify({ ok: true }),
+      } as any);
+
       apiClient.setAuthToken('new-token');
-      expect(localStorage.getItem('wiria_auth_token')).toBe('new-token');
+      await apiClient.get('/test');
+
+      expect(fetchMock).toHaveBeenCalledWith(
+        expect.any(String),
+        expect.objectContaining({
+          headers: expect.objectContaining({
+            Authorization: 'Bearer new-token',
+          }),
+        })
+      );
     });
 
-    it('removes token when null is passed', () => {
-      localStorage.setItem('wiria_auth_token', 'existing-token');
+    it('removes Authorization header when null is passed', async () => {
+      const fetchMock = vi.mocked(fetch);
+      fetchMock.mockResolvedValue({
+        ok: true,
+        status: 200,
+        text: async () => JSON.stringify({ ok: true }),
+      } as any);
+
+      // Set token then clear it
+      apiClient.setAuthToken('existing-token');
       apiClient.setAuthToken(null);
-      expect(localStorage.getItem('wiria_auth_token')).toBeNull();
+      await apiClient.get('/test');
+
+      // Should not have Authorization header
+      const lastCall = fetchMock.mock.calls[fetchMock.mock.calls.length - 1];
+      expect(lastCall).toBeDefined();
+      const headers = (lastCall![1] as RequestInit).headers as Record<string, string>;
+      expect(headers['Authorization']).toBeUndefined();
     });
   });
 

@@ -96,7 +96,7 @@ describe('UserManagementPage (staff & admin management)', () => {
 
     render(<UserManagementPage />, { wrapper: TestWrapper });
 
-    await user.click(await screen.findByRole('button', { name: /invite new user/i }));
+    await user.click(await screen.findByRole('button', { name: /invite user/i }));
     expect(screen.getByRole('heading', { name: /invite new user/i })).toBeInTheDocument();
 
     const emailInput = document.querySelector('input[name="email"]');
