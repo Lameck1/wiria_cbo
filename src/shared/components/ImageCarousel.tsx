@@ -122,7 +122,7 @@ export function ImageCarousel({
   if (images.length === 1) {
     return (
       <div className={`w-full ${aspectRatio} overflow-hidden bg-gray-50`}>
-        {renderImage(images[0]!, 0, 'w-full h-full object-cover')}
+        {renderImage(images[0] || '', 0, 'w-full h-full object-cover')}
       </div>
     );
   }
@@ -135,7 +135,7 @@ export function ImageCarousel({
     >
       <AnimatePresence initial={false} mode="wait">
         {renderImage(
-          images[currentIndex]!,
+          images[currentIndex] || '',
           currentIndex,
           'absolute inset-0 w-full h-full object-cover',
           true
@@ -184,9 +184,8 @@ export function ImageCarousel({
                   e.stopPropagation();
                   setCurrentIndex(index);
                 }}
-                className={`h-1.5 w-1.5 rounded-full transition-all duration-300 ${
-                  index === currentIndex ? 'w-5 bg-white' : 'bg-white/40'
-                }`}
+                className={`h-1.5 w-1.5 rounded-full transition-all duration-300 ${index === currentIndex ? 'w-5 bg-white' : 'bg-white/40'
+                  }`}
                 aria-label={`Go to image ${index + 1}`}
               />
             ))}

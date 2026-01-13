@@ -1,21 +1,25 @@
-/**
- * Member Profile Page
- * View and edit member profile information
- */
-
 import { useEffect, useState } from 'react';
 import { PortalLayout } from '@/features/membership/components/PortalLayout';
-import { useMemberData, MemberProfile } from '@/features/membership/hooks/useMemberData';
+import { useMemberData } from '@/features/membership/hooks/useMemberData';
 import { Button } from '@/shared/components/ui/Button';
-import { Input } from '@/shared/components/ui/Input';
+import { FormField } from '@/shared/components/ui/form';
 import { Spinner } from '@/shared/components/ui/Spinner';
 import { notificationService } from '@/shared/services/notification/notificationService';
+import { Card, CardBody } from '@/shared/components/ui/Card';
+import { useForm, FormProvider, Controller } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { profileSchema, ProfileFormSchema } from '@/features/membership/validation';
 
 function MemberProfilePage() {
   const { profile, isLoading, fetchProfile, updateProfile } = useMemberData();
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-  const [formData, setFormData] = useState<Partial<MemberProfile>>({});
+
+  const methods = useForm<ProfileFormSchema>({
+    resolver: zodResolver(profileSchema),
+  });
+
+  const { reset, handleSubmit } = methods;
 
   useEffect(() => {
     fetchProfile();
@@ -23,7 +27,7 @@ function MemberProfilePage() {
 
   useEffect(() => {
     if (profile) {
-      setFormData({
+      reset({
         firstName: profile.firstName,
         lastName: profile.lastName,
         phone: profile.phone,
@@ -36,18 +40,12 @@ function MemberProfilePage() {
         skills: profile.skills,
       });
     }
-  }, [profile]);
+  }, [profile, reset]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const onSubmit = async (data: ProfileFormSchema) => {
     setIsSaving(true);
     try {
-      await updateProfile(formData);
+      await updateProfile(data);
       notificationService.success('Profile updated successfully');
       setIsEditing(false);
     } catch {
@@ -68,8 +66,8 @@ function MemberProfilePage() {
   }
 
   const ProfileField = ({ label, value }: { label: string; value?: string | string[] }) => (
-    <div className="rounded-xl bg-gray-50 p-4">
-      <p className="mb-1 text-xs font-bold uppercase text-gray-500">{label}</p>
+    <div className="rounded-xl bg-gray-50/50 p-4 border border-gray-100/50">
+      <p className="mb-1 text-xs font-bold uppercase tracking-wider text-gray-500">{label}</p>
       <p className="text-lg font-semibold text-gray-800">
         {Array.isArray(value) ? value.join(', ') : value || '--'}
       </p>
@@ -79,143 +77,150 @@ function MemberProfilePage() {
   return (
     <PortalLayout title="Member Profile" subtitle="View and manage your profile information">
       <div className="max-w-4xl">
-        <div className="relative overflow-hidden rounded-2xl bg-white p-8 shadow-xl">
+        <Card className="border-none shadow-xl overflow-hidden">
           {/* Decorative border top */}
-          <div className="absolute left-0 top-0 h-2 w-full bg-gradient-to-r from-wiria-blue-dark via-wiria-yellow to-wiria-green-light" />
+          <div className="h-2 w-full bg-gradient-to-r from-wiria-blue-dark via-wiria-yellow to-wiria-green-light" />
 
-          {/* View Mode */}
-          {!isEditing && (
-            <div id="profile-view">
-              <div className="mb-6 flex items-center justify-between">
-                <h2 className="text-2xl font-bold text-wiria-blue-dark">Profile Information</h2>
-                <Button onClick={() => setIsEditing(true)}>Edit Profile</Button>
-              </div>
+          <CardBody className="p-8">
+            <FormProvider {...methods}>
+              {/* View Mode */}
+              {!isEditing && (
+                <div id="profile-view">
+                  <div className="mb-8 flex items-center justify-between">
+                    <div>
+                      <h2 className="text-2xl font-bold text-wiria-blue-dark">Profile Information</h2>
+                      <p className="text-sm text-gray-500">Your personal and contact details</p>
+                    </div>
+                    <Button onClick={() => setIsEditing(true)} variant="outline">
+                      Edit Profile
+                    </Button>
+                  </div>
 
-              <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                <ProfileField
-                  label="Full Name"
-                  value={`${profile?.firstName} ${profile?.lastName}`}
-                />
-                <ProfileField label="Email Address" value={profile?.email} />
-                <ProfileField label="Phone Number" value={profile?.phone} />
-                <ProfileField label="National ID" value={profile?.nationalId} />
-                <ProfileField label="Occupation" value={profile?.occupation} />
-                <ProfileField label="Address" value={profile?.address} />
-                <ProfileField label="County" value={profile?.county} />
-                <ProfileField label="Sub-County" value={profile?.subcounty} />
-                <ProfileField label="Ward" value={profile?.ward} />
-                <div className="md:col-span-2">
-                  <ProfileField label="Interests" value={profile?.interests} />
+                  <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                    <ProfileField
+                      label="Full Name"
+                      value={`${profile?.firstName} ${profile?.lastName}`}
+                    />
+                    <ProfileField label="Email Address" value={profile?.email} />
+                    <ProfileField label="Phone Number" value={profile?.phone} />
+                    <ProfileField label="National ID" value={profile?.nationalId} />
+                    <ProfileField label="Occupation" value={profile?.occupation} />
+                    <ProfileField label="Address" value={profile?.address} />
+                    <ProfileField label="County" value={profile?.county} />
+                    <ProfileField label="Sub-County" value={profile?.subcounty} />
+                    <ProfileField label="Ward" value={profile?.ward} />
+                    <div className="md:col-span-2">
+                      <ProfileField label="Interests" value={profile?.interests} />
+                    </div>
+                    <div className="md:col-span-2">
+                      <ProfileField label="Skills" value={profile?.skills} />
+                    </div>
+                  </div>
                 </div>
-                <div className="md:col-span-2">
-                  <ProfileField label="Skills" value={profile?.skills} />
-                </div>
-              </div>
-            </div>
-          )}
+              )}
 
-          {/* Edit Mode */}
-          {isEditing && (
-            <form onSubmit={handleSubmit} className="mt-4">
-              <h2 className="mb-6 text-center text-2xl font-bold text-wiria-blue-dark">
-                Edit Member Profile
-              </h2>
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                <Input
-                  label="First Name"
-                  name="firstName"
-                  value={formData.firstName || ''}
-                  onChange={handleChange}
-                  required
-                />
-                <Input
-                  label="Last Name"
-                  name="lastName"
-                  value={formData.lastName || ''}
-                  onChange={handleChange}
-                  required
-                />
-                <Input
-                  label="Phone"
-                  name="phone"
-                  value={formData.phone || ''}
-                  onChange={handleChange}
-                />
-                <Input
-                  label="Occupation"
-                  name="occupation"
-                  value={formData.occupation || ''}
-                  onChange={handleChange}
-                />
-                <div className="md:col-span-2">
-                  <Input
-                    label="Address"
-                    name="address"
-                    value={formData.address || ''}
-                    onChange={handleChange}
-                  />
-                </div>
-                <Input
-                  label="County"
-                  name="county"
-                  value={formData.county || ''}
-                  onChange={handleChange}
-                />
-                <Input
-                  label="Sub-County"
-                  name="subcounty"
-                  value={formData.subcounty || ''}
-                  onChange={handleChange}
-                />
-                <Input
-                  label="Ward"
-                  name="ward"
-                  value={formData.ward || ''}
-                  onChange={handleChange}
-                />
-                <div className="md:col-span-2">
-                  <Input
-                    label="Interests (comma separated)"
-                    name="interests"
-                    value={Array.isArray(formData.interests) ? formData.interests.join(', ') : ''}
-                    onChange={(e) =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        interests: e.target.value.split(',').map((s) => s.trim()),
-                      }))
-                    }
-                  />
-                </div>
-                <div className="md:col-span-2">
-                  <Input
-                    label="Skills (comma separated)"
-                    name="skills"
-                    value={Array.isArray(formData.skills) ? formData.skills.join(', ') : ''}
-                    onChange={(e) =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        skills: e.target.value.split(',').map((s) => s.trim()),
-                      }))
-                    }
-                  />
-                </div>
-              </div>
-              <div className="mt-8 flex gap-4">
-                <Button type="submit" className="flex-1" variant="primary" isLoading={isSaving}>
-                  Save Changes
-                </Button>
-                <Button
-                  type="button"
-                  className="flex-1"
-                  variant="outline"
-                  onClick={() => setIsEditing(false)}
-                >
-                  Cancel
-                </Button>
-              </div>
-            </form>
-          )}
-        </div>
+              {/* Edit Mode */}
+              {isEditing && (
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+                  <div className="mb-8">
+                    <h2 className="text-2xl font-bold text-wiria-blue-dark">Edit Member Profile</h2>
+                    <p className="text-sm text-gray-500">Keep your information up to date</p>
+                  </div>
+
+                  <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                    <FormField
+                      label="First Name"
+                      name="firstName"
+                      required
+                    />
+                    <FormField
+                      label="Last Name"
+                      name="lastName"
+                      required
+                    />
+                    <FormField
+                      label="Phone"
+                      name="phone"
+                      type="tel"
+                      placeholder="e.g. 0712345678"
+                    />
+                    <FormField
+                      label="Occupation"
+                      name="occupation"
+                    />
+                    <div className="md:col-span-2">
+                      <FormField
+                        label="Address"
+                        name="address"
+                      />
+                    </div>
+                    <FormField
+                      label="County"
+                      name="county"
+                    />
+                    <FormField
+                      label="Sub-County"
+                      name="subcounty"
+                    />
+                    <FormField
+                      label="Ward"
+                      name="ward"
+                    />
+                    <div className="md:col-span-2">
+                      <div className="space-y-1.5">
+                        <label className="text-sm font-semibold text-wiria-blue-dark">Interests</label>
+                        <Controller
+                          name="interests"
+                          render={({ field }) => (
+                            <input
+                              {...field}
+                              value={Array.isArray(field.value) ? field.value.join(', ') : ''}
+                              onChange={(e) => field.onChange(e.target.value.split(',').map((s) => s.trim()))}
+                              className="block w-full rounded-lg border border-gray-300 bg-white p-3 text-wiria-blue-dark focus:border-wiria-blue-dark focus:ring-1 focus:ring-wiria-blue-dark outline-none transition-all"
+                            />
+                          )}
+                        />
+                        <p className="text-xs text-gray-400">Comma separated list of interests</p>
+                      </div>
+                    </div>
+                    <div className="md:col-span-2">
+                      <div className="space-y-1.5">
+                        <label className="text-sm font-semibold text-wiria-blue-dark">Skills</label>
+                        <Controller
+                          name="skills"
+                          render={({ field }) => (
+                            <input
+                              {...field}
+                              value={Array.isArray(field.value) ? field.value.join(', ') : ''}
+                              onChange={(e) => field.onChange(e.target.value.split(',').map((s) => s.trim()))}
+                              className="block w-full rounded-lg border border-gray-300 bg-white p-3 text-wiria-blue-dark focus:border-wiria-blue-dark focus:ring-1 focus:ring-wiria-blue-dark outline-none transition-all"
+                            />
+                          )}
+                        />
+                        <p className="text-xs text-gray-400">Comma separated list of skills</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-4 pt-4 border-t">
+                    <Button type="submit" className="flex-1 h-12" isLoading={isSaving}>
+                      Save Changes
+                    </Button>
+                    <Button
+                      type="button"
+                      className="flex-1 h-12"
+                      variant="outline"
+                      onClick={() => setIsEditing(false)}
+                      disabled={isSaving}
+                    >
+                      Cancel
+                    </Button>
+                  </div>
+                </form>
+              )}
+            </FormProvider>
+          </CardBody>
+        </Card>
       </div>
     </PortalLayout>
   );

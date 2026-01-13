@@ -22,16 +22,8 @@ export function formatCurrency(amount: number): string {
   }).format(amount);
 }
 
-/**
- * Format date
- */
-export function formatDate(date: string | Date): string {
-  return new Intl.DateTimeFormat('en-KE', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  }).format(new Date(date));
-}
+// formatDate is now imported from dateUtils to avoid duplication
+export { formatDate } from './dateUtils';
 
 /**
  * Format phone number to standard format
@@ -65,11 +57,11 @@ export function truncate(text: string, maxLength: number): string {
 /**
  * Debounce function
  */
-export function debounce<T extends (...args: unknown[]) => unknown>(
+export function debounce<T extends (...args: unknown[]) => void>(
   func: T,
   wait: number
 ): (...args: Parameters<T>) => void {
-  let timeout: NodeJS.Timeout | null = null;
+  let timeout: ReturnType<typeof setTimeout> | null = null;
 
   return function executedFunction(...args: Parameters<T>) {
     const later = () => {

@@ -10,7 +10,6 @@
 
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/features/auth/context/AuthContext';
-import { useBackendStatus } from '@/shared/services/backendStatus';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect, useCallback } from 'react';
 import { ROUTES } from '@/shared/constants/routes';
@@ -19,7 +18,6 @@ import { HeaderLogo, DesktopNav, AuthActions } from './header';
 
 export function Header() {
   const { user, isAuthenticated, logout } = useAuth();
-  const { isBackendConnected } = useBackendStatus();
   const userRole = user?.role;
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -104,7 +102,6 @@ export function Header() {
               <div className="h-10 w-0.5 rounded-full bg-gradient-to-b from-wiria-yellow via-wiria-green-light to-transparent" />
 
               <AuthActions
-                isBackendConnected={isBackendConnected}
                 isAuthenticated={isAuthenticated}
                 userRole={userRole}
                 loginDropdownOpen={loginDropdownOpen}
@@ -160,7 +157,6 @@ export function Header() {
 
             {/* Mobile Menu Component */}
             <MobileMenu
-              isBackendConnected={isBackendConnected}
               isAuthenticated={isAuthenticated}
               userRole={userRole}
               onClose={() => setMobileMenuOpen(false)}

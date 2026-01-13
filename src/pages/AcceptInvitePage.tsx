@@ -159,8 +159,9 @@ export default function AcceptInvitePage() {
 
                   <div className="space-y-4">
                     <div>
-                      <label className="mb-1.5 block text-sm font-bold text-gray-700">New Password</label>
+                      <label htmlFor="password" title="New Password" className="mb-1.5 block text-sm font-bold text-gray-700">New Password</label>
                       <input
+                        id="password"
                         type="password"
                         required
                         value={password}
@@ -172,8 +173,9 @@ export default function AcceptInvitePage() {
                     </div>
 
                     <div>
-                      <label className="mb-1.5 block text-sm font-bold text-gray-700">Confirm Password</label>
+                      <label htmlFor="confirmPassword" title="Confirm Password" className="mb-1.5 block text-sm font-bold text-gray-700">Confirm Password</label>
                       <input
+                        id="confirmPassword"
                         type="password"
                         required
                         value={confirmPassword}

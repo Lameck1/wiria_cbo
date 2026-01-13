@@ -2,10 +2,10 @@ import { Link } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import { UserRole } from '@/shared/types';
 import { ROUTES } from '@/shared/constants/routes';
+import { useBackendStatus } from '@/shared/services/backendStatus';
 import { LoginDropdown } from '../LoginDropdown';
 
 interface AuthActionsProps {
-    isBackendConnected: boolean;
     isAuthenticated: boolean;
     userRole?: UserRole;
     loginDropdownOpen: boolean;
@@ -14,13 +14,13 @@ interface AuthActionsProps {
 }
 
 export function AuthActions({
-    isBackendConnected,
     isAuthenticated,
     userRole,
     loginDropdownOpen,
     setLoginDropdownOpen,
     handleLogout,
 }: AuthActionsProps) {
+    const { isBackendConnected } = useBackendStatus();
     if (!isBackendConnected) {
         return (
             <div className="flex items-center gap-4">

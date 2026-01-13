@@ -7,6 +7,7 @@ import { UserRole } from '@/shared/types';
 import { AdminLayout } from '@/features/admin/components/layout/AdminLayout';
 import { ErrorBoundary } from '@/shared/components/ErrorBoundary';
 import { ROUTES } from '@/shared/constants/routes';
+import { createMemberRoute } from './routeProtection';
 
 // Eagerly load frequently visited pages
 import HomePage from '@/pages/HomePage';
@@ -98,46 +99,11 @@ export const router = createBrowserRouter(
             </Layout>
           ),
           children: [
-            {
-              path: ROUTES.MEMBER_PORTAL,
-              element: (
-                <ProtectedRoute allowedRoles={[UserRole.MEMBER]} redirectTo={ROUTES.MEMBER_LOGIN}>
-                  <MemberPortalPage />
-                </ProtectedRoute>
-              ),
-            },
-            {
-              path: ROUTES.MEMBER_PROFILE,
-              element: (
-                <ProtectedRoute allowedRoles={[UserRole.MEMBER]} redirectTo={ROUTES.MEMBER_LOGIN}>
-                  <MemberProfilePage />
-                </ProtectedRoute>
-              ),
-            },
-            {
-              path: ROUTES.MEMBER_RENEWAL,
-              element: (
-                <ProtectedRoute allowedRoles={[UserRole.MEMBER]} redirectTo={ROUTES.MEMBER_LOGIN}>
-                  <MemberRenewalPage />
-                </ProtectedRoute>
-              ),
-            },
-            {
-              path: ROUTES.MEMBER_PAYMENTS,
-              element: (
-                <ProtectedRoute allowedRoles={[UserRole.MEMBER]} redirectTo={ROUTES.MEMBER_LOGIN}>
-                  <MemberPaymentsPage />
-                </ProtectedRoute>
-              ),
-            },
-            {
-              path: ROUTES.MEMBER_MEETINGS,
-              element: (
-                <ProtectedRoute allowedRoles={[UserRole.MEMBER]} redirectTo={ROUTES.MEMBER_LOGIN}>
-                  <MemberMeetingsPage />
-                </ProtectedRoute>
-              ),
-            },
+            createMemberRoute(ROUTES.MEMBER_PORTAL, <MemberPortalPage />),
+            createMemberRoute(ROUTES.MEMBER_PROFILE, <MemberProfilePage />),
+            createMemberRoute(ROUTES.MEMBER_RENEWAL, <MemberRenewalPage />),
+            createMemberRoute(ROUTES.MEMBER_PAYMENTS, <MemberPaymentsPage />),
+            createMemberRoute(ROUTES.MEMBER_MEETINGS, <MemberMeetingsPage />),
           ]
         },
 

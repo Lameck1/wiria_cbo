@@ -31,28 +31,136 @@ export const passwordSchema = z
   .regex(/[^A-Za-z0-9]/, 'Password must contain at least one special character');
 
 /**
- * Legacy Validators (Refactored to use Zod under the hood)
- * Maintained for backward compatibility during transition.
+ * Validation Result Type
  */
+export interface ValidationResult {
+  valid: boolean;
+  error?: string;
+}
 
-export const validateEmail = (email: string): string | null => {
-  const result = emailSchema.safeParse(email);
-  return result.success ? null : result.error.errors[0]?.message || 'Invalid email';
+/**
+ * Sanitizes input by removing HTML tags and trimming whitespace.
+ * Preserves text content inside tags.
+ */
+export const sanitizeInput = (input: unknown): string => {
+  if (typeof input !== 'string') return '';
+  // Remove HTML tags but keep their content, remove stray angle brackets, then trim
+  return input
+    .replace(/<script[^>]*>.*?<\/script>/gi, '') // Remove script tags and content
+    .replace(/<[^>]*>/g, '') // Remove remaining HTML tags but keep content
+    .replace(/[<>]/g, '') // Remove stray angle brackets
+    .trim();
 };
 
-export const validatePhone = (phone: string): string | null => {
-  const result = phoneSchema.safeParse(phone);
-  return result.success ? null : result.error.errors[0]?.message || 'Invalid phone';
-};
-
-export const validateName = (name: string): string | null => {
-  const result = nameSchema.safeParse(name);
-  return result.success ? null : result.error.errors[0]?.message || 'Invalid name';
-};
-
-export const validateRequired = (value: any, fieldName = 'Field'): string | null => {
-  if (value === undefined || value === null || (typeof value === 'string' && value.trim() === '')) {
-    return `${fieldName} is required`;
+/**
+ * Validates Kenyan phone numbers (format: 254XXXXXXXXX)
+ */
+export const validatePhone = (phone: string): ValidationResult => {
+  if (!phone || phone.trim() === '') {
+    return { valid: false, error: 'Phone number is required' };
   }
-  return null;
+
+  // Remove spaces for validation
+  const cleaned = phone.replace(/\s/g, '');
+
+  // Must be 12 digits starting with 254
+  const phoneRegex = /^254[17]\d{8}$/;
+  if (!phoneRegex.test(cleaned)) {
+    return { valid: false, error: 'Invalid phone number format. Use 254XXXXXXXXX' };
+  }
+
+  return { valid: true };
 };
+
+/**
+ * Validates M-Pesa phone numbers (Safaricom only)
+ * Safaricom prefixes: 0700-0719, 0720-0721 (0722+ is Airtel), 0740-0759, 0790-0799, 0110-0119
+ * In 254 format: 254XXXXXXXXX
+ */
+export const validateMpesaPhone = (phone: string): ValidationResult => {
+  if (!phone || phone.trim() === '') {
+    return { valid: false, error: 'Phone number is required' };
+  }
+
+  const cleaned = phone.replace(/\s/g, '');
+
+  // Safaricom prefixes in 254 format:
+  // 25470[0-9] = 0700-0709, 25471[0-9] = 0710-0719 (Safaricom)
+  // 0722, 0723, 0733 etc are Airtel, not Safaricom
+  // 2547[4-5]X = 074X-075X (Safaricom)
+  // 25479X = 079X (Safaricom)
+  // 2541[0-1]X = 010X-011X (Safaricom)
+  const safaricomRegex = /^254(70|71|7[4-5]|79|1[0-1])\d{7}$/;
+  if (!safaricomRegex.test(cleaned)) {
+    return { valid: false, error: 'Please use a valid Safaricom number for M-Pesa' };
+  }
+
+  return { valid: true };
+};
+
+/**
+ * Validates email addresses
+ */
+export const validateEmail = (email: string): ValidationResult => {
+  if (!email || email.trim() === '') {
+    return { valid: false, error: 'Email is required' };
+  }
+
+  const result = emailSchema.safeParse(email);
+  if (!result.success) {
+    return { valid: false, error: result.error.errors[0]?.message || 'Invalid email' };
+  }
+
+  return { valid: true };
+};
+
+/**
+ * Validates donation amounts
+ */
+const MIN_DONATION = 10;
+const MAX_DONATION = 1000000;
+
+export const validateAmount = (amount: number | string): ValidationResult => {
+  const numAmount = typeof amount === 'string' ? parseFloat(amount) : amount;
+
+  if (isNaN(numAmount)) {
+    return { valid: false, error: 'Please enter a valid amount' };
+  }
+
+  if (numAmount < MIN_DONATION) {
+    return { valid: false, error: `Minimum donation amount is KES ${MIN_DONATION}` };
+  }
+
+  if (numAmount > MAX_DONATION) {
+    return { valid: false, error: `Maximum donation amount is KES ${MAX_DONATION.toLocaleString()}` };
+  }
+
+  return { valid: true };
+};
+
+/**
+ * Validates that a field is not empty
+ */
+export const validateRequired = (value: unknown, fieldName = 'Field'): ValidationResult => {
+  if (value === undefined || value === null || (typeof value === 'string' && value.trim() === '')) {
+    return { valid: false, error: `${fieldName} is required` };
+  }
+  return { valid: true };
+};
+
+/**
+ * Validates names
+ */
+export const validateName = (name: string): ValidationResult => {
+  if (!name || name.trim() === '') {
+    return { valid: false, error: 'Name is required' };
+  }
+
+  const result = nameSchema.safeParse(name);
+  if (!result.success) {
+    return { valid: false, error: result.error.errors[0]?.message || 'Invalid name' };
+  }
+
+  return { valid: true };
+};
+

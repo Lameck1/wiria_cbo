@@ -236,7 +236,7 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link to="#" className="text-gray-300 transition-colors hover:text-white">
+                <Link to={ROUTES.SAFEGUARDING} className="text-gray-300 transition-colors hover:text-white">
                   Privacy Policy
                 </Link>
               </li>
@@ -327,17 +327,14 @@ export function Footer() {
                     <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v2.385z" />
                   </svg>
                 </a>
-                <a
-                  href="#"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="X (formerly Twitter)"
-                  className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 transition-all hover:scale-110 hover:bg-wiria-yellow"
+                <span
+                  aria-label="X (formerly Twitter) - Coming soon"
+                  className="flex h-10 w-10 cursor-not-allowed items-center justify-center rounded-full bg-white/10 opacity-50"
                 >
                   <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                   </svg>
-                </a>
+                </span>
                 <a
                   href="https://www.linkedin.com/company/wiria-cbo/"
                   target="_blank"
@@ -369,9 +366,9 @@ export function Footer() {
               <span className="hidden sm:block">•</span>
               <p>All Rights Reserved.</p>
               <span className="hidden sm:block">•</span>
-              <a href="#" className="transition-colors hover:text-wiria-yellow">
+              <Link to={ROUTES.SAFEGUARDING} className="transition-colors hover:text-wiria-yellow">
                 Kenya Data Protection Act 2019
-              </a>
+              </Link>
             </div>
           </div>
         </div>

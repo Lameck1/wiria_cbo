@@ -11,6 +11,7 @@ module.exports = {
     'plugin:react/recommended',
     'plugin:react/jsx-runtime',
     'plugin:react-hooks/recommended',
+    'plugin:jsx-a11y/recommended',
     'prettier',
   ],
   parser: '@typescript-eslint/parser',
@@ -23,7 +24,7 @@ module.exports = {
       jsx: true,
     },
   },
-  plugins: ['react', 'react-hooks', 'react-refresh', '@typescript-eslint'],
+  plugins: ['react', 'react-hooks', 'react-refresh', '@typescript-eslint', 'jsx-a11y'],
   settings: {
     react: {
       version: '19.0',

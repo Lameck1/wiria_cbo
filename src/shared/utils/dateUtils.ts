@@ -4,20 +4,21 @@
  */
 
 /**
- * Format a date string to a human-readable format
+ * Format a date to a human-readable format
  */
-export function formatDate(dateStr: string): string {
-  if (dateStr === 'Ongoing' || dateStr === 'Rolling basis') {
-    return dateStr;
+export function formatDate(date: string | Date): string {
+  if (typeof date === 'string' && (date === 'Ongoing' || date === 'Rolling basis')) {
+    return date;
   }
   try {
-    return new Date(dateStr).toLocaleDateString('en-US', {
+    const d = typeof date === 'string' ? new Date(date) : date;
+    return d.toLocaleDateString('en-KE', {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
     });
   } catch {
-    return dateStr;
+    return String(date);
   }
 }
 
@@ -89,4 +90,22 @@ export function formatMonth(monthKey: string): string {
   const monthInt = parseInt(month || '1');
   const date = new Date(yearInt, monthInt - 1);
   return date.toLocaleDateString('en-KE', { month: 'short', year: 'numeric' });
+}
+
+/**
+ * Formats a date to include time (e.g., "Jan 12, 2026, 10:57 PM")
+ */
+export function formatDateTime(date: string | Date): string {
+  try {
+    const d = typeof date === 'string' ? new Date(date) : date;
+    return d.toLocaleString('en-KE', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  } catch {
+    return String(date);
+  }
 }

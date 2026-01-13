@@ -3,7 +3,7 @@
  * Detects if the backend API is available and provides a React hook for components
  */
 
-import { useState, useEffect, createContext, useContext, ReactNode } from 'react';
+import { useState, useEffect, createContext, use, ReactNode } from 'react';
 
 interface BackendStatusContextType {
   isBackendConnected: boolean;
@@ -70,9 +70,9 @@ export function BackendStatusProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <BackendStatusContext.Provider value={{ isBackendConnected, isChecking }}>
+    <BackendStatusContext value={{ isBackendConnected, isChecking }}>
       {children}
-    </BackendStatusContext.Provider>
+    </BackendStatusContext>
   );
 }
 
@@ -81,7 +81,7 @@ export function BackendStatusProvider({ children }: { children: ReactNode }) {
  */
 // eslint-disable-next-line react-refresh/only-export-components
 export function useBackendStatus(): BackendStatusContextType {
-  return useContext(BackendStatusContext);
+  return use(BackendStatusContext);
 }
 
 /**
