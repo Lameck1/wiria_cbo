@@ -77,4 +77,37 @@ export const registrationSchema = z
     }
   });
 
+export const renewalSchema = z.object({
+  paymentMethod: z.enum(['STK_PUSH', 'MANUAL']),
+  phoneNumber: z
+    .string()
+    .regex(/^(\+?254|0)[17]\d{8}$/, 'Please enter a valid Kenyan phone number')
+    .optional(),
+  transactionCode: z.string().optional(),
+  memberCount: z.number().min(1).optional(),
+  agreedToDataProtection: z.boolean().refine((val) => val === true, {
+    message: 'You must consent to data protection',
+  }),
+  agreedToCodeOfEthics: z.boolean().refine((val) => val === true, {
+    message: 'You must agree to the code of ethics',
+  }),
+});
+
+export const profileSchema = z.object({
+  firstName: z.string().min(2, 'First name must be at least 2 characters'),
+  lastName: z.string().min(2, 'Last name must be at least 2 characters'),
+  phone: z
+    .string()
+    .regex(/^(\+?254|0)[17]\d{8}$/, 'Please enter a valid Kenyan phone number'),
+  occupation: z.string().optional(),
+  address: z.string().optional(),
+  county: z.string().optional(),
+  subcounty: z.string().optional(),
+  ward: z.string().optional(),
+  interests: z.array(z.string()).optional(),
+  skills: z.array(z.string()).optional(),
+});
+
+export type ProfileFormSchema = z.infer<typeof profileSchema>;
+export type RenewalFormSchema = z.infer<typeof renewalSchema>;
 export type RegistrationFormSchema = z.infer<typeof registrationSchema>;

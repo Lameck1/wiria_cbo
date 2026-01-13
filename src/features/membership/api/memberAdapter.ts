@@ -1,6 +1,80 @@
 import type { MemberProfile, Payment, Meeting, Activity } from '../hooks/useMemberData';
 
 /**
+ * API Response Types
+ * These interfaces model the raw backend response structure.
+ * The adapter normalizes these into the frontend types.
+ */
+
+/** Raw profile data from API - may have different nesting structures */
+interface ApiMemberProfileData {
+    id?: string;
+    memberNumber?: string;
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+    phone?: string;
+    nationalId?: string;
+    occupation?: string;
+    address?: string;
+    county?: string;
+    subcounty?: string;
+    ward?: string;
+    interests?: string[];
+    skills?: string[];
+    status?: string;
+    membershipType?: string;
+    groupName?: string;
+    currentMemberCount?: number;
+    maxMemberCountReached?: number;
+    joinDate?: string;
+    joinedAt?: string;
+    expiryDate?: string;
+    membershipExpiresAt?: string;
+    createdAt?: string;
+    props?: ApiMemberProfileData;
+}
+
+/** Raw payment data from API */
+interface ApiPaymentData {
+    id?: string;
+    amount?: number | string;
+    type?: string;
+    status?: string;
+    method?: string;
+    mpesaReceiptNumber?: string;
+    createdAt?: string;
+}
+
+/** Raw meeting data from API */
+interface ApiMeetingData {
+    id?: string;
+    title?: string;
+    description?: string;
+    date?: string;
+    time?: string;
+    location?: string;
+    type?: string;
+    status?: string;
+    isRsvpd?: boolean;
+    attendeesCount?: number;
+}
+
+/** Raw activity data from API */
+interface ApiActivityData {
+    id?: string;
+    type?: string;
+    description?: string;
+    timestamp?: string;
+    createdAt?: string;
+}
+
+/** Response wrapper types */
+type ApiPaymentsResponse = ApiPaymentData[] | { payments: ApiPaymentData[] };
+type ApiMeetingsResponse = ApiMeetingData[] | { data: ApiMeetingData[] };
+type ApiActivityResponse = ApiActivityData[] | { data: ApiActivityData[] };
+
+/**
  * Member Adapter
  * Normalizes inconsistent backend responses into standard frontend structures.
  */
@@ -8,7 +82,7 @@ export const memberAdapter = {
     /**
      * Normalizes profile data, handling variations in nesting and field names.
      */
-    profile(apiData: any): MemberProfile {
+    profile(apiData: ApiMemberProfileData): MemberProfile {
         if (!apiData) {
             throw new Error('Member adapter error: No profile data provided');
         }
@@ -30,8 +104,8 @@ export const memberAdapter = {
             ward: source.ward,
             interests: source.interests || [],
             skills: source.skills || [],
-            status: apiData.status || source.status || 'PENDING',
-            membershipType: apiData.membershipType || source.membershipType,
+            status: (apiData.status || source.status || 'PENDING') as MemberProfile['status'],
+            membershipType: (apiData.membershipType || source.membershipType) as MemberProfile['membershipType'],
             groupName: apiData.groupName || source.groupName,
             currentMemberCount: apiData.currentMemberCount || source.currentMemberCount,
             maxMemberCountReached: apiData.maxMemberCountReached || source.maxMemberCountReached,
@@ -44,14 +118,17 @@ export const memberAdapter = {
     /**
      * Normalizes payment data.
      */
-    payments(apiData: any): Payment[] {
-        const list = Array.isArray(apiData) ? apiData : apiData?.payments || [];
-        return list.map((p: any) => ({
+    payments(apiData: ApiPaymentsResponse): Payment[] {
+        const list: ApiPaymentData[] = Array.isArray(apiData)
+            ? apiData
+            : (apiData as { payments: ApiPaymentData[] })?.payments || [];
+
+        return list.map((p) => ({
             id: p.id || '',
             amount: Number(p.amount) || 0,
-            type: p.type || 'DONATION',
-            status: p.status || 'PENDING',
-            method: p.method || 'MANUAL',
+            type: (p.type || 'DONATION') as Payment['type'],
+            status: (p.status || 'PENDING') as Payment['status'],
+            method: (p.method || 'MANUAL') as Payment['method'],
             mpesaReceiptNumber: p.mpesaReceiptNumber,
             createdAt: p.createdAt || '',
         }));
@@ -60,17 +137,20 @@ export const memberAdapter = {
     /**
      * Normalizes meeting data.
      */
-    meetings(apiData: any): Meeting[] {
-        const list = Array.isArray(apiData) ? apiData : apiData?.data || [];
-        return list.map((m: any) => ({
+    meetings(apiData: ApiMeetingsResponse): Meeting[] {
+        const list: ApiMeetingData[] = Array.isArray(apiData)
+            ? apiData
+            : (apiData as { data: ApiMeetingData[] })?.data || [];
+
+        return list.map((m) => ({
             id: m.id || '',
             title: m.title || '',
             description: m.description,
             date: m.date || '',
             time: m.time || '',
             location: m.location || '',
-            type: m.type || 'AGM',
-            status: m.status || 'UPCOMING',
+            type: (m.type || 'AGM') as Meeting['type'],
+            status: (m.status || 'UPCOMING') as Meeting['status'],
             isRsvpd: m.isRsvpd,
             attendeesCount: m.attendeesCount,
         }));
@@ -79,9 +159,12 @@ export const memberAdapter = {
     /**
      * Normalizes activity data.
      */
-    activity(apiData: any): Activity[] {
-        const list = Array.isArray(apiData) ? apiData : apiData?.data || [];
-        return list.map((item: any) => ({
+    activity(apiData: ApiActivityResponse): Activity[] {
+        const list: ApiActivityData[] = Array.isArray(apiData)
+            ? apiData
+            : (apiData as { data: ApiActivityData[] })?.data || [];
+
+        return list.map((item) => ({
             id: item.id || '',
             type: item.type || '',
             description: item.description || '',

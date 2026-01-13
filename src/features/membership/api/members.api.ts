@@ -50,14 +50,18 @@ export const getMembers = async (filters: MemberFilters = {}) => {
   return response;
 };
 
+/** Response structure for member status update operations */
+interface MemberStatusUpdateResponse {
+  message: string;
+  member?: AdminMember;
+}
+
 export const approveMember = async (id: string) => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const response = await client.patch<any>(`/admin/members/${id}/approve`);
+  const response = await client.patch<MemberStatusUpdateResponse>(`/admin/members/${id}/approve`);
   return response;
 };
 
 export const rejectMember = async (id: string, reason: string) => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const response = await client.patch<any>(`/admin/members/${id}/reject`, { reason });
+  const response = await client.patch<MemberStatusUpdateResponse>(`/admin/members/${id}/reject`, { reason });
   return response;
 };
