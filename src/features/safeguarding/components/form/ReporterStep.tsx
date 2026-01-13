@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { Input } from '@/shared/components/ui/Input';
+import { useFormContext } from 'react-hook-form';
 import { Button } from '@/shared/components/ui/Button';
-import { SafeguardingReportData } from '../../hooks/useSafeguardingReport';
+import { FormField, FormSelectField } from '@/shared/components/ui/form';
 
 const REPORTER_RELATIONS = [
   { value: 'Witness', label: 'Witness' },
@@ -20,33 +20,30 @@ const staggerItem = {
 
 interface ReporterStepProps {
   isAnonymous: boolean;
-  formData: SafeguardingReportData;
   isSubmitting: boolean;
   setIsAnonymous: (val: boolean) => void;
-  onChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
-  ) => void;
   onNext: () => void;
 }
 
 export function ReporterStep({
   isAnonymous,
-  formData,
   isSubmitting,
   setIsAnonymous,
-  onChange,
   onNext,
 }: ReporterStepProps) {
+  const { register } = useFormContext();
+
   return (
     <div className="space-y-6">
       <motion.div
         variants={staggerItem}
         className="rounded-xl border border-gray-200 bg-gradient-to-br from-gray-50 to-gray-100 p-5"
       >
-        <label className="flex cursor-pointer items-start">
+        <label htmlFor="isAnonymous" className="flex cursor-pointer items-start">
           <input
+            {...register('isAnonymous')}
+            id="isAnonymous"
             type="checkbox"
-            checked={isAnonymous}
             onChange={(e) => setIsAnonymous(e.target.checked)}
             className="mt-0.5 h-5 w-5 rounded border-gray-300 text-slate-600 focus:ring-slate-500"
           />
@@ -93,51 +90,36 @@ export function ReporterStep({
         >
           <h3 className="font-semibold text-wiria-blue-dark">Your Information</h3>
           <div className="grid gap-4 md:grid-cols-2">
-            <Input
+            <FormField
               label="Your Name"
               name="reporterName"
-              value={formData.reporterName}
-              onChange={onChange}
               disabled={isSubmitting}
               placeholder="Enter your name"
+              required
             />
-            <Input
+            <FormField
               label="Your Email"
               type="email"
               name="reporterEmail"
-              value={formData.reporterEmail}
-              onChange={onChange}
               disabled={isSubmitting}
               placeholder="email@example.com"
+              required
             />
           </div>
           <div className="grid gap-4 md:grid-cols-2">
-            <Input
+            <FormField
               label="Phone (Optional)"
               type="tel"
               name="reporterPhone"
-              value={formData.reporterPhone}
-              onChange={onChange}
               disabled={isSubmitting}
               placeholder="+254 7XX XXX XXX"
             />
-            <div className="w-full">
-              <label className="mb-1 block text-sm font-medium text-gray-700">Your Relation</label>
-              <select
-                name="reporterRelation"
-                value={formData.reporterRelation}
-                onChange={onChange}
-                disabled={isSubmitting}
-                className="w-full rounded-lg border border-gray-300 px-4 py-3 transition-all focus:ring-2 focus:ring-slate-500"
-              >
-                <option value="">Select...</option>
-                {REPORTER_RELATIONS.map((rel) => (
-                  <option key={rel.value} value={rel.value}>
-                    {rel.label}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <FormSelectField
+              label="Your Relation"
+              name="reporterRelation"
+              options={REPORTER_RELATIONS}
+              disabled={isSubmitting}
+            />
           </div>
         </motion.div>
       )}

@@ -1,10 +1,8 @@
 import { useState } from 'react';
 import { notificationService } from '@/shared/services/notification/notificationService';
-import { API_ENDPOINTS } from '@/shared/services/api/endpoints';
 import { useBackendStatus } from '@/shared/services/backendStatus';
 import { emailJsService } from '@/shared/services/emailJsService';
-
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
+import { safeguardingApi } from '../api/safeguardingApi';
 
 export interface SafeguardingReportData {
   isAnonymous: boolean;
@@ -27,19 +25,6 @@ export interface ReportLookupResult {
   updatedAt: string;
 }
 
-interface SubmitResponse {
-  success: boolean;
-  data: {
-    referenceNumber: string;
-    message: string;
-  };
-}
-
-interface LookupResponse {
-  success: boolean;
-  data: ReportLookupResult;
-}
-
 export function useSafeguardingReport() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLookingUp, setIsLookingUp] = useState(false);
@@ -58,32 +43,7 @@ export function useSafeguardingReport() {
     try {
       if (isBackendConnected) {
         try {
-          // Primary: Backend API
-          const formData = new FormData();
-
-          // Append all form fields
-          Object.entries(data).forEach(([key, value]) => {
-            if (value !== undefined && value !== '') {
-              formData.append(key, String(value));
-            }
-          });
-
-          // Append file if provided
-          if (evidenceFile) {
-            formData.append('evidence', evidenceFile);
-          }
-
-          // Use fetch directly for multipart/form-data
-          const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.SAFEGUARDING_SUBMIT}`, {
-            method: 'POST',
-            body: formData,
-          });
-
-          if (!response.ok) {
-            throw new Error('Failed to submit report');
-          }
-
-          const result: SubmitResponse = await response.json();
+          const result = await safeguardingApi.submit(data, evidenceFile);
           setSubmittedReference(result.data.referenceNumber);
           notificationService.success(
             'Report submitted successfully. Please save your reference number.'
@@ -94,7 +54,6 @@ export function useSafeguardingReport() {
             '[useSafeguardingReport] Primary API failed, attempting EmailJS fallback...',
             apiError
           );
-          // Fallback: EmailJS
           await emailJsService.sendSafeguardingReport(data);
           notificationService.success(
             'Your report has been submitted directly to our safeguarding team via our offline channel.'
@@ -102,7 +61,6 @@ export function useSafeguardingReport() {
           return true;
         }
       } else {
-        // Pre-detected Offline: Fallback to EmailJS
         await emailJsService.sendSafeguardingReport(data);
         notificationService.success(
           'Your report has been submitted directly to our safeguarding team via our offline channel.'
@@ -126,22 +84,7 @@ export function useSafeguardingReport() {
     setLookupError(null);
 
     try {
-      const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.SAFEGUARDING_LOOKUP}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          referenceNumber,
-          email: email || undefined,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Report not found');
-      }
-
-      const result: LookupResponse = await response.json();
+      const result = await safeguardingApi.lookup(referenceNumber, email);
       setLookupResult(result.data);
       return true;
     } catch {
@@ -152,10 +95,7 @@ export function useSafeguardingReport() {
     }
   };
 
-  const resetSubmission = () => {
-    setSubmittedReference(null);
-  };
-
+  const resetSubmission = () => setSubmittedReference(null);
   const resetLookup = () => {
     setLookupResult(null);
     setLookupError(null);

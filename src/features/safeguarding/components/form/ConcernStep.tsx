@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
-import { Input } from '@/shared/components/ui/Input';
+import { useFormContext } from 'react-hook-form';
 import { Button } from '@/shared/components/ui/Button';
-import { SafeguardingReportData } from '../../hooks/useSafeguardingReport';
+import { FormField, FormTextareaField } from '@/shared/components/ui/form';
 
 const CONCERN_CATEGORIES = [
   { value: 'CHILD_PROTECTION', label: 'Child Protection', icon: '🧒' },
@@ -18,28 +18,23 @@ const staggerItem = {
 };
 
 interface ConcernStepProps {
-  formData: SafeguardingReportData;
   isSubmitting: boolean;
   evidenceFile: File | null;
-  onChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => void;
-  onCategorySelect: (cat: string) => void;
   onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onClearFile: () => void;
   onBack: () => void;
 }
 
 export function ConcernStep({
-  formData,
   isSubmitting,
   evidenceFile,
-  onChange,
-  onCategorySelect,
   onFileChange,
   onClearFile,
   onBack,
 }: ConcernStepProps) {
+  const { watch, setValue } = useFormContext();
+  const category = watch('category');
+
   return (
     <div className="space-y-6">
       <motion.div variants={staggerItem}>
@@ -51,17 +46,16 @@ export function ConcernStep({
             <button
               key={cat.value}
               type="button"
-              onClick={() => onCategorySelect(cat.value)}
+              onClick={() => setValue('category', cat.value, { shouldValidate: true })}
               disabled={isSubmitting}
-              className={`rounded-xl border-2 p-3 text-left transition-all ${
-                formData.category === cat.value
+              className={`rounded-xl border-2 p-3 text-left transition-all ${category === cat.value
                   ? 'border-slate-600 bg-slate-50 shadow-md'
                   : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
-              } disabled:opacity-50`}
+                } disabled:opacity-50`}
             >
               <span className="text-xl">{cat.icon}</span>
               <span
-                className={`mt-1 block text-sm font-medium ${formData.category === cat.value ? 'text-slate-700' : 'text-gray-600'}`}
+                className={`mt-1 block text-sm font-medium ${category === cat.value ? 'text-slate-700' : 'text-gray-600'}`}
               >
                 {cat.label}
               </span>
@@ -71,53 +65,40 @@ export function ConcernStep({
       </motion.div>
 
       <motion.div variants={staggerItem} className="grid gap-4 md:grid-cols-2">
-        <Input
+        <FormField
           label="When did this occur?"
           type="date"
           name="incidentDate"
-          value={formData.incidentDate}
-          onChange={onChange}
           disabled={isSubmitting}
         />
-        <Input
+        <FormField
           label="Where did this happen?"
           name="location"
-          value={formData.location}
-          onChange={onChange}
           disabled={isSubmitting}
           placeholder="Location or area"
         />
       </motion.div>
 
       <motion.div variants={staggerItem}>
-        <label className="mb-1 block text-sm font-medium text-gray-700">Person(s) Involved</label>
-        <textarea
+        <FormTextareaField
+          label="Person(s) Involved"
           name="personsInvolved"
           rows={2}
-          value={formData.personsInvolved}
-          onChange={onChange}
           disabled={isSubmitting}
-          className="w-full resize-none rounded-lg border border-gray-300 px-4 py-3 transition-all focus:ring-2 focus:ring-slate-500"
           placeholder="Names or descriptions of people involved"
         />
       </motion.div>
 
       <motion.div variants={staggerItem}>
-        <label className="mb-1 block text-sm font-medium text-gray-700">
-          Description <span className="text-red-500">*</span>
-        </label>
-        <textarea
+        <FormTextareaField
+          label="Description"
           name="description"
           rows={5}
-          value={formData.description}
-          onChange={onChange}
           required
-          minLength={20}
           disabled={isSubmitting}
-          className="w-full rounded-lg border border-gray-300 px-4 py-3 transition-all focus:ring-2 focus:ring-slate-500"
           placeholder="Please describe what happened in detail..."
+          description="Minimum 20 characters required"
         />
-        <p className="mt-1 text-sm text-gray-500">Minimum 20 characters required</p>
       </motion.div>
 
       <motion.div variants={staggerItem}>
@@ -177,7 +158,7 @@ export function ConcernStep({
         </Button>
         <Button
           type="submit"
-          disabled={isSubmitting || !formData.category || !formData.description}
+          disabled={isSubmitting || !category}
           className="flex-[2] rounded-xl py-4 shadow-lg"
         >
           {isSubmitting ? 'Submitting...' : 'Submit Report'}

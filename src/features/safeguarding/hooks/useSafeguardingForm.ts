@@ -1,47 +1,52 @@
 import { useState, useCallback } from 'react';
-import { useSafeguardingReport, SafeguardingReportData } from './useSafeguardingReport';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useSafeguardingReport } from './useSafeguardingReport';
+import { safeguardingSchema, SafeguardingReportSchema } from '../validation';
 
 export type FormStep = 'reporter' | 'details';
 
 export function useSafeguardingForm() {
   const [currentStep, setCurrentStep] = useState<FormStep>('reporter');
-  const [isAnonymous, setIsAnonymous] = useState(false);
-  const [formData, setFormData] = useState<SafeguardingReportData>({
-    isAnonymous: false,
-    reporterName: '',
-    reporterEmail: '',
-    reporterPhone: '',
-    reporterRelation: '',
-    category: '',
-    incidentDate: '',
-    location: '',
-    personsInvolved: '',
-    description: '',
-  });
   const [evidenceFile, setEvidenceFile] = useState<File | null>(null);
   const [showSuccess, setShowSuccess] = useState(false);
 
-  const { submitReport, isSubmitting, submittedReference, resetSubmission } =
-    useSafeguardingReport();
+  const { submitReport, submittedReference, resetSubmission } = useSafeguardingReport();
 
-  const handleSetAnonymous = useCallback((val: boolean) => {
-    setIsAnonymous(val);
-    setFormData((prev) => ({ ...prev, isAnonymous: val }));
-  }, []);
-
-  const handleChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-      setFormData((prev) => ({
-        ...prev,
-        [e.target.name]: e.target.value,
-      }));
+  const form = useForm<SafeguardingReportSchema>({
+    resolver: zodResolver(safeguardingSchema),
+    defaultValues: {
+      isAnonymous: false,
+      reporterName: '',
+      reporterEmail: '',
+      reporterPhone: '',
+      reporterRelation: '',
+      category: '',
+      incidentDate: '',
+      location: '',
+      personsInvolved: '',
+      description: '',
     },
-    []
-  );
+    mode: 'onTouched',
+  });
 
-  const handleCategorySelect = useCallback((category: string) => {
-    setFormData((prev) => ({ ...prev, category }));
-  }, []);
+  const {
+    handleSubmit,
+    reset,
+    watch,
+    setValue,
+    trigger,
+    formState: { isSubmitting },
+  } = form;
+
+  const isAnonymous = watch('isAnonymous');
+
+  const onSubmit = async (data: SafeguardingReportSchema) => {
+    const success = await submitReport(data, evidenceFile || undefined);
+    if (success) {
+      setShowSuccess(true);
+    }
+  };
 
   const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -53,60 +58,46 @@ export function useSafeguardingForm() {
     setEvidenceFile(null);
   }, []);
 
-  const handleNextStep = useCallback(() => {
+  const handleNextStep = async () => {
+    const fieldsToValidate: (keyof SafeguardingReportSchema)[] = isAnonymous
+      ? []
+      : ['reporterName', 'reporterEmail'];
+
+    if (fieldsToValidate.length > 0) {
+      const isValid = await trigger(fieldsToValidate);
+      if (!isValid) return;
+    }
+
     setCurrentStep('details');
-  }, []);
+  };
 
   const handlePrevStep = useCallback(() => {
     setCurrentStep('reporter');
   }, []);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const success = await submitReport(formData, evidenceFile || undefined);
-    if (success) {
-      setShowSuccess(true);
-    }
-  };
-
   const handleNewReport = useCallback(() => {
     resetSubmission();
     setShowSuccess(false);
-    setFormData({
-      isAnonymous: false,
-      reporterName: '',
-      reporterEmail: '',
-      reporterPhone: '',
-      reporterRelation: '',
-      category: '',
-      incidentDate: '',
-      location: '',
-      personsInvolved: '',
-      description: '',
-    });
+    reset();
     setEvidenceFile(null);
-    setIsAnonymous(false);
     setCurrentStep('reporter');
-  }, [resetSubmission]);
+  }, [resetSubmission, reset]);
 
   return {
+    form,
     currentStep,
     isAnonymous,
-    formData,
     evidenceFile,
     showSuccess,
     isSubmitting,
     submittedReference,
-    setIsAnonymous: handleSetAnonymous,
-    handleChange,
-    handleCategorySelect,
     handleFileChange,
     clearFile,
     handleNextStep,
     handlePrevStep,
-    handleSubmit,
+    submitAction: handleSubmit(onSubmit),
     handleNewReport,
     progressPercentage: currentStep === 'reporter' ? 50 : 100,
+    setIsAnonymous: (val: boolean) => setValue('isAnonymous', val),
   };
 }
