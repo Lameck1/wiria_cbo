@@ -6,6 +6,7 @@
 import { memo, useMemo } from 'react';
 import { Button } from '@/shared/components/ui/Button';
 import { DataTable, Column } from '@/shared/components/ui/DataTable';
+import { StatusBadge } from '@/shared/components/ui/StatusBadge';
 import { OpportunitiesTabProps, Opportunity, Application } from './types';
 
 export const OpportunitiesTab = memo(function OpportunitiesTab({
@@ -31,11 +32,7 @@ export const OpportunitiesTab = memo(function OpportunitiesTab({
     {
       header: 'Type',
       key: 'type',
-      render: (o) => (
-        <span className="rounded bg-purple-50 px-2 py-1 text-xs font-bold uppercase text-purple-700">
-          {o.type}
-        </span>
-      ),
+      render: (o) => <StatusBadge status={o.type} />,
     },
     {
       header: 'Category',

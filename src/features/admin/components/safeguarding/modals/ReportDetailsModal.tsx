@@ -8,7 +8,7 @@ interface ReportDetailsModalProps {
   incidentTypes: Record<string, string>;
   onClose: () => void;
   onResolve: () => void;
-  onStatusChange: (status: string) => void;
+  onStatusChange: (status: SafeguardingReport['status']) => void;
 }
 
 export function ReportDetailsModal({
@@ -105,7 +105,9 @@ export function ReportDetailsModal({
                 Update Status
               </p>
               <div className="flex flex-wrap gap-2">
-                {['PENDING', 'UNDER_REVIEW', 'INVESTIGATING'].map((status) => (
+                {(
+                  ['PENDING', 'UNDER_REVIEW', 'INVESTIGATING'] as SafeguardingReport['status'][]
+                ).map((status) => (
                   <button
                     key={status}
                     onClick={() => onStatusChange(status)}

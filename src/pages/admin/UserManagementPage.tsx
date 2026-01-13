@@ -15,6 +15,10 @@ import { notificationService } from '@/shared/services/notification/notification
 import { UserRole } from '@/shared/types';
 import { Modal } from '@/shared/components/ui/Modal';
 import { getErrorMessage } from '@/shared/utils/apiUtils';
+import { AdminPageHeader } from '@/features/admin/components/layout/AdminPageHeader';
+import { StatusBadge } from '@/shared/components/ui/StatusBadge';
+import { formatDate } from '@/shared/utils/dateUtils';
+import { Card, CardBody } from '@/shared/components/ui/Card';
 
 export default function UserManagementPage() {
   const [activeTab, setActiveTab] = useState<'ACTIVE' | 'PENDING'>('ACTIVE');
@@ -54,40 +58,25 @@ export default function UserManagementPage() {
   };
 
   const userColumns: Column<AdminUser>[] = [
-    { header: 'Name', key: 'name', render: (u) => `${u.firstName} ${u.lastName}` },
-    { header: 'Email', key: 'email' },
+    {
+      header: 'User',
+      key: 'name',
+      render: (u) => (
+        <div>
+          <div className="font-semibold text-gray-900">{`${u.firstName} ${u.lastName}`}</div>
+          <div className="text-xs text-gray-500">{u.email}</div>
+        </div>
+      ),
+    },
     {
       header: 'Role',
       key: 'role',
-      render: (u) => {
-        const styles: Record<string, string> = {
-          SUPER_ADMIN: 'bg-purple-100 text-purple-700',
-          ADMIN: 'bg-blue-100 text-blue-700',
-          STAFF: 'bg-green-100 text-green-700',
-          VOLUNTEER: 'bg-orange-100 text-orange-700',
-        };
-        return (
-          <span
-            className={`rounded-full px-2 py-1 text-xs font-bold ${styles[u.role] || 'bg-gray-100'}`}
-          >
-            {u.role}
-          </span>
-        );
-      },
+      render: (u) => <StatusBadge status={u.role} />,
     },
     {
       header: 'Status',
       key: 'status',
-      render: (u) => (
-        <span
-          className={`inline-flex items-center gap-2 ${u.status === 'ACTIVE' ? 'text-green-600' : 'text-red-600'}`}
-        >
-          <span
-            className={`h-2 w-2 rounded-full ${u.status === 'ACTIVE' ? 'bg-green-500' : 'bg-red-500'}`}
-          />
-          {u.status}
-        </span>
-      ),
+      render: (u) => <StatusBadge status={u.status} />,
     },
     {
       header: 'Actions',
@@ -96,7 +85,8 @@ export default function UserManagementPage() {
       render: (u) => (
         <button
           onClick={() => handleStatusChange(u.email, u.status)}
-          className={`text-sm font-semibold hover:underline ${u.status === 'ACTIVE' ? 'text-red-600' : 'text-green-600'}`}
+          className={`text-sm font-bold transition-colors hover:underline ${u.status === 'ACTIVE' ? 'text-red-500 hover:text-red-700' : 'text-green-600 hover:text-green-800'
+            }`}
         >
           {u.status === 'ACTIVE' ? 'Deactivate' : 'Activate'}
         </button>
@@ -105,13 +95,17 @@ export default function UserManagementPage() {
   ];
 
   const inviteColumns: Column<UserInvitation>[] = [
-    { header: 'Email', key: 'email' },
-    { header: 'Role', key: 'role' },
+    { header: 'Email', key: 'email', className: 'font-medium' },
+    {
+      header: 'Role',
+      key: 'role',
+      render: (i) => <StatusBadge status={i.role} />,
+    },
     { header: 'Invited By', key: 'inviter', render: (i) => i.inviter?.email || 'N/A' },
     {
       header: 'Expires',
       key: 'expiresAt',
-      render: (i) => new Date(i.expiresAt).toLocaleDateString(),
+      render: (i) => <span className="text-sm">{formatDate(i.expiresAt)}</span>,
     },
     {
       header: 'Actions',
@@ -120,7 +114,7 @@ export default function UserManagementPage() {
       render: (i) => (
         <button
           onClick={() => handleCancelInvite(i.id)}
-          className="text-sm font-semibold text-red-600 hover:text-red-800"
+          className="text-sm font-bold text-red-500 transition-colors hover:text-red-700 hover:underline"
         >
           Cancel
         </button>
@@ -129,52 +123,61 @@ export default function UserManagementPage() {
   ];
 
   return (
-    <div>
-      <div className="mb-8 flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-wiria-blue-dark">Staff & Admin Management</h1>
-          <p className="mt-1 text-gray-600">Manage staff accounts, roles, and permissions</p>
-        </div>
+    <div className="space-y-8">
+      <AdminPageHeader
+        title="User Management"
+        description="Manage system administrators and staff invitations."
+      >
         <Button onClick={() => setShowInviteModal(true)}>
-          <span className="mr-2">+</span> Invite New User
+          + Invite User
         </Button>
-      </div>
+      </AdminPageHeader>
 
-      {/* Tabs */}
-      <div className="mb-6 flex gap-4 border-b">
-        <button
-          className={`border-b-2 px-4 py-2 font-semibold transition-colors ${activeTab === 'ACTIVE' ? 'border-wiria-blue-dark text-wiria-blue-dark' : 'border-transparent text-gray-600 hover:text-wiria-blue-dark'}`}
-          onClick={() => setActiveTab('ACTIVE')}
-        >
-          Active Users
-        </button>
-        <button
-          className={`border-b-2 px-4 py-2 font-semibold transition-colors ${activeTab === 'PENDING' ? 'border-wiria-blue-dark text-wiria-blue-dark' : 'border-transparent text-gray-600 hover:text-wiria-blue-dark'}`}
-          onClick={() => setActiveTab('PENDING')}
-        >
-          Pending Invitations
-        </button>
-      </div>
+      <Card className="overflow-hidden border-none shadow-sm">
+        <CardBody className="p-0">
+          {/* Tabs */}
+          <div className="flex border-b bg-gray-50/50">
+            <button
+              className={`px-8 py-4 text-sm font-bold transition-all ${activeTab === 'ACTIVE'
+                ? 'border-b-2 border-wiria-blue-dark bg-white text-wiria-blue-dark'
+                : 'text-gray-500 hover:bg-gray-100/50 hover:text-gray-700'
+                }`}
+              onClick={() => setActiveTab('ACTIVE')}
+            >
+              Active Users
+            </button>
+            <button
+              className={`px-8 py-4 text-sm font-bold transition-all ${activeTab === 'PENDING'
+                ? 'border-b-2 border-wiria-blue-dark bg-white text-wiria-blue-dark'
+                : 'text-gray-500 hover:bg-gray-100/50 hover:text-gray-700'
+                }`}
+              onClick={() => setActiveTab('PENDING')}
+            >
+              Pending Invitations
+            </button>
+          </div>
 
-      <div className="overflow-hidden rounded-xl bg-white shadow">
-        {activeTab === 'ACTIVE' ? (
-          <DataTable
-            columns={userColumns}
-            data={users}
-            isLoading={isLoadingUsers}
-            rowKey="id"
-            emptyMessage="No active users found."
-          />
-        ) : (
-          <DataTable
-            columns={inviteColumns}
-            data={invitations}
-            isLoading={isLoadingInvites}
-            rowKey="id"
-            emptyMessage="No pending invitations."
-          />
-        )}
-      </div>
+          {activeTab === 'ACTIVE' ? (
+            <DataTable
+              columns={userColumns}
+              data={users}
+              isLoading={isLoadingUsers}
+              rowKey="id"
+              emptyMessage="No active users found."
+              className="rounded-none border-none shadow-none"
+            />
+          ) : (
+            <DataTable
+              columns={inviteColumns}
+              data={invitations}
+              isLoading={isLoadingInvites}
+              rowKey="id"
+              emptyMessage="No pending invitations."
+              className="rounded-none border-none shadow-none"
+            />
+          )}
+        </CardBody>
+      </Card>
 
       {showInviteModal && (
         <InviteUserModal
@@ -221,72 +224,77 @@ function InviteUserModal({ onClose, onSuccess }: { onClose: () => void; onSucces
 
   return (
     <Modal isOpen={true} onClose={onClose} title="Invite New User" size="2xl">
-      <form onSubmit={handleSubmit} className="p-2">
-        <div className="space-y-4">
-          <div>
-            <label className="mb-1 block text-sm font-bold" htmlFor="invite-email">
-              Email *
+      <form onSubmit={handleSubmit} className="space-y-6 p-2">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+          <div className="md:col-span-2">
+            <label className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-gray-500" htmlFor="invite-email">
+              Email Address *
             </label>
             <input
               id="invite-email"
               name="email"
               type="email"
               required
-              className="w-full rounded-lg border p-2"
+              placeholder="e.g. staff@wiria.org"
+              className="w-full rounded-xl border-gray-200 bg-gray-50 p-3 outline-none focus:border-wiria-blue-dark focus:ring-2 focus:ring-wiria-blue-dark/20 transition-all"
               disabled={isLoading}
             />
           </div>
           <div>
-            <label className="mb-1 block text-sm font-bold" htmlFor="invite-firstName">
+            <label className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-gray-500" htmlFor="invite-firstName"
+            >
               First Name
             </label>
             <input
               id="invite-firstName"
               name="firstName"
-              className="w-full rounded-lg border p-2"
+              placeholder="e.g. Jane"
+              className="w-full rounded-xl border-gray-200 bg-gray-50 p-3 outline-none focus:border-wiria-blue-dark focus:ring-2 focus:ring-wiria-blue-dark/20 transition-all"
               disabled={isLoading}
             />
           </div>
           <div>
-            <label className="mb-1 block text-sm font-bold" htmlFor="invite-lastName">
+            <label className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-gray-500" htmlFor="invite-lastName">
               Last Name
             </label>
             <input
               id="invite-lastName"
               name="lastName"
-              className="w-full rounded-lg border p-2"
+              placeholder="e.g. Doe"
+              className="w-full rounded-xl border-gray-200 bg-gray-50 p-3 outline-none focus:border-wiria-blue-dark focus:ring-2 focus:ring-wiria-blue-dark/20 transition-all"
               disabled={isLoading}
             />
           </div>
-          <div>
-            <label className="mb-1 block text-sm font-bold" htmlFor="invite-role">
-              Role *
+          <div className="md:col-span-2">
+            <label className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-gray-500" htmlFor="invite-role">
+              System Role *
             </label>
             <select
               id="invite-role"
               name="role"
               required
-              className="w-full rounded-lg border p-2"
+              className="w-full rounded-xl border-gray-200 bg-gray-50 p-3 outline-none focus:border-wiria-blue-dark focus:ring-2 focus:ring-wiria-blue-dark/20 transition-all appearance-none"
               disabled={isLoading}
             >
               <option value="">Select a role...</option>
-              <option value={UserRole.STAFF}>Staff</option>
-              <option value={UserRole.ADMIN}>Admin</option>
-              <option value={UserRole.VOLUNTEER}>Volunteer</option>
-              <option value={UserRole.SUPER_ADMIN}>Super Admin</option>
+              <option value={UserRole.STAFF}>Staff Member</option>
+              <option value={UserRole.ADMIN}>Administrator</option>
+              <option value={UserRole.VOLUNTEER}>Volunteer Coordinator</option>
+              <option value={UserRole.SUPER_ADMIN}>Super Administrator</option>
             </select>
           </div>
         </div>
-        <div className="mt-6 flex gap-3">
-          <Button type="submit" fullWidth disabled={isLoading}>
-            {isLoading ? 'Sending...' : 'Send Invitation'}
+        <div className="flex gap-4 pt-4">
+          <Button type="submit" fullWidth isLoading={isLoading} className="h-12 text-lg">
+            Send Invitation
           </Button>
           <Button
             type="button"
-            variant="secondary"
+            variant="outline"
             fullWidth
             onClick={onClose}
             disabled={isLoading}
+            className="h-12 text-lg"
           >
             Cancel
           </Button>

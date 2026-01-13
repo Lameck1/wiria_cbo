@@ -19,3 +19,12 @@ export function ActivitySkeleton() {
     </div>
   );
 }
+
+export function DashboardTrendSkeleton() {
+  return (
+    <div className="animate-pulse rounded-2xl bg-white p-6 shadow-xl">
+      <div className="mb-6 h-6 w-48 rounded bg-gray-200"></div>
+      <div className="h-64 rounded bg-gray-100"></div>
+    </div>
+  );
+}

@@ -10,13 +10,8 @@ import { DataTable, Column } from '@/shared/components/ui/DataTable';
 import { useAdminData, useAdminAction } from '@/shared/hooks/useAdminData';
 import { MessageDetailsModal } from '@/features/admin/components/contacts/modals/MessageDetailsModal';
 import { ReplyModal } from '@/features/admin/components/contacts/modals/ReplyModal';
-
-const STATUS_COLORS: Record<string, string> = {
-  NEW: 'bg-yellow-100 text-yellow-700',
-  READ: 'bg-blue-100 text-blue-700',
-  RESPONDED: 'bg-green-100 text-green-700',
-  ARCHIVED: 'bg-gray-100 text-gray-500',
-};
+import { AdminPageHeader } from '@/features/admin/components/layout/AdminPageHeader';
+import { StatusBadge } from '@/shared/components/ui/StatusBadge';
 
 export default function ContactManagementPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -100,13 +95,7 @@ export default function ContactManagementPage() {
     {
       header: 'Status',
       key: 'status',
-      render: (c) => (
-        <span
-          className={`rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${STATUS_COLORS[c.status]}`}
-        >
-          {c.status}
-        </span>
-      ),
+      render: (c) => <StatusBadge status={c.status} />,
     },
     {
       header: 'Actions',
@@ -148,13 +137,10 @@ export default function ContactManagementPage() {
 
   return (
     <div className="space-y-8">
-      <header className="flex items-start justify-between rounded-2xl border border-gray-100 bg-gray-50/50 p-6">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight text-gray-900">Contact Messages</h1>
-          <p className="mt-1 font-medium text-gray-500">
-            Manage and respond to community inquiries from the contact form.
-          </p>
-        </div>
+      <AdminPageHeader
+        title="Contact Messages"
+        description="Manage and respond to community inquiries from the contact form."
+      >
         {pendingCount > 0 && (
           <div className="flex items-center gap-2 rounded-xl border border-yellow-100 bg-yellow-50 px-4 py-2 shadow-sm">
             <span className="h-2 w-2 animate-pulse rounded-full bg-yellow-600" />
@@ -163,7 +149,7 @@ export default function ContactManagementPage() {
             </span>
           </div>
         )}
-      </header>
+      </AdminPageHeader>
 
       <div className="flex w-fit flex-wrap items-center gap-2 rounded-2xl border border-gray-100 bg-white p-2 shadow-sm">
         {[
@@ -188,7 +174,7 @@ export default function ContactManagementPage() {
         rowKey="id"
         isLoading={isLoading}
         emptyMessage="No messages found for this category."
-        rowClassName={(c) => (c.status === 'NEW' ? 'bg-yellow-50/30' : '')}
+        rowClassName={(c: Contact) => (c.status === 'NEW' ? 'bg-yellow-50/30' : '')}
       />
 
       {selectedContact && !showReplyModal && (

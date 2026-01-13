@@ -1,3 +1,4 @@
+import { DataTable, Column } from '@/shared/components/ui/DataTable';
 import { AdminMember } from '@/features/membership/api/members.api';
 import { Button } from '@/shared/components/ui/Button';
 import { StatusBadge } from '@/shared/components/ui/StatusBadge';
@@ -9,100 +10,81 @@ interface MemberTableProps {
 }
 
 export function MemberTable({ members = [], isLoading, onViewDetails }: MemberTableProps) {
-  if (isLoading) {
-    return (
-      <div className="rounded-2xl bg-white p-12 text-center shadow-xl">
-        <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-wiria-blue-dark/20 border-t-wiria-blue-dark" />
-        <p className="mt-4 text-gray-600">Loading members...</p>
-      </div>
-    );
-  }
-
-  if (members.length === 0) {
-    return (
-      <div className="rounded-2xl bg-white p-12 text-center text-gray-500 shadow-xl">
-        <p className="text-lg font-semibold">No members found</p>
-        <p className="mt-2 text-sm">Try changing your filter or search criteria</p>
-      </div>
-    );
-  }
+  const columns: Column<AdminMember>[] = [
+    {
+      header: 'Member #',
+      key: 'memberNumber',
+      className: 'font-mono font-semibold',
+    },
+    {
+      header: 'Name',
+      key: 'name',
+      render: (m) => `${m.firstName} ${m.lastName}`,
+    },
+    {
+      header: 'Type',
+      key: 'membershipType',
+      render: (m) => (
+        <>
+          <span
+            className={`rounded-md px-2 py-1 text-[10px] font-bold uppercase ${m.membershipType === 'GROUP' ? 'bg-purple-100 text-purple-700' : 'bg-blue-100 text-blue-700'
+              }`}
+          >
+            {m.membershipType}
+          </span>
+          {m.membershipType === 'GROUP' && (
+            <div className="mt-1 text-[10px] font-medium text-gray-500">{m.groupName}</div>
+          )}
+        </>
+      ),
+    },
+    {
+      header: 'Contact',
+      key: 'contact',
+      render: (m) => (
+        <>
+          <div>{m.email}</div>
+          <div className="text-xs text-gray-500">{m.phone}</div>
+        </>
+      ),
+    },
+    {
+      header: 'Status',
+      key: 'status',
+      render: (m) => <StatusBadge status={m.status} />,
+    },
+    {
+      header: 'Payment',
+      key: 'payment',
+      render: (m) => <PaymentInfo payments={m.payments} />,
+    },
+    {
+      header: 'Join Date',
+      key: 'joinDate',
+      render: (m) => new Date(m.joinDate).toLocaleDateString(),
+    },
+    {
+      header: 'Actions',
+      key: 'actions',
+      align: 'right',
+      render: (m) => (
+        <Button size="sm" onClick={() => onViewDetails(m)}>
+          Review
+        </Button>
+      ),
+    },
+  ];
 
   return (
     <div className="overflow-hidden rounded-2xl bg-white shadow-xl">
-      <div className="overflow-x-auto">
-        <table className="w-full">
-          <thead>
-            <tr className="border-b border-gray-100 bg-gray-50">
-              <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500">
-                Member #
-              </th>
-              <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500">
-                Name
-              </th>
-              <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500">
-                Type
-              </th>
-              <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500">
-                Contact
-              </th>
-              <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500">
-                Status
-              </th>
-              <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500">
-                Payment
-              </th>
-              <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500">
-                Join Date
-              </th>
-              <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-100">
-            {members.map((member) => (
-              <tr key={member.id} className="transition-colors hover:bg-gray-50">
-                <td className="whitespace-nowrap px-6 py-4 font-mono text-sm font-semibold text-gray-900">
-                  {member.memberNumber}
-                </td>
-                <td className="whitespace-nowrap px-6 py-4 text-sm font-semibold text-gray-900">
-                  {member.firstName} {member.lastName}
-                </td>
-                <td className="whitespace-nowrap px-6 py-4 text-sm">
-                  <span
-                    className={`rounded-md px-2 py-1 text-[10px] font-bold uppercase ${member.membershipType === 'GROUP' ? 'bg-purple-100 text-purple-700' : 'bg-blue-100 text-blue-700'}`}
-                  >
-                    {member.membershipType}
-                  </span>
-                  {member.membershipType === 'GROUP' && (
-                    <div className="mt-1 text-[10px] font-medium text-gray-500">
-                      {member.groupName}
-                    </div>
-                  )}
-                </td>
-                <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-600">
-                  <div>{member.email}</div>
-                  <div className="text-xs">{member.phone}</div>
-                </td>
-                <td className="whitespace-nowrap px-6 py-4">
-                  <StatusBadge status={member.status} />
-                </td>
-                <td className="whitespace-nowrap px-6 py-4 text-sm">
-                  <PaymentInfo payments={member.payments} />
-                </td>
-                <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-600">
-                  {new Date(member.joinDate).toLocaleDateString()}
-                </td>
-                <td className="whitespace-nowrap px-6 py-4 text-sm font-medium">
-                  <Button size="sm" onClick={() => onViewDetails(member)}>
-                    Review
-                  </Button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <DataTable
+        columns={columns}
+        data={members}
+        isLoading={isLoading}
+        rowKey="id"
+        emptyMessage="No members found matching your criteria."
+        className="rounded-none border-none shadow-none"
+      />
     </div>
   );
 }

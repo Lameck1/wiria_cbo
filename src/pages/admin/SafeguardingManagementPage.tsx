@@ -9,6 +9,7 @@ import { DataTable, Column } from '@/shared/components/ui/DataTable';
 import { useAdminData, useAdminAction } from '@/shared/hooks/useAdminData';
 import { ReportDetailsModal } from '@/features/admin/components/safeguarding/modals/ReportDetailsModal';
 import { ResolveReportModal } from '@/features/admin/components/safeguarding/modals/ResolveReportModal';
+import { formatDate } from '@/shared/utils/helpers';
 
 const STATUS_COLORS: Record<string, string> = {
   PENDING: 'bg-yellow-100 text-yellow-700',
@@ -34,6 +35,9 @@ const INCIDENT_TYPES: Record<string, string> = {
   OTHER: 'Other',
 };
 
+import { AdminPageHeader } from '@/features/admin/components/layout/AdminPageHeader';
+import { StatusBadge } from '@/shared/components/ui/StatusBadge';
+
 export default function SafeguardingManagementPage() {
   const [statusFilter, setStatusFilter] = useState('');
   const [priorityFilter, setPriorityFilter] = useState('');
@@ -49,7 +53,8 @@ export default function SafeguardingManagementPage() {
   );
 
   const updateStatusAction = useAdminAction(
-    ({ id, status }: { id: string; status: string }) => updateReport(id, { status: status as any }),
+    ({ id, status }: { id: string; status: SafeguardingReport['status'] }) =>
+      updateReport(id, { status }),
     [['safeguarding']],
     { successMessage: 'Report status updated' }
   );
@@ -78,13 +83,6 @@ export default function SafeguardingManagementPage() {
     );
   };
 
-  const formatDate = (date: string) =>
-    new Date(date).toLocaleDateString('en-KE', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    });
-
   const columns: Column<SafeguardingReport>[] = [
     { header: 'Reference', key: 'referenceNumber', className: 'font-mono text-xs font-bold' },
     {
@@ -108,13 +106,7 @@ export default function SafeguardingManagementPage() {
     {
       header: 'Status',
       key: 'status',
-      render: (r) => (
-        <span
-          className={`rounded-full px-2 py-0.5 text-[10px] font-bold uppercase ${STATUS_COLORS[r.status]}`}
-        >
-          {r.status.replace('_', ' ')}
-        </span>
-      ),
+      render: (r) => <StatusBadge status={r.status} />,
     },
     {
       header: 'Date',
@@ -156,13 +148,10 @@ export default function SafeguardingManagementPage() {
 
   return (
     <div className="space-y-8">
-      <header className="flex items-start justify-between rounded-2xl border border-gray-100 bg-gray-50/50 p-6">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight text-gray-900">Safeguarding Reports</h1>
-          <p className="mt-1 font-medium text-gray-500">
-            Manage and respond to safeguarding concerns within the community.
-          </p>
-        </div>
+      <AdminPageHeader
+        title="Safeguarding Reports"
+        description="Manage and respond to safeguarding concerns within the community."
+      >
         <div className="flex gap-3">
           {criticalCount > 0 && (
             <div className="flex animate-pulse items-center gap-2 rounded-xl border border-red-100 bg-red-50 px-4 py-2 shadow-sm">
@@ -179,7 +168,7 @@ export default function SafeguardingManagementPage() {
             </div>
           )}
         </div>
-      </header>
+      </AdminPageHeader>
 
       <div className="flex flex-wrap items-center gap-4 rounded-xl border border-gray-100 bg-white p-4 shadow-sm">
         <span className="px-2 text-xs font-bold uppercase tracking-widest text-gray-400">

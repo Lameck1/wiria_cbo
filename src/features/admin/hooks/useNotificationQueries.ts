@@ -15,10 +15,26 @@ export function useNotificationCountsQuery(enabled = false) {
     return useQuery({
         queryKey: ADMIN_KEYS.notifications,
         queryFn: async () => {
+            // Define response types for statistics endpoints
+            interface StatisticsResponse {
+                data?: {
+                    new?: number;
+                    unread?: number;
+                    pending?: number;
+                    critical?: number;
+                    high?: number;
+                };
+                new?: number;
+                unread?: number;
+                pending?: number;
+                critical?: number;
+                high?: number;
+            }
+
             const [contactRes, appRes, safeRes] = await Promise.allSettled([
-                apiClient.get<{ data: any }>('/contact/statistics'),
-                apiClient.get<{ data: any }>('/admin/applications/statistics'),
-                apiClient.get<{ data: any }>('/safeguarding/statistics'),
+                apiClient.get<StatisticsResponse>('/contact/statistics'),
+                apiClient.get<StatisticsResponse>('/admin/applications/statistics'),
+                apiClient.get<StatisticsResponse>('/safeguarding/statistics'),
             ]);
 
             const counts: NotificationCounts = {

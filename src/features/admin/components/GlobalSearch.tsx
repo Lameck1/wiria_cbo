@@ -5,7 +5,9 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 import { apiClient } from '@/shared/services/api/client';
+import { useDeferredValue } from 'react';
 
 interface SearchResult {
   id: string;
@@ -32,8 +34,7 @@ interface SearchResults {
 
 export function GlobalSearch() {
   const [query, setQuery] = useState('');
-  const [results, setResults] = useState<SearchResults | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const deferredQuery = useDeferredValue(query);
   const [isOpen, setIsOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -50,30 +51,22 @@ export function GlobalSearch() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Debounced search
+  const { data: results, isLoading } = useQuery({
+    queryKey: ['admin', 'search', deferredQuery],
+    queryFn: async () => {
+      if (deferredQuery.length < 2) return null;
+      return apiClient.get<SearchResults>(`/admin/search?q=${encodeURIComponent(deferredQuery)}`);
+    },
+    enabled: deferredQuery.length >= 2,
+    staleTime: 1000 * 60, // Cache for 1 minute
+  });
+
+  // Open dropdown when results arrive
   useEffect(() => {
-    if (query.length < 2) {
-      setResults(null);
-      return;
+    if (results) {
+      setIsOpen(true);
     }
-
-    const timer = setTimeout(async () => {
-      setIsLoading(true);
-      try {
-        const data = await apiClient.get<SearchResults>(
-          `/admin/search?q=${encodeURIComponent(query)}`
-        );
-        setResults(data);
-        setIsOpen(true);
-      } catch (error) {
-        console.error('Search failed:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    }, 300);
-
-    return () => clearTimeout(timer);
-  }, [query]);
+  }, [results]);
 
   const handleResultClick = (result: SearchResult) => {
     setIsOpen(false);

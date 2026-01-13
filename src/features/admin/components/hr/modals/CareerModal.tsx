@@ -36,13 +36,18 @@ export function CareerModal({ career, onClose, onSuccess }: CareerModalProps) {
     const formData = new FormData(e.currentTarget);
     const rawData = Object.fromEntries(formData.entries());
 
-    const data = {
-      ...rawData,
+    const data: Partial<Career> = {
+      title: rawData['title'] as string,
+      employmentType: rawData['employmentType'] as Career['employmentType'],
+      location: rawData['location'] as string,
       deadline: new Date(rawData['deadline'] as string).toISOString(),
+      salary: (rawData['salary'] as string) || undefined,
+      summary: rawData['summary'] as string,
+      description: rawData['description'] as string,
       responsibilities: responsibilities.filter((r: string) => r.trim()),
       requirements: requirements.filter((r: string) => r.trim()),
       desirable: desirable.filter((r: string) => r.trim()),
-    } as any;
+    };
 
     try {
       if (career) await updateCareer(career.id, data);

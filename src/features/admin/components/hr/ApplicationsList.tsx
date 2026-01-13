@@ -1,17 +1,6 @@
 import { DataTable, Column } from '@/shared/components/ui/DataTable';
+import { StatusBadge } from '@/shared/components/ui/StatusBadge';
 import { ApplicationsListProps, Application } from './types';
-
-function getStatusClass(status: string) {
-  const styles: Record<string, string> = {
-    PENDING: 'bg-yellow-100 text-yellow-700',
-    UNDER_REVIEW: 'bg-blue-100 text-blue-700',
-    ACCEPTED: 'bg-green-100 text-green-700',
-    REJECTED: 'bg-red-100 text-red-700',
-    SHORTLISTED: 'bg-purple-100 text-purple-700',
-    INTERVIEWED: 'bg-indigo-100 text-indigo-700',
-  };
-  return styles[status] || 'bg-gray-100 text-gray-700';
-}
 
 export function ApplicationsList({ applications, onReview }: ApplicationsListProps) {
   const columns: Column<Application>[] = [
@@ -52,13 +41,7 @@ export function ApplicationsList({ applications, onReview }: ApplicationsListPro
     {
       header: 'Status',
       key: 'status',
-      render: (app) => (
-        <span
-          className={`rounded-full px-2 py-1 text-[10px] font-bold uppercase tracking-wider ${getStatusClass(app.status)}`}
-        >
-          {app.status}
-        </span>
-      ),
+      render: (app) => <StatusBadge status={app.status} />,
     },
     {
       header: 'Actions',

@@ -1,6 +1,7 @@
 import { memo, useMemo } from 'react';
 import { Button } from '@/shared/components/ui/Button';
 import { DataTable, Column } from '@/shared/components/ui/DataTable';
+import { StatusBadge } from '@/shared/components/ui/StatusBadge';
 import { CareersTabProps, Career, Application } from './types';
 
 export const CareersTab = memo(function CareersTab({
@@ -26,11 +27,7 @@ export const CareersTab = memo(function CareersTab({
     {
       header: 'Type',
       key: 'employmentType',
-      render: (c) => (
-        <span className="rounded bg-blue-50 px-2 py-1 text-xs font-bold text-blue-700">
-          {c.employmentType.replace('_', ' ')}
-        </span>
-      ),
+      render: (c) => <StatusBadge status={c.employmentType} />,
     },
     {
       header: 'Applications',
@@ -43,13 +40,7 @@ export const CareersTab = memo(function CareersTab({
     {
       header: 'Status',
       key: 'status',
-      render: (c) => (
-        <span
-          className={`rounded-full px-2 py-1 text-[10px] font-bold ${c.status === 'ACTIVE' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'}`}
-        >
-          {c.status}
-        </span>
-      ),
+      render: (c) => <StatusBadge status={c.status} />,
     },
     {
       header: 'Actions',
