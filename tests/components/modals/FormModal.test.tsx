@@ -121,7 +121,7 @@ describe('FormModal', () => {
   });
 
   it('should handle form submission with valid data', async () => {
-    mockOnSubmit.mockResolvedValue();
+    mockOnSubmit.mockResolvedValue(undefined);
 
     render(
       <FormModal
@@ -294,7 +294,7 @@ describe('FormModal', () => {
   });
 
   it('should handle number input type', async () => {
-    mockOnSubmit.mockResolvedValue();
+    mockOnSubmit.mockResolvedValue(undefined);
 
     render(
       <FormModal

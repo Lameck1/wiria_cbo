@@ -35,9 +35,9 @@ describe('User Management UI', () => {
     form.addEventListener('submit', (event) => {
       event.preventDefault();
       submitted = true;
-      const identifier = (form.querySelector('input[name="identifier"]'))
+      const identifier = (form.querySelector('input[name="identifier"]') as HTMLInputElement | null)
         ?.value;
-      const password = (form.querySelector('input[name="password"]'))
+      const password = (form.querySelector('input[name="password"]') as HTMLInputElement | null)
         ?.value;
       if (!identifier || !password) {
         errorDiv.textContent = 'All fields required';
@@ -174,7 +174,7 @@ describe('User Management UI', () => {
 
     form.addEventListener('submit', (event) => {
       event.preventDefault();
-      const emailInput = form.querySelector('input[name="email"]');
+      const emailInput = form.querySelector('input[name="email"]') as HTMLInputElement | null;
       if (!emailInput?.value.includes('@')) {
         errorDiv.textContent = 'Invalid email';
       }

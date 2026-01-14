@@ -84,7 +84,7 @@ class ApiClient {
         const errorMessage =
           (dataObj.message as string) ||
           ((dataObj.error as Record<string, unknown>)?.message as string) ||
-          (typeof dataObj.error === 'string' ? dataObj.error : null) ||
+          (typeof dataObj['error'] === 'string' ? dataObj['error'] : null) ||
           (response.status === 401
             ? 'Session expired or unauthorized'
             : 'An unexpected error occurred');
