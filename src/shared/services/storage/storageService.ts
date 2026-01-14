@@ -50,11 +50,20 @@ export class StorageService {
   }
 
   clear(): void {
-    const keys = Object.keys(localStorage);
-    keys.forEach((key) => {
-      if (key.startsWith(this.prefix)) {
-        localStorage.removeItem(key);
+    // Create array of keys to delete before removing them
+    // This avoids issues with iterator invalidation in jsdom
+    const keysToRemove: string[] = [];
+    
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith(this.prefix)) {
+        keysToRemove.push(key);
       }
+    }
+    
+    // Remove all collected keys
+    keysToRemove.forEach((key) => {
+      localStorage.removeItem(key);
     });
   }
 
