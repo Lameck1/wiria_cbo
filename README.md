@@ -78,8 +78,21 @@ The application will be available at `http://localhost:5173`.
 - `npm run build`: Compile TypeScript and build for production.
 - `npm run test`: Run the test suite with Vitest.
 - `npm run lint`: Check the code for linting errors.
+- `npm run lint:fix`: Auto-fix linting errors.
 - `npm run format`: Prettify code using Prettier.
+- `npm run type-check`: Run TypeScript type checking.
 - `npm run deploy`: Automated deployment to GitHub Pages.
+
+### Code Quality Scripts
+- `npm run audit:full`: Run all quality checks (deps, code, bundle, unused).
+- `npm run audit:deps`: Check dependencies for security issues.
+- `npm run audit:code`: Run lint and type-check.
+- `npm run audit:bundle`: Analyze bundle size.
+- `npm run audit:unused`: Find unused code with knip.
+- `npm run fix:all`: Auto-fix linting and format issues.
+- `./analyze.sh`: Generate comprehensive code quality reports.
+
+📖 See [CODE_QUALITY.md](./CODE_QUALITY.md) for detailed documentation on code quality tools and practices.
 
 ---
 
@@ -98,7 +111,10 @@ We follow a professional engineering standard:
 1. Use **Semantic HTML** and **Tailwind CSS**.
 2. All new forms must use the unified `Form` abstraction in `shared/components/ui/form`.
 3. Ensure all API calls are typed and wrapped in TanStack Query.
-4. Run `npm run lint` before committing.
+4. Run `npm run fix:all` before committing.
+5. Ensure `npm run type-check` passes.
+
+📖 See [CODE_QUALITY.md](./CODE_QUALITY.md) for comprehensive code quality guidelines, tools, and best practices.
 
 ---
 © 2026 WIRIA CBO. Licensed under MIT.
