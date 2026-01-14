@@ -1,13 +1,13 @@
 // @vitest-environment jsdom
 
-import { describe, it, beforeEach, vi, expect } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
+import { describe, it, beforeEach, vi, expect } from 'vitest';
 
+import { AuthProvider } from '@/features/auth/context/AuthContext';
 import ResetPasswordPage from '@/pages/ResetPasswordPage';
 import { apiClient } from '@/shared/services/api/client';
-import { AuthProvider } from '@/features/auth/context/AuthContext';
 
 vi.mock('@/shared/services/notification/notificationService', () => ({
   notificationService: {

@@ -1,11 +1,14 @@
 import { Suspense } from 'react';
+
 import { useNavigate } from 'react-router-dom';
-import { DashboardProvider, useDashboard } from '@/features/admin/context/DashboardContext';
-import { DashboardTrendCharts } from '@/features/admin/components/TrendChart';
-import { ErrorBoundary } from '@/shared/components/ErrorBoundary';
-import { ROUTES } from '@/shared/constants/routes';
+
 import { StatCardSkeleton, DashboardTrendSkeleton } from '@/features/admin/components/DashboardSkeletons';
 import { StatCard } from '@/features/admin/components/StatCard';
+import { DashboardTrendCharts } from '@/features/admin/components/TrendChart';
+import { DashboardProvider, useDashboard } from '@/features/admin/context/DashboardContext';
+import { ErrorBoundary } from '@/shared/components/ErrorBoundary';
+import { ROUTES } from '@/shared/constants/routes';
+
 import {
   QuickActionsPanel,
   RecentApplications,
@@ -135,7 +138,7 @@ function AdminDashboardPage() {
               <p className="text-gray-600">Loading dashboard...</p>
             </div>
             <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-              {Array.from({ length: 6 }).map((_, i) => <StatCardSkeleton key={i} />)}
+              {Array.from({ length: 6 }).map((_, index) => <StatCardSkeleton key={index} />)}
             </div>
             <DashboardTrendSkeleton />
           </>

@@ -1,8 +1,11 @@
 import { useState } from 'react';
+
 import { motion, AnimatePresence } from 'framer-motion';
-import { useContactForm } from '../hooks/useContactForm';
+
 import { Form, FormField, FormTextareaField } from '@/shared/components/ui/form';
 import { cn } from '@/shared/utils/helpers';
+
+import { useContactForm } from '../hooks/useContactForm';
 import { contactSchema, ContactFormSchema } from '../validation';
 
 const MESSAGE_MIN_LENGTH = 20;

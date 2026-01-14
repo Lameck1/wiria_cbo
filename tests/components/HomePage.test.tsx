@@ -1,9 +1,10 @@
-import { describe, it, expect } from 'vitest';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import HomePage from '@/pages/HomePage';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { describe, it, expect } from 'vitest';
+
 import { AuthProvider } from '@/features/auth/context/AuthContext';
+import HomePage from '@/pages/HomePage';
 
 function createTestQueryClient() {
   return new QueryClient({
@@ -29,8 +30,8 @@ describe('HomePage', () => {
       </QueryClientProvider>
     );
 
-    expect(screen.getAllByText(/WIRIA CBO/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/wiria cbo/i).length).toBeGreaterThan(0);
     // Check for focus areas section heading which is always visible
-    expect(screen.getByText(/Our Focus Areas/i)).toBeInTheDocument();
+    expect(screen.getByText(/our focus areas/i)).toBeInTheDocument();
   });
 });

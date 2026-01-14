@@ -1,5 +1,6 @@
 import { apiClient } from '@/shared/services/api/client';
 import { API_ENDPOINTS } from '@/shared/services/api/endpoints';
+
 import { SafeguardingReportData, ReportLookupResult } from '../hooks/useSafeguardingReport';
 
 export const safeguardingApi = {
@@ -19,7 +20,7 @@ export const safeguardingApi = {
         // apiClient doesn't support FormData directly in its post method currently
         // because it forces 'application/json'. 
         // For now, we'll use a direct fetch or update apiClient.
-        const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
+        const API_BASE_URL = import.meta.env['VITE_API_BASE_URL'] ?? 'http://localhost:5001/api';
         const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.SAFEGUARDING_SUBMIT}`, {
             method: 'POST',
             body: formData,

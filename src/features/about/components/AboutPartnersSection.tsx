@@ -4,6 +4,7 @@
  */
 
 import { motion } from 'framer-motion';
+
 import { usePartners, Partner } from '@/features/home/hooks/usePartners';
 
 // Partner type badge colors

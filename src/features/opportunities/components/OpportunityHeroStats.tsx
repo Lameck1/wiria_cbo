@@ -4,6 +4,7 @@
  */
 
 import { motion } from 'framer-motion';
+
 import { useOpportunities } from '../hooks/useOpportunities';
 
 export function OpportunityHeroStats() {

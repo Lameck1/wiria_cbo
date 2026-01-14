@@ -1,7 +1,9 @@
 import { memo } from 'react';
+
 import { motion } from 'framer-motion';
-import { PaymentMethodToggle } from '@/features/donations/components/PaymentMethodToggle';
+
 import { PaymentInstructions } from '@/features/donations/components/PaymentInstructions';
+import { PaymentMethodToggle } from '@/features/donations/components/PaymentMethodToggle';
 
 interface FeeBreakdown {
     registration: { rate: number; count: number; subtotal: number };

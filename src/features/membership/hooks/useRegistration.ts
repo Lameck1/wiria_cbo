@@ -3,11 +3,13 @@
  */
 
 import { useState } from 'react';
-import { apiClient } from '@/shared/services/api/client';
-import { notificationService } from '@/shared/services/notification/notificationService';
-import { API_ENDPOINTS } from '@/shared/services/api/endpoints';
-import { RegistrationFormData, RegistrationResponse } from '../types';
+
 import { PaymentStatusResponse } from '@/features/donations/types';
+import { apiClient } from '@/shared/services/api/client';
+import { API_ENDPOINTS } from '@/shared/services/api/endpoints';
+import { notificationService } from '@/shared/services/notification/notificationService';
+
+import { RegistrationFormData, RegistrationResponse } from '../types';
 
 export function useRegistration() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -28,13 +30,13 @@ export function useRegistration() {
         data
       );
 
-      const { member, checkoutRequestId: reqId, message } = response.data;
+      const { member, checkoutRequestId: requestId, message } = response.data;
 
       setMemberId(member.id);
       setMembershipNumber(member.membershipNumber);
 
-      if (data.paymentMethod === 'STK_PUSH' && reqId) {
-        setCheckoutRequestId(reqId);
+      if (data.paymentMethod === 'STK_PUSH' && requestId) {
+        setCheckoutRequestId(requestId);
         setPaymentStatus('PENDING');
         notificationService.info('STK push sent to your phone. Please complete the payment.');
       } else {
@@ -42,7 +44,7 @@ export function useRegistration() {
       }
 
       return { success: true, memberId: member.id, membershipNumber: member.membershipNumber };
-    } catch (_error) {
+    } catch {
       notificationService.error('Registration failed. Please try again.');
       return { success: false };
     } finally {
@@ -68,7 +70,7 @@ export function useRegistration() {
       }
 
       return status;
-    } catch (_error) {
+    } catch {
       return 'PENDING';
     }
   };

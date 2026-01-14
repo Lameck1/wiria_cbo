@@ -3,16 +3,18 @@
  */
 
 import { useState, useEffect } from 'react';
-import { useSearchParams, useNavigate, Link } from 'react-router-dom';
+
 import { motion, AnimatePresence } from 'framer-motion';
-import { Button } from '@/shared/components/ui/Button';
+import { useSearchParams, useNavigate, Link } from 'react-router-dom';
+
 import {
   verifyInvitation,
   acceptInvitation,
   VerifyInviteResponse,
 } from '@/features/auth/api/auth.api';
-import { notificationService } from '@/shared/services/notification/notificationService';
+import { Button } from '@/shared/components/ui/Button';
 import { ApiError } from '@/shared/services/api/client';
+import { notificationService } from '@/shared/services/notification/notificationService';
 
 export default function AcceptInvitePage() {
   const [searchParams] = useSearchParams();
@@ -38,9 +40,9 @@ export default function AcceptInvitePage() {
       try {
         const response = await verifyInvitation(token);
         setInviteData(response);
-      } catch (err: unknown) {
+      } catch (error_: unknown) {
         const message =
-          err instanceof ApiError ? err.message : 'The invitation link is invalid or has expired.';
+          error_ instanceof ApiError ? error_.message : 'The invitation link is invalid or has expired.';
         setError(message);
       } finally {
         setIsLoading(false);
@@ -72,8 +74,8 @@ export default function AcceptInvitePage() {
       await acceptInvitation(token, password);
       notificationService.success('Invitation accepted! You can now log in.');
       navigate('/staff-login', { replace: true });
-    } catch (err: unknown) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to accept invitation';
+    } catch (error_: unknown) {
+      const errorMessage = error_ instanceof Error ? error_.message : 'Failed to accept invitation';
       notificationService.error(errorMessage);
       setIsSubmitting(false);
     }

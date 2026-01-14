@@ -1,9 +1,9 @@
 /**
  * Admin Meetings API Tests
  */
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 const mockMeeting = {
     id: '1',

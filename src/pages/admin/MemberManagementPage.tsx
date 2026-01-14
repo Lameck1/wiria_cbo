@@ -1,8 +1,9 @@
 import { useState, useDeferredValue } from 'react';
-import { AdminMember } from '@/features/membership/api/members.api';
+
 import { AdminPageHeader } from '@/features/admin/components/layout/AdminPageHeader';
-import { MemberProvider } from '@/features/admin/context/MemberContext';
 import { MemberContent } from '@/features/admin/components/members/MemberContent';
+import { MemberProvider } from '@/features/admin/context/MemberContext';
+import { AdminMember } from '@/features/membership/api/members.api';
 
 export default function MemberManagementPage() {
   const [filter, setFilter] = useState('ALL');

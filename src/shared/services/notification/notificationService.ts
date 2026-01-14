@@ -26,7 +26,7 @@ interface NotificationStore {
 export const useNotificationStore = create<NotificationStore>((set) => ({
   notifications: [],
   addNotification: (notification) => {
-    const id = Math.random().toString(36).substring(2, 9);
+    const id = Math.random().toString(36).slice(2, 9);
     const duration = notification.duration ?? 5000;
     const newNotification: Notification = {
       id,

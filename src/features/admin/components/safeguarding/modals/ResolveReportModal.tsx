@@ -5,7 +5,7 @@ interface ResolveReportModalProps {
   report: SafeguardingReport;
   resolution: string;
   isSubmitting: boolean;
-  setResolution: (val: string) => void;
+  setResolution: (value: string) => void;
   onResolve: () => void;
   onCancel: () => void;
 }

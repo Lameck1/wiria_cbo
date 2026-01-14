@@ -24,7 +24,7 @@ export function NoticesBanner() {
             }}
             transition={{
               duration: 3,
-              repeat: Infinity,
+              repeat: Number.POSITIVE_INFINITY,
               ease: 'easeInOut',
             }}
             className="pointer-events-none absolute inset-0 bg-gradient-to-r from-amber-200/30 to-yellow-200/30"
@@ -33,7 +33,7 @@ export function NoticesBanner() {
           <div className="relative z-10 flex items-start">
             <motion.div
               animate={{ rotate: [0, 10, -10, 0] }}
-              transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+              transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, repeatDelay: 3 }}
             >
               <svg
                 className="mr-3 mt-1 h-6 w-6 flex-shrink-0 text-amber-600"

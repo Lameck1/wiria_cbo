@@ -4,13 +4,15 @@
  */
 
 import { useEffect } from 'react';
+
 import { useLocation } from 'react-router-dom';
-import { PageHero } from '@/shared/components/sections/PageHero';
+
 import {
   DocumentRepositorySection,
   ActiveTendersSection,
   ResourcesHeroStats,
 } from '@/features/resources';
+import { PageHero } from '@/shared/components/sections/PageHero';
 
 function ResourcesPage() {
   const location = useLocation();
@@ -20,7 +22,7 @@ function ResourcesPage() {
     if (location.hash) {
       // Small delay to ensure the page has rendered
       const timeoutId = setTimeout(() => {
-        const elementId = location.hash.substring(1);
+        const elementId = location.hash.slice(1);
         const element = document.getElementById(elementId);
         if (element) {
           element.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -28,7 +30,7 @@ function ResourcesPage() {
       }, 100);
       return () => clearTimeout(timeoutId);
     }
-    return undefined;
+    return;
   }, [location.hash]);
   return (
     <main>

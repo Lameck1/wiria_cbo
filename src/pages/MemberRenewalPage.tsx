@@ -1,21 +1,24 @@
-import { PortalLayout } from '@/features/membership/components/PortalLayout';
-import { Card, CardBody } from '@/shared/components/ui/Card';
-import { Button } from '@/shared/components/ui/Button';
-import { FormField } from '@/shared/components/ui/form';
-import { Input } from '@/shared/components/ui/Input';
-import { PaymentMethodToggle } from '@/features/donations/components/PaymentMethodToggle';
-import { PaymentInstructions } from '@/features/donations/components/PaymentInstructions';
-import { useAuth } from '@/features/auth/context/AuthContext';
-import { useMemberData } from '@/features/membership/hooks/useMemberData';
-import { useRenewal } from '@/features/membership/hooks/useRenewal';
-import { usePaymentPoller } from '@/features/donations/hooks/usePaymentPoller';
 import { useEffect } from 'react';
-import { formatPhoneNumber } from '@/shared/utils/helpers';
-import { useRenewalFeeCalculation } from '@/shared/hooks/useFeeCalculation';
+
+import { zodResolver } from '@hookform/resolvers/zod';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useForm, FormProvider, Controller } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+
+import { useAuth } from '@/features/auth/context/AuthContext';
+import { PaymentInstructions } from '@/features/donations/components/PaymentInstructions';
+import { PaymentMethodToggle } from '@/features/donations/components/PaymentMethodToggle';
+import { usePaymentPoller } from '@/features/donations/hooks/usePaymentPoller';
+import { PortalLayout } from '@/features/membership/components/PortalLayout';
+import { useMemberData } from '@/features/membership/hooks/useMemberData';
+import { Button } from '@/shared/components/ui/Button';
+import { Card, CardBody } from '@/shared/components/ui/Card';
+import { FormField } from '@/shared/components/ui/form';
+import { Input } from '@/shared/components/ui/Input';
+import { useRenewal } from '@/features/membership/hooks/useRenewal';
+import { useRenewalFeeCalculation } from '@/shared/hooks/useFeeCalculation';
+import { formatPhoneNumber } from '@/shared/utils/helpers';
 import { renewalSchema, RenewalFormSchema } from '@/features/membership/validation';
+
 import {
   RenewalSuccess,
   RenewalPending,
@@ -254,7 +257,7 @@ function MemberRenewalPage() {
                           </p>
                           <PaymentMethodToggle
                             selected={paymentMethod}
-                            onChange={(val) => setValue('paymentMethod', val)}
+                            onChange={(value) => setValue('paymentMethod', value)}
                             disabled={isSubmitting}
                           />
                         </div>

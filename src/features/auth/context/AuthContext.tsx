@@ -12,11 +12,13 @@ import {
   useCallback,
   useMemo,
 } from 'react';
+
 import { useNavigate } from 'react-router-dom';
-import { User, Member, UserRole, AuthResponse } from '@/shared/types';
-import { storageService, STORAGE_KEYS } from '@/shared/services/storage/storageService';
-import { apiClient } from '@/shared/services/api/client';
+
 import { ROUTES } from '@/shared/constants/routes';
+import { apiClient } from '@/shared/services/api/client';
+import { storageService, STORAGE_KEYS } from '@/shared/services/storage/storageService';
+import { User, Member, UserRole, AuthResponse } from '@/shared/types';
 
 interface AuthContextType {
   user: User | Member | null;

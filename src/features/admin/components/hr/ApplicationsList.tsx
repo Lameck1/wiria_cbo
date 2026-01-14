@@ -1,5 +1,6 @@
 import { DataTable, Column } from '@/shared/components/ui/DataTable';
 import { StatusBadge } from '@/shared/components/ui/StatusBadge';
+
 import { ApplicationsListProps, Application } from './types';
 
 export function ApplicationsList({ applications, onReview }: ApplicationsListProps) {

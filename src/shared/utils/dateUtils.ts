@@ -25,18 +25,18 @@ export function formatDate(date: string | Date): string {
 /**
  * Format a date to a short format (for listings)
  */
-export function formatDateShort(dateStr: string): string {
-  if (dateStr === 'Ongoing' || dateStr === 'Rolling basis') {
-    return dateStr;
+export function formatDateShort(dateString: string): string {
+  if (dateString === 'Ongoing' || dateString === 'Rolling basis') {
+    return dateString;
   }
   try {
-    return new Date(dateStr).toLocaleDateString('en-US', {
+    return new Date(dateString).toLocaleDateString('en-US', {
       month: 'short',
       day: 'numeric',
       year: 'numeric',
     });
   } catch {
-    return dateStr;
+    return dateString;
   }
 }
 
@@ -86,8 +86,8 @@ export function formatRelativeTime(dateString: string): string {
  */
 export function formatMonth(monthKey: string): string {
   const [year, month] = monthKey.split('-');
-  const yearInt = parseInt(year || '0');
-  const monthInt = parseInt(month || '1');
+  const yearInt = Number.parseInt(year || '0');
+  const monthInt = Number.parseInt(month || '1');
   const date = new Date(yearInt, monthInt - 1);
   return date.toLocaleDateString('en-KE', { month: 'short', year: 'numeric' });
 }

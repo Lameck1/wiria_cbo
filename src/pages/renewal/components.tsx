@@ -3,10 +3,11 @@
  * Extracted from MemberRenewalPage for better modularity
  */
 
-import { Card, CardBody } from '@/shared/components/ui/Card';
-import { Button } from '@/shared/components/ui/Button';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+
+import { Button } from '@/shared/components/ui/Button';
+import { Card, CardBody } from '@/shared/components/ui/Card';
 
 interface RenewalSuccessProps {
     onNavigate?: () => void;

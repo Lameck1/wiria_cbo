@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 
-import { describe, it, expect, beforeEach } from 'vitest';
 import { fireEvent } from '@testing-library/dom';
+import { describe, it, expect, beforeEach } from 'vitest';
 
 // Membership Page TDD: Rendering, layout, form validation, submission, error/success states
 
@@ -62,7 +62,7 @@ describe('Membership Page', () => {
     expect(errorDiv).not.toBeNull();
     if (!form || !errorDiv) throw new Error('Test DOM not initialized');
 
-    const email = form.querySelector('input[name="email"]') as HTMLInputElement | null;
+    const email = form.querySelector('input[name="email"]');
     expect(email).not.toBeNull();
     if (!email) throw new Error('Missing email input');
 

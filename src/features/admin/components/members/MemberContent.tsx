@@ -1,8 +1,10 @@
-import { MemberTable } from './MemberTable';
-import { MemberFilters } from './MemberFilters';
-import { MemberDetailsModal } from './MemberDetailsModal';
-import { AdminMember } from '@/features/membership/api/members.api';
 import { useMember } from '@/features/admin/context/MemberContext';
+import { AdminMember } from '@/features/membership/api/members.api';
+
+import { MemberDetailsModal } from './MemberDetailsModal';
+import { MemberFilters } from './MemberFilters';
+import { MemberTable } from './MemberTable';
+
 
 interface MemberContentProps {
   filter: string;

@@ -1,8 +1,10 @@
 import { useState } from 'react';
-import { useAuth } from '@/features/auth/context/AuthContext';
+
 import { Link, useLocation } from 'react-router-dom';
+
 import { GlobalSearch } from '@/features/admin/components/GlobalSearch';
 import { NotificationBell } from '@/features/admin/components/NotificationBell';
+import { useAuth } from '@/features/auth/context/AuthContext';
 import { ROUTES } from '@/shared/constants/routes';
 import { UserRole } from '@/shared/types';
 

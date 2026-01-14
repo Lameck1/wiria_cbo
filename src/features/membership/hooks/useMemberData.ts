@@ -4,6 +4,7 @@
  */
 
 import { useMemo } from 'react';
+
 import {
   useMemberProfileQuery,
   useUpdateMemberProfileMutation,
@@ -106,8 +107,8 @@ export function useMemberData() {
     activityQuery.isLoading;
 
   const error =
-    (profileQuery.error as Error)?.message ||
-    (paymentsQuery.error as Error)?.message ||
+    (profileQuery.error)?.message ||
+    (paymentsQuery.error)?.message ||
     null;
 
   // Computed values

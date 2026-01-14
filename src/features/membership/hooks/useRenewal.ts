@@ -3,9 +3,10 @@
  */
 
 import { useReducer } from 'react';
+
 import { apiClient } from '@/shared/services/api/client';
-import { notificationService } from '@/shared/services/notification/notificationService';
 import { API_ENDPOINTS } from '@/shared/services/api/endpoints';
+import { notificationService } from '@/shared/services/notification/notificationService';
 
 export interface RenewalData {
   paymentMethod: 'STK_PUSH' | 'MANUAL';
@@ -47,22 +48,30 @@ const initialState: RenewalState = {
 
 function renewalReducer(state: RenewalState, action: RenewalAction): RenewalState {
   switch (action.type) {
-    case 'SUBMIT_START':
+    case 'SUBMIT_START': {
       return { ...state, isSubmitting: true };
-    case 'SUBMIT_END':
+    }
+    case 'SUBMIT_END': {
       return { ...state, isSubmitting: false };
-    case 'RESET_STATE':
+    }
+    case 'RESET_STATE': {
       return { ...state, paymentStatus: null, transactionId: null };
-    case 'SET_PENDING_STK':
+    }
+    case 'SET_PENDING_STK': {
       return { ...state, paymentStatus: 'PENDING', transactionId: action.transactionId };
-    case 'SET_PENDING_MANUAL':
+    }
+    case 'SET_PENDING_MANUAL': {
       return { ...state, paymentStatus: 'PENDING' };
-    case 'SET_SUCCESS':
+    }
+    case 'SET_SUCCESS': {
       return { ...state, paymentStatus: 'SUCCESS' };
-    case 'SET_FAILED':
+    }
+    case 'SET_FAILED': {
       return { ...state, paymentStatus: 'FAILED' };
-    default:
+    }
+    default: {
       return state;
+    }
   }
 }
 
@@ -76,7 +85,7 @@ export function useRenewal() {
     try {
       const response = await apiClient.post<RenewalResponse>(API_ENDPOINTS.MEMBERS_RENEW, data);
 
-      const { checkoutRequestId, message } = response as RenewalResponse;
+      const { checkoutRequestId, message } = response;
 
       if (data.paymentMethod === 'STK_PUSH' && checkoutRequestId) {
         dispatch({ type: 'SET_PENDING_STK', transactionId: checkoutRequestId });
@@ -90,7 +99,7 @@ export function useRenewal() {
       }
 
       return { success: true };
-    } catch (_error) {
+    } catch {
       notificationService.error('Renewal failed. Please try again.');
       return { success: false };
     } finally {
@@ -113,7 +122,7 @@ export function useRenewal() {
         return 'FAILED';
       }
       return 'PENDING';
-    } catch (_error) {
+    } catch {
       return 'PENDING';
     }
   };

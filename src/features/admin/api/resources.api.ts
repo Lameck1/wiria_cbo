@@ -44,7 +44,7 @@ export const deleteResource = async (id: string) => {
   return client.delete(`/resources/${id}`);
 };
 
-export const uploadFile = async (file: File, folder: string = 'resources') => {
+export const uploadFile = async (file: File, folder = 'resources') => {
   // Client-side validation
   const maxSize = 10 * 1024 * 1024; // 10MB
   if (file.size > maxSize) {
@@ -64,7 +64,7 @@ export const uploadFile = async (file: File, folder: string = 'resources') => {
 
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api'}/uploads`,
+      `${import.meta.env['VITE_API_BASE_URL'] ?? 'http://localhost:5001/api'}/uploads`,
       {
         method: 'POST',
         headers: {
@@ -100,21 +100,21 @@ export const uploadFile = async (file: File, folder: string = 'resources') => {
 
     return response.json();
   } catch (error: unknown) {
-    const err = error as { message?: string; name?: string };
+    const error_ = error as { message?: string; name?: string };
     // Re-throw our custom errors
     if (
-      err.message?.includes('10MB') ||
-      err.message?.includes('Authentication') ||
-      err.message?.includes('permission')
+      error_.message?.includes('10MB') ||
+      error_.message?.includes('Authentication') ||
+      error_.message?.includes('permission')
     ) {
       throw error;
     }
 
     // Network or other errors
-    if (err.name === 'TypeError' && err.message?.includes('fetch')) {
+    if (error_.name === 'TypeError' && error_.message?.includes('fetch')) {
       throw new Error('Network error. Please check your connection and try again.');
     }
 
-    throw new Error(err.message || 'File upload failed. Please try again.');
+    throw new Error(error_.message || 'File upload failed. Please try again.');
   }
 };

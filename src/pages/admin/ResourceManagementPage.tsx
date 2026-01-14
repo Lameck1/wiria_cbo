@@ -1,14 +1,16 @@
 import { useState } from 'react';
+
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+
 import {
   Resource,
   getAdminResources,
   deleteResource,
 } from '@/features/admin/api/resources.api';
+import { ResourceModal } from '@/features/admin/components/resources/ResourceModal';
 import { Button } from '@/shared/components/ui/Button';
 import { notificationService } from '@/shared/services/notification/notificationService';
 import { extractArray } from '@/shared/utils/apiUtils';
-import { ResourceModal } from '@/features/admin/components/resources/ResourceModal';
 
 export default function ResourceManagementPage() {
   const queryClient = useQueryClient();

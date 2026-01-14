@@ -4,8 +4,9 @@
  */
 
 import { ReactNode } from 'react';
-import { BrowserRouter, MemoryRouter } from 'react-router-dom';
+
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { BrowserRouter, MemoryRouter } from 'react-router-dom';
 
 /**
  * Creates a fresh QueryClient for each test to prevent state leakage

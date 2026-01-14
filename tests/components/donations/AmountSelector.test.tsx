@@ -2,11 +2,14 @@
  * AmountSelector Component Tests
  */
 
-import { describe, it, expect, vi } from 'vitest';
+import { useState } from 'react';
+
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { describe, it, expect, vi } from 'vitest';
+
 import { AmountSelector } from '@/features/donations/components/AmountSelector';
-import { useState } from 'react';
+
 
 describe('AmountSelector', () => {
   it('should render suggested amounts', () => {
@@ -65,7 +68,7 @@ describe('AmountSelector', () => {
 
     expect(onAmountChange).toHaveBeenCalled();
     expect(onAmountChange.mock.calls.length).toBeGreaterThan(0);
-    const lastCall = onAmountChange.mock.calls[onAmountChange.mock.calls.length - 1];
+    const lastCall = onAmountChange.mock.calls.at(-1);
     if (!lastCall) throw new Error('Expected onAmountChange to have been called');
     expect(lastCall[0]).toBe(3500);
   });

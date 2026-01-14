@@ -1,13 +1,14 @@
 import { useQuery, useMutation, useQueryClient, QueryKey } from '@tanstack/react-query';
-import { extractArray } from '@/shared/utils/apiUtils';
+
 import { notificationService } from '@/shared/services/notification/notificationService';
+import { extractArray } from '@/shared/utils/apiUtils';
 
 /**
  * Generic hook for fetching admin data with standardized extraction and error handling
  */
 export function useAdminData<T>(
   queryKey: QueryKey,
-  fetchFn: () => Promise<unknown>,
+  fetchFunction: () => Promise<unknown>,
   options: {
     arrayKey?: string;
     onError?: (error: unknown) => void;
@@ -19,7 +20,7 @@ export function useAdminData<T>(
     queryKey,
     queryFn: async () => {
       try {
-        const response = await fetchFn();
+        const response = await fetchFunction();
         return extractArray<T>(response, options.arrayKey);
       } catch (error) {
         if (options.onError) {
@@ -45,7 +46,7 @@ export function useAdminData<T>(
  * Generic hook for admin CRUD operations with automatic cache invalidation
  */
 export function useAdminAction<TInput, TResponse>(
-  actionFn: (input: TInput) => Promise<TResponse>,
+  actionFunction: (input: TInput) => Promise<TResponse>,
   queriesToInvalidate: string[][],
   options: {
     successMessage?: string;
@@ -56,7 +57,7 @@ export function useAdminAction<TInput, TResponse>(
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: actionFn,
+    mutationFn: actionFunction,
     onSuccess: (data) => {
       queriesToInvalidate.forEach((key) => {
         queryClient.invalidateQueries({ queryKey: key });

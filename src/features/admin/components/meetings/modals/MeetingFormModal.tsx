@@ -1,4 +1,5 @@
 import { useState } from 'react';
+
 import {
   Meeting,
   CreateMeetingData,
@@ -6,8 +7,8 @@ import {
   updateMeeting,
 } from '@/features/admin/api/meetings.api';
 import { Button } from '@/shared/components/ui/Button';
-import { notificationService } from '@/shared/services/notification/notificationService';
 import { Modal } from '@/shared/components/ui/Modal';
+import { notificationService } from '@/shared/services/notification/notificationService';
 
 interface MeetingFormModalProps {
   meeting: Meeting | null;
@@ -35,7 +36,7 @@ export function MeetingFormModal({ meeting, onClose, onSuccess }: MeetingFormMod
       isVirtual,
       virtualLink: isVirtual ? (formData.get('virtualLink') as string) : undefined,
       agenda: formData.get('agenda') as string,
-      capacity: formData.get('capacity') ? parseInt(formData.get('capacity') as string) : undefined,
+      capacity: formData.get('capacity') ? Number.parseInt(formData.get('capacity') as string) : undefined,
     };
 
     try {
@@ -47,7 +48,7 @@ export function MeetingFormModal({ meeting, onClose, onSuccess }: MeetingFormMod
         notificationService.success('Meeting scheduled');
       }
       onSuccess();
-    } catch (_error) {
+    } catch {
       notificationService.error('Failed to save meeting');
     } finally {
       setIsSubmitting(false);

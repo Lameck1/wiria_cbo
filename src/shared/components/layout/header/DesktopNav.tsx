@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router-dom';
+
 import { ROUTES } from '@/shared/constants/routes';
 
 export const NAV_ITEMS = [

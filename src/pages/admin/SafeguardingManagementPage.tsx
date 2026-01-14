@@ -1,14 +1,17 @@
 import { useState } from 'react';
+
 import {
   getSafeguardingReports,
   updateSafeguardingReport as updateReport,
   resolveSafeguardingReport as resolveReport,
   SafeguardingReport,
 } from '@/features/admin/api/safeguarding.api';
-import { DataTable, Column } from '@/shared/components/ui/DataTable';
-import { useAdminData, useAdminAction } from '@/shared/hooks/useAdminData';
+import { AdminPageHeader } from '@/features/admin/components/layout/AdminPageHeader';
 import { ReportDetailsModal } from '@/features/admin/components/safeguarding/modals/ReportDetailsModal';
 import { ResolveReportModal } from '@/features/admin/components/safeguarding/modals/ResolveReportModal';
+import { DataTable, Column } from '@/shared/components/ui/DataTable';
+import { StatusBadge } from '@/shared/components/ui/StatusBadge';
+import { useAdminData, useAdminAction } from '@/shared/hooks/useAdminData';
 import { formatDate } from '@/shared/utils/helpers';
 
 const STATUS_COLORS: Record<string, string> = {
@@ -35,8 +38,6 @@ const INCIDENT_TYPES: Record<string, string> = {
   OTHER: 'Other',
 };
 
-import { AdminPageHeader } from '@/features/admin/components/layout/AdminPageHeader';
-import { StatusBadge } from '@/shared/components/ui/StatusBadge';
 
 export default function SafeguardingManagementPage() {
   const [statusFilter, setStatusFilter] = useState('');
@@ -49,7 +50,7 @@ export default function SafeguardingManagementPage() {
 
   const { items: reports, isLoading } = useAdminData<SafeguardingReport>(
     ['safeguarding', queryParams],
-    () => getSafeguardingReports(Object.keys(queryParams).length ? queryParams : undefined)
+    () => getSafeguardingReports(Object.keys(queryParams).length > 0 ? queryParams : undefined)
   );
 
   const updateStatusAction = useAdminAction(

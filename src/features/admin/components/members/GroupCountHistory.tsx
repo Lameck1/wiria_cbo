@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { apiClient } from '@/shared/services/api/client';
+
 import { Spinner } from '@/shared/components/ui/Spinner';
+import { apiClient } from '@/shared/services/api/client';
 import { formatRelativeTime } from '@/shared/utils/dateUtils';
 
 interface HistoryItem {

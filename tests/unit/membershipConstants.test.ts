@@ -3,6 +3,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
+
 import { MEMBERSHIP_FEES, getTotalFee } from '@/shared/constants/membership';
 
 describe('Membership Constants', () => {

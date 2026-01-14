@@ -1,9 +1,10 @@
 import { AdminMember, approveMember, rejectMember } from '@/features/membership/api/members.api';
 import { Button } from '@/shared/components/ui/Button';
-import { notificationService } from '@/shared/services/notification/notificationService';
-import { GroupCountHistory } from './GroupCountHistory';
 import { Modal } from '@/shared/components/ui/Modal';
+import { notificationService } from '@/shared/services/notification/notificationService';
 import { getErrorMessage } from '@/shared/utils/apiUtils';
+
+import { GroupCountHistory } from './GroupCountHistory';
 
 interface MemberDetailsModalProps {
   member: AdminMember | null;

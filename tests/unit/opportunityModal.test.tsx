@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-non-null-assertion */
 // @vitest-environment jsdom
 
-import { describe, it, beforeEach, afterEach, vi, expect } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { describe, it, beforeEach, afterEach, vi, expect } from 'vitest';
 
 import { ApplicationModal } from '@/features/applications/components/ApplicationModal';
 import type { Opportunity } from '@/features/opportunities/hooks/useOpportunities';

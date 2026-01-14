@@ -1,8 +1,10 @@
 import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
-import { getDashboardStats, DashboardStats } from '../api/dashboard.api';
-import { extractData } from '@/shared/utils/apiUtils';
+
 import { apiClient } from '@/shared/services/api/client';
 import { UserRole } from '@/shared/types';
+import { extractData } from '@/shared/utils/apiUtils';
+
+import { getDashboardStats, DashboardStats } from '../api/dashboard.api';
 
 /** Trend data structure for charts */
 export interface TrendData {

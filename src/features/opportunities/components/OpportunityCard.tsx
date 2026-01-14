@@ -4,6 +4,7 @@
  */
 
 import { motion } from 'framer-motion';
+
 import { Opportunity } from '../hooks/useOpportunities';
 import { getDaysUntilDeadline, getUrgencyLevel, isNewOpportunity } from '../utils/deadlineUtils';
 
@@ -18,7 +19,7 @@ function UrgencyBadge({ daysRemaining }: { daysRemaining: number }) {
   if (urgency === 'urgent') {
     return (
       <span className="inline-flex animate-pulse items-center gap-1 rounded-full bg-red-100 px-2 py-1 text-xs font-medium text-red-700">
-        🔴 {daysRemaining} day{daysRemaining !== 1 ? 's' : ''} left
+        🔴 {daysRemaining} day{daysRemaining === 1 ? '' : 's'} left
       </span>
     );
   }
@@ -131,13 +132,13 @@ export function OpportunityCard({ opportunity, onViewDetails }: OpportunityCardP
           {/* Skills Tags */}
           {skillTags.length > 0 && (
             <div className="mb-4 flex flex-wrap gap-2">
-              {skillTags.map((skill, idx) => (
+              {skillTags.map((skill, index) => (
                 <span
-                  key={idx}
+                  key={index}
                   className="max-w-[150px] truncate rounded bg-gray-100 px-2 py-1 text-xs text-gray-600"
                   title={skill}
                 >
-                  {skill.length > 25 ? skill.substring(0, 25) + '...' : skill}
+                  {skill.length > 25 ? skill.slice(0, 25) + '...' : skill}
                 </span>
               ))}
               {opportunity.requirements && opportunity.requirements.length > 3 && (

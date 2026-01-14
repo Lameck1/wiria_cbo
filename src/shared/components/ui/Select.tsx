@@ -1,4 +1,5 @@
 import { SelectHTMLAttributes, useId } from 'react';
+
 import { cn } from '@/shared/utils/helpers';
 
 export interface SelectOption {
@@ -58,7 +59,7 @@ export function Select({
                 aria-describedby={describedBy}
                 {...props}
             >
-                {children ? children : options && options.map((option) => (
+                {children ? children : options?.map((option) => (
                     <option key={option.value} value={option.value}>
                         {option.label}
                     </option>

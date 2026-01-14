@@ -1,4 +1,5 @@
 import { useState } from 'react';
+
 import {
   Opportunity,
   createOpportunity,
@@ -28,8 +29,8 @@ export function OpportunityModal({ opportunity, onClose, onSuccess }: Opportunit
     index: number,
     value: string
   ) => {
-    setter((prev: string[]) => {
-      const n = [...prev];
+    setter((previous: string[]) => {
+      const n = [...previous];
       n[index] = value;
       return n;
     });
@@ -49,11 +50,10 @@ export function OpportunityModal({ opportunity, onClose, onSuccess }: Opportunit
     };
 
     try {
-      if (opportunity) await updateOpportunity(opportunity.id, data);
-      else await createOpportunity(data);
+      await (opportunity ? updateOpportunity(opportunity.id, data) : createOpportunity(data));
       notificationService.success('Success');
       onSuccess();
-    } catch (_error) {
+    } catch {
       notificationService.error('Error');
     } finally {
       setIsSubmitting(false);
@@ -140,12 +140,12 @@ export function OpportunityModal({ opportunity, onClose, onSuccess }: Opportunit
                 <label className="text-sm font-bold text-gray-700">
                   Responsibilities (One per line) *
                 </label>
-                {responsibilities.map((r, i) => (
+                {responsibilities.map((r, index) => (
                   <input
-                    key={i}
-                    aria-label={`Opportunity responsibility ${i + 1}`}
+                    key={index}
+                    aria-label={`Opportunity responsibility ${index + 1}`}
                     value={r}
-                    onChange={(e) => handleArrayChange(setResponsibilities, i, e.target.value)}
+                    onChange={(e) => handleArrayChange(setResponsibilities, index, e.target.value)}
                     className="mb-2 w-full rounded-xl border-gray-200 p-3"
                   />
                 ))}
@@ -154,12 +154,12 @@ export function OpportunityModal({ opportunity, onClose, onSuccess }: Opportunit
                 <label className="text-sm font-bold text-gray-700">
                   Requirements (One per line) *
                 </label>
-                {requirements.map((r, i) => (
+                {requirements.map((r, index) => (
                   <input
-                    key={i}
-                    aria-label={`Opportunity requirement ${i + 1}`}
+                    key={index}
+                    aria-label={`Opportunity requirement ${index + 1}`}
                     value={r}
-                    onChange={(e) => handleArrayChange(setRequirements, i, e.target.value)}
+                    onChange={(e) => handleArrayChange(setRequirements, index, e.target.value)}
                     className="mb-2 w-full rounded-xl border-gray-200 p-3"
                   />
                 ))}
@@ -168,12 +168,12 @@ export function OpportunityModal({ opportunity, onClose, onSuccess }: Opportunit
 
             <div className="space-y-4">
               <label className="text-sm font-bold text-gray-700">Benefits (One per line)</label>
-              {benefits.map((b, i) => (
+              {benefits.map((b, index) => (
                 <input
-                  key={i}
-                  aria-label={`Benefit ${i + 1}`}
+                  key={index}
+                  aria-label={`Benefit ${index + 1}`}
                   value={b}
-                  onChange={(e) => handleArrayChange(setBenefits, i, e.target.value)}
+                  onChange={(e) => handleArrayChange(setBenefits, index, e.target.value)}
                   className="mb-2 w-full rounded-xl border-gray-200 p-3"
                 />
               ))}

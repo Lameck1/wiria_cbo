@@ -5,9 +5,10 @@
  */
 
 import { Modal } from '@/shared/components/ui/Modal';
-import { Job } from '../hooks/useCareers';
+
 import { JobModalContent } from './JobModalContent';
 import { JOB_TYPE_LABELS } from '../constants/careersData';
+import { Job } from '../hooks/useCareers';
 
 interface JobModalProps {
   job: Job | null;

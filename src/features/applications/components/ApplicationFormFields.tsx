@@ -4,6 +4,7 @@ import {
     FormTextareaField,
     FormCheckboxField
 } from '@/shared/components/ui/form';
+
 import { EDUCATION_OPTIONS, EXPERIENCE_OPTIONS } from '../types';
 
 interface ApplicationFormFieldsProps {

@@ -10,8 +10,8 @@ export function StatCardSkeleton() {
 export function ActivitySkeleton() {
   return (
     <div className="space-y-3">
-      {[1, 2, 3].map((i) => (
-        <div key={i} className="animate-pulse rounded-lg bg-gray-50 p-3">
+      {[1, 2, 3].map((index) => (
+        <div key={index} className="animate-pulse rounded-lg bg-gray-50 p-3">
           <div className="mb-2 h-4 w-3/4 rounded bg-gray-200"></div>
           <div className="h-3 w-1/2 rounded bg-gray-200"></div>
         </div>

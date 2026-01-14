@@ -4,6 +4,7 @@
  */
 
 import { motion } from 'framer-motion';
+
 import { useCareers } from '../hooks/useCareers';
 
 export function CareerHeroStats() {
@@ -30,7 +31,7 @@ export function CareerHeroStats() {
       >
         <span className="flex items-center gap-2 font-medium text-white">
           <span className="h-2 w-2 animate-pulse rounded-full bg-green-400" />
-          {openPositions} Open Position{openPositions !== 1 ? 's' : ''}
+          {openPositions} Open Position{openPositions === 1 ? '' : 's'}
         </span>
         <span className="flex items-center gap-1 font-semibold text-wiria-yellow transition-transform group-hover:translate-x-1">
           View Jobs

@@ -1,8 +1,9 @@
 import { useState } from 'react';
+
 import { Career, createCareer, updateCareer } from '@/features/admin/api/careers.api';
 import { Button } from '@/shared/components/ui/Button';
-import { notificationService } from '@/shared/services/notification/notificationService';
 import { Modal } from '@/shared/components/ui/Modal';
+import { notificationService } from '@/shared/services/notification/notificationService';
 
 interface CareerModalProps {
   career: Career | null;
@@ -23,8 +24,8 @@ export function CareerModal({ career, onClose, onSuccess }: CareerModalProps) {
     index: number,
     value: string
   ) => {
-    setter((prev: string[]) => {
-      const n = [...prev];
+    setter((previous: string[]) => {
+      const n = [...previous];
       n[index] = value;
       return n;
     });
@@ -50,8 +51,7 @@ export function CareerModal({ career, onClose, onSuccess }: CareerModalProps) {
     };
 
     try {
-      if (career) await updateCareer(career.id, data);
-      else await createCareer(data);
+      await (career ? updateCareer(career.id, data) : createCareer(data));
       notificationService.success(career ? 'Updated' : 'Created');
       onSuccess();
     } catch (error: unknown) {
@@ -173,24 +173,24 @@ export function CareerModal({ career, onClose, onSuccess }: CareerModalProps) {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           <div className="space-y-4">
             <label className="text-sm font-bold text-gray-700">Responsibilities *</label>
-            {responsibilities.map((r: string, i: number) => (
+            {responsibilities.map((r: string, index: number) => (
               <input
-                key={i}
-                aria-label={`Responsibility ${i + 1}`}
+                key={index}
+                aria-label={`Responsibility ${index + 1}`}
                 value={r}
-                onChange={(e) => handleArrayChange(setResponsibilities, i, e.target.value)}
+                onChange={(e) => handleArrayChange(setResponsibilities, index, e.target.value)}
                 className="mb-2 w-full rounded-xl border-gray-200 p-3"
               />
             ))}
           </div>
           <div className="space-y-4">
             <label className="text-sm font-bold text-gray-700">Requirements *</label>
-            {requirements.map((r: string, i: number) => (
+            {requirements.map((r: string, index: number) => (
               <input
-                key={i}
-                aria-label={`Requirement ${i + 1}`}
+                key={index}
+                aria-label={`Requirement ${index + 1}`}
                 value={r}
-                onChange={(e) => handleArrayChange(setRequirements, i, e.target.value)}
+                onChange={(e) => handleArrayChange(setRequirements, index, e.target.value)}
                 className="mb-2 w-full rounded-xl border-gray-200 p-3"
               />
             ))}
@@ -199,12 +199,12 @@ export function CareerModal({ career, onClose, onSuccess }: CareerModalProps) {
 
         <div className="space-y-4">
           <label className="text-sm font-bold text-gray-700">Desirable Skills (Optional)</label>
-          {desirable.map((d: string, i: number) => (
+          {desirable.map((d: string, index: number) => (
             <input
-              key={i}
-              aria-label={`Desirable skill ${i + 1}`}
+              key={index}
+              aria-label={`Desirable skill ${index + 1}`}
               value={d}
-              onChange={(e) => handleArrayChange(setDesirable, i, e.target.value)}
+              onChange={(e) => handleArrayChange(setDesirable, index, e.target.value)}
               className="mb-2 w-full rounded-xl border-gray-200 p-3"
             />
           ))}

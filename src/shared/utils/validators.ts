@@ -1,4 +1,5 @@
 import { z } from 'zod';
+
 import { LIMITS } from '../constants/config';
 
 /**
@@ -22,14 +23,14 @@ export const nameSchema = z
   .string()
   .min(LIMITS.MIN_NAME_LENGTH, `Name must be at least ${LIMITS.MIN_NAME_LENGTH} characters`)
   .max(LIMITS.MAX_NAME_LENGTH, `Name must be at most ${LIMITS.MAX_NAME_LENGTH} characters`)
-  .regex(/^[a-zA-Z\s'-]+$/, 'Name contains invalid characters');
+  .regex(/^[\s'A-Za-z-]+$/, 'Name contains invalid characters');
 
 export const passwordSchema = z
   .string()
   .min(LIMITS.MIN_PASSWORD_LENGTH, `Password must be at least ${LIMITS.MIN_PASSWORD_LENGTH} characters`)
   .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
-  .regex(/[0-9]/, 'Password must contain at least one number')
-  .regex(/[^A-Za-z0-9]/, 'Password must contain at least one special character');
+  .regex(/\d/, 'Password must contain at least one number')
+  .regex(/[^\dA-Za-z]/, 'Password must contain at least one special character');
 
 /**
  * Validation Result Type
@@ -47,9 +48,9 @@ export const sanitizeInput = (input: unknown): string => {
   if (typeof input !== 'string') return '';
   // Remove HTML tags but keep their content, remove stray angle brackets, then trim
   return input
-    .replace(/<script[^>]*>.*?<\/script>/gi, '') // Remove script tags and content
-    .replace(/<[^>]*>/g, '') // Remove remaining HTML tags but keep content
-    .replace(/[<>]/g, '') // Remove stray angle brackets
+    .replaceAll(/<script[^>]*>.*?<\/script>/gi, '') // Remove script tags and content
+    .replaceAll(/<[^>]*>/g, '') // Remove remaining HTML tags but keep content
+    .replaceAll(/[<>]/g, '') // Remove stray angle brackets
     .trim();
 };
 
@@ -62,7 +63,7 @@ export const validatePhone = (phone: string): ValidationResult => {
   }
 
   // Remove spaces for validation
-  const cleaned = phone.replace(/\s/g, '');
+  const cleaned = phone.replaceAll(/\s/g, '');
 
   // Must be 12 digits starting with 254
   const phoneRegex = /^254[17]\d{8}$/;
@@ -83,7 +84,7 @@ export const validateMpesaPhone = (phone: string): ValidationResult => {
     return { valid: false, error: 'Phone number is required' };
   }
 
-  const cleaned = phone.replace(/\s/g, '');
+  const cleaned = phone.replaceAll(/\s/g, '');
 
   // Safaricom prefixes in 254 format:
   // 25470[0-9] = 0700-0709, 25471[0-9] = 0710-0719 (Safaricom)
@@ -91,7 +92,7 @@ export const validateMpesaPhone = (phone: string): ValidationResult => {
   // 2547[4-5]X = 074X-075X (Safaricom)
   // 25479X = 079X (Safaricom)
   // 2541[0-1]X = 010X-011X (Safaricom)
-  const safaricomRegex = /^254(70|71|7[4-5]|79|1[0-1])\d{7}$/;
+  const safaricomRegex = /^254(70|71|7[45]|79|1[01])\d{7}$/;
   if (!safaricomRegex.test(cleaned)) {
     return { valid: false, error: 'Please use a valid Safaricom number for M-Pesa' };
   }
@@ -119,17 +120,17 @@ export const validateEmail = (email: string): ValidationResult => {
  * Validates donation amounts
  */
 export const validateAmount = (amount: number | string): ValidationResult => {
-  const numAmount = typeof amount === 'string' ? parseFloat(amount) : amount;
+  const numberAmount = typeof amount === 'string' ? Number.parseFloat(amount) : amount;
 
-  if (isNaN(numAmount)) {
+  if (isNaN(numberAmount)) {
     return { valid: false, error: 'Please enter a valid amount' };
   }
 
-  if (numAmount < LIMITS.MIN_DONATION) {
+  if (numberAmount < LIMITS.MIN_DONATION) {
     return { valid: false, error: `Minimum donation amount is KES ${LIMITS.MIN_DONATION}` };
   }
 
-  if (numAmount > LIMITS.MAX_DONATION) {
+  if (numberAmount > LIMITS.MAX_DONATION) {
     return { valid: false, error: `Maximum donation amount is KES ${LIMITS.MAX_DONATION.toLocaleString()}` };
   }
 

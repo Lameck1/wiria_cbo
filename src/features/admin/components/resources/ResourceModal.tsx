@@ -1,14 +1,16 @@
 import { useState } from 'react';
+
 import { useQueryClient } from '@tanstack/react-query';
+
 import {
     Resource,
     createResource,
     updateResource,
     uploadFile,
 } from '@/features/admin/api/resources.api';
+import { FormModal, type FieldConfig } from '@/shared/components/modals/FormModal';
 import { notificationService } from '@/shared/services/notification/notificationService';
 import { getErrorMessage } from '@/shared/utils/apiUtils';
-import { FormModal, type FieldConfig } from '@/shared/components/modals/FormModal';
 
 const CATEGORIES = [
     'GOVERNANCE',

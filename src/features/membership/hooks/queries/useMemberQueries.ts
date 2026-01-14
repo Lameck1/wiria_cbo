@@ -1,7 +1,10 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+
 import { apiClient } from '@/shared/services/api/client';
 import { API_ENDPOINTS } from '@/shared/services/api/endpoints';
+
 import { memberAdapter } from '../../api/memberAdapter';
+
 import type { MemberProfile, Document } from '../useMemberData';
 
 /**
@@ -24,7 +27,7 @@ interface ApiProfileResponse {
 }
 
 interface ApiPaymentsResponse {
-    data: Array<{
+    data: {
         id?: string;
         amount?: number | string;
         type?: string;
@@ -32,11 +35,11 @@ interface ApiPaymentsResponse {
         method?: string;
         mpesaReceiptNumber?: string;
         createdAt?: string;
-    }> | { payments: Array<Record<string, unknown>> };
+    }[] | { payments: Record<string, unknown>[] };
 }
 
 interface ApiMeetingsResponse {
-    data: Array<{
+    data: {
         id?: string;
         title?: string;
         description?: string;
@@ -47,29 +50,29 @@ interface ApiMeetingsResponse {
         status?: string;
         isRsvpd?: boolean;
         attendeesCount?: number;
-    }> | { data: Array<Record<string, unknown>> };
+    }[] | { data: Record<string, unknown>[] };
 }
 
 interface ApiDocumentsResponse {
     data: {
-        documents?: Array<{
+        documents?: {
             id?: string;
             name?: string;
             type?: string;
             url?: string;
             createdAt?: string;
-        }>;
+        }[];
     };
 }
 
 interface ApiActivityResponse {
-    data: Array<{
+    data: {
         id?: string;
         type?: string;
         description?: string;
         timestamp?: string;
         createdAt?: string;
-    }> | { data: Array<Record<string, unknown>> };
+    }[] | { data: Record<string, unknown>[] };
 }
 
 export const MEMBER_KEYS = {

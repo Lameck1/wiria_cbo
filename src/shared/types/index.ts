@@ -100,7 +100,7 @@ export interface Payment {
 }
 
 // Form validation types
-export type ValidationError = {
+export interface ValidationError {
   field: string;
   message: string;
-};
+}

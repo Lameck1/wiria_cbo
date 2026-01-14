@@ -4,9 +4,9 @@
  * E2E Tests for Contact Page Flow
  * Tests the contact form submission process
  */
-import { describe, it, beforeEach, vi, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
+import { describe, it, beforeEach, vi, expect } from 'vitest';
 
 import ContactPage from '@/pages/ContactPage';
 

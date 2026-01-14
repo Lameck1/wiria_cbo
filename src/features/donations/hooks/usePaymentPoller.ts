@@ -34,12 +34,10 @@ export function usePaymentPoller({
       const status = await onStatusCheck(donationId);
 
       // Stop polling if payment is complete or failed
-      if (status === 'COMPLETED' || status === 'FAILED') {
-        if (intervalRef.current) {
+      if ((status === 'COMPLETED' || status === 'FAILED') && intervalRef.current) {
           clearInterval(intervalRef.current);
           intervalRef.current = null;
         }
-      }
     };
 
     checkStatus();

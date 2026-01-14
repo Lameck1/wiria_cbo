@@ -1,9 +1,10 @@
 import { ReactNode } from 'react';
-import { Modal } from '@/shared/components/ui/Modal';
+
 import { Button } from '@/shared/components/ui/Button';
 import { Input } from '@/shared/components/ui/Input';
-import { Textarea } from '@/shared/components/ui/Textarea';
+import { Modal } from '@/shared/components/ui/Modal';
 import { Select } from '@/shared/components/ui/Select';
+import { Textarea } from '@/shared/components/ui/Textarea';
 
 export type FieldType = 'text' | 'email' | 'password' | 'number' | 'date' | 'textarea' | 'select' | 'file';
 
@@ -85,15 +86,16 @@ export function FormModal<T extends Record<string, unknown>>({
     };
 
     switch (field.type) {
-      case 'textarea':
+      case 'textarea': {
         return (
           <Textarea
             {...commonProps}
             rows={field.rows || 4}
           />
         );
+      }
 
-      case 'select':
+      case 'select': {
         return (
           <Select {...commonProps}>
             <option value="">Select {field.label}</option>
@@ -104,8 +106,9 @@ export function FormModal<T extends Record<string, unknown>>({
             ))}
           </Select>
         );
+      }
 
-      case 'file':
+      case 'file': {
         return (
           <Input
             {...commonProps}
@@ -114,9 +117,10 @@ export function FormModal<T extends Record<string, unknown>>({
             defaultValue={undefined} // Files can't have defaultValue
           />
         );
+      }
 
       case 'number':
-      case 'date':
+      case 'date': {
         return (
           <Input
             {...commonProps}
@@ -125,14 +129,16 @@ export function FormModal<T extends Record<string, unknown>>({
             max={field.max}
           />
         );
+      }
 
-      default:
+      default: {
         return (
           <Input
             {...commonProps}
             type={field.type}
           />
         );
+      }
     }
   };
 

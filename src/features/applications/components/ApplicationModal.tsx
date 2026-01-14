@@ -1,9 +1,11 @@
 import { useState } from 'react';
-import { Modal } from '@/shared/components/ui/Modal';
+
 import { Form } from '@/shared/components/ui/form';
+import { Modal } from '@/shared/components/ui/Modal';
+
 import { ApplicationFormFields } from './ApplicationFormFields';
-import { applicationSchema, ApplicationFormData } from '../types';
 import { useApplicationSubmission } from '../hooks/useApplicationSubmission';
+import { applicationSchema, ApplicationFormData } from '../types';
 
 interface ApplicationModalProps {
     isOpen: boolean;

@@ -1,6 +1,8 @@
 import { useState, useCallback } from 'react';
-import { ApplicationFormData, ApplicationPayload } from '../types';
+
 import { apiClient } from '@/shared/services/api/client';
+
+import { ApplicationFormData, ApplicationPayload } from '../types';
 
 export type SubmitStatus = 'idle' | 'submitting' | 'success' | 'error';
 
@@ -26,7 +28,7 @@ export function useApplicationSubmission() {
             firstName,
             lastName,
             email: data.email,
-            phone: data.phone.replace(/\s+/g, ''),
+            phone: data.phone.replaceAll(/\s+/g, ''),
             coverLetter: data.motivation,
             resumeUrl: data.cvLink || null,
             additionalDocs: data.coverLetterLink ? [data.coverLetterLink] : [],
@@ -36,9 +38,9 @@ export function useApplicationSubmission() {
         try {
             await apiClient.post('/applications', payload);
             setStatus('success');
-        } catch (err) {
-            console.error('Application submission error:', err);
-            setError(err instanceof Error ? err.message : 'Failed to submit application');
+        } catch (error_) {
+            console.error('Application submission error:', error_);
+            setError(error_ instanceof Error ? error_.message : 'Failed to submit application');
             setStatus('error');
         }
     }, []);

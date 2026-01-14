@@ -3,11 +3,13 @@
  */
 
 import { useEffect } from 'react';
+
 import { useNavigate } from 'react-router-dom';
+
 import { LoginForm } from '@/features/auth/components/LoginForm';
 import { useAuth } from '@/features/auth/context/AuthContext';
-import { UserRole } from '@/shared/types';
 import { ROUTES } from '@/shared/constants/routes';
+import { UserRole } from '@/shared/types';
 
 function MemberLoginPage() {
   const { isAuthenticated, user } = useAuth();

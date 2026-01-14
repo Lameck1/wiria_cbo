@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback, memo } from 'react';
+
 import {
   NewsUpdate,
   getAdminUpdates,
@@ -6,10 +7,10 @@ import {
   updateUpdate,
   deleteUpdate,
 } from '@/features/admin/api/news.api';
+import { FormModal, type FieldConfig } from '@/shared/components/modals/FormModal';
 import { Button } from '@/shared/components/ui/Button';
 import { notificationService } from '@/shared/services/notification/notificationService';
 import { extractArray, getErrorMessage } from '@/shared/utils/apiUtils';
-import { FormModal, type FieldConfig } from '@/shared/components/modals/FormModal';
 
 export default function NewsManagementPage() {
   const [updates, setUpdates] = useState<NewsUpdate[]>([]);
@@ -41,7 +42,7 @@ export default function NewsManagementPage() {
       await deleteUpdate(id);
       notificationService.success('Update deleted successfully');
       loadUpdates();
-    } catch (_error) {
+    } catch {
       notificationService.error('Failed to delete update');
     }
   }, []);
@@ -174,7 +175,7 @@ const NewsCard = memo(function NewsCard({
         <p className="line-clamp-3 text-sm text-gray-600">
           {update.excerpt ||
             (update.fullContent
-              ? update.fullContent.substring(0, 150) + '...'
+              ? update.fullContent.slice(0, 150) + '...'
               : 'No content available')}
         </p>
         <div className="mt-2">

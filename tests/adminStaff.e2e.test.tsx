@@ -1,13 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-non-null-assertion */
 // @vitest-environment jsdom
 
-import { describe, it, beforeEach, vi, expect } from 'vitest';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { describe, it, beforeEach, vi, expect } from 'vitest';
 
+import { getUsers, inviteUser, updateUserStatus } from '@/features/admin/api/users.api';
 import UserManagementPage from '@/pages/admin/UserManagementPage';
+import { notificationService } from '@/shared/services/notification/notificationService';
 import { UserRole } from '@/shared/types';
 
 // Create a fresh QueryClient for tests
@@ -47,8 +49,6 @@ vi.mock('@/shared/services/notification/notificationService', () => ({
   },
 }));
 
-import { getUsers, inviteUser, updateUserStatus } from '@/features/admin/api/users.api';
-import { notificationService } from '@/shared/services/notification/notificationService';
 
 describe('UserManagementPage (staff & admin management)', () => {
   beforeEach(() => {

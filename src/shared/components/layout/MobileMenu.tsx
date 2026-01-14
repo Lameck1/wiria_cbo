@@ -1,8 +1,9 @@
-import { Link, NavLink } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { Link, NavLink } from 'react-router-dom';
+
 import { ROUTES } from '@/shared/constants/routes';
-import { UserRole } from '@/shared/types';
 import { useBackendStatus } from '@/shared/services/backendStatus';
+import { UserRole } from '@/shared/types';
 
 // Navigation items configuration
 const NAV_ITEMS = [
@@ -69,7 +70,7 @@ export function MobileMenu({
                 to={item.to}
                 onClick={onClose}
                 className={({ isActive: navIsActive }) =>
-                  `block rounded-lg px-4 py-3 text-base font-medium transition-all ${navIsActive || (isActive && isActive(item.to))
+                  `block rounded-lg px-4 py-3 text-base font-medium transition-all ${navIsActive || (isActive?.(item.to))
                     ? 'bg-wiria-yellow/10 text-wiria-yellow font-bold'
                     : 'text-gray-700 hover:bg-wiria-blue-dark/5 hover:text-wiria-blue-dark'
                   }`
@@ -95,7 +96,7 @@ export function MobileMenu({
                   👤 Member Dashboard
                 </Link>
               )}
-              {[UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.STAFF].includes(userRole as UserRole) && (
+              {[UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.STAFF].includes(userRole!) && (
                 <Link
                   to={ROUTES.ADMIN}
                   onClick={onClose}

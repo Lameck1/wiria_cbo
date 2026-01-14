@@ -4,9 +4,12 @@
  */
 
 import { useState } from 'react';
+
 import { motion, AnimatePresence } from 'framer-motion';
+
 import { Modal } from '@/shared/components/ui/Modal';
 import { getFullFileUrl, hasValidFileUrl } from '@/shared/utils/getBackendUrl';
+
 import type { Tender } from '../hooks/useTenders';
 
 interface TenderModalProps {
@@ -249,7 +252,7 @@ export function TenderModal({ tender, isOpen, onClose }: TenderModalProps) {
             <div>
               <h4 className="mb-2 font-semibold text-gray-700">Required Documents</h4>
               <ul className="space-y-2">
-                {tender.requiredDocuments.map((doc, index) => (
+                {tender.requiredDocuments.map((document_, index) => (
                   <li key={index} className="flex items-start gap-3 text-sm text-gray-600">
                     <svg
                       className="mt-0.5 h-5 w-5 flex-shrink-0 text-wiria-blue-dark"
@@ -264,7 +267,7 @@ export function TenderModal({ tender, isOpen, onClose }: TenderModalProps) {
                         d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                       />
                     </svg>
-                    {doc}
+                    {document_}
                   </li>
                 ))}
               </ul>

@@ -4,7 +4,9 @@
  */
 
 import { motion } from 'framer-motion';
+
 import { getFullFileUrl, hasValidFileUrl } from '@/shared/utils/getBackendUrl';
+
 import type { Resource } from '../hooks/useResources';
 
 // Category icons mapping
@@ -96,8 +98,8 @@ export function DocumentCard({ document, onClick, index = 0 }: DocumentCardProps
       {/* Key Points Preview */}
       {document.keyPoints && document.keyPoints.length > 0 && (
         <ul className="relative z-10 mb-4 space-y-1 text-xs text-gray-500">
-          {document.keyPoints.slice(0, 2).map((point, i) => (
-            <li key={i} className="flex items-center gap-2">
+          {document.keyPoints.slice(0, 2).map((point, index_) => (
+            <li key={index_} className="flex items-center gap-2">
               <span className="h-1.5 w-1.5 flex-shrink-0 rounded-full bg-wiria-yellow" />
               <span className="line-clamp-1">{point}</span>
             </li>

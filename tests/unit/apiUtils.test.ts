@@ -4,6 +4,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
+
 import { extractArray, extractData, getErrorMessage, isObject } from '@/shared/utils/apiUtils';
 
 describe('extractArray', () => {
@@ -36,7 +37,7 @@ describe('extractArray', () => {
 
   it('should return empty array for null/undefined', () => {
     expect(extractArray(null)).toEqual([]);
-    expect(extractArray(undefined)).toEqual([]);
+    expect(extractArray()).toEqual([]);
   });
 
   it('should return empty array for invalid response', () => {
@@ -49,7 +50,7 @@ describe('extractArray', () => {
 describe('extractData', () => {
   it('should return null for null/undefined input', () => {
     expect(extractData(null)).toBeNull();
-    expect(extractData(undefined)).toBeNull();
+    expect(extractData()).toBeNull();
   });
 
   it('should extract data from { data: T } wrapper', () => {
@@ -83,7 +84,7 @@ describe('getErrorMessage', () => {
 
   it('should return fallback for unknown error types', () => {
     expect(getErrorMessage(null)).toBe('An error occurred');
-    expect(getErrorMessage(undefined)).toBe('An error occurred');
+    expect(getErrorMessage()).toBe('An error occurred');
     expect(getErrorMessage(123)).toBe('An error occurred');
   });
 
@@ -111,6 +112,6 @@ describe('isObject', () => {
     expect(isObject('string')).toBe(false);
     expect(isObject(123)).toBe(false);
     expect(isObject(true)).toBe(false);
-    expect(isObject(undefined)).toBe(false);
+    expect(isObject()).toBe(false);
   });
 });

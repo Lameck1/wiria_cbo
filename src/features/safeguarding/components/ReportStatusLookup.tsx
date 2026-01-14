@@ -4,7 +4,9 @@
  */
 
 import { useState, FormEvent } from 'react';
+
 import { motion, AnimatePresence } from 'framer-motion';
+
 import { useSafeguardingReport } from '../hooks/useSafeguardingReport';
 
 // status configuration with icons
@@ -122,7 +124,7 @@ export function ReportStatusLookup() {
             <>
               <motion.svg
                 animate={{ rotate: 360 }}
-                transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                transition={{ duration: 1, repeat: Number.POSITIVE_INFINITY, ease: 'linear' }}
                 className="h-4 w-4"
                 fill="none"
                 viewBox="0 0 24 24"

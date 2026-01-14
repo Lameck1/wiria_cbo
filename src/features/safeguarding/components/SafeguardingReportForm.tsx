@@ -1,8 +1,9 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { FormProvider } from 'react-hook-form';
+
 import { useSafeguardingForm } from '../hooks/useSafeguardingForm';
-import { ReporterStep } from './form/ReporterStep';
 import { ConcernStep } from './form/ConcernStep';
+import { ReporterStep } from './form/ReporterStep';
 import { SuccessView } from './form/SuccessView';
 
 const staggerContainer = {

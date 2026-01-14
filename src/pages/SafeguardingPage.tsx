@@ -8,8 +8,10 @@
  * - Collapsible sidebar on mobile
  */
 
-import { motion } from 'framer-motion';
 import { useState } from 'react';
+
+import { motion } from 'framer-motion';
+
 import {
   SafeguardingReportForm,
   ReportStatusLookup,

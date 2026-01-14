@@ -4,6 +4,7 @@
  */
 
 import { motion } from 'framer-motion';
+
 import { BENEFITS } from '../constants/opportunitiesData';
 
 // Icons for each benefit - kept locally to this component

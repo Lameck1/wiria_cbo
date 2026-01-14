@@ -1,9 +1,9 @@
 /**
  * Admin News (Updates) API Tests
  */
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 const mockUpdate = {
     id: '1',

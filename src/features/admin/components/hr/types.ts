@@ -5,7 +5,7 @@
 
 import { Career } from '@/features/admin/api/careers.api';
 import { Application, Opportunity } from '@/features/admin/api/opportunities.api';
-export type { Career, Application, Opportunity };
+
 
 export interface CareersTabProps {
   careers: Career[];
@@ -39,3 +39,6 @@ export interface OpportunityModalProps {
   onClose: () => void;
   onSuccess: () => void;
 }
+
+export {type Career} from '@/features/admin/api/careers.api';
+export {type Application, type Opportunity} from '@/features/admin/api/opportunities.api';

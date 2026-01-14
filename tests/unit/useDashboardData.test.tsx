@@ -3,6 +3,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
+
 import { canAccessModule, formatCurrency } from '@/features/admin/hooks/useDashboardData';
 import { UserRole } from '@/shared/types';
 

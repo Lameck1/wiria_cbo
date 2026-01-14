@@ -5,8 +5,9 @@
  */
 
 import { Modal } from '@/shared/components/ui/Modal';
-import { Opportunity } from '../hooks/useOpportunities';
+
 import { OpportunityModalContent } from './OpportunityModalContent';
+import { Opportunity } from '../hooks/useOpportunities';
 
 interface OpportunityModalProps {
   opportunity: Opportunity | null;

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+
 import {
   AdminUser,
   UserInvitation,
@@ -8,17 +9,17 @@ import {
   cancelInvitation,
   inviteUser,
 } from '@/features/admin/api/users.api';
+import { AdminPageHeader } from '@/features/admin/components/layout/AdminPageHeader';
 import { Button } from '@/shared/components/ui/Button';
+import { Card, CardBody } from '@/shared/components/ui/Card';
 import { DataTable, Column } from '@/shared/components/ui/DataTable';
+import { Modal } from '@/shared/components/ui/Modal';
+import { StatusBadge } from '@/shared/components/ui/StatusBadge';
 import { useAdminData, useAdminAction } from '@/shared/hooks/useAdminData';
 import { notificationService } from '@/shared/services/notification/notificationService';
 import { UserRole } from '@/shared/types';
-import { Modal } from '@/shared/components/ui/Modal';
 import { getErrorMessage } from '@/shared/utils/apiUtils';
-import { AdminPageHeader } from '@/features/admin/components/layout/AdminPageHeader';
-import { StatusBadge } from '@/shared/components/ui/StatusBadge';
 import { formatDate } from '@/shared/utils/dateUtils';
-import { Card, CardBody } from '@/shared/components/ui/Card';
 
 export default function UserManagementPage() {
   const [activeTab, setActiveTab] = useState<'ACTIVE' | 'PENDING'>('ACTIVE');
@@ -99,21 +100,21 @@ export default function UserManagementPage() {
     {
       header: 'Role',
       key: 'role',
-      render: (i) => <StatusBadge status={i.role} />,
+      render: (index) => <StatusBadge status={index.role} />,
     },
-    { header: 'Invited By', key: 'inviter', render: (i) => i.inviter?.email || 'N/A' },
+    { header: 'Invited By', key: 'inviter', render: (index) => index.inviter?.email || 'N/A' },
     {
       header: 'Expires',
       key: 'expiresAt',
-      render: (i) => <span className="text-sm">{formatDate(i.expiresAt)}</span>,
+      render: (index) => <span className="text-sm">{formatDate(index.expiresAt)}</span>,
     },
     {
       header: 'Actions',
       key: 'actions',
       align: 'right',
-      render: (i) => (
+      render: (index) => (
         <button
-          onClick={() => handleCancelInvite(i.id)}
+          onClick={() => handleCancelInvite(index.id)}
           className="text-sm font-bold text-red-500 transition-colors hover:text-red-700 hover:underline"
         >
           Cancel

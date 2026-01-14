@@ -2,6 +2,7 @@
  * Storage Service Tests
  */
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
+
 import { StorageService, storageService, STORAGE_KEYS } from '@/shared/services/storage/storageService';
 
 describe('StorageService', () => {

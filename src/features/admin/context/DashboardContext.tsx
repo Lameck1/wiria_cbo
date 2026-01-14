@@ -1,11 +1,14 @@
 import { createContext, useContext, ReactNode } from 'react';
+
 import { useAuth } from '@/features/auth/context/AuthContext';
+
 import {
   useSuspenseDashboardStats,
   useSuspenseDashboardTrends,
   canAccessModule as checkModuleAccess,
   type TrendData,
 } from '../hooks/useDashboardData';
+
 import type { DashboardStats } from '../api/dashboard.api';
 
 interface DashboardContextValue {

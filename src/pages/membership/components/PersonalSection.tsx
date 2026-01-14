@@ -1,4 +1,5 @@
 import { memo } from 'react';
+
 import { FormField, FormSelectField } from '@/shared/components/ui/form';
 
 interface PersonalInfoSectionProps {

@@ -3,11 +3,12 @@
  * Search across members, donations, and contacts
  */
 
-import { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect, useRef , useDeferredValue } from 'react';
+
 import { useQuery } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
+
 import { apiClient } from '@/shared/services/api/client';
-import { useDeferredValue } from 'react';
 
 interface SearchResult {
   id: string;
@@ -73,16 +74,19 @@ export function GlobalSearch() {
     setQuery('');
     // Navigate to the specific item using query params for highlighting
     switch (result.type) {
-      case 'member':
+      case 'member': {
         // Just pass the ID, don't filter - let the page load all and find the member
         navigate(`/admin/members?highlight=${result.id}`);
         break;
-      case 'donation':
+      }
+      case 'donation': {
         navigate(`/admin/donations?highlight=${result.id}`);
         break;
-      case 'contact':
+      }
+      case 'contact': {
         navigate(`/admin/contacts?highlight=${result.id}`);
         break;
+      }
     }
   };
 

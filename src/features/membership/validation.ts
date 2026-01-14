@@ -28,24 +28,24 @@ export const registrationSchema = z
     village: z.string().min(1, 'Village is required'),
     membershipFee: z.number().min(100, 'Minimum membership fee is KES 100'),
     paymentMethod: z.enum(['STK_PUSH', 'MANUAL']),
-    agreedToTerms: z.boolean().refine((val) => val === true, {
+    agreedToTerms: z.boolean().refine((value) => value === true, {
       message: 'You must agree to the terms and conditions',
     }),
-    consentToDataProcessing: z.boolean().refine((val) => val === true, {
+    consentToDataProcessing: z.boolean().refine((value) => value === true, {
       message: 'You must consent to data processing',
     }),
   })
-  .superRefine((data, ctx) => {
+  .superRefine((data, context) => {
     if (data.membershipType === 'GROUP') {
       if (!data.groupName) {
-        ctx.addIssue({
+        context.addIssue({
           code: z.ZodIssueCode.custom,
           message: 'Group name is required for group membership',
           path: ['groupName'],
         });
       }
       if (!data.memberCount) {
-        ctx.addIssue({
+        context.addIssue({
           code: z.ZodIssueCode.custom,
           message: 'Member count is required for group membership',
           path: ['memberCount'],
@@ -54,21 +54,21 @@ export const registrationSchema = z
     } else {
       // Individual specific requirements
       if (!data.dateOfBirth || data.dateOfBirth.length === 0) {
-        ctx.addIssue({
+        context.addIssue({
           code: z.ZodIssueCode.custom,
           message: 'Date of birth is required',
           path: ['dateOfBirth'],
         });
       }
       if (!data.gender) {
-        ctx.addIssue({
+        context.addIssue({
           code: z.ZodIssueCode.custom,
           message: 'Please select your gender',
           path: ['gender'],
         });
       }
       if (!data.nationalId || data.nationalId.length < 6) {
-        ctx.addIssue({
+        context.addIssue({
           code: z.ZodIssueCode.custom,
           message: 'National ID must be at least 6 characters',
           path: ['nationalId'],
@@ -85,10 +85,10 @@ export const renewalSchema = z.object({
     .optional(),
   transactionCode: z.string().optional(),
   memberCount: z.number().min(1).optional(),
-  agreedToDataProtection: z.boolean().refine((val) => val === true, {
+  agreedToDataProtection: z.boolean().refine((value) => value === true, {
     message: 'You must consent to data protection',
   }),
-  agreedToCodeOfEthics: z.boolean().refine((val) => val === true, {
+  agreedToCodeOfEthics: z.boolean().refine((value) => value === true, {
     message: 'You must agree to the code of ethics',
   }),
 });

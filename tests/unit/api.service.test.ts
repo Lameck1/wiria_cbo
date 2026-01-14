@@ -2,6 +2,7 @@
 // @vitest-environment jsdom
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+
 import apiClient, { ApiError } from '@/shared/services/api/client';
 
 describe('apiClient', () => {
@@ -52,9 +53,9 @@ describe('apiClient', () => {
       await apiClient.get('/test');
 
       // Should not have Authorization header
-      const lastCall = fetchMock.mock.calls[fetchMock.mock.calls.length - 1];
+      const lastCall = fetchMock.mock.calls.at(-1);
       expect(lastCall).toBeDefined();
-      const headers = (lastCall![1] as RequestInit).headers as Record<string, string>;
+      const headers = (lastCall![1]!).headers as Record<string, string>;
       expect(headers['Authorization']).toBeUndefined();
     });
   });

@@ -1,8 +1,10 @@
-import { Link } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
-import { UserRole } from '@/shared/types';
+import { Link } from 'react-router-dom';
+
 import { ROUTES } from '@/shared/constants/routes';
 import { useBackendStatus } from '@/shared/services/backendStatus';
+import { UserRole } from '@/shared/types';
+
 import { LoginDropdown } from '../LoginDropdown';
 
 interface AuthActionsProps {
@@ -55,7 +57,7 @@ export function AuthActions({
                         <span>Dashboard</span>
                     </Link>
                 )}
-                {[UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.STAFF].includes(userRole as UserRole) && (
+                {[UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.STAFF].includes(userRole!) && (
                     <Link
                         to={ROUTES.ADMIN}
                         className="text-sm font-medium text-gray-600 transition-colors hover:text-wiria-blue-dark"

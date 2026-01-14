@@ -1,12 +1,15 @@
-import { createBrowserRouter, Link, Outlet } from 'react-router-dom';
 import { lazy } from 'react';
+
+import { createBrowserRouter, Link, Outlet } from 'react-router-dom';
+
+import { AdminLayout } from '@/features/admin/components/layout/AdminLayout';
+import { ProtectedRoute } from '@/features/auth/components/ProtectedRoute';
+import { ErrorBoundary } from '@/shared/components/ErrorBoundary';
 import { AppProviders } from '@/shared/components/layout/AppProviders';
 import { Layout } from '@/shared/components/layout/Layout';
-import { ProtectedRoute } from '@/features/auth/components/ProtectedRoute';
-import { UserRole } from '@/shared/types';
-import { AdminLayout } from '@/features/admin/components/layout/AdminLayout';
-import { ErrorBoundary } from '@/shared/components/ErrorBoundary';
 import { ROUTES } from '@/shared/constants/routes';
+import { UserRole } from '@/shared/types';
+
 import { createMemberRoute } from './routeProtection';
 
 // Lazy load all pages for optimal code splitting

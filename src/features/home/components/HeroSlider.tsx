@@ -4,8 +4,10 @@
  */
 
 import { useState, useEffect, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+
 import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router-dom';
+
 import { useAuthCTA } from '../hooks/useAuthCTA';
 
 interface HeroSlide {
@@ -44,7 +46,7 @@ export function HeroSlider({ slides, autoRotateInterval = 6000 }: HeroSliderProp
     if (isPaused) return;
 
     const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % slides.length);
+      setCurrentIndex((previous) => (previous + 1) % slides.length);
     }, autoRotateInterval);
 
     return () => clearInterval(interval);
@@ -56,24 +58,24 @@ export function HeroSlider({ slides, autoRotateInterval = 6000 }: HeroSliderProp
 
   const nextSlide = useCallback(() => {
     if (!hasSlides) return;
-    setCurrentIndex((prev) => (prev + 1) % slides.length);
+    setCurrentIndex((previous) => (previous + 1) % slides.length);
   }, [hasSlides, slides.length]);
 
-  const prevSlide = useCallback(() => {
+  const previousSlide = useCallback(() => {
     if (!hasSlides) return;
-    setCurrentIndex((prev) => (prev - 1 + slides.length) % slides.length);
+    setCurrentIndex((previous) => (previous - 1 + slides.length) % slides.length);
   }, [hasSlides, slides.length]);
 
   // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowLeft') prevSlide();
+      if (e.key === 'ArrowLeft') previousSlide();
       if (e.key === 'ArrowRight') nextSlide();
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [prevSlide, nextSlide]);
+  }, [previousSlide, nextSlide]);
 
   if (!currentSlide) return null;
 
@@ -238,7 +240,7 @@ export function HeroSlider({ slides, autoRotateInterval = 6000 }: HeroSliderProp
 
       {/* Navigation Arrows */}
       <button
-        onClick={prevSlide}
+        onClick={previousSlide}
         aria-label="Previous slide"
         className="absolute left-4 top-1/2 z-20 hidden -translate-y-1/2 rounded-full bg-white/20 p-2 text-white backdrop-blur-md transition-all duration-300 hover:bg-white/30 md:block"
       >

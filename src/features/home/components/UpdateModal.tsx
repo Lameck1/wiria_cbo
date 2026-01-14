@@ -3,10 +3,14 @@
  * Displays full update content with scroll indicator
  */
 
-import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
-import { Update } from '../hooks/useUpdates';
+
+import { motion, AnimatePresence } from 'framer-motion';
+
 import { ImageCarousel } from '@/shared/components/ImageCarousel';
+
+import { Update } from '../hooks/useUpdates';
+
 
 interface UpdateModalProps {
   update: Update | null;
@@ -54,9 +58,9 @@ export function UpdateModal({ update, isOpen, onClose }: UpdateModalProps) {
 
   if (!update) return null;
 
-  const dateStr = update.publishedAt || update.date;
-  const formattedDate = dateStr
-    ? new Date(dateStr).toLocaleDateString('en-US', {
+  const dateString = update.publishedAt || update.date;
+  const formattedDate = dateString
+    ? new Date(dateString).toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'short',
         day: 'numeric',
@@ -155,7 +159,7 @@ export function UpdateModal({ update, isOpen, onClose }: UpdateModalProps) {
               <div className="pointer-events-none absolute bottom-0 left-0 right-0 flex h-12 items-end justify-center bg-gradient-to-t from-white via-white/40 to-transparent pb-3">
                 <motion.div
                   animate={{ y: [0, 4, 0] }}
-                  transition={{ repeat: Infinity, duration: 1.5 }}
+                  transition={{ repeat: Number.POSITIVE_INFINITY, duration: 1.5 }}
                 >
                   <svg
                     className="h-5 w-5 text-gray-400"

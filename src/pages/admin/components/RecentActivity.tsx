@@ -4,11 +4,12 @@
  */
 
 import { useNavigate } from 'react-router-dom';
-import { ROUTES } from '@/shared/constants/routes';
-import { StatusBadge } from '@/shared/components/ui/StatusBadge';
+
 import { ActivitySkeleton } from '@/features/admin/components/DashboardSkeletons';
-import { formatRelativeTime } from '@/shared/utils/dateUtils';
 import { formatCurrency } from '@/features/admin/hooks/useDashboardData';
+import { StatusBadge } from '@/shared/components/ui/StatusBadge';
+import { ROUTES } from '@/shared/constants/routes';
+import { formatRelativeTime } from '@/shared/utils/dateUtils';
 
 interface ActivityCardProps {
     title: string;
@@ -72,7 +73,7 @@ export function RecentApplications({ applications, isLoading = false }: RecentAp
             title="Recent Applications"
             viewAllRoute={`${ROUTES.ADMIN_HR}?tab=applications`}
             isLoading={isLoading}
-            isEmpty={!applications.length}
+            isEmpty={applications.length === 0}
             emptyMessage="No recent applications"
         >
             {applications.map((app) => (
@@ -115,7 +116,7 @@ export function RecentDonations({ donations, isLoading = false }: RecentDonation
             title="Recent Donations"
             viewAllRoute={ROUTES.ADMIN_DONATIONS}
             isLoading={isLoading}
-            isEmpty={!donations.length}
+            isEmpty={donations.length === 0}
             emptyMessage="No recent donations"
         >
             {donations.map((donation) => (
@@ -156,17 +157,17 @@ export function RecentMessages({ messages, isLoading = false }: RecentMessagesPr
             title="Recent Messages"
             viewAllRoute={ROUTES.ADMIN_CONTACTS}
             isLoading={isLoading}
-            isEmpty={!messages.length}
+            isEmpty={messages.length === 0}
             emptyMessage="No recent messages"
         >
-            {messages.map((msg) => (
-                <div key={msg.id} className="rounded-lg bg-gray-50 p-3">
+            {messages.map((message) => (
+                <div key={message.id} className="rounded-lg bg-gray-50 p-3">
                     <div className="mb-1 flex items-start justify-between">
-                        <p className="text-sm font-semibold text-gray-900">{msg.name}</p>
-                        <StatusBadge status={msg.status} />
+                        <p className="text-sm font-semibold text-gray-900">{message.name}</p>
+                        <StatusBadge status={message.status} />
                     </div>
-                    <p className="truncate text-xs text-gray-500">{msg.subject}</p>
-                    <p className="mt-1 text-xs text-gray-400">{formatRelativeTime(msg.date)}</p>
+                    <p className="truncate text-xs text-gray-500">{message.subject}</p>
+                    <p className="mt-1 text-xs text-gray-400">{formatRelativeTime(message.date)}</p>
                 </div>
             ))}
         </ActivityCard>

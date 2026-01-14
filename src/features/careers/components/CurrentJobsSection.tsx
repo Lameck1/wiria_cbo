@@ -5,12 +5,14 @@
  */
 
 import { useState, useCallback } from 'react';
-import { useCareers, Job } from '../hooks/useCareers';
+
+import { ApplicationModal } from '@/features/applications/components/ApplicationModal';
+import { SectionHeader } from '@/shared/components/sections/SectionHeader';
+
 import { JobCard } from './JobCard';
 import { JobModal } from './JobModal';
-import { ApplicationModal } from '@/features/applications/components/ApplicationModal';
 import { NoOpeningsView } from './NoOpeningsView';
-import { SectionHeader } from '@/shared/components/sections/SectionHeader';
+import { useCareers, Job } from '../hooks/useCareers';
 
 type ModalView = 'none' | 'details' | 'apply';
 
@@ -77,7 +79,7 @@ export function CurrentJobsSection() {
                   <div className="mb-6 text-center">
                     <span className="inline-flex items-center gap-2 rounded-full bg-green-100 px-4 py-2 text-sm font-semibold text-green-700">
                       <span className="h-2 w-2 animate-pulse rounded-full bg-green-500" />
-                      {activeJobs.length} position{activeJobs.length !== 1 ? 's' : ''} available
+                      {activeJobs.length} position{activeJobs.length === 1 ? '' : 's'} available
                     </span>
                   </div>
                   {activeJobs.map((job) => (

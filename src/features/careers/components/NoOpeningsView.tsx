@@ -5,8 +5,9 @@
  */
 
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
 export function NoOpeningsView() {
   const [email, setEmail] = useState('');
@@ -40,7 +41,17 @@ export function NoOpeningsView() {
       </p>
 
       {/* Email Subscription */}
-      {!isSubscribed ? (
+      {isSubscribed ? (
+        <div className="mx-auto mb-8 max-w-md rounded-xl border border-green-200 bg-green-50 p-4">
+          <div className="flex items-center gap-3">
+            <span className="text-2xl">✅</span>
+            <div className="text-left">
+              <p className="font-semibold text-green-800">You're on the list!</p>
+              <p className="text-sm text-green-600">We'll email you when new positions open.</p>
+            </div>
+          </div>
+        </div>
+      ) : (
         <form onSubmit={handleSubscribe} className="mx-auto mb-8 max-w-md">
           <div className="flex gap-2 rounded-full bg-gray-100 p-2">
             <input
@@ -59,16 +70,6 @@ export function NoOpeningsView() {
             </button>
           </div>
         </form>
-      ) : (
-        <div className="mx-auto mb-8 max-w-md rounded-xl border border-green-200 bg-green-50 p-4">
-          <div className="flex items-center gap-3">
-            <span className="text-2xl">✅</span>
-            <div className="text-left">
-              <p className="font-semibold text-green-800">You're on the list!</p>
-              <p className="text-sm text-green-600">We'll email you when new positions open.</p>
-            </div>
-          </div>
-        </div>
       )}
 
       {/* Alternative Options */}

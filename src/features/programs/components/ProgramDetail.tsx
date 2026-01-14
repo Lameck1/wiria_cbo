@@ -1,8 +1,9 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { ProgramData } from '../constants/programsData';
-import { ProgramOverviewCard } from './ProgramOverviewCard';
-import { ProgramIcon, CheckIcon } from './ProgramIcons';
+
 import { ImpactMetrics } from './ImpactMetrics';
+import { ProgramIcon, CheckIcon } from './ProgramIcons';
+import { ProgramOverviewCard } from './ProgramOverviewCard';
+import { ProgramData } from '../constants/programsData';
 
 interface ProgramDetailProps {
   program: ProgramData;

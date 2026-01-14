@@ -3,7 +3,7 @@
  * Centralized HTTP client with TypeScript support
  */
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
+const API_BASE_URL = import.meta.env['VITE_API_BASE_URL'] ?? 'http://localhost:5001/api';
 
 type TokenResolver = () => string | null;
 
@@ -28,11 +28,7 @@ class ApiClient {
    * Keeping for backward compatibility during migration.
    */
   setAuthToken(token: string | null) {
-    if (token) {
-      this.tokenResolver = () => token;
-    } else {
-      this.tokenResolver = undefined;
-    }
+    this.tokenResolver = token ? () => token : undefined;
   }
 
   private onUnauthorizedCallback?: () => void;

@@ -3,9 +3,10 @@
  * Phase 5L1: Unit test coverage expansion
  */
 
-import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { describe, it, expect, vi } from 'vitest';
+
 import { FormModal } from '../../../src/shared/components/modals/FormModal';
 
 describe('FormModal', () => {
@@ -120,7 +121,7 @@ describe('FormModal', () => {
   });
 
   it('should handle form submission with valid data', async () => {
-    mockOnSubmit.mockResolvedValue(undefined);
+    mockOnSubmit.mockResolvedValue();
 
     render(
       <FormModal
@@ -215,8 +216,8 @@ describe('FormModal', () => {
       />
     );
 
-    const usernameInput = screen.getByLabelText(/username/i) as HTMLInputElement;
-    const emailInput = screen.getByLabelText(/email/i) as HTMLInputElement;
+    const usernameInput = screen.getByLabelText(/username/i);
+    const emailInput = screen.getByLabelText(/email/i);
 
     expect(usernameInput.value).toBe('existinguser');
     expect(emailInput.value).toBe('user@example.com');
@@ -293,7 +294,7 @@ describe('FormModal', () => {
   });
 
   it('should handle number input type', async () => {
-    mockOnSubmit.mockResolvedValue(undefined);
+    mockOnSubmit.mockResolvedValue();
 
     render(
       <FormModal

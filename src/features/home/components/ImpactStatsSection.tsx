@@ -3,8 +3,9 @@
  * Animated counters and decorative elements
  */
 
-import { motion, useInView } from 'framer-motion';
 import { useRef, useEffect, useState } from 'react';
+
+import { motion, useInView } from 'framer-motion';
 
 interface ImpactStat {
   label: string;

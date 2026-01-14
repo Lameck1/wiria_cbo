@@ -6,7 +6,7 @@ export const contactSchema = z.object({
   phone: z
     .string()
     .optional()
-    .refine((val) => !val || /^[\d\s+()-]{7,20}$/.test(val), {
+    .refine((value) => !value || /^[\d\s()+-]{7,20}$/.test(value), {
       message: 'Please enter a valid phone number',
     }),
   subject: z.string().min(5, 'Subject must be at least 5 characters'),

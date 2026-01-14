@@ -1,14 +1,17 @@
 import { useEffect, useState } from 'react';
+
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm, FormProvider, Controller } from 'react-hook-form';
+
 import { PortalLayout } from '@/features/membership/components/PortalLayout';
 import { useMemberData } from '@/features/membership/hooks/useMemberData';
+import { profileSchema, ProfileFormSchema } from '@/features/membership/validation';
 import { Button } from '@/shared/components/ui/Button';
+import { Card, CardBody } from '@/shared/components/ui/Card';
 import { FormField } from '@/shared/components/ui/form';
 import { Spinner } from '@/shared/components/ui/Spinner';
 import { notificationService } from '@/shared/services/notification/notificationService';
-import { Card, CardBody } from '@/shared/components/ui/Card';
-import { useForm, FormProvider, Controller } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { profileSchema, ProfileFormSchema } from '@/features/membership/validation';
+
 
 function MemberProfilePage() {
   const { profile, isLoading, fetchProfile, updateProfile } = useMemberData();

@@ -4,9 +4,11 @@
  */
 
 import { memo, useMemo } from 'react';
+
 import { Button } from '@/shared/components/ui/Button';
 import { DataTable, Column } from '@/shared/components/ui/DataTable';
 import { StatusBadge } from '@/shared/components/ui/StatusBadge';
+
 import { OpportunitiesTabProps, Opportunity, Application } from './types';
 
 export const OpportunitiesTab = memo(function OpportunitiesTab({

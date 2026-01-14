@@ -1,6 +1,7 @@
 import { memo } from 'react';
-import { Link } from 'react-router-dom';
+
 import { useFormContext } from 'react-hook-form';
+import { Link } from 'react-router-dom';
 
 interface ConsentCheckboxesProps {
     isDisabled: boolean;

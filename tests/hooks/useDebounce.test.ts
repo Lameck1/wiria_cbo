@@ -5,6 +5,7 @@
 
 import { renderHook, act } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+
 import { useDebounce } from '../../src/shared/hooks/useDebounce';
 
 describe('useDebounce', () => {
@@ -113,12 +114,12 @@ describe('useDebounce', () => {
       { initialProps: { value: { key: 'initial' } } }
     );
 
-    const updatedObj = { key: 'updated' };
-    objectRerender({ value: updatedObj });
+    const updatedObject = { key: 'updated' };
+    objectRerender({ value: updatedObject });
     act(() => {
       vi.advanceTimersByTime(300);
     });
-    expect(objectResult.current).toEqual(updatedObj);
+    expect(objectResult.current).toEqual(updatedObject);
   });
 
   it('should cleanup timeout on unmount', () => {

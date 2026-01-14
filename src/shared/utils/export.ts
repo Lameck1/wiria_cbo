@@ -24,7 +24,7 @@ export function arrayToCSV<T extends Record<string, unknown>>(
         .map((key) => {
           const value = row[key];
           // Escape quotes and wrap in quotes if contains comma
-          const cellValue = String(value ?? '').replace(/"/g, '""');
+          const cellValue = String(value ?? '').replaceAll('"', '""');
           return cellValue.includes(',') || cellValue.includes('\n') ? `"${cellValue}"` : cellValue;
         })
         .join(',')
@@ -48,9 +48,9 @@ export function downloadFile(
   link.setAttribute('href', url);
   link.setAttribute('download', filename);
   link.style.visibility = 'hidden';
-  document.body.appendChild(link);
+  document.body.append(link);
   link.click();
-  document.body.removeChild(link);
+  link.remove();
   URL.revokeObjectURL(url);
 }
 

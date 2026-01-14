@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { useDebounce } from '@/shared/hooks/useDebounce';
+
 import { TIMING } from '@/shared/constants/config';
+import { useDebounce } from '@/shared/hooks/useDebounce';
 
 interface MemberFiltersProps {
   currentFilter: string;

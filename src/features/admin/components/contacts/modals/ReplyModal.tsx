@@ -5,7 +5,7 @@ interface ReplyModalProps {
   contact: Contact;
   replyText: string;
   isSubmitting: boolean;
-  setReplyText: (val: string) => void;
+  setReplyText: (value: string) => void;
   onReply: () => void;
   onCancel: () => void;
 }

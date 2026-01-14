@@ -4,11 +4,13 @@
  */
 
 import { useEffect } from 'react';
+
 import { Link } from 'react-router-dom';
+
 import { PortalLayout } from '@/features/membership/components/PortalLayout';
 import { useMemberData } from '@/features/membership/hooks/useMemberData';
-import { Card, CardBody, CardHeader } from '@/shared/components/ui/Card';
 import { Button } from '@/shared/components/ui/Button';
+import { Card, CardBody, CardHeader } from '@/shared/components/ui/Card';
 import { Spinner } from '@/shared/components/ui/Spinner';
 
 function MemberPortalPage() {
@@ -107,9 +109,9 @@ function MemberPortalPage() {
             <p className="mb-4 text-sm text-blue-100">
               {isExpired
                 ? 'Your membership has expired'
-                : daysUntilExpiry !== null
-                  ? `Expires in ${daysUntilExpiry} days`
-                  : 'Checking status...'}
+                : daysUntilExpiry === null
+                  ? 'Checking status...'
+                  : `Expires in ${daysUntilExpiry} days`}
             </p>
             <div className="mb-4">
               <div className="mb-1 flex justify-between text-xs">

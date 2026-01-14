@@ -4,7 +4,6 @@
  * Uses shared PageHero component for consistency
  */
 
-import { PageHero } from '@/shared/components/sections/PageHero';
 import {
   OpportunityHeroStats,
   VolunteerInternshipSection,
@@ -12,6 +11,7 @@ import {
   BenefitsSection,
   ApplicationTipsSection,
 } from '@/features/opportunities';
+import { PageHero } from '@/shared/components/sections/PageHero';
 import { SectionHeader } from '@/shared/components/sections/SectionHeader';
 
 function OpportunitiesPage() {

@@ -4,13 +4,13 @@
  * E2E Tests for Membership Registration Flow
  * Tests the member registration page
  */
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 
-import MembershipPage from '@/pages/MembershipPage';
 import { AuthProvider } from '@/features/auth/context/AuthContext';
+import MembershipPage from '@/pages/MembershipPage';
 
 vi.mock('@/shared/services/notification/notificationService', () => ({
     notificationService: {

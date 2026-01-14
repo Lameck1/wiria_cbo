@@ -4,9 +4,12 @@
  */
 
 import { useState } from 'react';
+
 import { motion, AnimatePresence } from 'framer-motion';
+
 import { Modal } from '@/shared/components/ui/Modal';
 import { getFullFileUrl, hasValidFileUrl } from '@/shared/utils/getBackendUrl';
+
 import type { Resource } from '../hooks/useResources';
 
 interface DocumentModalProps {

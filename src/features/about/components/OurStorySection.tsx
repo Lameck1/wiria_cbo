@@ -4,6 +4,7 @@
  */
 
 import { motion } from 'framer-motion';
+
 import { REGISTRATION_DETAILS } from '../constants/aboutData';
 
 export function OurStorySection() {

@@ -81,7 +81,7 @@ export const getMeetingById = async (id: string): Promise<Meeting | null> => {
 
 export const createMeeting = async (data: CreateMeetingData): Promise<Meeting> => {
   const response = await apiClient.post('/admin/meetings', data);
-  return extractData<Meeting>(response) as Meeting;
+  return extractData<Meeting>(response)!;
 };
 
 export const updateMeeting = async (
@@ -89,7 +89,7 @@ export const updateMeeting = async (
   data: Partial<CreateMeetingData>
 ): Promise<Meeting> => {
   const response = await apiClient.put(`/admin/meetings/${id}`, data);
-  return extractData<Meeting>(response) as Meeting;
+  return extractData<Meeting>(response)!;
 };
 
 export const cancelMeeting = async (id: string): Promise<boolean> => {

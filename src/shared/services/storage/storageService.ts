@@ -6,7 +6,7 @@
 export class StorageService {
   private prefix: string;
 
-  constructor(prefix: string = 'wiria_') {
+  constructor(prefix = 'wiria_') {
     this.prefix = prefix;
   }
 
@@ -54,8 +54,8 @@ export class StorageService {
     // This avoids issues with iterator invalidation in jsdom
     const keysToRemove: string[] = [];
     
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
+    for (let index = 0; index < localStorage.length; index++) {
+      const key = localStorage.key(index);
       if (key && key.startsWith(this.prefix)) {
         keysToRemove.push(key);
       }

@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { fireEvent } from '@testing-library/dom';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 
 // User Management TDD: Login, Profile View/Edit, Password Reset, Logout
 
@@ -35,9 +35,9 @@ describe('User Management UI', () => {
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       submitted = true;
-      const identifier = (form.querySelector('input[name="identifier"]') as HTMLInputElement | null)
+      const identifier = (form.querySelector('input[name="identifier"]'))
         ?.value;
-      const password = (form.querySelector('input[name="password"]') as HTMLInputElement | null)
+      const password = (form.querySelector('input[name="password"]'))
         ?.value;
       if (!identifier || !password) {
         errorDiv.textContent = 'All fields required';
@@ -95,7 +95,7 @@ describe('User Management UI', () => {
       })
     );
 
-    const passwordInput = form.querySelector('input[name="password"]') as HTMLInputElement | null;
+    const passwordInput = form.querySelector('input[name="password"]');
     expect(passwordInput).not.toBeNull();
     if (!passwordInput) throw new Error('Missing password input');
     passwordInput.value = 'correctpass';
@@ -128,23 +128,23 @@ describe('User Management UI', () => {
       <div id="profile-success"></div>
     `;
 
-    const editBtn = document.getElementById('edit-profile-btn') as HTMLButtonElement | null;
+    const editButton = document.getElementById('edit-profile-btn') as HTMLButtonElement | null;
     const editForm = document.getElementById('profile-edit-form') as HTMLFormElement | null;
     const profileView = document.getElementById('profile-view') as HTMLDivElement | null;
     const successDiv = document.getElementById('profile-success') as HTMLDivElement | null;
-    expect(editBtn).not.toBeNull();
+    expect(editButton).not.toBeNull();
     expect(editForm).not.toBeNull();
     expect(profileView).not.toBeNull();
     expect(successDiv).not.toBeNull();
-    if (!editBtn || !editForm || !profileView || !successDiv)
+    if (!editButton || !editForm || !profileView || !successDiv)
       throw new Error('Test DOM not initialized');
 
-    editBtn.addEventListener('click', () => {
+    editButton.addEventListener('click', () => {
       profileView.style.display = 'none';
       editForm.style.display = 'block';
     });
 
-    fireEvent.click(editBtn);
+    fireEvent.click(editButton);
     expect(profileView.style.display).toBe('none');
     expect(editForm.style.display).toBe('block');
 
@@ -175,7 +175,7 @@ describe('User Management UI', () => {
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       const email =
-        (form.querySelector('input[name="email"]') as HTMLInputElement | null)?.value ?? '';
+        (form.querySelector('input[name="email"]'))?.value ?? '';
       if (!email.includes('@')) {
         errorDiv.textContent = 'Invalid email';
       }
@@ -189,15 +189,15 @@ describe('User Management UI', () => {
     localStorage.setItem('wiria_auth_token', 'abc123');
     document.body.innerHTML = '<button id="logout-btn">Logout</button>';
 
-    const btn = document.getElementById('logout-btn') as HTMLButtonElement | null;
-    expect(btn).not.toBeNull();
-    if (!btn) throw new Error('Missing logout button');
+    const button = document.getElementById('logout-btn') as HTMLButtonElement | null;
+    expect(button).not.toBeNull();
+    if (!button) throw new Error('Missing logout button');
 
-    btn.addEventListener('click', () => {
+    button.addEventListener('click', () => {
       localStorage.removeItem('wiria_auth_token');
     });
 
-    fireEvent.click(btn);
+    fireEvent.click(button);
     expect(localStorage.getItem('wiria_auth_token')).toBeNull();
   });
 });

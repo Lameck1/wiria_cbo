@@ -3,8 +3,9 @@
  * Contact Form Hook Tests
  */
 
-import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+
 import { useContactForm } from '@/features/contact/hooks/useContactForm';
 import { apiClient } from '@/shared/services/api/client';
 import { notificationService } from '@/shared/services/notification/notificationService';

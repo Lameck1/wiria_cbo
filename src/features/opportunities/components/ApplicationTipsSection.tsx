@@ -4,6 +4,7 @@
  */
 
 import { motion } from 'framer-motion';
+
 import { APPLICATION_TIPS } from '../constants/opportunitiesData';
 
 // Icons for each tip - kept locally to this component

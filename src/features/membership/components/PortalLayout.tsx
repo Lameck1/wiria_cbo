@@ -4,8 +4,11 @@
  */
 
 import { ReactNode } from 'react';
+
 import { Link, useNavigate } from 'react-router-dom';
+
 import { useAuth } from '@/features/auth/context/AuthContext';
+
 import { PortalNavigation } from './PortalNavigation';
 
 interface PortalLayoutProps {

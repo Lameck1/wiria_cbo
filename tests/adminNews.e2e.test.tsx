@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-non-null-assertion */
 // @vitest-environment jsdom
 
-import { describe, it, beforeEach, vi, expect } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { describe, it, beforeEach, vi, expect } from 'vitest';
 
 import NewsManagementPage from '@/pages/admin/NewsManagementPage';
 

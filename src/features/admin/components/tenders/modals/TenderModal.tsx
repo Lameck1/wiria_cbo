@@ -1,11 +1,13 @@
 import { useState } from 'react';
+
 import { useQueryClient } from '@tanstack/react-query';
-import { Tender, createTender, updateTender } from '@/features/admin/api/tenders.api';
+
 import { uploadFile } from '@/features/admin/api/resources.api';
+import { Tender, createTender, updateTender } from '@/features/admin/api/tenders.api';
 import { Button } from '@/shared/components/ui/Button';
+import { Modal } from '@/shared/components/ui/Modal';
 import { notificationService } from '@/shared/services/notification/notificationService';
 import { getErrorMessage } from '@/shared/utils/apiUtils';
-import { Modal } from '@/shared/components/ui/Modal';
 
 interface TenderModalProps {
   tender: Tender | null;
@@ -28,17 +30,17 @@ export function TenderModal({ tender, onClose, onSuccess }: TenderModalProps) {
     index: number,
     value: string
   ) => {
-    setter((prev) => {
-      const newArr = [...prev];
-      newArr[index] = value;
-      return newArr;
+    setter((previous) => {
+      const newArray = [...previous];
+      newArray[index] = value;
+      return newArray;
     });
   };
 
   const addArrayItem = (setter: React.Dispatch<React.SetStateAction<string[]>>) =>
-    setter((prev) => [...prev, '']);
+    setter((previous) => [...previous, '']);
   const removeArrayItem = (setter: React.Dispatch<React.SetStateAction<string[]>>, index: number) =>
-    setter((prev) => prev.filter((_, i) => i !== index));
+    setter((previous) => previous.filter((_, index_) => index_ !== index));
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -47,7 +49,7 @@ export function TenderModal({ tender, onClose, onSuccess }: TenderModalProps) {
     const formData = new FormData(form);
     const rawData = Object.fromEntries(formData.entries());
 
-    const fileInput = form.querySelector('#tender-file-input') as HTMLInputElement;
+    const fileInput = form.querySelector('#tender-file-input') as HTMLInputElement | null;
     let downloadUrl = (rawData['downloadUrl'] as string) || '';
 
     try {
@@ -72,8 +74,8 @@ export function TenderModal({ tender, onClose, onSuccess }: TenderModalProps) {
         contactPerson: rawData['contactPerson'] as string,
         contactPhone: rawData['contactPhone'] as string,
         description: rawData['description'] as string,
-        eligibility: eligibility.filter((i: string) => i.trim()),
-        requiredDocuments: docs.filter((i: string) => i.trim()),
+        eligibility: eligibility.filter((index: string) => index.trim()),
+        requiredDocuments: docs.filter((index: string) => index.trim()),
         downloadUrl,
       };
 
@@ -263,18 +265,18 @@ export function TenderModal({ tender, onClose, onSuccess }: TenderModalProps) {
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div>
             <label className="mb-2 block text-sm font-bold">Eligibility Criteria</label>
-            {eligibility.map((item: string, i: number) => (
-              <div key={i} className="mb-2 flex gap-2">
+            {eligibility.map((item: string, index: number) => (
+              <div key={index} className="mb-2 flex gap-2">
                 <input
-                  aria-label={`Eligibility criteria ${i + 1}`}
+                  aria-label={`Eligibility criteria ${index + 1}`}
                   value={item}
-                  onChange={(e) => handleArrayChange(setEligibility, i, e.target.value)}
+                  onChange={(e) => handleArrayChange(setEligibility, index, e.target.value)}
                   className="flex-1 rounded-lg border p-2 text-sm"
                   required
                 />
                 <button
                   type="button"
-                  onClick={() => removeArrayItem(setEligibility, i)}
+                  onClick={() => removeArrayItem(setEligibility, index)}
                   className="text-red-500"
                 >
                   ✕
@@ -291,18 +293,18 @@ export function TenderModal({ tender, onClose, onSuccess }: TenderModalProps) {
           </div>
           <div>
             <label className="mb-2 block text-sm font-bold">Required Documents</label>
-            {docs.map((item: string, i: number) => (
-              <div key={i} className="mb-2 flex gap-2">
+            {docs.map((item: string, index: number) => (
+              <div key={index} className="mb-2 flex gap-2">
                 <input
-                  aria-label={`Required document ${i + 1}`}
+                  aria-label={`Required document ${index + 1}`}
                   value={item}
-                  onChange={(e) => handleArrayChange(setDocs, i, e.target.value)}
+                  onChange={(e) => handleArrayChange(setDocs, index, e.target.value)}
                   className="flex-1 rounded-lg border p-2 text-sm"
                   required
                 />
                 <button
                   type="button"
-                  onClick={() => removeArrayItem(setDocs, i)}
+                  onClick={() => removeArrayItem(setDocs, index)}
                   className="text-red-500"
                 >
                   ✕

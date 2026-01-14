@@ -4,9 +4,11 @@
  */
 
 import { useState } from 'react';
+
 import { Link } from 'react-router-dom';
-import { Card, CardBody } from '@/shared/components/ui/Card';
+
 import { Button } from '@/shared/components/ui/Button';
+import { Card, CardBody } from '@/shared/components/ui/Card';
 import { Input } from '@/shared/components/ui/Input';
 import { apiClient } from '@/shared/services/api/client';
 import { API_ENDPOINTS } from '@/shared/services/api/endpoints';
@@ -30,11 +32,11 @@ function ResetPasswordPage() {
       await apiClient.post(API_ENDPOINTS.AUTH_RESET_PASSWORD_REQUEST, { email });
       notificationService.success('Password reset link sent to your email!');
       setStep('confirm');
-    } catch (err) {
+    } catch (error) {
       notificationService.error(
         'Failed to send reset link. Please check your email and try again.'
       );
-      console.error('Reset request error:', err);
+      console.error('Reset request error:', error);
     } finally {
       setIsLoading(false);
     }
@@ -62,9 +64,9 @@ function ResetPasswordPage() {
       });
       notificationService.success('Password reset successfully!');
       setStep('success');
-    } catch (err) {
+    } catch (error) {
       notificationService.error('Failed to reset password. Token may be invalid or expired.');
-      console.error('Reset confirm error:', err);
+      console.error('Reset confirm error:', error);
     } finally {
       setIsLoading(false);
     }
