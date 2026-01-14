@@ -24,7 +24,11 @@ export interface FormField<T = unknown> {
   min?: number; // For number/date fields
   max?: number; // For number/date fields
   disabled?: boolean;
+  defaultValue?: unknown;
 }
+
+// Type alias for backwards compatibility
+export type FieldConfig = FormField<Record<string, unknown>>;
 
 export interface FormModalProps<T extends Record<string, unknown>> {
   isOpen: boolean;

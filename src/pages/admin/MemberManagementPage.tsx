@@ -1,7 +1,4 @@
 import { useState, useDeferredValue } from 'react';
-import { MemberTable } from '@/features/admin/components/members/MemberTable';
-import { MemberFilters } from '@/features/admin/components/members/MemberFilters';
-import { MemberDetailsModal } from '@/features/admin/components/members/MemberDetailsModal';
 import { AdminMember } from '@/features/membership/api/members.api';
 import { AdminPageHeader } from '@/features/admin/components/layout/AdminPageHeader';
 import { MemberProvider } from '@/features/admin/context/MemberContext';

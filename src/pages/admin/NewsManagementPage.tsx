@@ -206,13 +206,21 @@ function NewsModal({
   onClose: () => void;
   onSuccess: () => void;
 }) {
-  const handleSubmit = async (data: Partial<NewsUpdate>) => {
+  const handleSubmit = async (data: Record<string, unknown>) => {
     try {
+      const payload = {
+        title: data['title'] as string,
+        imageUrl: data['imageUrl'] as string | undefined,
+        category: data['category'] as string,
+        status: data['status'] as string,
+        fullContent: data['fullContent'] as string,
+        excerpt: data['excerpt'] as string | undefined,
+      };
       if (update) {
-        await updateUpdate(update.id, data);
+        await updateUpdate(update.id, payload);
         notificationService.success('Update modified successfully');
       } else {
-        await createUpdate(data);
+        await createUpdate(payload);
         notificationService.success('Update created successfully');
       }
       onSuccess();
@@ -223,23 +231,23 @@ function NewsModal({
   };
 
   const fields: FieldConfig[] = [
-    { 
-      name: 'title', 
-      label: 'Title', 
-      type: 'text', 
-      required: true, 
-      placeholder: 'e.g. New Community Program Launch' 
+    {
+      name: 'title',
+      label: 'Title',
+      type: 'text',
+      required: true,
+      placeholder: 'e.g. New Community Program Launch'
     },
-    { 
-      name: 'imageUrl', 
-      label: 'Image URL (Optional)', 
-      type: 'text', 
-      placeholder: 'https://...' 
+    {
+      name: 'imageUrl',
+      label: 'Image URL (Optional)',
+      type: 'text',
+      placeholder: 'https://...'
     },
-    { 
-      name: 'category', 
-      label: 'Category', 
-      type: 'select', 
+    {
+      name: 'category',
+      label: 'Category',
+      type: 'select',
       required: true,
       options: [
         { value: 'GENERAL', label: 'General' },
@@ -248,28 +256,28 @@ function NewsModal({
         { value: 'STORY', label: 'Success Story' },
       ]
     },
-    { 
-      name: 'status', 
-      label: 'Status', 
-      type: 'select', 
+    {
+      name: 'status',
+      label: 'Status',
+      type: 'select',
       required: true,
       options: [
         { value: 'PUBLISHED', label: 'Published' },
         { value: 'DRAFT', label: 'Draft' },
       ]
     },
-    { 
-      name: 'fullContent', 
-      label: 'Content', 
-      type: 'textarea', 
-      required: true, 
+    {
+      name: 'fullContent',
+      label: 'Content',
+      type: 'textarea',
+      required: true,
       placeholder: 'Describe the update in detail...',
       rows: 8
     },
-    { 
-      name: 'excerpt', 
-      label: 'Excerpt (Optional)', 
-      type: 'textarea', 
+    {
+      name: 'excerpt',
+      label: 'Excerpt (Optional)',
+      type: 'textarea',
       placeholder: 'Short summary...',
       rows: 3
     },
@@ -282,7 +290,7 @@ function NewsModal({
       onSubmit={handleSubmit}
       title={update ? 'Edit Update' : 'Post New Update'}
       fields={fields}
-      initialData={update ?? undefined}
+      initialData={update ? { ...update } : undefined}
       submitLabel="Save Post"
     />
   );

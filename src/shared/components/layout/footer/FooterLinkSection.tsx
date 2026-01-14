@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom';
+import { ReactNode } from 'react';
 
 interface FooterLink {
   to: string;
-  label: string;
+  label: ReactNode;
   onClick?: (e: React.MouseEvent) => void;
   badge?: React.ReactNode;
   className?: string;
