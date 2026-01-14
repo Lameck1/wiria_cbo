@@ -15,6 +15,7 @@ export default defineConfig({
       '**/dist/**',
       '**/.{idea,git,cache,output,temp}/**',
       '**/coverage/**',
+      'e2e/**', // Exclude Playwright e2e tests (use npx playwright test instead)
       // Legacy tests that reference removed "src/js" modules
     ],
     coverage: {

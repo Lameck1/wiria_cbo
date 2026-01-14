@@ -118,16 +118,25 @@ describe('StorageService', () => {
     });
 
     describe('clear', () => {
-        // NOTE: clear() uses Object.keys(localStorage) which behaves differently in jsdom
-        // The functionality is simple enough that we can rely on implementation review
-        it.skip('removes keys with the storage prefix (skipped: jsdom limitation)', () => {
+        it('removes keys with the storage prefix', () => {
+            // Set some test data
             storage.set('key1', 'value1');
             storage.set('key2', 'value2');
+            
+            // Verify they exist
             expect(storage.has('key1')).toBe(true);
             expect(storage.has('key2')).toBe(true);
+            
+            // Clear all prefixed keys
             storage.clear();
+            
+            // Verify they're removed
             expect(storage.has('key1')).toBe(false);
             expect(storage.has('key2')).toBe(false);
+            
+            // Verify the actual localStorage keys are gone
+            expect(localStorage.getItem('wiria_key1')).toBeNull();
+            expect(localStorage.getItem('wiria_key2')).toBeNull();
         });
 
         it('handles empty storage', () => {
