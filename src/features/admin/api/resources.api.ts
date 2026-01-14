@@ -44,7 +44,7 @@ export const deleteResource = async (id: string) => {
   return client.delete(`/resources/${id}`);
 };
 
-export const uploadFile = async (file: File, folder = 'resources') => {
+export const uploadFile = async (file: File, folder = 'resources'): Promise<{ data: { url: string } }> => {
   // Client-side validation
   const maxSize = 10 * 1024 * 1024; // 10MB
   if (file.size > maxSize) {
@@ -100,7 +100,8 @@ export const uploadFile = async (file: File, folder = 'resources') => {
       );
     }
 
-    return response.json() as Promise<{ url: string }>;
+    const result = await response.json() as { url: string };
+    return { data: result };
   } catch (error: unknown) {
     const errorObj = error as { message?: string; name?: string };
     // Re-throw our custom errors
