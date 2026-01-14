@@ -191,7 +191,7 @@ export const getRecentMessages = async (limit = 5): Promise<RecentMessage[]> => 
  */
 export const getDashboardStats = async (): Promise<DashboardStats> => {
   try {
-    const [statsRes, recentApps, recentDonations, recentMessages] = await Promise.allSettled([
+    const [statsResponse, recentApps, recentDonations, recentMessages] = await Promise.allSettled([
       apiClient.get('/admin/statistics'),
       getRecentApplications(),
       getRecentDonations(),
@@ -200,7 +200,7 @@ export const getDashboardStats = async (): Promise<DashboardStats> => {
 
     // Extract stats data
     const statsData =
-      statsRes.status === 'fulfilled' ? extractData<DashboardStats>(statsRes.value) : null;
+      statsResponse.status === 'fulfilled' ? extractData<DashboardStats>(statsResponse.value) : null;
     if (!statsData) throw new Error('Missing dashboard statistics data');
 
     // Use fallback empty arrays for failed requests

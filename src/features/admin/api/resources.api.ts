@@ -75,7 +75,9 @@ export const uploadFile = async (file: File, folder = 'resources') => {
     );
 
     if (!response.ok) {
-      const errorData = await response.json().catch(() => null);
+      const errorData = (await response.json().catch(() => null)) as {
+        error?: { message?: string };
+      } | null;
 
       // Handle specific error cases
       if (response.status === 413 || errorData?.error?.message?.includes('too large')) {
@@ -98,7 +100,7 @@ export const uploadFile = async (file: File, folder = 'resources') => {
       );
     }
 
-    return response.json();
+    return response.json() as Promise<{ url: string }>;
   } catch (error: unknown) {
     const errorObj = error as { message?: string; name?: string };
     // Re-throw our custom errors
