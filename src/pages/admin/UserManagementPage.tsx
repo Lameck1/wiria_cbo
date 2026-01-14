@@ -47,13 +47,13 @@ export default function UserManagementPage() {
     { successMessage: 'Invitation cancelled' }
   );
 
-  const handleStatusChange = async (email: string, currentStatus: string) => {
+  const handleStatusChange = (email: string, currentStatus: string) => {
     const newStatus = currentStatus === 'ACTIVE' ? 'SUSPENDED' : 'ACTIVE';
     if (!window.confirm(`Are you sure you want to change status to ${newStatus}?`)) return;
     updateStatusAction.mutate({ email, status: newStatus });
   };
 
-  const handleCancelInvite = async (id: string) => {
+  const handleCancelInvite = (id: string) => {
     if (!window.confirm('Cancel this invitation?')) return;
     cancelInviteAction.mutate(id);
   };

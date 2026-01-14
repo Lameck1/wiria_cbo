@@ -11,6 +11,18 @@ interface CareerModalProps {
   onSuccess: () => void;
 }
 
+function handleArrayChange(
+  setter: React.Dispatch<React.SetStateAction<string[]>>,
+  index: number,
+  value: string
+) {
+  setter((previous: string[]) => {
+    const newArray = [...previous];
+    newArray[index] = value;
+    return newArray;
+  });
+}
+
 export function CareerModal({ career, onClose, onSuccess }: CareerModalProps) {
   const [responsibilities, setResponsibilities] = useState<string[]>(
     career?.responsibilities ?? ['', '', '']
@@ -18,18 +30,6 @@ export function CareerModal({ career, onClose, onSuccess }: CareerModalProps) {
   const [requirements, setRequirements] = useState<string[]>(career?.requirements ?? ['', '', '']);
   const [desirable, setDesirable] = useState<string[]>(career?.desirable ?? []);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const handleArrayChange = (
-    setter: React.Dispatch<React.SetStateAction<string[]>>,
-    index: number,
-    value: string
-  ) => {
-    setter((previous: string[]) => {
-      const newArray = [...previous];
-      newArray[index] = value;
-      return newArray;
-    });
-  };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

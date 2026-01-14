@@ -43,6 +43,14 @@ const STATUS_CONFIG: Record<string, { bg: string; text: string; icon: string; la
   },
 };
 
+function formatDate(dateString: string): string {
+  return new Date(dateString).toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  });
+}
+
 export function ReportStatusLookup() {
   const [referenceNumber, setReferenceNumber] = useState('');
   const [email, setEmail] = useState('');
@@ -50,7 +58,7 @@ export function ReportStatusLookup() {
   const { lookupStatus, isLookingUp, lookupResult, lookupError, resetLookup } =
     useSafeguardingReport();
 
-  const handleSubmit = async (event: FormEvent) => {
+  const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
     void lookupStatus(referenceNumber, email || undefined);
   };
@@ -59,14 +67,6 @@ export function ReportStatusLookup() {
     resetLookup();
     setReferenceNumber('');
     setEmail('');
-  };
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-GB', {
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric',
-    });
   };
 
   const statusConfig = lookupResult ? STATUS_CONFIG[lookupResult.status] : null;

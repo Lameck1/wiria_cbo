@@ -1,7 +1,8 @@
-import { AdminMember, approveMember, rejectMember, MembershipStatus } from '@/features/membership/api/members.api';
+import { AdminMember, approveMember, rejectMember } from '@/features/membership/api/members.api';
 import { Button } from '@/shared/components/ui/Button';
 import { Modal } from '@/shared/components/ui/Modal';
 import { notificationService } from '@/shared/services/notification/notificationService';
+import { MembershipStatus } from '@/shared/types';
 import { getErrorMessage } from '@/shared/utils/apiUtils';
 
 import { GroupCountHistory } from './GroupCountHistory';

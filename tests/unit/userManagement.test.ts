@@ -69,7 +69,7 @@ describe('User Management UI', () => {
       'fetch',
       vi.fn().mockResolvedValue({
         ok: false,
-        json: async () => ({ error: 'Invalid credentials' }),
+        json: () => ({ error: 'Invalid credentials' }),
       })
     );
 
@@ -91,7 +91,7 @@ describe('User Management UI', () => {
       'fetch',
       vi.fn().mockResolvedValue({
         ok: true,
-        json: async () => ({ token: 'abc123' }),
+        json: () => ({ token: 'abc123' }),
       })
     );
 

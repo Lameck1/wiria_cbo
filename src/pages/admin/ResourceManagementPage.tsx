@@ -36,7 +36,7 @@ export default function ResourceManagementPage() {
     },
   });
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = (id: string) => {
     if (!window.confirm('Are you sure you want to delete this resource?')) return;
     deleteMutation.mutate(id);
   };

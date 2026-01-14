@@ -30,7 +30,7 @@ describe('Contact Page Flow', () => {
         vi.clearAllMocks();
     });
 
-    it('renders contact page with hero', async () => {
+    it('renders contact page with hero', () => {
         render(
             <MemoryRouter>
                 <ContactPage />
@@ -40,7 +40,7 @@ describe('Contact Page Flow', () => {
         expect(screen.getByText('Contact Us')).toBeInTheDocument();
     });
 
-    it('displays send message section', async () => {
+    it('displays send message section', () => {
         render(
             <MemoryRouter>
                 <ContactPage />
@@ -50,7 +50,7 @@ describe('Contact Page Flow', () => {
         expect(screen.getByText('Send us a Message')).toBeInTheDocument();
     });
 
-    it('shows contact form fields', async () => {
+    it('shows contact form fields', () => {
         render(
             <MemoryRouter>
                 <ContactPage />
@@ -64,7 +64,7 @@ describe('Contact Page Flow', () => {
         expect(screen.getByLabelText(/message/i)).toBeInTheDocument();
     });
 
-    it('has submit button', async () => {
+    it('has submit button', () => {
         render(
             <MemoryRouter>
                 <ContactPage />

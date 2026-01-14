@@ -1,9 +1,9 @@
-export function FooterNewsletter() {
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // TODO: Implement newsletter subscription
-  };
+function handleSubmit(e: React.FormEvent) {
+  e.preventDefault();
+  // TODO: Implement newsletter subscription
+}
 
+export function FooterNewsletter() {
   return (
     <div className="w-full rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm lg:max-w-md lg:p-8">
       <h4 className="mb-2 text-lg font-bold">Stay Updated</h4>

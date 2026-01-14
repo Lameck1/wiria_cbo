@@ -15,6 +15,26 @@ interface TenderModalProps {
   onSuccess: () => void;
 }
 
+function handleArrayChange(
+  setter: React.Dispatch<React.SetStateAction<string[]>>,
+  index: number,
+  value: string
+) {
+  setter((previous) => {
+    const newArray = [...previous];
+    newArray[index] = value;
+    return newArray;
+  });
+}
+
+function addArrayItem(setter: React.Dispatch<React.SetStateAction<string[]>>) {
+  setter((previous) => [...previous, '']);
+}
+
+function removeArrayItem(setter: React.Dispatch<React.SetStateAction<string[]>>, index: number) {
+  setter((previous) => previous.filter((_, index_) => index_ !== index));
+}
+
 export function TenderModal({ tender, onClose, onSuccess }: TenderModalProps) {
   const queryClient = useQueryClient();
   const [eligibility, setEligibility] = useState<string[]>(
@@ -25,23 +45,6 @@ export function TenderModal({ tender, onClose, onSuccess }: TenderModalProps) {
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleArrayChange = (
-    setter: React.Dispatch<React.SetStateAction<string[]>>,
-    index: number,
-    value: string
-  ) => {
-    setter((previous) => {
-      const newArray = [...previous];
-      newArray[index] = value;
-      return newArray;
-    });
-  };
-
-  const addArrayItem = (setter: React.Dispatch<React.SetStateAction<string[]>>) =>
-    setter((previous) => [...previous, '']);
-  const removeArrayItem = (setter: React.Dispatch<React.SetStateAction<string[]>>, index: number) =>
-    setter((previous) => previous.filter((_, index_) => index_ !== index));
-
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsSubmitting(true);
@@ -49,11 +52,11 @@ export function TenderModal({ tender, onClose, onSuccess }: TenderModalProps) {
     const formData = new FormData(form);
     const rawData = Object.fromEntries(formData.entries());
 
-    const fileInput = form.querySelector('#tender-file-input');
+    const fileInput = form.querySelector('#tender-file-input') as HTMLInputElement | null;
     let downloadUrl = (rawData['downloadUrl'] as string) || '';
 
     try {
-      if (fileInput?.files?.length) {
+      if (fileInput?.files && fileInput.files.length > 0) {
         notificationService.info('Uploading document...');
         const file = fileInput.files[0];
         if (file) {

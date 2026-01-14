@@ -36,7 +36,7 @@ async function fetchCareers(): Promise<Job[]> {
   if (!response.ok) {
     throw new Error('Failed to fetch careers');
   }
-  const data: CareersResponse = await response.json();
+  const data = (await response.json()) as CareersResponse;
   return data.data || [];
 }
 

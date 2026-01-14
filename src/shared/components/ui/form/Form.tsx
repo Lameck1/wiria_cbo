@@ -5,7 +5,7 @@ import { useForm, FormProvider, UseFormReturn, DefaultValues, FieldValues } from
 import { z } from 'zod';
 
 interface FormProps<T extends FieldValues> {
-    schema: z.ZodType<T, any, any>;
+    schema: z.ZodType<T>;
     defaultValues?: DefaultValues<T>;
     children: (methods: UseFormReturn<T>) => ReactNode;
     onSubmit: (data: T) => void | Promise<void>;

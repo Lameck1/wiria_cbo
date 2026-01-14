@@ -327,7 +327,7 @@ describe('FormModal', () => {
     });
   });
 
-  it('should handle email input type', async () => {
+  it('should handle email input type', () => {
     render(
       <FormModal
         isOpen={true}

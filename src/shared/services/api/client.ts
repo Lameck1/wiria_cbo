@@ -65,7 +65,7 @@ class ApiClient {
 
       // Check if response is empty (e.g. 204 No Content or logout)
       const text = await response.text();
-      const data = text ? JSON.parse(text) : {};
+      const data: unknown = text ? JSON.parse(text) : {};
 
       if (!response.ok) {
         // Handle 401 Unauthorized
@@ -80,10 +80,11 @@ class ApiClient {
           }
         }
 
+        const dataObj = data as Record<string, unknown>;
         const errorMessage =
-          data.message ||
-          data.error?.message ||
-          (typeof data.error === 'string' ? data.error : null) ||
+          (dataObj.message as string) ||
+          ((dataObj.error as Record<string, unknown>)?.message as string) ||
+          (typeof dataObj.error === 'string' ? dataObj.error : null) ||
           (response.status === 401
             ? 'Session expired or unauthorized'
             : 'An unexpected error occurred');

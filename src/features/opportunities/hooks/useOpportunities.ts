@@ -45,7 +45,7 @@ async function fetchOpportunities(): Promise<Opportunity[]> {
     throw new Error('Failed to fetch opportunities');
   }
 
-  const data: OpportunitiesResponse = await response.json();
+  const data = (await response.json()) as OpportunitiesResponse;
   return data.data?.data || [];
 }
 

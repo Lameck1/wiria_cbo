@@ -28,6 +28,23 @@ const TYPE_LABELS: Record<string, string> = {
   OTHER: 'Other',
 };
 
+function formatDate(date: string): string {
+  return new Date(date).toLocaleDateString('en-KE', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+}
+
+function formatTime(time: string): string {
+  const [hours, minutes] = time.split(':');
+  const hour = Number.parseInt(hours ?? '0');
+  const ampm = hour >= 12 ? 'PM' : 'AM';
+  const hour12 = hour % 12 || 12;
+  return `${hour12}:${minutes ?? '00'} ${ampm}`;
+}
+
 export default function MeetingManagementPage() {
   const { items: meetings, isLoading } = useAdminData<Meeting>(['meetings'], getMeetings);
   const cancelAction = useAdminAction((id: string) => cancelMeeting(id), [['meetings']], {
@@ -55,22 +72,6 @@ export default function MeetingManagementPage() {
     } catch {
       notificationService.error('Failed to load attendance');
     }
-  };
-
-  const formatDate = (date: string) =>
-    new Date(date).toLocaleDateString('en-KE', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
-
-  const formatTime = (time: string) => {
-    const [hours, minutes] = time.split(':');
-    const hour = Number.parseInt(hours ?? '0');
-    const ampm = hour >= 12 ? 'PM' : 'AM';
-    const hour12 = hour % 12 || 12;
-    return `${hour12}:${minutes ?? '00'} ${ampm}`;
   };
 
   const upcomingMeetings = meetings.filter(

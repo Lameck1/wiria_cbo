@@ -15,6 +15,14 @@ import { DataTable, Column } from '@/shared/components/ui/DataTable';
 import { StatusBadge } from '@/shared/components/ui/StatusBadge';
 import { useAdminData, useAdminAction } from '@/shared/hooks/useAdminData';
 
+function formatDate(date: string): string {
+  return new Date(date).toLocaleDateString('en-KE', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
+}
+
 export default function ContactManagementPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [statusFilter, setStatusFilter] = useState('');
@@ -71,13 +79,6 @@ export default function ContactManagementPage() {
       archiveAction.mutate(id);
     }
   };
-
-  const formatDate = (date: string) =>
-    new Date(date).toLocaleDateString('en-KE', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    });
 
   const columns: Column<Contact>[] = [
     {

@@ -14,6 +14,18 @@ interface OpportunityModalProps {
   onSuccess: () => void;
 }
 
+function handleArrayChange(
+  setter: React.Dispatch<React.SetStateAction<string[]>>,
+  index: number,
+  value: string
+) {
+  setter((previous: string[]) => {
+    const newArray = [...previous];
+    newArray[index] = value;
+    return newArray;
+  });
+}
+
 export function OpportunityModal({ opportunity, onClose, onSuccess }: OpportunityModalProps) {
   const [responsibilities, setResponsibilities] = useState<string[]>(
     opportunity?.responsibilities ?? ['', '', '']
@@ -23,18 +35,6 @@ export function OpportunityModal({ opportunity, onClose, onSuccess }: Opportunit
   );
   const [benefits, setBenefits] = useState<string[]>(opportunity?.benefits ?? []);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const handleArrayChange = (
-    setter: React.Dispatch<React.SetStateAction<string[]>>,
-    index: number,
-    value: string
-  ) => {
-    setter((previous: string[]) => {
-      const newArray = [...previous];
-      newArray[index] = value;
-      return newArray;
-    });
-  };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
