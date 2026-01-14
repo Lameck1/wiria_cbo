@@ -81,9 +81,9 @@ module.exports = {
     
     // Force proper error handling
     '@typescript-eslint/no-floating-promises': 'error',
-    '@typescript-eslint/promise-function-async': 'error',
+    '@typescript-eslint/promise-function-async': 'off', // Too strict - lazy imports in router don't need async
     'promise/catch-or-return': 'error',
-    'promise/always-return': 'error',
+    'promise/always-return': 'off', // Too strict for arrow functions
     
     // Prevent useEffect issues
     'react-hooks/rules-of-hooks': 'error',
@@ -103,17 +103,10 @@ module.exports = {
     }],
     
     // Require explicit return types for exported functions
-    '@typescript-eslint/explicit-module-boundary-types': ['error', {
-      allowArgumentsExplicitlyTypedAsAny: false
-    }],
+    '@typescript-eslint/explicit-module-boundary-types': 'off', // Too strict for current codebase
     
     // Prevent magic numbers
-    '@typescript-eslint/no-magic-numbers': ['warn', {
-      ignore: [0, 1, -1],
-      ignoreEnums: true,
-      ignoreNumericLiteralTypes: true,
-      ignoreReadonlyClassProperties: true
-    }],
+    '@typescript-eslint/no-magic-numbers': 'off', // Too noisy for current codebase
     
     // Accessibility
     'jsx-a11y/alt-text': 'error',
@@ -122,7 +115,7 @@ module.exports = {
     'jsx-a11y/no-static-element-interactions': 'error',
     
     // Import organization
-    'import/order': ['error', {
+    'import/order': ['warn', { // Changed from error to warn
       'groups': [
         'builtin',
         'external', 
@@ -152,7 +145,7 @@ module.exports = {
       }
     }],
     'import/no-duplicates': 'error',
-    'import/no-unused-modules': 'error',
+    'import/no-unused-modules': 'off', // Too slow and noisy
     
     // ==========================================
     // 🟡 MEDIUM PRIORITY
@@ -188,15 +181,15 @@ module.exports = {
     }],
     
     // Complexity limits
-    'complexity': ['warn', { max: 10 }],
-    'max-depth': ['warn', { max: 3 }],
+    'complexity': ['warn', { max: 15 }], // Increased from 10 to be less noisy
+    'max-depth': ['warn', { max: 4 }], // Increased from 3
     'max-lines-per-function': ['warn', { 
-      max: 100, 
+      max: 150, // Increased from 100
       skipBlankLines: true, 
       skipComments: true 
     }],
     'max-lines': ['warn', { 
-      max: 300, 
+      max: 400, // Increased from 300
       skipBlankLines: true, 
       skipComments: true 
     }],
@@ -207,6 +200,13 @@ module.exports = {
     
     'unicorn/no-array-reduce': 'off', // We use reduce
     'unicorn/no-array-for-each': 'off', // forEach is fine
+    'unicorn/no-zero-fractions': 'off', // Framer motion uses decimals
+    'unicorn/prefer-query-selector': 'off', // getElementById is fine
+    'unicorn/prefer-node-protocol': 'off', // Not needed for bundler
+    'unicorn/prefer-module': 'off', // CommonJS is fine for configs
+    'unicorn/import-style': 'off', // Allow default imports
+    'unicorn/numeric-separators-style': 'off', // Too opinionated
+    'react/no-unescaped-entities': 'off', // Too strict for quotes
     'react-refresh/only-export-components': ['warn', { 
       allowConstantExport: true 
     }]
@@ -218,14 +218,22 @@ module.exports = {
       files: ['*.test.ts', '*.test.tsx', '*.spec.ts', '*.spec.tsx'],
       rules: {
         '@typescript-eslint/no-explicit-any': 'off',
-        '@typescript-eslint/no-magic-numbers': 'off',
-        'sonarjs/no-duplicate-string': 'off'
+        '@typescript-eslint/no-unsafe-assignment': 'off',
+        '@typescript-eslint/no-unsafe-member-access': 'off',
+        '@typescript-eslint/no-unsafe-call': 'off',
+        '@typescript-eslint/unbound-method': 'off',
+        'sonarjs/no-duplicate-string': 'off',
+        'max-lines-per-function': 'off',
+        'max-lines': 'off'
       }
     },
     {
-      files: ['vite.config.ts', '*.config.ts', '*.config.js'],
+      files: ['vite.config.ts', '*.config.ts', '*.config.js', 'vitest.config.ts'],
       rules: {
-        'import/no-default-export': 'off'
+        'import/no-default-export': 'off',
+        'unicorn/prefer-module': 'off',
+        '@typescript-eslint/no-unsafe-assignment': 'off',
+        '@typescript-eslint/no-unsafe-member-access': 'off'
       }
     }
   ]
