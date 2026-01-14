@@ -9,13 +9,11 @@ import { ErrorBoundary } from '@/shared/components/ErrorBoundary';
 import { ROUTES } from '@/shared/constants/routes';
 import { createMemberRoute } from './routeProtection';
 
-// Eagerly load frequently visited pages
-import HomePage from '@/pages/HomePage';
-import AboutPage from '@/pages/AboutPage';
-import ProgramsPage from '@/pages/ProgramsPage';
-import ContactPage from '@/pages/ContactPage';
-
-// Lazy load others
+// Lazy load all pages for optimal code splitting
+const HomePage = lazy(() => import('@/pages/HomePage'));
+const AboutPage = lazy(() => import('@/pages/AboutPage'));
+const ProgramsPage = lazy(() => import('@/pages/ProgramsPage'));
+const ContactPage = lazy(() => import('@/pages/ContactPage'));
 const ResourcesPage = lazy(() => import('@/pages/ResourcesPage'));
 const OpportunitiesPage = lazy(() => import('@/pages/OpportunitiesPage'));
 const CareersPage = lazy(() => import('@/pages/CareersPage'));
