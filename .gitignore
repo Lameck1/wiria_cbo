@@ -16,11 +16,14 @@ build/
 .env.*.local
 
 # IDE
-.vscode/
 .idea/
 *.swp
 *.swo
 *~
+
+# Analysis reports
+reports/
+eslint-report.json
 
 # Logs
 logs/
