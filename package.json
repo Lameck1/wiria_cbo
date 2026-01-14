@@ -20,7 +20,7 @@
     "audit:deps": "npm audit --audit-level=moderate && depcheck",
     "audit:code": "npm run lint && npm run type-check",
     "audit:bundle": "vite build --mode=analysis && size-limit",
-    "audit:unused": "knip --production",
+    "audit:unused": "knip",
     "audit:complexity": "eslint src --ext .ts,.tsx --format json --output-file eslint-report.json",
     "fix:all": "npm run lint:fix && npm run format"
   },
