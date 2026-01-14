@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback, memo } from 'react';
 import {
   NewsUpdate,
   getAdminUpdates,
@@ -34,7 +34,7 @@ export default function NewsManagementPage() {
     loadUpdates();
   }, []);
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = useCallback(async (id: string) => {
     if (!confirm('Are you sure you want to delete this update?')) return;
     try {
       await deleteUpdate(id);
@@ -43,7 +43,12 @@ export default function NewsManagementPage() {
     } catch (_error) {
       notificationService.error('Failed to delete update');
     }
-  };
+  }, []);
+
+  const handleEdit = useCallback((update: NewsUpdate) => {
+    setEditingUpdate(update);
+    setShowModal(true);
+  }, []);
 
   // Filter updates by status
   const filteredUpdates =
@@ -104,11 +109,8 @@ export default function NewsManagementPage() {
               <NewsCard
                 key={update.id}
                 update={update}
-                onEdit={() => {
-                  setEditingUpdate(update);
-                  setShowModal(true);
-                }}
-                onDelete={() => handleDelete(update.id)}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
               />
             ))
           ) : (
@@ -140,14 +142,14 @@ export default function NewsManagementPage() {
   );
 }
 
-function NewsCard({
+const NewsCard = memo(function NewsCard({
   update,
   onEdit,
   onDelete,
 }: {
   update: NewsUpdate;
-  onEdit: () => void;
-  onDelete: () => void;
+  onEdit: (update: NewsUpdate) => void;
+  onDelete: (id: string) => void;
 }) {
   return (
     <div className="flex h-full flex-col overflow-hidden rounded-xl border-t-4 border-wiria-yellow bg-white shadow-lg">
@@ -183,16 +185,16 @@ function NewsCard({
         </div>
       </div>
       <div className="mt-auto flex justify-end gap-3 border-t bg-gray-50 p-4">
-        <button onClick={onEdit} className="text-sm font-bold text-wiria-blue-dark hover:underline">
+        <button onClick={() => onEdit(update)} className="text-sm font-bold text-wiria-blue-dark hover:underline">
           Edit
         </button>
-        <button onClick={onDelete} className="text-sm font-bold text-red-600 hover:underline">
+        <button onClick={() => onDelete(update.id)} className="text-sm font-bold text-red-600 hover:underline">
           Delete
         </button>
       </div>
     </div>
   );
-}
+});
 
 function NewsModal({
   update,
