@@ -54,7 +54,7 @@ vi.mock('@/shared/services/notification/notificationService', () => ({
 
 import { getAdminCareers } from '@/features/admin/api/careers.api';
 import { getAdminOpportunities, getApplications } from '@/features/admin/api/opportunities.api';
-import HRManagementPage from '@/pages/admin/HRManagementPage';
+import HRManagementPage from '@/pages/admin/hrManagementPage';
 
 describe('HRManagementPage (careers + applications)', () => {
   beforeEach(() => {
