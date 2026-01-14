@@ -52,8 +52,9 @@ describe('contacts.api', () => {
 
             const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
             const { getContacts } = await import('@/features/admin/api/contacts.api');
-            const result = await getContacts();
-            expect(result).toEqual([]);
+            
+            // Now expects error to be thrown instead of returning empty array
+            await expect(getContacts()).rejects.toThrow('Failed to load contacts');
             consoleSpy.mockRestore();
         });
     });

@@ -56,8 +56,9 @@ describe('meetings.api', () => {
 
             const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
             const { getMeetings } = await import('@/features/admin/api/meetings.api');
-            const result = await getMeetings();
-            expect(result).toEqual([]);
+            
+            // Now expects error to be thrown
+            await expect(getMeetings()).rejects.toThrow('Failed to load meetings');
             consoleSpy.mockRestore();
         });
     });

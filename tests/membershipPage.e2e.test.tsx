@@ -55,7 +55,7 @@ describe('Membership Registration Flow', () => {
         renderWithProviders(<MembershipPage />);
 
         await waitFor(() => {
-            expect(screen.getByText(/join wiria|membership/i)).toBeInTheDocument();
+            expect(screen.getByRole('heading', { name: /become a member/i })).toBeInTheDocument();
         });
     });
 
@@ -64,7 +64,7 @@ describe('Membership Registration Flow', () => {
 
         // Check for membership content
         await waitFor(() => {
-            expect(screen.getByText(/membership|wiria/i)).toBeInTheDocument();
+            expect(screen.getByRole('heading', { name: /membership information/i })).toBeInTheDocument();
         });
     });
 

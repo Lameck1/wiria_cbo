@@ -89,8 +89,9 @@ describe('donations.api', () => {
             );
 
             const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
-            const result = await getDonations();
-            expect(result).toEqual([]);
+            
+            // Now expects error to be thrown
+            await expect(getDonations()).rejects.toThrow('Failed to load donations');
             consoleSpy.mockRestore();
         });
     });
@@ -148,12 +149,9 @@ describe('donations.api', () => {
             );
 
             const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
-            const result = await getDonationStatistics();
-            expect(result).toMatchObject({
-                total: 0,
-                totalAmount: 0,
-                completed: 0,
-            });
+            
+            // Now expects error to be thrown
+            await expect(getDonationStatistics()).rejects.toThrow('Failed to load donation statistics');
             consoleSpy.mockRestore();
         });
     });

@@ -10,7 +10,8 @@ export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
     label?: string;
     error?: string;
     helperText?: string;
-    options: readonly SelectOption[];
+    options?: readonly SelectOption[];
+    children?: React.ReactNode;
     ref?: React.Ref<HTMLSelectElement>;
 }
 
@@ -22,6 +23,7 @@ export function Select({
     className,
     id: providedId,
     ref,
+    children,
     ...props
 }: SelectProps) {
     const generatedId = useId();
@@ -56,7 +58,7 @@ export function Select({
                 aria-describedby={describedBy}
                 {...props}
             >
-                {options.map((option) => (
+                {children ? children : options && options.map((option) => (
                     <option key={option.value} value={option.value}>
                         {option.label}
                     </option>

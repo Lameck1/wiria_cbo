@@ -61,7 +61,7 @@ describe('Contact Page Flow', () => {
         expect(screen.getByText(/full name/i)).toBeInTheDocument();
         expect(screen.getByText(/email address/i)).toBeInTheDocument();
         expect(screen.getByText(/subject/i)).toBeInTheDocument();
-        expect(screen.getByText(/message/i)).toBeInTheDocument();
+        expect(screen.getByLabelText(/message/i)).toBeInTheDocument();
     });
 
     it('has submit button', async () => {

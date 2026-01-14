@@ -76,6 +76,10 @@ describe('NewsManagementPage', () => {
 
     await user.type(screen.getByPlaceholderText(/new community program launch/i), 'New Title');
     await user.type(screen.getByPlaceholderText(/describe the update in detail/i), 'New Content');
+    
+    // Select category and status
+    await user.selectOptions(screen.getByLabelText(/category/i), 'GENERAL');
+    await user.selectOptions(screen.getByLabelText(/status/i), 'PUBLISHED');
 
     await user.click(screen.getByRole('button', { name: /save post/i }));
 
