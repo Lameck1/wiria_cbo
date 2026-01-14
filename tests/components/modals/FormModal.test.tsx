@@ -136,14 +136,14 @@ describe('FormModal', () => {
             required: true,
           },
         ]}
-        submitLabel="Submit"
+        submitLabel="Save"
       />
     );
 
     const input = screen.getByLabelText(/username/i);
     await userEvent.type(input, 'testuser');
 
-    const submitButton = screen.getByRole('button', { name: /submit/i });
+    const submitButton = screen.getByRole('button', { name: /save/i });
     fireEvent.click(submitButton);
 
     await waitFor(() => {

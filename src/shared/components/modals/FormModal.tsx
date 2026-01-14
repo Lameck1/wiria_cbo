@@ -47,7 +47,7 @@ export function FormModal<T extends Record<string, unknown>>({
   fields,
   initialData = {},
   isSubmitting = false,
-  submitLabel = 'Submit',
+  submitLabel = 'Save',
   cancelLabel = 'Cancel',
   children,
 }: FormModalProps<T>) {
