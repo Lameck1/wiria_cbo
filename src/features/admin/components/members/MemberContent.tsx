@@ -15,7 +15,6 @@ interface MemberContentProps {
 
 export function MemberContent({
   filter,
-  search,
   onFilterChange,
   onSearch,
   selectedMember,

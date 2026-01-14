@@ -8,7 +8,7 @@ import {
 } from '@/features/admin/api/resources.api';
 import { notificationService } from '@/shared/services/notification/notificationService';
 import { getErrorMessage } from '@/shared/utils/apiUtils';
-import { FormModal, type FieldConfig } from '@/shared/components/modals/FormModal';
+import { FormModal, type FormField } from '@/shared/components/modals/FormModal';
 
 const CATEGORIES = [
     'GOVERNANCE',
@@ -94,7 +94,7 @@ export function ResourceModal({
         }
     };
 
-    const fields: FieldConfig[] = [
+    const fields: FormField[] = [
         {
             name: 'title',
             label: 'Title',
@@ -172,7 +172,7 @@ export function ResourceModal({
             onSubmit={handleFormSubmit}
             title={resource ? 'Edit Resource' : 'Add New Resource'}
             fields={fields}
-            initialData={resource ?? undefined}
+            initialData={resource || undefined}
             submitLabel="Save Resource"
         >
             <div>
