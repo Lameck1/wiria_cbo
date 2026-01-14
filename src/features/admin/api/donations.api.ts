@@ -40,7 +40,7 @@ export const getDonations = async (params?: { status?: string }): Promise<Donati
     return extractArray<Donation>(response);
   } catch (error) {
     console.error('Failed to fetch donations:', error);
-    return [];
+    throw new Error('Failed to load donations. Please try again.');
   }
 };
 
@@ -57,27 +57,13 @@ export const getDonationById = async (id: string): Promise<Donation | null> => {
 export const getDonationStatistics = async (): Promise<DonationStatistics> => {
   try {
     const response = await apiClient.get('/donations/statistics');
-    return (
-      extractData<DonationStatistics>(response) ?? {
-        total: 0,
-        totalAmount: 0,
-        completed: 0,
-        pending: 0,
-        failed: 0,
-        thisMonth: 0,
-        thisMonthAmount: 0,
-      }
-    );
+    const data = extractData<DonationStatistics>(response);
+    if (!data) {
+      throw new Error('Invalid donation statistics data received');
+    }
+    return data;
   } catch (error) {
     console.error('Failed to fetch donation statistics:', error);
-    return {
-      total: 0,
-      totalAmount: 0,
-      completed: 0,
-      pending: 0,
-      failed: 0,
-      thisMonth: 0,
-      thisMonthAmount: 0,
-    };
+    throw new Error('Failed to load donation statistics. Please try again.');
   }
 };

@@ -65,7 +65,7 @@ export const getMeetings = async (params?: {
     return extractArray<Meeting>(response);
   } catch (error) {
     console.error('Failed to fetch meetings:', error);
-    return [];
+    throw new Error('Failed to load meetings. Please try again.');
   }
 };
 
@@ -108,6 +108,6 @@ export const getMeetingAttendance = async (id: string): Promise<MeetingAttendanc
     return extractArray<MeetingAttendance>(response, 'attendance');
   } catch (error) {
     console.error('Failed to fetch meeting attendance:', error);
-    return [];
+    throw new Error('Failed to load meeting attendance. Please try again.');
   }
 };

@@ -59,7 +59,7 @@ export const getSafeguardingReports = async (params?: {
     return extractArray<SafeguardingReport>(response);
   } catch (error) {
     console.error('Failed to fetch safeguarding reports:', error);
-    return [];
+    throw new Error('Failed to load safeguarding reports. Please try again.');
   }
 };
 
@@ -115,29 +115,13 @@ export const resolveSafeguardingReport = async (
 export const getSafeguardingStatistics = async (): Promise<SafeguardingStatistics> => {
   try {
     const response = await apiClient.get('/safeguarding/statistics');
-    return (
-      extractData<SafeguardingStatistics>(response) ?? {
-        total: 0,
-        pending: 0,
-        underReview: 0,
-        investigating: 0,
-        resolved: 0,
-        closed: 0,
-        critical: 0,
-        high: 0,
-      }
-    );
+    const data = extractData<SafeguardingStatistics>(response);
+    if (!data) {
+      throw new Error('Invalid safeguarding statistics data received');
+    }
+    return data;
   } catch (error) {
     console.error('Failed to fetch safeguarding statistics:', error);
-    return {
-      total: 0,
-      pending: 0,
-      underReview: 0,
-      investigating: 0,
-      resolved: 0,
-      closed: 0,
-      critical: 0,
-      high: 0,
-    };
+    throw new Error('Failed to load safeguarding statistics. Please try again.');
   }
 };

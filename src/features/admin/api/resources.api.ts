@@ -1,4 +1,5 @@
 import { apiClient as client } from '@/shared/services/api/client';
+import { storageService, STORAGE_KEYS } from '@/shared/services/storage/storageService';
 
 export interface Resource {
   id: string;
@@ -56,7 +57,10 @@ export const uploadFile = async (file: File, folder: string = 'resources') => {
   formData.append('file', file);
   formData.append('folder', folder);
 
-  const token = localStorage.getItem('wiria_auth_token');
+  const token = storageService.get<string>(STORAGE_KEYS.AUTH_TOKEN);
+  if (!token) {
+    throw new Error('Authentication required. Please log in to upload files.');
+  }
 
   try {
     const response = await fetch(
