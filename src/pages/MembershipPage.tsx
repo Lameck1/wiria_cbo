@@ -68,7 +68,7 @@ function MembershipPage() {
   const { handleSubmit, watch, setValue } = methods;
 
   const membershipType = watch('membershipType');
-  const memberCount = watch('memberCount') || 1;
+  const memberCount = watch('memberCount') ?? 1;
 
   const feeBreakdown = useFeeCalculation({
     membershipType,
@@ -157,7 +157,7 @@ function MembershipPage() {
                         />
                       </div>
 
-                      <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+                      <form onSubmit={(e) => { e.preventDefault(); void handleSubmit(onSubmit)(e); }} className="space-y-8">
                         <AnimatePresence mode="wait">
                           {membershipType === 'GROUP' && (
                             <GroupRegistrationSection

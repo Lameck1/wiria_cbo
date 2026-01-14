@@ -52,7 +52,7 @@ function MemberPortalPage() {
     ? 'Expired'
     : isExpiringSoon
       ? 'Expiring Soon'
-      : profile?.status || 'Active';
+      : profile?.status ?? 'Active';
   const statusTextColor = isExpired
     ? 'text-red-700'
     : isExpiringSoon
@@ -81,7 +81,7 @@ function MemberPortalPage() {
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
                 <span className="text-gray-500">Member ID:</span>
-                <span className="font-semibold text-gray-800">{profile?.memberNumber || '--'}</span>
+                <span className="font-semibold text-gray-800">{profile?.memberNumber ?? '--'}</span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-gray-500">Status:</span>

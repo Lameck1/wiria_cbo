@@ -17,7 +17,7 @@ import { UserRole } from '@/shared/types';
 function ProgramsPage() {
   const { user, isAuthenticated } = useAuth();
   const location = useLocation();
-  const [activeTab, setActiveTab] = useState(PROGRAMS_DATA[0]?.id || 'health-detail');
+  const [activeTab, setActiveTab] = useState(PROGRAMS_DATA[0]?.id ?? 'health-detail');
 
   // Handle hash-based navigation from Focus Areas
   useEffect(() => {

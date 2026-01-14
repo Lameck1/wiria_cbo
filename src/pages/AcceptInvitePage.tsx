@@ -49,7 +49,7 @@ export default function AcceptInvitePage() {
       }
     };
 
-    verify();
+    void verify();
   }, [token]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -138,14 +138,14 @@ export default function AcceptInvitePage() {
                   key="form"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  onSubmit={handleSubmit}
+                  onSubmit={(e) => void handleSubmit(e)}
                   className="space-y-6"
                 >
                   {/* Invitation Details Summary */}
                   <div className="mb-6 rounded-2xl border border-gray-100 bg-gray-50 p-4">
                     <div className="flex items-center gap-3">
                       <div className="bg-primary-100 text-primary-600 flex h-10 w-10 items-center justify-center rounded-full font-bold">
-                        {(inviteData?.firstName?.[0] || inviteData?.email?.[0] || 'U').toUpperCase()}
+                        {(inviteData?.firstName?.[0] ?? inviteData?.email?.[0] ?? 'U').toUpperCase()}
                       </div>
                       <div>
                         <p className="text-sm font-bold text-gray-900">

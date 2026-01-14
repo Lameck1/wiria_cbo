@@ -92,7 +92,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // Register global 401 handler
     apiClient.setUnauthorizedCallback(() => {
       console.warn('Session expired - logging out');
-      logout(true);
+      void logout(true);
     });
 
     // Clean up callback on unmount

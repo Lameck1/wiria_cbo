@@ -29,7 +29,7 @@ function getDeadlineColor(daysRemaining: number): string {
 }
 
 export function JobCard({ job, onClick }: JobCardProps) {
-  const typeLabel = JOB_TYPE_LABELS[job.employmentType] || job.employmentType;
+  const typeLabel = JOB_TYPE_LABELS[job.employmentType] ?? job.employmentType;
   const deadlineDate = new Date(job.deadline);
   const isExpired = deadlineDate < new Date();
   const daysRemaining = getDaysRemaining(job.deadline);

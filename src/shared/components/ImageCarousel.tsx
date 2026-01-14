@@ -123,7 +123,7 @@ export function ImageCarousel({
   if (images.length === 1) {
     return (
       <div className={`w-full ${aspectRatio} overflow-hidden bg-gray-50`}>
-        {renderImage(images[0] || '', 0, 'w-full h-full object-cover')}
+        {renderImage(images[0] ?? '', 0, 'w-full h-full object-cover')}
       </div>
     );
   }
@@ -136,7 +136,7 @@ export function ImageCarousel({
     >
       <AnimatePresence initial={false} mode="wait">
         {renderImage(
-          images[currentIndex] || '',
+          images[currentIndex] ?? '',
           currentIndex,
           'absolute inset-0 w-full h-full object-cover',
           true

@@ -139,7 +139,7 @@ export function UpdateModal({ update, isOpen, onClose }: UpdateModalProps) {
               <div className="mb-8 px-4 md:px-6">
                 <div className="overflow-hidden rounded-xl border border-gray-100 shadow-lg">
                   <ImageCarousel
-                    images={update.images || [update.imageUrl]}
+                    images={update.images ?? [update.imageUrl]}
                     title={update.title}
                     aspectRatio="aspect-[16/9]"
                   />

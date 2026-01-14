@@ -55,7 +55,7 @@ export function ReportDetailsModal({
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <InfoItem
               label="Incident Type"
-              value={incidentTypes[report.incidentType] || report.incidentType}
+              value={incidentTypes[report.incidentType] ?? report.incidentType}
             />
             <InfoItem label="Incident Date" value={formatDate(report.incidentDate)} />
             <InfoItem label="Location" value={report.incidentLocation} />
@@ -65,7 +65,7 @@ export function ReportDetailsModal({
                 <InfoItem label="Reporter Name" value={report.reporterName} />
                 <InfoItem
                   label="Reporter Contact"
-                  value={report.reporterEmail || report.reporterPhone || 'N/A'}
+                  value={report.reporterEmail ?? report.reporterPhone ?? 'N/A'}
                 />
               </>
             )}
@@ -138,7 +138,7 @@ function InfoItem({ label, value }: { label: string; value: string | undefined }
   return (
     <div className="space-y-1">
       <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400">{label}</p>
-      <p className="font-semibold text-gray-900">{value || 'N/A'}</p>
+      <p className="font-semibold text-gray-900">{value ?? 'N/A'}</p>
     </div>
   );
 }

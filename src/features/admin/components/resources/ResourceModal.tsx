@@ -38,7 +38,7 @@ export function ResourceModal({
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
-        setSelectedFile(file || null);
+        setSelectedFile(file ?? null);
     };
 
     const handleSubmit = async (formData: Record<string, unknown>) => {
@@ -50,12 +50,8 @@ export function ResourceModal({
             const uploadRes = await uploadFile(selectedFile, 'resources');
             downloadUrl = uploadRes.data.url;
 
-            if (!formData['fileSize']) {
-                formData['fileSize'] = `${(selectedFile.size / (1024 * 1024)).toFixed(2)} MB`;
-            }
-            if (!formData['fileType']) {
-                formData['fileType'] = selectedFile.name.split('.').pop()?.toUpperCase() || 'FILE';
-            }
+            formData['fileSize'] ??= `${(selectedFile.size / (1024 * 1024)).toFixed(2)} MB`;
+            formData['fileType'] ??= selectedFile.name.split('.').pop()?.toUpperCase() ?? 'FILE';
         }
 
         const data = {
@@ -83,7 +79,7 @@ export function ResourceModal({
             notificationService.success('Resource added successfully');
         }
 
-        queryClient.invalidateQueries({ queryKey: ['admin', 'resources'] });
+        void queryClient.invalidateQueries({ queryKey: ['admin', 'resources'] });
         onSuccess();
     };
 
@@ -117,8 +113,8 @@ export function ResourceModal({
             type: 'text',
             placeholder: 'Automatically detected from file',
             defaultValue: selectedFile
-                ? selectedFile.name.split('.').pop()?.toUpperCase() || 'FILE'
-                : resource?.fileType || 'PDF',
+                ? selectedFile.name.split('.').pop()?.toUpperCase() ?? 'FILE'
+                : resource?.fileType ?? 'PDF',
         },
         {
             name: 'fileSize',
@@ -127,7 +123,7 @@ export function ResourceModal({
             placeholder: 'Auto-filled from upload',
             defaultValue: selectedFile
                 ? `${(selectedFile.size / (1024 * 1024)).toFixed(2)} MB`
-                : resource?.fileSize || '',
+                : resource?.fileSize ?? '',
         },
         {
             name: 'isPublic',

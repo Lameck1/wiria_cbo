@@ -104,7 +104,7 @@ export default function ResourceManagementPage() {
                       Edit
                     </button>
                     <button
-                      onClick={() => handleDelete(resource.id)}
+                      onClick={() => void handleDelete(resource.id)}
                       className="text-sm font-bold text-red-600 hover:text-red-800 transition-colors"
                     >
                       Delete

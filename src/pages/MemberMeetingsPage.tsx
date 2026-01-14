@@ -29,8 +29,8 @@ function MemberMeetingsPage() {
   const [loadingMeetingId, setLoadingMeetingId] = useState<string | null>(null);
 
   useEffect(() => {
-    fetchMeetings();
-    fetchAvailableMeetings();
+    void fetchMeetings();
+    void fetchAvailableMeetings();
   }, [fetchMeetings, fetchAvailableMeetings]);
 
   const handleRsvp = async (meetingId: string) => {
@@ -127,20 +127,20 @@ function MemberMeetingsPage() {
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => handleCancelRsvp(meeting.id)}
+                onClick={() => void handleCancelRsvp(meeting.id)}
                 isLoading={loadingMeetingId === meeting.id}
               >
                 Cancel RSVP
               </Button>
             ) : (
               <Button
-                variant={meeting.capacity && (meeting.attendeesCount || 0) >= meeting.capacity ? "outline" : "primary"}
+                variant={meeting.capacity && (meeting.attendeesCount ?? 0) >= meeting.capacity ? "outline" : "primary"}
                 size="sm"
-                onClick={() => handleRsvp(meeting.id)}
+                onClick={() => void handleRsvp(meeting.id)}
                 isLoading={loadingMeetingId === meeting.id}
-                disabled={meeting.capacity ? (meeting.attendeesCount || 0) >= meeting.capacity : false}
+                disabled={meeting.capacity ? (meeting.attendeesCount ?? 0) >= meeting.capacity : false}
               >
-                {meeting.capacity && (meeting.attendeesCount || 0) >= meeting.capacity ? "Fully Booked" : "RSVP Now"}
+                {meeting.capacity && (meeting.attendeesCount ?? 0) >= meeting.capacity ? "Fully Booked" : "RSVP Now"}
               </Button>
             )}
           </div>

@@ -40,10 +40,10 @@ export function usePaymentPoller({
         }
     };
 
-    checkStatus();
+    void checkStatus();
 
     // Set up polling interval
-    intervalRef.current = setInterval(checkStatus, interval);
+    intervalRef.current = setInterval(() => void checkStatus(), interval);
 
     // Cleanup on unmount
     return () => {

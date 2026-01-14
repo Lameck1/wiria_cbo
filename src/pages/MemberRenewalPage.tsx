@@ -47,19 +47,19 @@ function MemberRenewalPage() {
   const { handleSubmit, watch, setValue, formState: { errors } } = methods;
 
   const paymentMethod = watch('paymentMethod');
-  const memberCount = watch('memberCount') || 1;
+  const memberCount = watch('memberCount') ?? 1;
   const agreedToDataProtection = watch('agreedToDataProtection');
   const agreedToCodeOfEthics = watch('agreedToCodeOfEthics');
   const transactionCode = watch('transactionCode');
 
   useEffect(() => {
-    fetchProfile();
+    void fetchProfile();
   }, [fetchProfile]);
 
   useEffect(() => {
     if (profile) {
-      setValue('memberCount', profile.currentMemberCount || 1);
-      setValue('phoneNumber', profile.phone || '');
+      setValue('memberCount', profile.currentMemberCount ?? 1);
+      setValue('phoneNumber', profile.phone ?? '');
     }
   }, [profile, setValue]);
 
@@ -72,7 +72,7 @@ function MemberRenewalPage() {
     onStatusCheck: checkPaymentStatus,
   });
 
-  const maxCount = profile?.maxMemberCountReached || profile?.currentMemberCount || 0;
+  const maxCount = profile?.maxMemberCountReached ?? profile?.currentMemberCount ?? 0;
 
   const feeBreakdown = useRenewalFeeCalculation({
     membershipType: isGroup ? 'GROUP' : 'INDIVIDUAL',
@@ -83,7 +83,7 @@ function MemberRenewalPage() {
   const onSubmit = async (data: RenewalFormSchema) => {
     await submitRenewal({
       paymentMethod: data.paymentMethod,
-      phoneNumber: formatPhoneNumber(data.phoneNumber || ''),
+      phoneNumber: formatPhoneNumber(data.phoneNumber ?? ''),
       transactionCode: data.paymentMethod === 'MANUAL' ? data.transactionCode : undefined,
       memberCount: isGroup ? data.memberCount : undefined,
       amount: feeBreakdown.total,
@@ -118,14 +118,14 @@ function MemberRenewalPage() {
               <motion.div key="form" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                 <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2">
                   <MembershipStatusCard
-                    membershipType={profile?.membershipType || 'INDIVIDUAL'}
+                    membershipType={profile?.membershipType ?? 'INDIVIDUAL'}
                     expiresAt={profile?.membershipExpiresAt}
                     daysUntilExpiry={daysUntilExpiry}
                   />
                   <TotalAmountCard total={feeBreakdown.total} />
                 </div>
 
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+                <form onSubmit={(e) => { e.preventDefault(); void handleSubmit(onSubmit)(e); }} className="space-y-8">
                   <AnimatePresence>
                     {isGroup && (
                       <motion.div

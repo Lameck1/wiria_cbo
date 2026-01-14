@@ -34,7 +34,7 @@ export function GroupCountHistory({ memberId }: GroupCountHistoryProps) {
       }
     };
 
-    fetchHistory();
+    void fetchHistory();
   }, [memberId]);
 
   if (isLoading) {

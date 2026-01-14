@@ -62,7 +62,7 @@ export function MeetingFormModal({ meeting, onClose, onSuccess }: MeetingFormMod
       title={meeting ? 'Edit Meeting' : 'Schedule New Meeting'}
       size="2xl"
     >
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={(e) => void handleSubmit(e)} className="space-y-4">
         <div>
           <label htmlFor="meetingTitle" className="mb-2 block text-sm font-bold">
             Meeting Title *

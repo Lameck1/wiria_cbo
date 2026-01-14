@@ -90,7 +90,7 @@ export default function SafeguardingManagementPage() {
       header: 'Type',
       key: 'incidentType',
       render: (r) => (
-        <span className="text-sm">{INCIDENT_TYPES[r.incidentType] || r.incidentType}</span>
+        <span className="text-sm">{INCIDENT_TYPES[r.incidentType] ?? r.incidentType}</span>
       ),
     },
     {

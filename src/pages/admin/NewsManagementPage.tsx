@@ -41,7 +41,7 @@ export default function NewsManagementPage() {
     try {
       await deleteUpdate(id);
       notificationService.success('Update deleted successfully');
-      loadUpdates();
+      void loadUpdates();
     } catch {
       notificationService.error('Failed to delete update');
     }
@@ -112,7 +112,7 @@ export default function NewsManagementPage() {
                 key={update.id}
                 update={update}
                 onEdit={handleEdit}
-                onDelete={handleDelete}
+                onDelete={(id) => void handleDelete(id)}
               />
             ))
           ) : (
@@ -136,7 +136,7 @@ export default function NewsManagementPage() {
           onClose={() => setShowModal(false)}
           onSuccess={() => {
             setShowModal(false);
-            loadUpdates();
+            void loadUpdates();
           }}
         />
       )}
@@ -173,7 +173,7 @@ const NewsCard = memo(function NewsCard({
         </div>
         <h3 className="mb-2 line-clamp-2 text-lg font-bold text-wiria-blue-dark">{update.title}</h3>
         <p className="line-clamp-3 text-sm text-gray-600">
-          {update.excerpt ||
+          {update.excerpt ??
             (update.fullContent
               ? update.fullContent.slice(0, 150) + '...'
               : 'No content available')}

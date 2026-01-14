@@ -107,8 +107,8 @@ export function useMemberData() {
     activityQuery.isLoading;
 
   const error =
-    (profileQuery.error)?.message ||
-    (paymentsQuery.error)?.message ||
+    (profileQuery.error)?.message ??
+    (paymentsQuery.error)?.message ??
     null;
 
   // Computed values

@@ -177,10 +177,10 @@ export function MemberDetailsModal({ member, onClose, onStatusChange }: MemberDe
         <div className="mt-8 flex flex-wrap items-center gap-4 border-t pt-6">
           {member.status === MembershipStatus.PENDING ? (
             <>
-              <Button onClick={handleApprove} className="flex-1 bg-green-600 hover:bg-green-700">
+              <Button onClick={() => void handleApprove()} className="flex-1 bg-green-600 hover:bg-green-700">
                 ✓ Approve Membership
               </Button>
-              <Button onClick={handleReject} className="flex-1 bg-red-600 hover:bg-red-700">
+              <Button onClick={() => void handleReject()} className="flex-1 bg-red-600 hover:bg-red-700">
                 ✗ Reject Application
               </Button>
             </>

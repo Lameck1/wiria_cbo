@@ -96,7 +96,7 @@ export function RecentUpdatesSection() {
             <>
               <div id="updates-container" className="mb-10 grid gap-8 md:grid-cols-2">
                 {pageUpdates.map((update: Update, index: number) => {
-                  const dateString = update.publishedAt || update.date;
+                  const dateString = update.publishedAt ?? update.date;
                   const formattedDate = dateString
                     ? new Date(dateString).toLocaleDateString('en-US', {
                         year: 'numeric',
@@ -115,7 +115,7 @@ export function RecentUpdatesSection() {
                       className="group overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
                     >
                       <ImageCarousel
-                        images={update.images || [update.imageUrl]}
+                        images={update.images ?? [update.imageUrl]}
                         title={update.title}
                       />
                       <div className="p-6">

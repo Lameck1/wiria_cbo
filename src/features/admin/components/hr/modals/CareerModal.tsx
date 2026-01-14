@@ -69,7 +69,7 @@ export function CareerModal({ career, onClose, onSuccess }: CareerModalProps) {
       title={career ? 'Edit Job Posting' : 'Post New Job'}
       size="3xl"
     >
-      <form onSubmit={handleSubmit} className="space-y-8">
+      <form onSubmit={(e) => void handleSubmit(e)} className="space-y-8">
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div className="space-y-2">
             <label className="text-sm font-bold text-gray-700" htmlFor="career-title">

@@ -18,10 +18,10 @@ interface TenderModalProps {
 export function TenderModal({ tender, onClose, onSuccess }: TenderModalProps) {
   const queryClient = useQueryClient();
   const [eligibility, setEligibility] = useState<string[]>(
-    tender?.eligibility || ['Legal registration in Kenya', 'Tax compliance']
+    tender?.eligibility ?? ['Legal registration in Kenya', 'Tax compliance']
   );
   const [docs, setDocs] = useState<string[]>(
-    tender?.requiredDocuments || ['Certificate of Incorporation', 'KRA PIN/Tax Compliance']
+    tender?.requiredDocuments ?? ['Certificate of Incorporation', 'KRA PIN/Tax Compliance']
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -86,7 +86,7 @@ export function TenderModal({ tender, onClose, onSuccess }: TenderModalProps) {
         await createTender(data);
         notificationService.success('Tender advertised');
       }
-      queryClient.invalidateQueries({ queryKey: ['tenders'] });
+      void queryClient.invalidateQueries({ queryKey: ['tenders'] });
       onSuccess();
     } catch (error: unknown) {
       notificationService.error(getErrorMessage(error, 'Operation failed'));
@@ -102,7 +102,7 @@ export function TenderModal({ tender, onClose, onSuccess }: TenderModalProps) {
       title={tender ? 'Edit Tender' : 'Advertise New Tender'}
       size="3xl"
     >
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={(e) => void handleSubmit(e)} className="space-y-6">
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div className="space-y-4">
             <h4 className="border-b pb-1 font-bold text-wiria-blue-dark">Basic Information</h4>
@@ -180,7 +180,7 @@ export function TenderModal({ tender, onClose, onSuccess }: TenderModalProps) {
               <select
                 id="tender-status"
                 name="status"
-                defaultValue={tender?.status || 'OPEN'}
+                defaultValue={tender?.status ?? 'OPEN'}
                 className="w-full rounded-lg border p-2.5"
               >
                 <option value="OPEN">Open</option>
@@ -200,7 +200,7 @@ export function TenderModal({ tender, onClose, onSuccess }: TenderModalProps) {
               <select
                 id="tender-submissionMethod"
                 name="submissionMethod"
-                defaultValue={tender?.submissionMethod || 'ONLINE'}
+                defaultValue={tender?.submissionMethod ?? 'ONLINE'}
                 className="w-full rounded-lg border p-2.5"
               >
                 <option value="ONLINE">Online (Email)</option>
@@ -216,7 +216,7 @@ export function TenderModal({ tender, onClose, onSuccess }: TenderModalProps) {
                 id="tender-submissionEmail"
                 type="email"
                 name="submissionEmail"
-                defaultValue={tender?.submissionEmail || 'tenders@wiria.org'}
+                defaultValue={tender?.submissionEmail ?? 'tenders@wiria.org'}
                 className="w-full rounded-lg border p-2.5"
                 required
               />

@@ -75,7 +75,7 @@ export function OpportunityModal({ opportunity, onClose, onSuccess }: Opportunit
           </button>
         </div>
         <div className="flex-1 overflow-y-auto bg-gray-50/30 p-8">
-          <form onSubmit={handleSubmit} className="space-y-8">
+          <form onSubmit={(e) => void handleSubmit(e)} className="space-y-8">
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-700" htmlFor="opportunity-title">

@@ -36,7 +36,7 @@ export default function DonationManagementPage() {
     }
   );
 
-  const statistics = statsList[0] || null;
+  const statistics = statsList[0] ?? null;
 
   // Memoized callback for viewing donation details
   const handleViewDetails = useCallback((donation: Donation) => {

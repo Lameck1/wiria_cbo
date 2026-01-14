@@ -67,10 +67,10 @@ export default function MeetingManagementPage() {
 
   const formatTime = (time: string) => {
     const [hours, minutes] = time.split(':');
-    const hour = Number.parseInt(hours || '0');
+    const hour = Number.parseInt(hours ?? '0');
     const ampm = hour >= 12 ? 'PM' : 'AM';
     const hour12 = hour % 12 || 12;
-    return `${hour12}:${minutes || '00'} ${ampm}`;
+    return `${hour12}:${minutes ?? '00'} ${ampm}`;
   };
 
   const upcomingMeetings = meetings.filter(
@@ -95,7 +95,7 @@ export default function MeetingManagementPage() {
     {
       header: 'Attendance',
       key: 'attendanceCount',
-      render: (m) => <span className="text-sm">{m.attendanceCount || 0} members</span>,
+      render: (m) => <span className="text-sm">{m.attendanceCount ?? 0} members</span>,
     },
     {
       header: 'Status',
@@ -112,7 +112,7 @@ export default function MeetingManagementPage() {
       align: 'right',
       render: (m) => (
         <button
-          onClick={() => handleViewAttendance(m)}
+          onClick={() => void handleViewAttendance(m)}
           className="text-sm font-bold text-wiria-blue-dark hover:underline"
         >
           View Attendance
