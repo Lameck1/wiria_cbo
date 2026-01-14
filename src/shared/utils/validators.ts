@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { LIMITS } from '../constants/config';
 
 /**
  * Shared Validation Schemas
@@ -15,17 +16,17 @@ export const emailSchema = z
   .string()
   .email('Invalid email address')
   .min(5, 'Email is too short')
-  .max(100, 'Email is too long');
+  .max(LIMITS.MAX_EMAIL_LENGTH, 'Email is too long');
 
 export const nameSchema = z
   .string()
-  .min(2, 'Name must be at least 2 characters')
-  .max(50, 'Name must be at most 50 characters')
+  .min(LIMITS.MIN_NAME_LENGTH, `Name must be at least ${LIMITS.MIN_NAME_LENGTH} characters`)
+  .max(LIMITS.MAX_NAME_LENGTH, `Name must be at most ${LIMITS.MAX_NAME_LENGTH} characters`)
   .regex(/^[a-zA-Z\s'-]+$/, 'Name contains invalid characters');
 
 export const passwordSchema = z
   .string()
-  .min(8, 'Password must be at least 8 characters')
+  .min(LIMITS.MIN_PASSWORD_LENGTH, `Password must be at least ${LIMITS.MIN_PASSWORD_LENGTH} characters`)
   .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
   .regex(/[0-9]/, 'Password must contain at least one number')
   .regex(/[^A-Za-z0-9]/, 'Password must contain at least one special character');
@@ -117,9 +118,6 @@ export const validateEmail = (email: string): ValidationResult => {
 /**
  * Validates donation amounts
  */
-const MIN_DONATION = 10;
-const MAX_DONATION = 1000000;
-
 export const validateAmount = (amount: number | string): ValidationResult => {
   const numAmount = typeof amount === 'string' ? parseFloat(amount) : amount;
 
@@ -127,12 +125,12 @@ export const validateAmount = (amount: number | string): ValidationResult => {
     return { valid: false, error: 'Please enter a valid amount' };
   }
 
-  if (numAmount < MIN_DONATION) {
-    return { valid: false, error: `Minimum donation amount is KES ${MIN_DONATION}` };
+  if (numAmount < LIMITS.MIN_DONATION) {
+    return { valid: false, error: `Minimum donation amount is KES ${LIMITS.MIN_DONATION}` };
   }
 
-  if (numAmount > MAX_DONATION) {
-    return { valid: false, error: `Maximum donation amount is KES ${MAX_DONATION.toLocaleString()}` };
+  if (numAmount > LIMITS.MAX_DONATION) {
+    return { valid: false, error: `Maximum donation amount is KES ${LIMITS.MAX_DONATION.toLocaleString()}` };
   }
 
   return { valid: true };

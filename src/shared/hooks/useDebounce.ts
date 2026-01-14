@@ -4,16 +4,17 @@
  */
 
 import { useCallback, useEffect, useRef } from 'react';
+import { TIMING } from '../constants/config';
 
 /**
  * Returns a debounced version of the provided callback
  * @param callback - Function to debounce
- * @param delay - Delay in milliseconds (default: 300ms)
+ * @param delay - Delay in milliseconds (default: 300ms from config)
  * @returns Debounced callback function
  */
 export function useDebounce<T extends (...args: never[]) => void>(
   callback: T,
-  delay: number = 300
+  delay: number = TIMING.DEBOUNCE_DEFAULT
 ): (...args: Parameters<T>) => void {
   const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
   const callbackRef = useRef(callback);
