@@ -8,16 +8,16 @@ import { motion } from 'framer-motion';
 import { useResources } from '../hooks/useResources';
 import { useTenders } from '../hooks/useTenders';
 
+const scrollToSection = (id: string) => {
+  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+};
+
 export function ResourcesHeroStats() {
   const { data: resources = [] } = useResources();
   const { data: tenders = [] } = useTenders();
 
   const documentCount = resources.length;
   const activeTenderCount = tenders.filter((t) => t.status === 'OPEN').length;
-
-  const scrollToSection = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-  };
 
   return (
     <motion.div

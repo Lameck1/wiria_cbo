@@ -29,6 +29,13 @@ const STATUS_OPTIONS = [
   { value: 'REJECTED', label: 'Rejected' },
 ];
 
+const getFullUrl = (path?: string) => {
+  if (!path) return '#';
+  if (path.startsWith('http')) return path;
+  const baseUrl = (import.meta.env['VITE_API_BASE_URL'] as string | undefined) ?? '';
+  return `${baseUrl.replace('/api', '')}${path}`;
+};
+
 export function ApplicationReviewModal({ application, onClose, onSuccess }: ApplicationModalProps) {
   const handleUpdate = async (data: ReviewSchema) => {
     try {
@@ -38,13 +45,6 @@ export function ApplicationReviewModal({ application, onClose, onSuccess }: Appl
     } catch {
       notificationService.error('Failed to update status');
     }
-  };
-
-  const getFullUrl = (path?: string) => {
-    if (!path) return '#';
-    if (path.startsWith('http')) return path;
-    const baseUrl = (import.meta.env['VITE_API_BASE_URL'] as string | undefined) ?? '';
-    return `${baseUrl.replace('/api', '')}${path}`;
   };
 
   return (

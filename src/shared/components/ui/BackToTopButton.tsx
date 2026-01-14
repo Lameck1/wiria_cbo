@@ -7,6 +7,13 @@ import { useState, useEffect } from 'react';
 
 import { motion, AnimatePresence } from 'framer-motion';
 
+const scrollToTop = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth',
+  });
+};
+
 export function BackToTopButton() {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -23,13 +30,6 @@ export function BackToTopButton() {
     window.addEventListener('scroll', toggleVisibility);
     return () => window.removeEventListener('scroll', toggleVisibility);
   }, []);
-
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
-  };
 
   return (
     <AnimatePresence>

@@ -7,15 +7,16 @@ interface MessageDetailsModalProps {
   onReply: () => void;
 }
 
+const formatDate = (date: string) =>
+  new Date(date).toLocaleDateString('en-KE', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+
 export function MessageDetailsModal({ contact, onClose, onReply }: MessageDetailsModalProps) {
-  const formatDate = (date: string) =>
-    new Date(date).toLocaleDateString('en-KE', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
 
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black bg-opacity-50 p-4">

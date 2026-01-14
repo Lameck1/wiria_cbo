@@ -11,6 +11,13 @@ interface ReportDetailsModalProps {
   onStatusChange: (status: SafeguardingReport['status']) => void;
 }
 
+const formatDate = (date: string) =>
+  new Date(date).toLocaleDateString('en-KE', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
+
 export function ReportDetailsModal({
   report,
   statusColors,
@@ -20,12 +27,6 @@ export function ReportDetailsModal({
   onResolve,
   onStatusChange,
 }: ReportDetailsModalProps) {
-  const formatDate = (date: string) =>
-    new Date(date).toLocaleDateString('en-KE', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    });
 
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black bg-opacity-50 p-4">
