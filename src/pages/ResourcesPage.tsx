@@ -30,7 +30,6 @@ function ResourcesPage() {
       }, 100);
       return () => clearTimeout(timeoutId);
     }
-    return;
   }, [location.hash]);
   return (
     <main>

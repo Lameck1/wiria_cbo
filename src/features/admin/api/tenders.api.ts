@@ -45,7 +45,7 @@ export const getTenders = async (
   if (options.all) params.append('all', 'true');
 
   const queryString = params.toString();
-  const url = `/tenders${queryString ? `?${queryString}` : ''}`;
+  const url = queryString ? `/tenders?${queryString}` : '/tenders';
 
   return client.get<{ data: Tender[] }>(url);
 };

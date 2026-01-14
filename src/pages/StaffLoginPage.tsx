@@ -19,7 +19,8 @@ function StaffLoginPage() {
   useEffect(() => {
     if (
       isAuthenticated &&
-      [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.STAFF].includes(user?.role!)
+      user?.role &&
+      [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.STAFF].includes(user.role)
     ) {
       navigate(ROUTES.ADMIN, { replace: true });
     }

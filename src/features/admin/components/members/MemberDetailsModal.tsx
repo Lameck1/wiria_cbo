@@ -1,4 +1,4 @@
-import { AdminMember, approveMember, rejectMember } from '@/features/membership/api/members.api';
+import { AdminMember, approveMember, rejectMember, MembershipStatus } from '@/features/membership/api/members.api';
 import { Button } from '@/shared/components/ui/Button';
 import { Modal } from '@/shared/components/ui/Modal';
 import { notificationService } from '@/shared/services/notification/notificationService';
@@ -175,7 +175,7 @@ export function MemberDetailsModal({ member, onClose, onStatusChange }: MemberDe
         </div>
 
         <div className="mt-8 flex flex-wrap items-center gap-4 border-t pt-6">
-          {member.status === 'PENDING' ? (
+          {member.status === MembershipStatus.PENDING ? (
             <>
               <Button onClick={handleApprove} className="flex-1 bg-green-600 hover:bg-green-700">
                 ✓ Approve Membership
