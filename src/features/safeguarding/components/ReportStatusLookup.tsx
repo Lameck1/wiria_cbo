@@ -50,9 +50,9 @@ export function ReportStatusLookup() {
   const { lookupStatus, isLookingUp, lookupResult, lookupError, resetLookup } =
     useSafeguardingReport();
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    await lookupStatus(referenceNumber, email || undefined);
+  const handleSubmit = async (event: FormEvent) => {
+    event.preventDefault();
+    void lookupStatus(referenceNumber, email || undefined);
   };
 
   const handleReset = () => {
@@ -94,7 +94,7 @@ export function ReportStatusLookup() {
             type="text"
             id="lookupReference"
             value={referenceNumber}
-            onChange={(e) => setReferenceNumber(e.target.value)}
+            onChange={(event) => setReferenceNumber(event.target.value)}
             required
             disabled={isLookingUp}
             className="w-full rounded-lg border border-gray-300 px-4 py-3 transition-all focus:border-wiria-blue-dark focus:ring-2 focus:ring-wiria-blue-dark disabled:bg-gray-50"
@@ -109,7 +109,7 @@ export function ReportStatusLookup() {
             type="email"
             id="lookupEmail"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(event) => setEmail(event.target.value)}
             disabled={isLookingUp}
             className="w-full rounded-lg border border-gray-300 px-4 py-3 transition-all focus:border-wiria-blue-dark focus:ring-2 focus:ring-wiria-blue-dark disabled:bg-gray-50"
             placeholder="Optional - for verification"

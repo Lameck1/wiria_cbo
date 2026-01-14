@@ -121,7 +121,7 @@ describe('FormModal', () => {
   });
 
   it('should handle form submission with valid data', async () => {
-    mockOnSubmit.mockResolvedValue();
+    mockOnSubmit.mockResolvedValue(undefined);
 
     render(
       <FormModal
@@ -176,7 +176,7 @@ describe('FormModal', () => {
 
     const submitButton = screen.getByRole('button', { name: /save/i });
     const form = submitButton.closest('form');
-    
+
     fireEvent.submit(form!);
 
     // In jsdom, HTML5 validation doesn't prevent form submission
@@ -219,8 +219,8 @@ describe('FormModal', () => {
     const usernameInput = screen.getByLabelText(/username/i);
     const emailInput = screen.getByLabelText(/email/i);
 
-    expect(usernameInput.value).toBe('existinguser');
-    expect(emailInput.value).toBe('user@example.com');
+    expect((usernameInput as HTMLInputElement).value).toBe('existinguser');
+    expect((emailInput as HTMLInputElement).value).toBe('user@example.com');
   });
 
   it('should call onClose when cancel button is clicked', () => {
@@ -294,7 +294,7 @@ describe('FormModal', () => {
   });
 
   it('should handle number input type', async () => {
-    mockOnSubmit.mockResolvedValue();
+    mockOnSubmit.mockResolvedValue(undefined);
 
     render(
       <FormModal

@@ -5,7 +5,7 @@ test.describe('Homepage', () => {
     await page.goto('/');
     
     // Check that the page loads
-    await expect(page).toHaveTitle(/WIRIA CBO/i);
+    await expect(page).toHaveTitle(/wiria cbo/i);
     
     // Check for main navigation elements
     await expect(page.locator('nav')).toBeVisible();
@@ -34,7 +34,7 @@ test.describe('Homepage', () => {
     await page.goto('/');
     
     // Page should load on mobile
-    await expect(page).toHaveTitle(/WIRIA CBO/i);
+    await expect(page).toHaveTitle(/wiria cbo/i);
     
     // Mobile menu button should be visible
     const mobileMenu = page.getByRole('button', { name: /menu/i });

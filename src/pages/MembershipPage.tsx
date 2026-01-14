@@ -11,8 +11,6 @@ import { useRegistration } from '@/features/membership/hooks/useRegistration';
 import { registrationSchema, RegistrationFormSchema } from '@/features/membership/validation';
 import { Button } from '@/shared/components/ui/Button';
 import { Card, CardBody } from '@/shared/components/ui/Card';
-
-
 import { useFeeCalculation } from '@/shared/hooks/useFeeCalculation';
 import { useBackendStatus } from '@/shared/services/backendStatus';
 import { UserRole } from '@/shared/types';

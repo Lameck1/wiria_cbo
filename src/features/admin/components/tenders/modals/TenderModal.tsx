@@ -42,10 +42,10 @@ export function TenderModal({ tender, onClose, onSuccess }: TenderModalProps) {
   const removeArrayItem = (setter: React.Dispatch<React.SetStateAction<string[]>>, index: number) =>
     setter((previous) => previous.filter((_, index_) => index_ !== index));
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     setIsSubmitting(true);
-    const form = e.currentTarget;
+    const form = event.currentTarget;
     const formData = new FormData(form);
     const rawData = Object.fromEntries(formData.entries());
 
@@ -74,8 +74,8 @@ export function TenderModal({ tender, onClose, onSuccess }: TenderModalProps) {
         contactPerson: rawData['contactPerson'] as string,
         contactPhone: rawData['contactPhone'] as string,
         description: rawData['description'] as string,
-        eligibility: eligibility.filter((index: string) => index.trim()),
-        requiredDocuments: docs.filter((index: string) => index.trim()),
+        eligibility: eligibility.filter((item: string) => item.trim()),
+        requiredDocuments: docs.filter((item: string) => item.trim()),
         downloadUrl,
       };
 
@@ -264,13 +264,13 @@ export function TenderModal({ tender, onClose, onSuccess }: TenderModalProps) {
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div>
-            <label className="mb-2 block text-sm font-bold">Eligibility Criteria</label>
+            <h4 className="mb-2 block text-sm font-bold">Eligibility Criteria</h4>
             {eligibility.map((item: string, index: number) => (
               <div key={index} className="mb-2 flex gap-2">
                 <input
                   aria-label={`Eligibility criteria ${index + 1}`}
                   value={item}
-                  onChange={(e) => handleArrayChange(setEligibility, index, e.target.value)}
+                  onChange={(event) => handleArrayChange(setEligibility, index, event.target.value)}
                   className="flex-1 rounded-lg border p-2 text-sm"
                   required
                 />
@@ -292,13 +292,13 @@ export function TenderModal({ tender, onClose, onSuccess }: TenderModalProps) {
             </button>
           </div>
           <div>
-            <label className="mb-2 block text-sm font-bold">Required Documents</label>
+            <h4 className="mb-2 block text-sm font-bold">Required Documents</h4>
             {docs.map((item: string, index: number) => (
               <div key={index} className="mb-2 flex gap-2">
                 <input
                   aria-label={`Required document ${index + 1}`}
                   value={item}
-                  onChange={(e) => handleArrayChange(setDocs, index, e.target.value)}
+                  onChange={(event) => handleArrayChange(setDocs, index, event.target.value)}
                   className="flex-1 rounded-lg border p-2 text-sm"
                   required
                 />

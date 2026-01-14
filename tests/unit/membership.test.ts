@@ -67,10 +67,10 @@ describe('Membership Page', () => {
     if (!email) throw new Error('Missing email input');
 
     let submitted = false;
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
       submitted = true;
-      if (!email.value.includes('@')) {
+      if (!(email as HTMLInputElement).value.includes('@')) {
         errorDiv.textContent = 'Invalid email';
       }
     });

@@ -25,16 +25,16 @@ export function CareerModal({ career, onClose, onSuccess }: CareerModalProps) {
     value: string
   ) => {
     setter((previous: string[]) => {
-      const n = [...previous];
-      n[index] = value;
-      return n;
+      const newArray = [...previous];
+      newArray[index] = value;
+      return newArray;
     });
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     setIsSubmitting(true);
-    const formData = new FormData(e.currentTarget);
+    const formData = new FormData(event.currentTarget);
     const rawData = Object.fromEntries(formData.entries());
 
     const data: Partial<Career> = {
@@ -172,25 +172,25 @@ export function CareerModal({ career, onClose, onSuccess }: CareerModalProps) {
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           <div className="space-y-4">
-            <label className="text-sm font-bold text-gray-700">Responsibilities *</label>
+            <h4 className="text-sm font-bold text-gray-700">Responsibilities *</h4>
             {responsibilities.map((r: string, index: number) => (
               <input
                 key={index}
                 aria-label={`Responsibility ${index + 1}`}
                 value={r}
-                onChange={(e) => handleArrayChange(setResponsibilities, index, e.target.value)}
+                onChange={(event) => handleArrayChange(setResponsibilities, index, event.target.value)}
                 className="mb-2 w-full rounded-xl border-gray-200 p-3"
               />
             ))}
           </div>
           <div className="space-y-4">
-            <label className="text-sm font-bold text-gray-700">Requirements *</label>
+            <h4 className="text-sm font-bold text-gray-700">Requirements *</h4>
             {requirements.map((r: string, index: number) => (
               <input
                 key={index}
                 aria-label={`Requirement ${index + 1}`}
                 value={r}
-                onChange={(e) => handleArrayChange(setRequirements, index, e.target.value)}
+                onChange={(event) => handleArrayChange(setRequirements, index, event.target.value)}
                 className="mb-2 w-full rounded-xl border-gray-200 p-3"
               />
             ))}
@@ -198,13 +198,13 @@ export function CareerModal({ career, onClose, onSuccess }: CareerModalProps) {
         </div>
 
         <div className="space-y-4">
-          <label className="text-sm font-bold text-gray-700">Desirable Skills (Optional)</label>
+          <h4 className="text-sm font-bold text-gray-700">Desirable Skills (Optional)</h4>
           {desirable.map((d: string, index: number) => (
             <input
               key={index}
               aria-label={`Desirable skill ${index + 1}`}
               value={d}
-              onChange={(e) => handleArrayChange(setDesirable, index, e.target.value)}
+              onChange={(event) => handleArrayChange(setDesirable, index, event.target.value)}
               className="mb-2 w-full rounded-xl border-gray-200 p-3"
             />
           ))}

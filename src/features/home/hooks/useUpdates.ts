@@ -33,7 +33,7 @@ async function fetchUpdates(limit = 20): Promise<Update[]> {
     throw new Error('Failed to fetch updates');
   }
 
-  const data: UpdatesResponse = await response.json();
+  const data = (await response.json()) as UpdatesResponse;
   return data.data?.data || data.data || [];
 }
 

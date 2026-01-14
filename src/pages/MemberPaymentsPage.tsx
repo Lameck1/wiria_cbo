@@ -10,7 +10,7 @@ function MemberPaymentsPage() {
   const { payments, isLoading, totalPayments, pendingPayments, fetchPayments } = useMemberData();
 
   useEffect(() => {
-    fetchPayments();
+    void fetchPayments();
   }, [fetchPayments]);
 
   if (isLoading && payments.length === 0) {

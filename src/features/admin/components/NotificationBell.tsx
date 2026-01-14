@@ -68,7 +68,7 @@ export function NotificationBell() {
     const wasOpen = isOpen;
     setIsOpen(!isOpen);
     if (!wasOpen) {
-      refetch();
+      void refetch();
     }
   };
 

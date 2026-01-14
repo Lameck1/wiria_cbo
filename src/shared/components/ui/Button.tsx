@@ -56,7 +56,7 @@ export function Button({
         fullWidth && 'w-full',
         className
       )}
-      disabled={disabled || isLoading}
+      disabled={disabled ?? isLoading}
       {...props}
     >
       {isLoading ? (

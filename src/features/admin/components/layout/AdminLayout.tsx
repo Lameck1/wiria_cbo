@@ -94,7 +94,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
         {/* Footer - Fixed at bottom */}
         <div className="flex-shrink-0 border-t border-white border-opacity-10 p-6">
           <button
-            onClick={() => logout()}
+            onClick={() => { void logout(); }}
             className="flex w-full items-center p-3 text-left font-bold text-red-300 transition-colors hover:text-red-100"
           >
             <span className="mr-3">🚪</span> Logout
@@ -107,6 +107,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
         <div
           className="fixed inset-0 z-20 bg-black bg-opacity-50 lg:hidden"
           onClick={() => setIsSidebarOpen(false)}
+          aria-hidden="true"
         />
       )}
 
@@ -140,10 +141,10 @@ export function AdminLayout({ children }: AdminLayoutProps) {
             {/* Notification Bell */}
             <NotificationBell />
             <span className="hidden rounded-full bg-blue-100 px-2 py-1 text-xs font-bold uppercase text-blue-700 sm:block md:px-3">
-              {user?.role || '...'}
+              {user?.role ?? '...'}
             </span>
             <div className="flex h-9 w-9 select-none items-center justify-center rounded-full bg-wiria-yellow font-bold text-white md:h-10 md:w-10">
-              {(user?.firstName || 'U').charAt(0).toUpperCase()}
+              {(user?.firstName ?? 'U').charAt(0).toUpperCase()}
             </div>
           </div>
         </header>

@@ -13,9 +13,9 @@ interface PaymentMethodToggleProps {
 export function PaymentMethodToggle({ selected, onChange, disabled }: PaymentMethodToggleProps) {
   return (
     <div>
-      <label className="mb-4 block text-sm font-semibold text-wiria-blue-dark">
+      <span className="mb-4 block text-sm font-semibold text-wiria-blue-dark">
         Payment Method <span className="text-red-500">*</span>
-      </label>
+      </span>
       <div className="grid grid-cols-2 gap-4">
         <motion.button
           type="button"
@@ -23,11 +23,10 @@ export function PaymentMethodToggle({ selected, onChange, disabled }: PaymentMet
           whileTap={{ scale: 0.98 }}
           onClick={() => onChange('STK_PUSH')}
           disabled={disabled}
-          className={`relative rounded-2xl border-2 p-5 text-center transition-all duration-200 ${
-            selected === 'STK_PUSH'
+          className={`relative rounded-2xl border-2 p-5 text-center transition-all duration-200 ${selected === 'STK_PUSH'
               ? 'border-wiria-yellow bg-wiria-yellow/5 shadow-lg shadow-wiria-yellow/10 ring-2 ring-wiria-yellow/20'
               : 'border-gray-100 bg-white shadow-sm hover:border-wiria-yellow/30 hover:bg-gray-50'
-          } disabled:cursor-not-allowed disabled:opacity-50`}
+            } disabled:cursor-not-allowed disabled:opacity-50`}
         >
           <div className="mb-3 text-4xl">📱</div>
           <div className="font-bold text-wiria-blue-dark">M-Pesa STK Push</div>
@@ -51,11 +50,10 @@ export function PaymentMethodToggle({ selected, onChange, disabled }: PaymentMet
           whileTap={{ scale: 0.98 }}
           onClick={() => onChange('MANUAL')}
           disabled={disabled}
-          className={`relative rounded-2xl border-2 p-5 text-center transition-all duration-200 ${
-            selected === 'MANUAL'
+          className={`relative rounded-2xl border-2 p-5 text-center transition-all duration-200 ${selected === 'MANUAL'
               ? 'border-wiria-yellow bg-wiria-yellow/5 shadow-lg shadow-wiria-yellow/10 ring-2 ring-wiria-yellow/20'
               : 'border-gray-100 bg-white shadow-sm hover:border-wiria-yellow/30 hover:bg-gray-50'
-          } disabled:cursor-not-allowed disabled:opacity-50`}
+            } disabled:cursor-not-allowed disabled:opacity-50`}
         >
           <div className="mb-3 text-4xl">🏦</div>
           <div className="font-bold text-wiria-blue-dark">Manual Paybill</div>

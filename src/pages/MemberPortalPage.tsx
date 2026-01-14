@@ -29,7 +29,7 @@ function MemberPortalPage() {
   } = useMemberData();
 
   useEffect(() => {
-    fetchAll();
+    void fetchAll();
   }, [fetchAll]);
 
   if (isLoading && !profile) {

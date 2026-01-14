@@ -171,7 +171,7 @@ export default function DonationManagementPage() {
               title="Filter by status"
               aria-label="Filter donations by status"
               value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
+              onChange={(event) => setStatusFilter(event.target.value)}
               className="rounded-lg border px-4 py-2 text-sm outline-none focus:ring-2 focus:ring-wiria-blue-dark/20"
             >
               <option value="">All Statuses</option>

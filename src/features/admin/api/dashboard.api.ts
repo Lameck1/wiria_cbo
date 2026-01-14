@@ -135,7 +135,7 @@ export const getRecentApplications = async (limit = 5): Promise<RecentApplicatio
       id: app.id,
       name: `${app.firstName} ${app.lastName}`,
       type: app.type,
-      position: app.career?.title || app.opportunity?.title || 'N/A',
+      position: app.career?.title ?? app.opportunity?.title ?? 'N/A',
       date: app.createdAt,
       status: app.status,
     }));
@@ -154,7 +154,7 @@ export const getRecentDonations = async (limit = 5): Promise<RecentDonation[]> =
     const donations = extractArray<DonationResponse>(response);
     return donations.slice(0, limit).map((d) => ({
       id: d.id,
-      donor: d.donorName || 'Anonymous',
+      donor: d.donorName ?? 'Anonymous',
       amount: Number(d.amount),
       date: d.createdAt,
       status: d.status,

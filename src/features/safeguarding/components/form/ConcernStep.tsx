@@ -39,9 +39,9 @@ export function ConcernStep({
   return (
     <div className="space-y-6">
       <motion.div variants={staggerItem}>
-        <label className="mb-1 block text-sm font-medium text-gray-700">
+        <span className="mb-1 block text-sm font-medium text-gray-700">
           Category of Concern <span className="text-red-500">*</span>
-        </label>
+        </span>
         <div className="mt-2 grid grid-cols-2 gap-2 md:grid-cols-3">
           {CONCERN_CATEGORIES.map((cat) => (
             <button
@@ -50,8 +50,8 @@ export function ConcernStep({
               onClick={() => setValue('category', cat.value, { shouldValidate: true })}
               disabled={isSubmitting}
               className={`rounded-xl border-2 p-3 text-left transition-all ${category === cat.value
-                  ? 'border-slate-600 bg-slate-50 shadow-md'
-                  : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                ? 'border-slate-600 bg-slate-50 shadow-md'
+                : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
                 } disabled:opacity-50`}
             >
               <span className="text-xl">{cat.icon}</span>
@@ -103,7 +103,7 @@ export function ConcernStep({
       </motion.div>
 
       <motion.div variants={staggerItem}>
-        <label className="mb-1 block text-sm font-medium text-gray-700">
+        <label htmlFor="evidence-file" className="mb-1 block text-sm font-medium text-gray-700">
           Supporting Evidence (Optional)
         </label>
         {evidenceFile ? (
@@ -140,6 +140,7 @@ export function ConcernStep({
         ) : (
           <div className="relative">
             <input
+              id="evidence-file"
               type="file"
               onChange={onFileChange}
               disabled={isSubmitting}

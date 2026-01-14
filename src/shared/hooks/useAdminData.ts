@@ -60,7 +60,7 @@ export function useAdminAction<TInput, TResponse>(
     mutationFn: actionFunction,
     onSuccess: (data) => {
       queriesToInvalidate.forEach((key) => {
-        queryClient.invalidateQueries({ queryKey: key });
+        void queryClient.invalidateQueries({ queryKey: key });
       });
 
       if (options.successMessage) {

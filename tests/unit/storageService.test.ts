@@ -9,7 +9,7 @@ describe('StorageService', () => {
     let storage: StorageService;
 
     beforeEach(() => {
-        localStorage.clear();
+        window.localStorage.clear();
         storage = new StorageService('test_');
     });
 
@@ -94,7 +94,7 @@ describe('StorageService', () => {
         });
 
         it('returns null for "undefined" string value', () => {
-            localStorage.setItem('test_undefined', 'undefined');
+            window.localStorage.setItem('test_undefined', 'undefined');
             expect(storage.get('undefined')).toBeNull();
         });
 
@@ -123,21 +123,21 @@ describe('StorageService', () => {
             // Set some test data
             storage.set('key1', 'value1');
             storage.set('key2', 'value2');
-            
+
             // Verify they exist
             expect(storage.has('key1')).toBe(true);
             expect(storage.has('key2')).toBe(true);
-            
+
             // Clear all prefixed keys
             storage.clear();
-            
+
             // Verify they're removed
             expect(storage.has('key1')).toBe(false);
             expect(storage.has('key2')).toBe(false);
-            
+
             // Verify the actual localStorage keys are gone
-            expect(localStorage.getItem('wiria_key1')).toBeNull();
-            expect(localStorage.getItem('wiria_key2')).toBeNull();
+            expect(window.localStorage.getItem('wiria_key1')).toBeNull();
+            expect(window.localStorage.getItem('wiria_key2')).toBeNull();
         });
 
         it('handles empty storage', () => {

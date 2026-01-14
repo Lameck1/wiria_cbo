@@ -33,11 +33,11 @@ export default function NewsManagementPage() {
   };
 
   useEffect(() => {
-    loadUpdates();
+    void loadUpdates();
   }, []);
 
   const handleDelete = useCallback(async (id: string) => {
-    if (!confirm('Are you sure you want to delete this update?')) return;
+    if (!window.confirm('Are you sure you want to delete this update?')) return;
     try {
       await deleteUpdate(id);
       notificationService.success('Update deleted successfully');

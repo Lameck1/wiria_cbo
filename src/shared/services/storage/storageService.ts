@@ -20,7 +20,7 @@ export class StorageService {
         return;
       }
       const serialized = JSON.stringify(value);
-      localStorage.setItem(this.getKey(key), serialized);
+      window.localStorage.setItem(this.getKey(key), serialized);
     } catch (error) {
       console.error('Error saving to localStorage:', error);
     }
@@ -28,7 +28,7 @@ export class StorageService {
 
   get<T>(key: string): T | null {
     try {
-      const item = localStorage.getItem(this.getKey(key));
+      const item = window.localStorage.getItem(this.getKey(key));
       if (!item || item === 'undefined') return null;
 
       // Try to parse as JSON first
@@ -46,29 +46,29 @@ export class StorageService {
   }
 
   remove(key: string): void {
-    localStorage.removeItem(this.getKey(key));
+    window.localStorage.removeItem(this.getKey(key));
   }
 
   clear(): void {
     // Create array of keys to delete before removing them
     // This avoids issues with iterator invalidation in jsdom
     const keysToRemove: string[] = [];
-    
-    for (let index = 0; index < localStorage.length; index++) {
-      const key = localStorage.key(index);
-      if (key && key.startsWith(this.prefix)) {
+
+    for (let index = 0; index < window.localStorage.length; index++) {
+      const key = window.localStorage.key(index);
+      if (key?.startsWith(this.prefix)) {
         keysToRemove.push(key);
       }
     }
-    
+
     // Remove all collected keys
     keysToRemove.forEach((key) => {
-      localStorage.removeItem(key);
+      window.localStorage.removeItem(key);
     });
   }
 
   has(key: string): boolean {
-    return localStorage.getItem(this.getKey(key)) !== null;
+    return window.localStorage.getItem(this.getKey(key)) !== null;
   }
 }
 

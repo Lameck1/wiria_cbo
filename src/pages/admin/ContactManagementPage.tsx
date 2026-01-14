@@ -67,7 +67,9 @@ export default function ContactManagementPage() {
   };
 
   const handleArchive = (id: string) => {
-    if (confirm('Are you sure you want to archive this message?')) archiveAction.mutate(id);
+    if (window.confirm('Are you sure you want to archive this message?')) {
+      archiveAction.mutate(id);
+    }
   };
 
   const formatDate = (date: string) =>

@@ -8,7 +8,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 describe('User Management UI', () => {
   beforeEach(() => {
     document.body.innerHTML = '';
-    localStorage.clear();
+    window.localStorage.clear();
   });
 
   afterEach(() => {
@@ -32,12 +32,12 @@ describe('User Management UI', () => {
     if (!form || !errorDiv) throw new Error('Test DOM not initialized');
 
     let submitted = false;
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
       submitted = true;
-      const identifier = (form.querySelector('input[name="identifier"]'))
+      const identifier = (form.querySelector('input[name="identifier"]') as HTMLInputElement | null)
         ?.value;
-      const password = (form.querySelector('input[name="password"]'))
+      const password = (form.querySelector('input[name="password"]') as HTMLInputElement | null)
         ?.value;
       if (!identifier || !password) {
         errorDiv.textContent = 'All fields required';
@@ -73,8 +73,8 @@ describe('User Management UI', () => {
       })
     );
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
       const res = await fetch('/api/auth/login', { method: 'POST' });
       const data = await res.json();
       if (!res.ok) {
@@ -98,20 +98,20 @@ describe('User Management UI', () => {
     const passwordInput = form.querySelector('input[name="password"]');
     expect(passwordInput).not.toBeNull();
     if (!passwordInput) throw new Error('Missing password input');
-    passwordInput.value = 'correctpass';
+    (passwordInput as HTMLInputElement).value = 'correctpass';
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
       const res = await fetch('/api/auth/login', { method: 'POST' });
       const data = await res.json();
       if (res.ok) {
-        localStorage.setItem('wiria_auth_token', data.token);
+        window.localStorage.setItem('wiria_auth_token', data.token);
       }
     });
 
     fireEvent.submit(form);
     await new Promise<void>((resolve) => setTimeout(resolve, 0));
-    expect(localStorage.getItem('wiria_auth_token')).toBe('abc123');
+    expect(window.localStorage.getItem('wiria_auth_token')).toBe('abc123');
   });
 
   it('renders user profile and allows editing', () => {
@@ -148,8 +148,8 @@ describe('User Management UI', () => {
     expect(profileView.style.display).toBe('none');
     expect(editForm.style.display).toBe('block');
 
-    editForm.addEventListener('submit', (e) => {
-      e.preventDefault();
+    editForm.addEventListener('submit', (event) => {
+      event.preventDefault();
       successDiv.textContent = 'Profile updated!';
     });
 
@@ -172,11 +172,10 @@ describe('User Management UI', () => {
     expect(errorDiv).not.toBeNull();
     if (!form || !errorDiv) throw new Error('Test DOM not initialized');
 
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const email =
-        (form.querySelector('input[name="email"]'))?.value ?? '';
-      if (!email.includes('@')) {
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const emailInput = form.querySelector('input[name="email"]') as HTMLInputElement | null;
+      if (!emailInput || !emailInput.value.includes('@')) {
         errorDiv.textContent = 'Invalid email';
       }
     });
@@ -186,7 +185,7 @@ describe('User Management UI', () => {
   });
 
   it('logs out and clears token', () => {
-    localStorage.setItem('wiria_auth_token', 'abc123');
+    window.localStorage.setItem('wiria_auth_token', 'abc123');
     document.body.innerHTML = '<button id="logout-btn">Logout</button>';
 
     const button = document.getElementById('logout-btn') as HTMLButtonElement | null;
@@ -194,10 +193,10 @@ describe('User Management UI', () => {
     if (!button) throw new Error('Missing logout button');
 
     button.addEventListener('click', () => {
-      localStorage.removeItem('wiria_auth_token');
+      window.localStorage.removeItem('wiria_auth_token');
     });
 
     fireEvent.click(button);
-    expect(localStorage.getItem('wiria_auth_token')).toBeNull();
+    expect(window.localStorage.getItem('wiria_auth_token')).toBeNull();
   });
 });

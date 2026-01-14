@@ -56,11 +56,15 @@ export default function HRManagementPage() {
   );
 
   const handleDeleteCareer = (id: string) => {
-    if (confirm('Are you sure you want to delete this job posting?')) deleteCareerAction.mutate(id);
+    if (window.confirm('Are you sure you want to delete this job posting?')) {
+      deleteCareerAction.mutate(id);
+    }
   };
 
   const handleDeleteOpp = (id: string) => {
-    if (confirm('Are you sure you want to delete this opportunity?')) deleteOppAction.mutate(id);
+    if (window.confirm('Are you sure you want to delete this opportunity?')) {
+      deleteOppAction.mutate(id);
+    }
   };
 
   const handleReviewApplication = (app: Application) => {

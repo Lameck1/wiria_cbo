@@ -42,7 +42,7 @@ export function MemberContent({
       <MemberDetailsModal
         member={selectedMember}
         onClose={() => onSelectMember(null)}
-        onStatusChange={refetch}
+        onStatusChange={() => { void refetch(); }}
       />
     </>
   );

@@ -86,8 +86,8 @@ export function formatRelativeTime(dateString: string): string {
  */
 export function formatMonth(monthKey: string): string {
   const [year, month] = monthKey.split('-');
-  const yearInt = Number.parseInt(year || '0');
-  const monthInt = Number.parseInt(month || '1');
+  const yearInt = Number.parseInt(year ?? '0');
+  const monthInt = Number.parseInt(month ?? '1');
   const date = new Date(yearInt, monthInt - 1);
   return date.toLocaleDateString('en-KE', { month: 'short', year: 'numeric' });
 }

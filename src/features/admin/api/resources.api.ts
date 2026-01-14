@@ -94,27 +94,27 @@ export const uploadFile = async (file: File, folder = 'resources') => {
 
       // Generic error with status
       throw new Error(
-        errorData?.error?.message || `Upload failed (${response.status}). Please try again.`
+        errorData?.error?.message ?? `Upload failed (${response.status}). Please try again.`
       );
     }
 
     return response.json();
   } catch (error: unknown) {
-    const error_ = error as { message?: string; name?: string };
+    const errorObj = error as { message?: string; name?: string };
     // Re-throw our custom errors
     if (
-      error_.message?.includes('10MB') ||
-      error_.message?.includes('Authentication') ||
-      error_.message?.includes('permission')
+      errorObj.message?.includes('10MB') ||
+      errorObj.message?.includes('Authentication') ||
+      errorObj.message?.includes('permission')
     ) {
       throw error;
     }
 
     // Network or other errors
-    if (error_.name === 'TypeError' && error_.message?.includes('fetch')) {
+    if (errorObj.name === 'TypeError' && errorObj.message?.includes('fetch')) {
       throw new Error('Network error. Please check your connection and try again.');
     }
 
-    throw new Error(error_.message || 'File upload failed. Please try again.');
+    throw new Error(errorObj.message ?? 'File upload failed. Please try again.');
   }
 };

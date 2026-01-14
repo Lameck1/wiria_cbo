@@ -41,7 +41,9 @@ export default function MeetingManagementPage() {
   const [showAttendance, setShowAttendance] = useState(false);
 
   const handleCancel = (id: string) => {
-    if (confirm('Are you sure you want to cancel this meeting?')) cancelAction.mutate(id);
+    if (window.confirm('Are you sure you want to cancel this meeting?')) {
+      cancelAction.mutate(id);
+    }
   };
 
   const handleViewAttendance = async (meeting: Meeting) => {

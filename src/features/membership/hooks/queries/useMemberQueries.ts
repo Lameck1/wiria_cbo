@@ -148,13 +148,13 @@ export function useMemberDocumentsQuery() {
         queryFn: async () => {
             const response = await apiClient.get<ApiDocumentsResponse>(API_ENDPOINTS.MEMBERS_DOCUMENTS);
             // Backend returns { data: { documents: [] } }
-            const docs = response.data?.documents || [];
+            const docs = response.data?.documents ?? [];
             return docs.map((d): Document => ({
-                id: d.id || '',
-                name: d.name || '',
-                type: d.type || '',
-                url: d.url || '',
-                createdAt: d.createdAt || '',
+                id: d.id ?? '',
+                name: d.name ?? '',
+                type: d.type ?? '',
+                url: d.url ?? '',
+                createdAt: d.createdAt ?? '',
             }));
         },
         staleTime: 1000 * 60 * 10,
@@ -181,8 +181,8 @@ export function useRsvpMutation() {
             return apiClient.post(endpoint, {});
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: MEMBER_KEYS.meetings('joined') });
-            queryClient.invalidateQueries({ queryKey: MEMBER_KEYS.meetings('available') });
+            void queryClient.invalidateQueries({ queryKey: MEMBER_KEYS.meetings('joined') });
+            void queryClient.invalidateQueries({ queryKey: MEMBER_KEYS.meetings('available') });
         },
     });
 }
@@ -196,8 +196,8 @@ export function useCancelRsvpMutation() {
             return apiClient.delete(endpoint);
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: MEMBER_KEYS.meetings('joined') });
-            queryClient.invalidateQueries({ queryKey: MEMBER_KEYS.meetings('available') });
+            void queryClient.invalidateQueries({ queryKey: MEMBER_KEYS.meetings('joined') });
+            void queryClient.invalidateQueries({ queryKey: MEMBER_KEYS.meetings('available') });
         },
     });
 }

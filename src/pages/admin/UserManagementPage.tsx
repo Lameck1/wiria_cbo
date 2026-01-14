@@ -49,12 +49,12 @@ export default function UserManagementPage() {
 
   const handleStatusChange = async (email: string, currentStatus: string) => {
     const newStatus = currentStatus === 'ACTIVE' ? 'SUSPENDED' : 'ACTIVE';
-    if (!confirm(`Are you sure you want to change status to ${newStatus}?`)) return;
+    if (!window.confirm(`Are you sure you want to change status to ${newStatus}?`)) return;
     updateStatusAction.mutate({ email, status: newStatus });
   };
 
   const handleCancelInvite = async (id: string) => {
-    if (!confirm('Cancel this invitation?')) return;
+    if (!window.confirm('Cancel this invitation?')) return;
     cancelInviteAction.mutate(id);
   };
 
@@ -196,10 +196,10 @@ export default function UserManagementPage() {
 function InviteUserModal({ onClose, onSuccess }: { onClose: () => void; onSuccess: () => void }) {
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     setIsLoading(true);
-    const formData = new FormData(e.currentTarget);
+    const formData = new FormData(event.currentTarget);
     const data = {
       email: formData.get('email') as string,
       role: formData.get('role') as UserRole,

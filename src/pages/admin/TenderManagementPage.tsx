@@ -15,14 +15,16 @@ export default function TenderManagementPage() {
   );
   const deleteAction = useAdminAction((id: string) => deleteTender(id), [['tenders']], {
     successMessage: 'Tender deleted successfully',
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['tenders'] }),
+    onSuccess: () => { void queryClient.invalidateQueries({ queryKey: ['tenders'] }); },
   });
 
   const [editingTender, setEditingTender] = useState<Tender | null>(null);
   const [showModal, setShowModal] = useState(false);
 
   const handleDelete = (id: string) => {
-    if (confirm('Are you sure you want to delete this tender?')) deleteAction.mutate(id);
+    if (window.confirm('Are you sure you want to delete this tender?')) {
+      deleteAction.mutate(id);
+    }
   };
 
   const columns: Column<Tender>[] = [

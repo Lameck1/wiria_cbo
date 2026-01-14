@@ -6,7 +6,7 @@ import { useAdminData } from '@/shared/hooks/useAdminData';
 interface MemberContextValue {
   members: AdminMember[];
   isLoading: boolean;
-  refetch: () => void;
+  refetch: () => Promise<any>;
   filter: string;
   search: string;
 }

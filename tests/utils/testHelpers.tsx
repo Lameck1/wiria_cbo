@@ -73,7 +73,7 @@ export function mockLocalStorage() {
   const store: Record<string, string> = {};
 
   return {
-    getItem: (key: string) => store[key] || null,
+    getItem: (key: string) => store[key] ?? null,
     setItem: (key: string, value: string) => {
       store[key] = value;
     },
@@ -86,7 +86,7 @@ export function mockLocalStorage() {
     get length() {
       return Object.keys(store).length;
     },
-    key: (index: number) => Object.keys(store)[index] || null,
+    key: (index: number) => Object.keys(store)[index] ?? null,
   };
 }
 
@@ -142,12 +142,14 @@ export function suppressConsoleError() {
   });
 }
 
+const DEFAULT_WAIT_OPTIONS = { timeout: 3000 };
+
 /**
  * Wait for element to be removed from DOM
  */
 export async function waitForElementToBeRemoved(
   callback: () => HTMLElement | null,
-  options = { timeout: 3000 }
+  options = DEFAULT_WAIT_OPTIONS
 ) {
   const start = Date.now();
   while (callback() && Date.now() - start < options.timeout) {

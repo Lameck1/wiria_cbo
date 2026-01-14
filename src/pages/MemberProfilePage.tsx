@@ -25,7 +25,7 @@ function MemberProfilePage() {
   const { reset, handleSubmit } = methods;
 
   useEffect(() => {
-    fetchProfile();
+    void fetchProfile();
   }, [fetchProfile]);
 
   useEffect(() => {
@@ -72,7 +72,7 @@ function MemberProfilePage() {
     <div className="rounded-xl bg-gray-50/50 p-4 border border-gray-100/50">
       <p className="mb-1 text-xs font-bold uppercase tracking-wider text-gray-500">{label}</p>
       <p className="text-lg font-semibold text-gray-800">
-        {Array.isArray(value) ? value.join(', ') : value || '--'}
+        {Array.isArray(value) ? value.join(', ') : (value ?? '--')}
       </p>
     </div>
   );
@@ -124,7 +124,7 @@ function MemberProfilePage() {
 
               {/* Edit Mode */}
               {isEditing && (
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+                <form onSubmit={(event) => { void handleSubmit(onSubmit)(event); }} className="space-y-8">
                   <div className="mb-8">
                     <h2 className="text-2xl font-bold text-wiria-blue-dark">Edit Member Profile</h2>
                     <p className="text-sm text-gray-500">Keep your information up to date</p>
@@ -171,14 +171,15 @@ function MemberProfilePage() {
                     />
                     <div className="md:col-span-2">
                       <div className="space-y-1.5">
-                        <label className="text-sm font-semibold text-wiria-blue-dark">Interests</label>
+                        <label htmlFor="interests" className="text-sm font-semibold text-wiria-blue-dark">Interests</label>
                         <Controller
                           name="interests"
                           render={({ field }) => (
                             <input
                               {...field}
+                              id="interests"
                               value={Array.isArray(field.value) ? field.value.join(', ') : ''}
-                              onChange={(e) => field.onChange(e.target.value.split(',').map((s) => s.trim()))}
+                              onChange={(event) => field.onChange(event.target.value.split(',').map((s) => s.trim()))}
                               className="block w-full rounded-lg border border-gray-300 bg-white p-3 text-wiria-blue-dark focus:border-wiria-blue-dark focus:ring-1 focus:ring-wiria-blue-dark outline-none transition-all"
                             />
                           )}
@@ -188,14 +189,15 @@ function MemberProfilePage() {
                     </div>
                     <div className="md:col-span-2">
                       <div className="space-y-1.5">
-                        <label className="text-sm font-semibold text-wiria-blue-dark">Skills</label>
+                        <label htmlFor="skills" className="text-sm font-semibold text-wiria-blue-dark">Skills</label>
                         <Controller
                           name="skills"
                           render={({ field }) => (
                             <input
                               {...field}
+                              id="skills"
                               value={Array.isArray(field.value) ? field.value.join(', ') : ''}
-                              onChange={(e) => field.onChange(e.target.value.split(',').map((s) => s.trim()))}
+                              onChange={(event) => field.onChange(event.target.value.split(',').map((s) => s.trim()))}
                               className="block w-full rounded-lg border border-gray-300 bg-white p-3 text-wiria-blue-dark focus:border-wiria-blue-dark focus:ring-1 focus:ring-wiria-blue-dark outline-none transition-all"
                             />
                           )}

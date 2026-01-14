@@ -30,7 +30,7 @@ async function fetchPartners(): Promise<Partner[]> {
     throw new Error('Failed to fetch partners');
   }
 
-  const data: PartnersResponse = await response.json();
+  const data = (await response.json()) as PartnersResponse;
   return data.data?.data || data.data || [];
 }
 

@@ -177,7 +177,7 @@ export default function SafeguardingManagementPage() {
         </span>
         <select
           value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value)}
+          onChange={(event) => setStatusFilter(event.target.value)}
           className="rounded-lg border-none bg-gray-50 px-4 py-2 text-sm font-medium outline-none transition-all focus:ring-2 focus:ring-wiria-blue-dark"
           aria-label="Filter by Status"
         >
@@ -190,7 +190,7 @@ export default function SafeguardingManagementPage() {
         </select>
         <select
           value={priorityFilter}
-          onChange={(e) => setPriorityFilter(e.target.value)}
+          onChange={(event) => setPriorityFilter(event.target.value)}
           className="rounded-lg border-none bg-gray-50 px-4 py-2 text-sm font-medium outline-none transition-all focus:ring-2 focus:ring-wiria-blue-dark"
           aria-label="Filter by Priority"
         >
