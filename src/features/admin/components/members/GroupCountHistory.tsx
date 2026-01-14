@@ -72,7 +72,7 @@ export function GroupCountHistory({ memberId }: GroupCountHistoryProps) {
                 {formatRelativeTime(item.createdAt)}
               </span>
             </div>
-            <p className="line-clamp-1 text-xs text-gray-600">{item.reason || 'Manual Update'}</p>
+            <p className="line-clamp-1 text-xs text-gray-600">{item.reason ?? 'Manual Update'}</p>
           </div>
         </div>
       ))}

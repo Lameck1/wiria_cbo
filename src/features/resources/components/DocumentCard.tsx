@@ -36,8 +36,8 @@ interface DocumentCardProps {
 }
 
 export function DocumentCard({ document, onClick, index = 0 }: DocumentCardProps) {
-  const icon = CATEGORY_ICONS[document.category] || '📄';
-  const colorClass = CATEGORY_COLORS[document.category] || 'bg-gray-100 text-gray-700';
+  const icon = CATEGORY_ICONS[document.category] ?? '📄';
+  const colorClass = CATEGORY_COLORS[document.category] ?? 'bg-gray-100 text-gray-700';
 
   // Format date
   const uploadDate = new Date(document.uploadedAt || document.createdAt);

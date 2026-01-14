@@ -44,7 +44,7 @@ export function useSafeguardingForm() {
   const isAnonymous = watch('isAnonymous');
 
   const onSubmit = async (data: SafeguardingReportSchema) => {
-    const success = await submitReport(data, evidenceFile || undefined);
+    const success = await submitReport(data, evidenceFile ?? undefined);
     if (success) {
       setShowSuccess(true);
     }

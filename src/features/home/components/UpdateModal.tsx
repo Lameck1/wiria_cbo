@@ -58,7 +58,7 @@ export function UpdateModal({ update, isOpen, onClose }: UpdateModalProps) {
 
   if (!update) return null;
 
-  const dateString = update.publishedAt || update.date;
+  const dateString = update.publishedAt ?? update.date;
   const formattedDate = dateString
     ? new Date(dateString).toLocaleDateString('en-US', {
         year: 'numeric',

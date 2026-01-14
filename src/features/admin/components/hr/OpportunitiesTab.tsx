@@ -23,7 +23,7 @@ export const OpportunitiesTab = memo(function OpportunitiesTab({
     const counts: Record<string, number> = {};
     applications.forEach((app: Application) => {
       if (app.opportunityId) {
-        counts[app.opportunityId] = (counts[app.opportunityId] || 0) + 1;
+        counts[app.opportunityId] = (counts[app.opportunityId] ?? 0) + 1;
       }
     });
     return counts;
@@ -46,7 +46,7 @@ export const OpportunitiesTab = memo(function OpportunitiesTab({
       key: 'applications',
       align: 'center',
       render: (o) => (
-        <span className="font-bold text-wiria-blue-dark">{applicationCounts[o.id] || 0}</span>
+        <span className="font-bold text-wiria-blue-dark">{applicationCounts[o.id] ?? 0}</span>
       ),
     },
     {

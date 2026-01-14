@@ -18,7 +18,7 @@ interface MeetingFormModalProps {
 
 export function MeetingFormModal({ meeting, onClose, onSuccess }: MeetingFormModalProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isVirtual, setIsVirtual] = useState(meeting?.isVirtual || false);
+  const [isVirtual, setIsVirtual] = useState(meeting?.isVirtual ?? false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -158,7 +158,7 @@ export function MeetingFormModal({ meeting, onClose, onSuccess }: MeetingFormMod
               id="meetingCapacity"
               type="number"
               name="capacity"
-              defaultValue={meeting?.capacity || ''}
+              defaultValue={meeting?.capacity ?? ''}
               className="w-full rounded-lg border p-3"
               placeholder="e.g. 50"
             />

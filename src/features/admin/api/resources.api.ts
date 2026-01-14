@@ -103,21 +103,21 @@ export const uploadFile = async (file: File, folder = 'resources'): Promise<{ da
     const result = await response.json() as { url: string };
     return { data: result };
   } catch (error: unknown) {
-    const errorObj = error as { message?: string; name?: string };
+    const errorObject = error as { message?: string; name?: string };
     // Re-throw our custom errors
     if (
-      errorObj.message?.includes('10MB') ||
-      errorObj.message?.includes('Authentication') ||
-      errorObj.message?.includes('permission')
+      errorObject.message?.includes('10MB') ||
+      errorObject.message?.includes('Authentication') ||
+      errorObject.message?.includes('permission')
     ) {
       throw error;
     }
 
     // Network or other errors
-    if (errorObj.name === 'TypeError' && errorObj.message?.includes('fetch')) {
+    if (errorObject.name === 'TypeError' && errorObject.message?.includes('fetch')) {
       throw new Error('Network error. Please check your connection and try again.');
     }
 
-    throw new Error(errorObj.message ?? 'File upload failed. Please try again.');
+    throw new Error(errorObject.message ?? 'File upload failed. Please try again.');
   }
 };

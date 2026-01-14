@@ -22,7 +22,7 @@ export function ApplicationsList({ applications, onReview }: ApplicationsListPro
       key: 'position',
       render: (app) => (
         <span className="font-medium text-gray-700">
-          {app.career?.title || app.opportunity?.title || 'Unknown'}
+          {app.career?.title ?? app.opportunity?.title ?? 'Unknown'}
         </span>
       ),
     },

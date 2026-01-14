@@ -8,7 +8,7 @@ export { PartnersSection } from './components/PartnersSection';
 export { RecentUpdatesSection } from './components/RecentUpdatesSection';
 export { usePartners } from './hooks/usePartners';
 export { useUpdates } from './hooks/useUpdates';
-export { useAuthCTA } from './hooks/useAuthCTA';
+export { useAuthCTA } from './hooks/useAuthCta';
 export {
   HERO_SLIDES,
   FOCUS_AREAS,

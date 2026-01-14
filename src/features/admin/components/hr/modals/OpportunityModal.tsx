@@ -16,12 +16,12 @@ interface OpportunityModalProps {
 
 export function OpportunityModal({ opportunity, onClose, onSuccess }: OpportunityModalProps) {
   const [responsibilities, setResponsibilities] = useState<string[]>(
-    opportunity?.responsibilities || ['', '', '']
+    opportunity?.responsibilities ?? ['', '', '']
   );
   const [requirements, setRequirements] = useState<string[]>(
-    opportunity?.requirements || ['', '', '']
+    opportunity?.requirements ?? ['', '', '']
   );
-  const [benefits, setBenefits] = useState<string[]>(opportunity?.benefits || []);
+  const [benefits, setBenefits] = useState<string[]>(opportunity?.benefits ?? []);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleArrayChange = (

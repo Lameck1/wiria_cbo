@@ -8,7 +8,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
-import { useAuthCTA } from '../hooks/useAuthCTA';
+import { useAuthCTA } from '../hooks/useAuthCta';
 
 interface HeroSlide {
   id: number;

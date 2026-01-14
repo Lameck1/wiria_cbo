@@ -104,7 +104,7 @@ export function ApplicationModal({ isOpen, onClose, onBack, title, itemId, type 
 
             <div className="p-6">
                 {isSuccess && <SuccessView title={title} email={submittedEmail} onClose={onClose} />}
-                {isError && <ErrorView error={error || ''} onRetry={reset} onClose={onClose} />}
+                {isError && <ErrorView error={error ?? ''} onRetry={reset} onClose={onClose} />}
                 {(isIdle || isSubmitting) && (
                     <Form schema={applicationSchema} onSubmit={handleFormSubmit}>
                         {() => (

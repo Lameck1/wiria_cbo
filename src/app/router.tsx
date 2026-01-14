@@ -42,7 +42,7 @@ const UserManagementPage = lazy(() => import('@/pages/admin/UserManagementPage')
 const NewsManagementPage = lazy(() => import('@/pages/admin/NewsManagementPage'));
 const ResourceManagementPage = lazy(() => import('@/pages/admin/ResourceManagementPage'));
 const TenderManagementPage = lazy(() => import('@/pages/admin/TenderManagementPage'));
-const HRManagementPage = lazy(() => import('@/pages/admin/HRManagementPage'));
+const HRManagementPage = lazy(() => import('@/pages/admin/hrManagementPage'));
 const DonationManagementPage = lazy(() => import('@/pages/admin/DonationManagementPage'));
 const ContactManagementPage = lazy(() => import('@/pages/admin/ContactManagementPage'));
 const SafeguardingManagementPage = lazy(() => import('@/pages/admin/SafeguardingManagementPage'));

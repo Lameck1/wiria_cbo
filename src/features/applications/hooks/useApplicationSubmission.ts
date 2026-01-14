@@ -20,7 +20,7 @@ export function useApplicationSubmission() {
 
         // Parse name
         const names = data.fullName.trim().split(/\s+/);
-        const firstName = names[0] || '';
+        const firstName = names[0] ?? '';
         const lastName = names.length > 1 ? names.slice(1).join(' ') : 'Applicant';
 
         const payload: ApplicationPayload = {

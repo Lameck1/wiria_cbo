@@ -110,7 +110,7 @@ export const validateEmail = (email: string): ValidationResult => {
 
   const result = emailSchema.safeParse(email);
   if (!result.success) {
-    return { valid: false, error: result.error.errors[0]?.message || 'Invalid email' };
+    return { valid: false, error: result.error.errors[0]?.message ?? 'Invalid email' };
   }
 
   return { valid: true };

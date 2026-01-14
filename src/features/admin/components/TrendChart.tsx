@@ -58,7 +58,7 @@ export function TrendChart({
                 />
               </div>
               <span className="mt-1 w-full truncate text-center text-xs text-gray-500">
-                {item.label || formatMonth(item.month)}
+                {item.label ?? formatMonth(item.month)}
               </span>
             </div>
           );

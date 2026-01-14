@@ -13,10 +13,10 @@ interface CareerModalProps {
 
 export function CareerModal({ career, onClose, onSuccess }: CareerModalProps) {
   const [responsibilities, setResponsibilities] = useState<string[]>(
-    career?.responsibilities || ['', '', '']
+    career?.responsibilities ?? ['', '', '']
   );
-  const [requirements, setRequirements] = useState<string[]>(career?.requirements || ['', '', '']);
-  const [desirable, setDesirable] = useState<string[]>(career?.desirable || []);
+  const [requirements, setRequirements] = useState<string[]>(career?.requirements ?? ['', '', '']);
+  const [desirable, setDesirable] = useState<string[]>(career?.desirable ?? []);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleArrayChange = (

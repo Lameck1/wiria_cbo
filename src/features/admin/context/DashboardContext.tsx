@@ -49,7 +49,7 @@ export function DashboardProvider({ children }: DashboardProviderProps) {
     stats,
     trends,
     canAccessModule,
-    userFirstName: user?.firstName || 'Admin',
+    userFirstName: user?.firstName ?? 'Admin',
   };
 
   return (

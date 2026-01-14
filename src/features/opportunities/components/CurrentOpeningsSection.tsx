@@ -140,8 +140,8 @@ export function CurrentOpeningsSection({ initialTypeFilter = 'ALL' }: CurrentOpe
         isOpen={modalView === 'apply'}
         onClose={handleCloseModal}
         onBack={handleBackToDetails}
-        title={selectedOpportunity?.title || ''}
-        itemId={selectedOpportunity?.id || ''}
+        title={selectedOpportunity?.title ?? ''}
+        itemId={selectedOpportunity?.id ?? ''}
         type="OPPORTUNITY"
       />
     </>

@@ -105,8 +105,8 @@ export function CurrentJobsSection() {
         isOpen={modalView === 'apply'}
         onClose={handleCloseModal}
         onBack={handleBackToDetails}
-        title={selectedJob?.title || ''}
-        itemId={selectedJob?.id || ''}
+        title={selectedJob?.title ?? ''}
+        itemId={selectedJob?.id ?? ''}
         type="CAREER"
       />
     </>

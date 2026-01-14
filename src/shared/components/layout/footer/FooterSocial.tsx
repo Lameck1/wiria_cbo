@@ -69,7 +69,7 @@ export function FooterSocial() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={link.label}
-              className={`flex h-10 w-10 items-center justify-center rounded-full bg-white/10 transition-all hover:scale-110 ${link.hoverColor || 'hover:bg-wiria-yellow'}`}
+              className={`flex h-10 w-10 items-center justify-center rounded-full bg-white/10 transition-all hover:scale-110 ${link.hoverColor ?? 'hover:bg-wiria-yellow'}`}
             >
               {link.icon}
             </a>

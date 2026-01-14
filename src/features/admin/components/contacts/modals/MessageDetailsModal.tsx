@@ -30,7 +30,7 @@ export function MessageDetailsModal({ contact, onClose, onReply }: MessageDetail
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <InfoItem label="From" value={contact.name} />
             <InfoItem label="Email" value={contact.email} />
-            <InfoItem label="Phone" value={contact.phone || 'N/A'} />
+            <InfoItem label="Phone" value={contact.phone ?? 'N/A'} />
             <InfoItem label="Received" value={formatDate(contact.createdAt)} />
           </div>
           <div>

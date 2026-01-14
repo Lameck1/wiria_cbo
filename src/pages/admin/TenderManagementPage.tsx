@@ -131,7 +131,7 @@ function TenderStatusBadge({ tender }: { tender: Tender }) {
   };
   return (
     <span
-      className={`rounded-full px-2 py-1 text-[10px] font-bold uppercase tracking-wider ${styles[status] || 'bg-gray-100'}`}
+      className={`rounded-full px-2 py-1 text-[10px] font-bold uppercase tracking-wider ${styles[status] ?? 'bg-gray-100'}`}
     >
       {status}
     </span>

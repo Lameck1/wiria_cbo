@@ -36,7 +36,7 @@ export function DocumentRepositorySection() {
   const categoryCounts = useMemo(() => {
     const counts: Record<string, number> = { ALL: resources.length };
     resources.forEach((document_) => {
-      counts[document_.category] = (counts[document_.category] || 0) + 1;
+      counts[document_.category] = (counts[document_.category] ?? 0) + 1;
     });
     return counts;
   }, [resources]);

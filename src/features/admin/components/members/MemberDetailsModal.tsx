@@ -53,8 +53,8 @@ export function MemberDetailsModal({ member, onClose, onStatusChange }: MemberDe
               </h4>
               <div className="grid grid-cols-2 gap-4">
                 <InfoItem label="Full Name" value={`${member.firstName} ${member.lastName}`} />
-                <InfoItem label="Gender" value={member.gender || 'Not specified'} />
-                <InfoItem label="National ID" value={member.nationalId || 'Not provided'} />
+                <InfoItem label="Gender" value={member.gender ?? 'Not specified'} />
+                <InfoItem label="National ID" value={member.nationalId ?? 'Not provided'} />
                 <InfoItem
                   label="Date of Birth"
                   value={
@@ -75,7 +75,7 @@ export function MemberDetailsModal({ member, onClose, onStatusChange }: MemberDe
                 <InfoItem label="Phone Number" value={member.phone} />
                 <InfoItem
                   label="Address / Location"
-                  value={`${member.address || ''} ${member.ward ? ', ' + member.ward : ''}`}
+                  value={`${member.address ?? ''} ${member.ward ? ', ' + member.ward : ''}`}
                 />
               </div>
             </section>
@@ -87,7 +87,7 @@ export function MemberDetailsModal({ member, onClose, onStatusChange }: MemberDe
               <h4 className="mb-3 text-xs font-bold uppercase tracking-wider text-gray-400">
                 Professional Background
               </h4>
-              <InfoItem label="Occupation" value={member.occupation || 'Not specified'} />
+              <InfoItem label="Occupation" value={member.occupation ?? 'Not specified'} />
               <div className="mt-3">
                 <p className="text-xs text-gray-500">Skills</p>
                 <div className="mt-1 flex flex-wrap gap-2">
@@ -135,14 +135,14 @@ export function MemberDetailsModal({ member, onClose, onStatusChange }: MemberDe
                 <InfoItem label="Type" value={member.membershipType} />
                 {member.membershipType === 'GROUP' && (
                   <>
-                    <InfoItem label="Group Name" value={member.groupName || 'N/A'} />
+                    <InfoItem label="Group Name" value={member.groupName ?? 'N/A'} />
                     <InfoItem
                       label="Current Count"
-                      value={member.currentMemberCount?.toString() || '0'}
+                      value={member.currentMemberCount?.toString() ?? '0'}
                     />
                     <InfoItem
                       label="Max Members Reached"
-                      value={member.maxMemberCountReached?.toString() || '0'}
+                      value={member.maxMemberCountReached?.toString() ?? '0'}
                     />
 
                     <div className="col-span-2 mt-4">

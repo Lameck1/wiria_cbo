@@ -64,7 +64,7 @@ const StarIcon = () => (
 );
 
 export function JobModalContent({ job }: JobModalContentProps) {
-  const typeLabel = JOB_TYPE_LABELS[job.employmentType] || job.employmentType;
+  const typeLabel = JOB_TYPE_LABELS[job.employmentType] ?? job.employmentType;
   const deadlineDate = new Date(job.deadline);
   const isExpired = deadlineDate < new Date();
 
@@ -92,7 +92,7 @@ export function JobModalContent({ job }: JobModalContentProps) {
         <div className="rounded-xl border border-blue-200 bg-blue-50 p-4 text-center">
           <div className="mb-1 text-2xl">💰</div>
           <p className="mb-1 text-xs uppercase tracking-wide text-gray-500">Salary</p>
-          <p className="text-sm font-semibold text-gray-800">{job.salary || 'Competitive'}</p>
+          <p className="text-sm font-semibold text-gray-800">{job.salary ?? 'Competitive'}</p>
         </div>
       </div>
 

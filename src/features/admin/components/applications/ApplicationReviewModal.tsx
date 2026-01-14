@@ -32,7 +32,7 @@ const STATUS_OPTIONS = [
 export function ApplicationReviewModal({ application, onClose, onSuccess }: ApplicationModalProps) {
   const handleUpdate = async (data: ReviewSchema) => {
     try {
-      await updateApplicationStatus(application.id, data.status, data.notes || '');
+      await updateApplicationStatus(application.id, data.status, data.notes ?? '');
       notificationService.success('Application status updated');
       onSuccess();
     } catch {
@@ -43,7 +43,7 @@ export function ApplicationReviewModal({ application, onClose, onSuccess }: Appl
   const getFullUrl = (path?: string) => {
     if (!path) return '#';
     if (path.startsWith('http')) return path;
-    const baseUrl = import.meta.env['VITE_API_BASE_URL'] ?? '';
+    const baseUrl = (import.meta.env['VITE_API_BASE_URL'] as string | undefined) ?? '';
     return `${baseUrl.replace('/api', '')}${path}`;
   };
 
@@ -79,14 +79,14 @@ export function ApplicationReviewModal({ application, onClose, onSuccess }: Appl
         <div>
           <p className="text-xs font-bold uppercase text-gray-400">Applied For</p>
           <p className="text-sm font-semibold text-wiria-blue-dark">
-            {application.career?.title || application.opportunity?.title || 'Unknown Position'}
+            {application.career?.title ?? application.opportunity?.title ?? 'Unknown Position'}
           </p>
         </div>
 
         <div className="max-h-60 overflow-y-auto rounded-xl border border-gray-100 bg-gray-50/50 p-4">
           <p className="mb-2 text-xs font-bold uppercase text-gray-400">Cover Letter / Statement</p>
           <p className="whitespace-pre-wrap text-sm text-gray-700">
-            {application.coverLetter || 'No cover letter provided.'}
+            {application.coverLetter ?? 'No cover letter provided.'}
           </p>
         </div>
 
@@ -132,7 +132,7 @@ export function ApplicationReviewModal({ application, onClose, onSuccess }: Appl
           schema={reviewSchema}
           defaultValues={{
             status: application.status,
-            notes: application.notes || '',
+            notes: application.notes ?? '',
           }}
           onSubmit={handleUpdate}
           className="border-t border-gray-100 pt-6"

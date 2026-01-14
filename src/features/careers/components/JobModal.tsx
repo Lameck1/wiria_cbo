@@ -22,7 +22,7 @@ export function JobModal({ job, isOpen, onClose, onApply }: JobModalProps) {
 
   const deadlineDate = new Date(job.deadline);
   const isExpired = deadlineDate < new Date();
-  const typeLabel = JOB_TYPE_LABELS[job.employmentType] || job.employmentType;
+  const typeLabel = JOB_TYPE_LABELS[job.employmentType] ?? job.employmentType;
 
   // Career modals use blue/purple gradient
   const headerBgClass = 'bg-gradient-to-r from-wiria-blue-dark to-indigo-700 text-white';

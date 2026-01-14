@@ -67,7 +67,7 @@ export function useSuspenseDashboardTrends() {
         queryKey: DASHBOARD_KEYS.trends(),
         queryFn: async () => {
             const response = await apiClient.get<TrendsResponse>('/admin/trends');
-            return extractData<TrendData>(response) || { donations: [], members: [] };
+            return extractData<TrendData>(response) ?? { donations: [], members: [] };
         },
         staleTime: 1000 * 60 * 10,
     });
