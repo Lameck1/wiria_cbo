@@ -203,8 +203,11 @@ function NewsModal({
   onClose: () => void;
   onSuccess: () => void;
 }) {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsSubmitting(true);
     const formData = new FormData(e.currentTarget);
     const data = {
       title: formData.get('title') as string,
@@ -226,6 +229,8 @@ function NewsModal({
       onSuccess();
     } catch (error: unknown) {
       notificationService.error(getErrorMessage(error, 'Operation failed'));
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -247,6 +252,7 @@ function NewsModal({
                 defaultValue={update?.title}
                 className="w-full rounded-lg border p-3"
                 required
+                disabled={isSubmitting}
                 placeholder="e.g. New Community Program Launch"
               />
             </div>
@@ -259,6 +265,7 @@ function NewsModal({
                 name="imageUrl"
                 defaultValue={update?.imageUrl}
                 className="w-full rounded-lg border p-3"
+                disabled={isSubmitting}
                 placeholder="https://..."
               />
             </div>
@@ -272,6 +279,7 @@ function NewsModal({
                   name="category"
                   defaultValue={update?.category || 'GENERAL'}
                   className="w-full rounded-lg border p-3"
+                  disabled={isSubmitting}
                 >
                   <option value="GENERAL">General</option>
                   <option value="EVENT">Event</option>
@@ -288,6 +296,7 @@ function NewsModal({
                   name="status"
                   defaultValue={update?.status || 'PUBLISHED'}
                   className="w-full rounded-lg border p-3"
+                  disabled={isSubmitting}
                 >
                   <option value="PUBLISHED">Published</option>
                   <option value="DRAFT">Draft</option>
@@ -304,6 +313,7 @@ function NewsModal({
                 defaultValue={update?.fullContent}
                 className="h-48 w-full rounded-lg border p-3"
                 required
+                disabled={isSubmitting}
                 placeholder="Describe the update in detail..."
               />
             </div>
@@ -316,14 +326,15 @@ function NewsModal({
                 name="excerpt"
                 defaultValue={update?.excerpt}
                 className="h-20 w-full rounded-lg border p-3"
+                disabled={isSubmitting}
                 placeholder="Short summary..."
               />
             </div>
             <div className="flex gap-4">
-              <Button type="submit" fullWidth>
-                Save Post
+              <Button type="submit" fullWidth disabled={isSubmitting} isLoading={isSubmitting}>
+                {isSubmitting ? 'Saving...' : 'Save Post'}
               </Button>
-              <Button type="button" variant="secondary" fullWidth onClick={onClose}>
+              <Button type="button" variant="secondary" fullWidth onClick={onClose} disabled={isSubmitting}>
                 Cancel
               </Button>
             </div>
