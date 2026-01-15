@@ -20,7 +20,7 @@ interface MobileMenuProps {
   isAuthenticated: boolean;
   userRole: UserRole | undefined;
   onClose: () => void;
-  onLogout: () => void;
+  onLogout: () => Promise<void>;
   isActive?: (path: string) => boolean;
 }
 
@@ -106,7 +106,7 @@ export function MobileMenu({
                 </Link>
               )}
               <button
-                onClick={onLogout}
+                onClick={() => void onLogout()}
                 className="w-full rounded-lg px-4 py-3 text-left text-base font-medium text-red-600 hover:bg-red-50"
               >
                 Logout

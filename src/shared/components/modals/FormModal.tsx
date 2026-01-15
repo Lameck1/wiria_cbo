@@ -144,7 +144,7 @@ export function FormModal<T extends Record<string, unknown>>({
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={title}>
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={(e) => void handleSubmit(e)} className="space-y-4">
         {fields.map((field) => (
           <div key={field.name as string}>
             <label

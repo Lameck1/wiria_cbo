@@ -54,7 +54,7 @@ describe('meetings.api', () => {
                 })
             );
 
-            const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+            const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
             const { getMeetings } = await import('@/features/admin/api/meetings.api');
             
             // Now expects error to be thrown
@@ -83,7 +83,7 @@ describe('meetings.api', () => {
                 })
             );
 
-            const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+            const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
             const { getMeetingById } = await import('@/features/admin/api/meetings.api');
             const result = await getMeetingById('999');
             expect(result).toBeNull();

@@ -14,10 +14,10 @@ Object.defineProperty(window, 'matchMedia', {
     matches: false,
     media: query,
     onchange: null,
-    addListener: () => undefined, // deprecated
-    removeListener: () => undefined, // deprecated
-    addEventListener: () => undefined,
-    removeEventListener: () => undefined,
+    addListener: () => {}, // deprecated
+    removeListener: () => {}, // deprecated
+    addEventListener: () => {},
+    removeEventListener: () => {},
     dispatchEvent: () => false,
   }),
 });
@@ -48,16 +48,16 @@ Object.defineProperty(window, 'localStorage', {
 class MockIntersectionObserver implements IntersectionObserver {
   readonly root: Element | null = null;
   readonly rootMargin: string = '';
-  readonly thresholds: ReadonlyArray<number> = [];
+  readonly thresholds: readonly number[] = [];
 
   observe() {
-    return undefined;
+    return;
   }
   disconnect() {
-    return undefined;
+    return;
   }
   unobserve() {
-    return undefined;
+    return;
   }
   takeRecords(): IntersectionObserverEntry[] {
     return [];

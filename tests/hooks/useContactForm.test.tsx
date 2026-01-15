@@ -87,7 +87,7 @@ describe('useContactForm', () => {
   });
 
   it('should set isSubmitting to true during submission', async () => {
-    let resolvePromise: (value: unknown) => void = () => undefined;
+    let resolvePromise: (value: unknown) => void = () => {};
     const promise = new Promise((resolve) => {
       resolvePromise = resolve;
     });
@@ -110,7 +110,7 @@ describe('useContactForm', () => {
     expect(result.current.isSubmitting).toBe(true);
 
     await act(async () => {
-      resolvePromise!({ data: { success: true } });
+      resolvePromise({ data: { success: true } });
       await promise;
     });
 

@@ -9,7 +9,6 @@ import userEvent from '@testing-library/user-event';
 import { describe, it, beforeEach, vi, expect } from 'vitest';
 
 
-import TenderManagementPage from '@/pages/admin/TenderManagementPage';
 import type { Tender } from '@/features/admin/api/tenders.api';
 
 vi.mock('@/features/admin/api/tenders.api', () => ({
@@ -34,6 +33,7 @@ vi.mock('@/shared/services/notification/notificationService', () => ({
 }));
 
 import { getTenders, createTender } from '@/features/admin/api/tenders.api';
+import TenderManagementPage from '@/pages/admin/TenderManagementPage';
 import { notificationService } from '@/shared/services/notification/notificationService';
 
 function renderWithQueryClient(ui: ReactElement) {

@@ -225,7 +225,7 @@ function InviteUserModal({ onClose, onSuccess }: { onClose: () => void; onSucces
 
   return (
     <Modal isOpen={true} onClose={onClose} title="Invite New User" size="2xl">
-      <form onSubmit={handleSubmit} className="space-y-6 p-2">
+      <form onSubmit={(e) => void handleSubmit(e)} className="space-y-6 p-2">
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div className="md:col-span-2">
             <label className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-gray-500" htmlFor="invite-email">

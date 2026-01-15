@@ -12,7 +12,7 @@ interface AuthActionsProps {
     userRole?: UserRole;
     loginDropdownOpen: boolean;
     setLoginDropdownOpen: (open: boolean) => void;
-    handleLogout: () => void;
+    handleLogout: () => Promise<void>;
 }
 
 export function AuthActions({
@@ -66,7 +66,7 @@ export function AuthActions({
                     </Link>
                 )}
                 <button
-                    onClick={handleLogout}
+                    onClick={() => void handleLogout()}
                     className="text-sm font-medium text-red-600 transition-colors hover:text-red-700"
                 >
                     Logout

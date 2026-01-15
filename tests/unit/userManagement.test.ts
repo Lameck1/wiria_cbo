@@ -35,9 +35,9 @@ describe('User Management UI', () => {
     form.addEventListener('submit', (event) => {
       event.preventDefault();
       submitted = true;
-      const identifier = (form.querySelector('input[name="identifier"]') as HTMLInputElement | null)
+      const identifier = (form.querySelector('input[name="identifier"]'))
         ?.value;
-      const password = (form.querySelector('input[name="password"]') as HTMLInputElement | null)
+      const password = (form.querySelector('input[name="password"]'))
         ?.value;
       if (!identifier || !password) {
         errorDiv.textContent = 'All fields required';
@@ -73,13 +73,15 @@ describe('User Management UI', () => {
       })
     );
 
-    form.addEventListener('submit', async (event) => {
+    form.addEventListener('submit', (event) => {
       event.preventDefault();
-      const res = await fetch('/api/auth/login', { method: 'POST' });
-      const data = await res.json();
-      if (!res.ok) {
-        errorDiv.textContent = data.error;
-      }
+      void (async () => {
+        const res = await fetch('/api/auth/login', { method: 'POST' });
+        const data = await res.json();
+        if (!res.ok) {
+          errorDiv.textContent = data.error;
+        }
+      })();
     });
 
     fireEvent.submit(form);
@@ -100,13 +102,15 @@ describe('User Management UI', () => {
     if (!passwordInput) throw new Error('Missing password input');
     (passwordInput as HTMLInputElement).value = 'correctpass';
 
-    form.addEventListener('submit', async (event) => {
+    form.addEventListener('submit', (event) => {
       event.preventDefault();
-      const res = await fetch('/api/auth/login', { method: 'POST' });
-      const data = await res.json();
-      if (res.ok) {
-        window.localStorage.setItem('wiria_auth_token', data.token);
-      }
+      void (async () => {
+        const res = await fetch('/api/auth/login', { method: 'POST' });
+        const data = await res.json();
+        if (res.ok) {
+          window.localStorage.setItem('wiria_auth_token', data.token);
+        }
+      })();
     });
 
     fireEvent.submit(form);
@@ -174,7 +178,7 @@ describe('User Management UI', () => {
 
     form.addEventListener('submit', (event) => {
       event.preventDefault();
-      const emailInput = form.querySelector('input[name="email"]') as HTMLInputElement | null;
+      const emailInput = form.querySelector('input[name="email"]');
       if (!emailInput?.value.includes('@')) {
         errorDiv.textContent = 'Invalid email';
       }

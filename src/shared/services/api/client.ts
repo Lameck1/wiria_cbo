@@ -11,7 +11,7 @@ class ApiClient {
   private baseURL: string;
   private tokenResolver?: TokenResolver;
 
-  constructor(baseURL: string = API_BASE_URL as string) {
+  constructor(baseURL: string = API_BASE_URL) {
     this.baseURL = baseURL;
   }
 
@@ -80,11 +80,11 @@ class ApiClient {
           }
         }
 
-        const dataObj = data as Record<string, unknown>;
+        const dataObject = data as Record<string, unknown>;
         const errorMessage =
-          (dataObj.message as string) ??
-          ((dataObj.error as Record<string, unknown>)?.message as string) ??
-          (typeof dataObj['error'] === 'string' ? dataObj['error'] : null) ??
+          (dataObject.message as string) ??
+          ((dataObject.error as Record<string, unknown>)?.message as string) ??
+          (typeof dataObject['error'] === 'string' ? dataObject['error'] : null) ??
           (response.status === 401
             ? 'Session expired or unauthorized'
             : 'An unexpected error occurred');

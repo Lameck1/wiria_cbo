@@ -96,7 +96,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     });
 
     // Clean up callback on unmount
-    return () => apiClient.setUnauthorizedCallback(() => undefined);
+    return () => apiClient.setUnauthorizedCallback(() => {});
   }, [checkAuth, logout]);
 
   const login = useCallback(
