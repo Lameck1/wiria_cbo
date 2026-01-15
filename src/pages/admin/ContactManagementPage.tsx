@@ -1,17 +1,27 @@
 import { useEffect, useState } from 'react';
+
 import { useSearchParams } from 'react-router-dom';
+
 import {
   getContacts,
   respondToContact,
   archiveContact,
   Contact,
 } from '@/features/admin/api/contacts.api';
-import { DataTable, Column } from '@/shared/components/ui/DataTable';
-import { useAdminData, useAdminAction } from '@/shared/hooks/useAdminData';
 import { MessageDetailsModal } from '@/features/admin/components/contacts/modals/MessageDetailsModal';
 import { ReplyModal } from '@/features/admin/components/contacts/modals/ReplyModal';
 import { AdminPageHeader } from '@/features/admin/components/layout/AdminPageHeader';
+import { DataTable, Column } from '@/shared/components/ui/DataTable';
 import { StatusBadge } from '@/shared/components/ui/StatusBadge';
+import { useAdminData, useAdminAction } from '@/shared/hooks/useAdminData';
+
+function formatDate(date: string): string {
+  return new Date(date).toLocaleDateString('en-KE', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
+}
 
 export default function ContactManagementPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -65,15 +75,10 @@ export default function ContactManagementPage() {
   };
 
   const handleArchive = (id: string) => {
-    if (confirm('Are you sure you want to archive this message?')) archiveAction.mutate(id);
+    if (window.confirm('Are you sure you want to archive this message?')) {
+      archiveAction.mutate(id);
+    }
   };
-
-  const formatDate = (date: string) =>
-    new Date(date).toLocaleDateString('en-KE', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    });
 
   const columns: Column<Contact>[] = [
     {

@@ -58,7 +58,7 @@ export function TrendChart({
                 />
               </div>
               <span className="mt-1 w-full truncate text-center text-xs text-gray-500">
-                {item.label || formatMonth(item.month)}
+                {item.label ?? formatMonth(item.month)}
               </span>
             </div>
           );
@@ -73,8 +73,9 @@ interface DualTrendChartProps {
   memberData: { month: string; count: number }[];
 }
 
+const formatCurrency = (v: number) => (v >= 1000 ? `${(v / 1000).toFixed(0)}K` : v.toString());
+
 export function DashboardTrendCharts({ donationData = [], memberData = [] }: DualTrendChartProps) {
-  const formatCurrency = (v: number) => (v >= 1000 ? `${(v / 1000).toFixed(0)}K` : v.toString());
 
   return (
     <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-2">

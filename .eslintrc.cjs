@@ -1,61 +1,277 @@
 module.exports = {
   root: true,
-  env: {
-    browser: true,
-    es2020: true,
-    node: true,
+  env: { 
+    browser: true, 
+    es2020: true 
   },
   extends: [
     'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
+    'plugin:@typescript-eslint/recommended-type-checked',
+    'plugin:@typescript-eslint/stylistic-type-checked',
     'plugin:react/recommended',
     'plugin:react/jsx-runtime',
     'plugin:react-hooks/recommended',
     'plugin:jsx-a11y/recommended',
-    'prettier',
+    'plugin:import/recommended',
+    'plugin:import/typescript',
+    'plugin:unicorn/recommended',
+    'plugin:promise/recommended',
+    'plugin:sonarjs/recommended',
+    'prettier' // Must be last
   ],
+  ignorePatterns: ['dist', '.eslintrc.cjs', 'vite.config.ts', 'node_modules', 'backend'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
     project: ['./tsconfig.json', './tsconfig.node.json'],
     tsconfigRootDir: __dirname,
-    ecmaFeatures: {
-      jsx: true,
-    },
   },
-  plugins: ['react', 'react-hooks', 'react-refresh', '@typescript-eslint', 'jsx-a11y'],
+  plugins: [
+    'react-refresh',
+    '@typescript-eslint',
+    'react',
+    'react-hooks',
+    'jsx-a11y',
+    'import',
+    'unicorn',
+    'promise',
+    'sonarjs'
+  ],
   settings: {
     react: {
-      version: '19.0',
+      version: 'detect'
     },
+    'import/resolver': {
+      typescript: {
+        alwaysTryTypes: true,
+        project: './tsconfig.json'
+      }
+    }
   },
   rules: {
-    // TypeScript
-    '@typescript-eslint/no-unused-vars': [
-      'error',
-      {
-        argsIgnorePattern: '^_',
-        varsIgnorePattern: '^_',
-        caughtErrorsIgnorePattern: '^_',
-      },
-    ],
-    '@typescript-eslint/no-explicit-any': 'warn',
-    '@typescript-eslint/explicit-function-return-type': 'off',
-    '@typescript-eslint/explicit-module-boundary-types': 'off',
-    '@typescript-eslint/no-non-null-assertion': 'warn',
+    // ==========================================
+    // 🔴 CRITICAL: Catches issues from audit
+    // ==========================================
     
-    // React
-    'react/prop-types': 'off',
-    'react/react-in-jsx-scope': 'off',
-    'react/no-unescaped-entities': 'off',
+    // Prevent console statements in production
+    'no-console': ['warn', { 
+      allow: ['warn', 'error'] 
+    }],
+    
+    // Prevent direct localStorage access
+    'no-restricted-globals': ['error', {
+      name: 'localStorage',
+      message: 'Use storageService instead of direct localStorage access'
+    }, {
+      name: 'sessionStorage',
+      message: 'Use storageService instead of direct sessionStorage access'
+    }],
+    
+    // Prevent 'any' type
+    '@typescript-eslint/no-explicit-any': 'error',
+    '@typescript-eslint/no-unsafe-assignment': 'error',
+    '@typescript-eslint/no-unsafe-member-access': 'error',
+    '@typescript-eslint/no-unsafe-call': 'error',
+    '@typescript-eslint/no-unsafe-return': 'error',
+    
+    // Prevent silent error swallowing
+    '@typescript-eslint/no-empty-function': 'error',
+    'no-empty': ['error', { allowEmptyCatch: false }],
+    
+    // Force proper error handling
+    '@typescript-eslint/no-floating-promises': 'error',
+    '@typescript-eslint/promise-function-async': 'off', // Too strict - lazy imports in router don't need async
+    'promise/catch-or-return': 'error',
+    'promise/always-return': 'off', // Too strict for arrow functions
+    'unicorn/consistent-function-scoping': 'warn', // Downgrade to warning - sometimes intentional for readability
+    
+    // Prevent useEffect issues
     'react-hooks/rules-of-hooks': 'error',
-    'react-hooks/exhaustive-deps': 'warn',
-    'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
+    'react-hooks/exhaustive-deps': ['error', {
+      additionalHooks: '(useMemoizedCallback|useAsyncEffect)'
+    }],
     
-    // General
-    'no-console': ['warn', { allow: ['warn', 'error'] }],
-    'prefer-const': 'error',
+    // ==========================================
+    // 🟠 HIGH PRIORITY
+    // ==========================================
+    
+    // Prevent unused variables
+    '@typescript-eslint/no-unused-vars': ['error', { 
+      argsIgnorePattern: '^_',
+      varsIgnorePattern: '^_',
+      caughtErrorsIgnorePattern: '^_'
+    }],
+    
+    // Require explicit return types for exported functions
+    '@typescript-eslint/explicit-module-boundary-types': 'off', // Too strict for current codebase
+    
+    // Prevent magic numbers
+    '@typescript-eslint/no-magic-numbers': 'off', // Too noisy for current codebase
+    
+    // Accessibility
+    'jsx-a11y/alt-text': 'error',
+    'jsx-a11y/anchor-is-valid': 'error',
+    'jsx-a11y/click-events-have-key-events': 'error',
+    'jsx-a11y/no-static-element-interactions': 'error',
+    
+    // Import organization
+    'import/order': ['warn', { // Changed from error to warn
+      'groups': [
+        'builtin',
+        'external', 
+        'internal',
+        ['parent', 'sibling'],
+        'index',
+        'object',
+        'type'
+      ],
+      'pathGroups': [
+        {
+          pattern: 'react',
+          group: 'external',
+          position: 'before'
+        },
+        {
+          pattern: '@/**',
+          group: 'internal',
+          position: 'after'
+        }
+      ],
+      'pathGroupsExcludedImportTypes': ['react'],
+      'newlines-between': 'always',
+      'alphabetize': {
+        order: 'asc',
+        caseInsensitive: true
+      }
+    }],
+    'import/no-duplicates': 'error',
+    'import/no-unused-modules': 'off', // Too slow and noisy
+    
+    // ==========================================
+    // 🟡 MEDIUM PRIORITY
+    // ==========================================
+    
+    // Code quality
+    'sonarjs/cognitive-complexity': ['warn', 15],
+    'sonarjs/no-duplicate-string': ['warn', { threshold: 5 }],
+    'sonarjs/no-identical-functions': 'error',
+    'sonarjs/no-collapsible-if': 'warn',
+    
+    // Best practices from unicorn
+    'unicorn/filename-case': ['error', {
+      cases: {
+        camelCase: true,
+        pascalCase: true
+      }
+    }],
+    'unicorn/no-null': 'off', // We use null for React
+    'unicorn/prevent-abbreviations': ['warn', {
+      allowList: {
+        props: true,
+        Props: true,
+        ref: true,
+        Ref: true,
+        params: true,
+        Params: true,
+        args: true,
+        env: true,
+        dev: true,
+        prod: true
+      }
+    }],
+    
+    // Complexity limits
+    'complexity': ['warn', { max: 15 }], // Increased from 10 to be less noisy
+    'max-depth': ['warn', { max: 4 }], // Increased from 3
+    'max-lines-per-function': ['warn', { 
+      max: 150, // Increased from 100
+      skipBlankLines: true, 
+      skipComments: true 
+    }],
+    'max-lines': ['warn', { 
+      max: 400, // Increased from 300
+      skipBlankLines: true, 
+      skipComments: true 
+    }],
+    
+    // ==========================================
+    // ⚙️ OVERRIDES (Disable problematic rules)
+    // ==========================================
+    
+    'unicorn/no-array-reduce': 'off', // We use reduce
+    'unicorn/no-array-for-each': 'off', // forEach is fine
+    'unicorn/no-zero-fractions': 'off', // Framer motion uses decimals
+    'unicorn/prefer-query-selector': 'off', // getElementById is fine
+    'unicorn/prefer-node-protocol': 'off', // Not needed for bundler
+    'unicorn/prefer-module': 'off', // CommonJS is fine for configs
+    'unicorn/import-style': 'off', // Allow default imports
+    'unicorn/numeric-separators-style': 'off', // Too opinionated
+    'react/no-unescaped-entities': 'off', // Too strict for quotes
+    'react-refresh/only-export-components': ['warn', { 
+      allowConstantExport: true 
+    }]
   },
-  ignorePatterns: ['dist', 'node_modules', 'backend', '.eslintrc.cjs'],
+  
+  // Override rules for specific files
+  overrides: [
+    {
+      // Test files - allow test-specific patterns
+      files: ['*.test.ts', '*.test.tsx', '*.spec.ts', '*.spec.tsx', 'tests/**/*', 'e2e/**/*'],
+      rules: {
+        // Allow any type for test mocks and utilities
+        '@typescript-eslint/no-explicit-any': 'off',
+        '@typescript-eslint/no-unsafe-assignment': 'off',
+        '@typescript-eslint/no-unsafe-member-access': 'off',
+        '@typescript-eslint/no-unsafe-call': 'off',
+        '@typescript-eslint/no-unsafe-return': 'off',
+        '@typescript-eslint/no-unsafe-argument': 'off',
+        '@typescript-eslint/unbound-method': 'off',
+        '@typescript-eslint/no-unnecessary-type-assertion': 'off', // Tests often need explicit type assertions for DOM elements
+        '@typescript-eslint/non-nullable-type-assertion-style': 'off', // Tests can use their preferred assertion style
+        
+        // Allow empty functions for test mocks
+        '@typescript-eslint/no-empty-function': 'off',
+        
+        // Allow floating promises in test setup
+        '@typescript-eslint/no-floating-promises': 'off',
+        
+        // Allow direct localStorage access in tests that test localStorage
+        'no-restricted-globals': 'off',
+        
+        // Allow test-specific patterns
+        'promise/catch-or-return': 'off', // Tests often intentionally don't catch to test error behavior
+        'unicorn/consistent-function-scoping': 'off', // Tests often have helper functions inline for clarity
+        
+        // Reduce noise in tests
+        'sonarjs/no-duplicate-string': 'off',
+        'max-lines-per-function': 'off',
+        'max-lines': 'off',
+        'complexity': 'off',
+        'unicorn/prevent-abbreviations': 'off',
+        '@typescript-eslint/require-await': 'off',
+        'import/order': 'warn' // Downgrade to warning for tests
+      }
+    },
+    {
+      // Config files
+      files: ['vite.config.ts', '*.config.ts', '*.config.js', 'vitest.config.ts'],
+      rules: {
+        'import/no-default-export': 'off',
+        'unicorn/prefer-module': 'off',
+        '@typescript-eslint/no-unsafe-assignment': 'off',
+        '@typescript-eslint/no-unsafe-member-access': 'off'
+      }
+    },
+    {
+      // E2E test files - allow additional patterns
+      files: ['e2e/**/*.ts', 'e2e/**/*.tsx'],
+      rules: {
+        // E2E files often have descriptive names with multiple words
+        'unicorn/filename-case': 'off',
+        '@typescript-eslint/no-floating-promises': 'off',
+        '@typescript-eslint/no-empty-function': 'off'
+      }
+    }
+  ]
 };

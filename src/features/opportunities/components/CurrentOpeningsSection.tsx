@@ -5,13 +5,16 @@
  */
 
 import { useState, useMemo, useCallback } from 'react';
+
 import { motion } from 'framer-motion';
-import { useOpportunities, Opportunity } from '../hooks/useOpportunities';
-import { OpportunityCard } from './OpportunityCard';
-import { OpportunityModal } from './OpportunityModal';
+
 import { ApplicationModal } from '@/features/applications/components/ApplicationModal';
-import { OpportunityFilters, OpportunityTypeFilter } from './OpportunityFilters';
+
 import { EmptyStateView } from './EmptyStateView';
+import { OpportunityCard } from './OpportunityCard';
+import { OpportunityFilters, OpportunityTypeFilter } from './OpportunityFilters';
+import { OpportunityModal } from './OpportunityModal';
+import { useOpportunities, Opportunity } from '../hooks/useOpportunities';
 
 type ModalView = 'none' | 'details' | 'apply';
 
@@ -29,7 +32,7 @@ export function CurrentOpeningsSection({ initialTypeFilter = 'ALL' }: CurrentOpe
   // Extract unique categories
   const categories = useMemo(() => {
     const cats = new Set(opportunities.map((o) => o.category));
-    return Array.from(cats).sort();
+    return [...cats].sort();
   }, [opportunities]);
 
   // Filter opportunities
@@ -137,8 +140,8 @@ export function CurrentOpeningsSection({ initialTypeFilter = 'ALL' }: CurrentOpe
         isOpen={modalView === 'apply'}
         onClose={handleCloseModal}
         onBack={handleBackToDetails}
-        title={selectedOpportunity?.title || ''}
-        itemId={selectedOpportunity?.id || ''}
+        title={selectedOpportunity?.title ?? ''}
+        itemId={selectedOpportunity?.id ?? ''}
         type="OPPORTUNITY"
       />
     </>

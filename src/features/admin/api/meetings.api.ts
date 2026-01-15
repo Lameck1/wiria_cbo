@@ -65,7 +65,7 @@ export const getMeetings = async (params?: {
     return extractArray<Meeting>(response);
   } catch (error) {
     console.error('Failed to fetch meetings:', error);
-    return [];
+    throw new Error('Failed to load meetings. Please try again.');
   }
 };
 
@@ -81,7 +81,7 @@ export const getMeetingById = async (id: string): Promise<Meeting | null> => {
 
 export const createMeeting = async (data: CreateMeetingData): Promise<Meeting> => {
   const response = await apiClient.post('/admin/meetings', data);
-  return extractData<Meeting>(response) as Meeting;
+  return extractData<Meeting>(response)!;
 };
 
 export const updateMeeting = async (
@@ -89,7 +89,7 @@ export const updateMeeting = async (
   data: Partial<CreateMeetingData>
 ): Promise<Meeting> => {
   const response = await apiClient.put(`/admin/meetings/${id}`, data);
-  return extractData<Meeting>(response) as Meeting;
+  return extractData<Meeting>(response)!;
 };
 
 export const cancelMeeting = async (id: string): Promise<boolean> => {
@@ -108,6 +108,6 @@ export const getMeetingAttendance = async (id: string): Promise<MeetingAttendanc
     return extractArray<MeetingAttendance>(response, 'attendance');
   } catch (error) {
     console.error('Failed to fetch meeting attendance:', error);
-    return [];
+    throw new Error('Failed to load meeting attendance. Please try again.');
   }
 };

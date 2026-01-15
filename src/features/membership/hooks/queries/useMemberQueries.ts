@@ -1,7 +1,10 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+
 import { apiClient } from '@/shared/services/api/client';
 import { API_ENDPOINTS } from '@/shared/services/api/endpoints';
+
 import { memberAdapter } from '../../api/memberAdapter';
+
 import type { MemberProfile, Document } from '../useMemberData';
 
 /**
@@ -24,7 +27,7 @@ interface ApiProfileResponse {
 }
 
 interface ApiPaymentsResponse {
-    data: Array<{
+    data: {
         id?: string;
         amount?: number | string;
         type?: string;
@@ -32,11 +35,11 @@ interface ApiPaymentsResponse {
         method?: string;
         mpesaReceiptNumber?: string;
         createdAt?: string;
-    }> | { payments: Array<Record<string, unknown>> };
+    }[] | { payments: Record<string, unknown>[] };
 }
 
 interface ApiMeetingsResponse {
-    data: Array<{
+    data: {
         id?: string;
         title?: string;
         description?: string;
@@ -47,29 +50,29 @@ interface ApiMeetingsResponse {
         status?: string;
         isRsvpd?: boolean;
         attendeesCount?: number;
-    }> | { data: Array<Record<string, unknown>> };
+    }[] | { data: Record<string, unknown>[] };
 }
 
 interface ApiDocumentsResponse {
     data: {
-        documents?: Array<{
+        documents?: {
             id?: string;
             name?: string;
             type?: string;
             url?: string;
             createdAt?: string;
-        }>;
+        }[];
     };
 }
 
 interface ApiActivityResponse {
-    data: Array<{
+    data: {
         id?: string;
         type?: string;
         description?: string;
         timestamp?: string;
         createdAt?: string;
-    }> | { data: Array<Record<string, unknown>> };
+    }[] | { data: Record<string, unknown>[] };
 }
 
 export const MEMBER_KEYS = {
@@ -145,13 +148,13 @@ export function useMemberDocumentsQuery() {
         queryFn: async () => {
             const response = await apiClient.get<ApiDocumentsResponse>(API_ENDPOINTS.MEMBERS_DOCUMENTS);
             // Backend returns { data: { documents: [] } }
-            const docs = response.data?.documents || [];
+            const docs = response.data?.documents ?? [];
             return docs.map((d): Document => ({
-                id: d.id || '',
-                name: d.name || '',
-                type: d.type || '',
-                url: d.url || '',
-                createdAt: d.createdAt || '',
+                id: d.id ?? '',
+                name: d.name ?? '',
+                type: d.type ?? '',
+                url: d.url ?? '',
+                createdAt: d.createdAt ?? '',
             }));
         },
         staleTime: 1000 * 60 * 10,
@@ -178,8 +181,8 @@ export function useRsvpMutation() {
             return apiClient.post(endpoint, {});
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: MEMBER_KEYS.meetings('joined') });
-            queryClient.invalidateQueries({ queryKey: MEMBER_KEYS.meetings('available') });
+            void queryClient.invalidateQueries({ queryKey: MEMBER_KEYS.meetings('joined') });
+            void queryClient.invalidateQueries({ queryKey: MEMBER_KEYS.meetings('available') });
         },
     });
 }
@@ -193,8 +196,8 @@ export function useCancelRsvpMutation() {
             return apiClient.delete(endpoint);
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: MEMBER_KEYS.meetings('joined') });
-            queryClient.invalidateQueries({ queryKey: MEMBER_KEYS.meetings('available') });
+            void queryClient.invalidateQueries({ queryKey: MEMBER_KEYS.meetings('joined') });
+            void queryClient.invalidateQueries({ queryKey: MEMBER_KEYS.meetings('available') });
         },
     });
 }

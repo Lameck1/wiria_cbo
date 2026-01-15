@@ -21,9 +21,9 @@ const suggestedAmounts = [
 export function AmountSelector({ selectedAmount, onAmountChange, disabled }: AmountSelectorProps) {
   return (
     <div>
-      <label className="mb-4 block text-sm font-semibold text-wiria-blue-dark">
+      <span className="mb-4 block text-sm font-semibold text-wiria-blue-dark">
         Select Amount (KES) <span className="text-red-500">*</span>
-      </label>
+      </span>
 
       {/* Suggested amounts */}
       <div className="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-5">
@@ -36,11 +36,10 @@ export function AmountSelector({ selectedAmount, onAmountChange, disabled }: Amo
             whileTap={{ scale: 0.98 }}
             onClick={() => onAmountChange(amount.value)}
             disabled={disabled}
-            className={`relative flex min-h-[100px] flex-col items-center justify-center rounded-2xl border-2 p-2 px-3 transition-all duration-300 ${
-              selectedAmount === amount.value
+            className={`relative flex min-h-[100px] flex-col items-center justify-center rounded-2xl border-2 p-2 px-3 transition-all duration-300 ${selectedAmount === amount.value
                 ? 'border-wiria-yellow bg-wiria-yellow/10 shadow-lg shadow-wiria-yellow/5'
                 : 'border-gray-100 bg-white hover:border-gray-300 hover:bg-gray-50'
-            } disabled:cursor-not-allowed disabled:opacity-50`}
+              } disabled:cursor-not-allowed disabled:opacity-50`}
           >
             <span
               className={`text-xl font-extrabold tracking-tight ${selectedAmount === amount.value ? 'text-wiria-blue-dark' : 'text-gray-800'}`}
@@ -80,7 +79,7 @@ export function AmountSelector({ selectedAmount, onAmountChange, disabled }: Amo
             type="number"
             min="100"
             value={selectedAmount}
-            onChange={(e) => onAmountChange(Number(e.target.value))}
+            onChange={(event) => onAmountChange(Number(event.target.value))}
             disabled={disabled}
             className="block w-full rounded-lg border border-gray-200 bg-white py-3 pl-16 pr-4 text-lg font-semibold text-wiria-blue-dark outline-none transition-all focus:border-wiria-yellow focus:ring-2 focus:ring-wiria-yellow/30 disabled:cursor-not-allowed disabled:bg-gray-50"
             placeholder="0.00"

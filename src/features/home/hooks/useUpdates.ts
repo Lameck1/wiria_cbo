@@ -4,8 +4,9 @@
  */
 
 import { useQuery } from '@tanstack/react-query';
-import { useBackendStatus } from '@/shared/services/backendStatus';
+
 import { staticUpdates } from '@/shared/data/static';
+import { useBackendStatus } from '@/shared/services/backendStatus';
 
 export interface Update {
   id: string;
@@ -25,18 +26,18 @@ interface UpdatesResponse {
   };
 }
 
-async function fetchUpdates(limit: number = 20): Promise<Update[]> {
+async function fetchUpdates(limit = 20): Promise<Update[]> {
   const response = await fetch(`/api/updates?limit=${limit}`);
 
   if (!response.ok) {
     throw new Error('Failed to fetch updates');
   }
 
-  const data: UpdatesResponse = await response.json();
+  const data = (await response.json()) as UpdatesResponse;
   return data.data?.data || data.data || [];
 }
 
-export function useUpdates(limit: number = 20) {
+export function useUpdates(limit = 20) {
   const { isBackendConnected, isChecking } = useBackendStatus();
 
   return useQuery({

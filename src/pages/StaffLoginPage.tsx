@@ -3,12 +3,13 @@
  */
 
 import { useEffect } from 'react';
+
 import { useNavigate } from 'react-router-dom';
 
 import { LoginForm } from '@/features/auth/components/LoginForm';
 import { useAuth } from '@/features/auth/context/AuthContext';
-import { UserRole } from '@/shared/types';
 import { ROUTES } from '@/shared/constants/routes';
+import { UserRole } from '@/shared/types';
 
 function StaffLoginPage() {
   const { isAuthenticated, user } = useAuth();
@@ -18,7 +19,8 @@ function StaffLoginPage() {
   useEffect(() => {
     if (
       isAuthenticated &&
-      [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.STAFF].includes(user?.role as UserRole)
+      user?.role &&
+      [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.STAFF].includes(user.role)
     ) {
       navigate(ROUTES.ADMIN, { replace: true });
     }

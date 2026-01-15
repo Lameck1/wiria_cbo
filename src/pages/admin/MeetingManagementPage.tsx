@@ -1,4 +1,5 @@
 import { useState } from 'react';
+
 import {
   getMeetings,
   cancelMeeting,
@@ -6,11 +7,11 @@ import {
   Meeting,
   MeetingAttendance,
 } from '@/features/admin/api/meetings.api';
+import { AttendanceModal } from '@/features/admin/components/meetings/modals/AttendanceModal';
+import { MeetingFormModal } from '@/features/admin/components/meetings/modals/MeetingFormModal';
 import { Button } from '@/shared/components/ui/Button';
 import { DataTable, Column } from '@/shared/components/ui/DataTable';
 import { useAdminData, useAdminAction } from '@/shared/hooks/useAdminData';
-import { MeetingFormModal } from '@/features/admin/components/meetings/modals/MeetingFormModal';
-import { AttendanceModal } from '@/features/admin/components/meetings/modals/AttendanceModal';
 import { notificationService } from '@/shared/services/notification/notificationService';
 
 const STATUS_COLORS: Record<string, string> = {
@@ -27,6 +28,23 @@ const TYPE_LABELS: Record<string, string> = {
   OTHER: 'Other',
 };
 
+function formatDate(date: string): string {
+  return new Date(date).toLocaleDateString('en-KE', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+}
+
+function formatTime(time: string): string {
+  const [hours, minutes] = time.split(':');
+  const hour = Number.parseInt(hours ?? '0');
+  const ampm = hour >= 12 ? 'PM' : 'AM';
+  const hour12 = hour % 12 || 12;
+  return `${hour12}:${minutes ?? '00'} ${ampm}`;
+}
+
 export default function MeetingManagementPage() {
   const { items: meetings, isLoading } = useAdminData<Meeting>(['meetings'], getMeetings);
   const cancelAction = useAdminAction((id: string) => cancelMeeting(id), [['meetings']], {
@@ -40,7 +58,9 @@ export default function MeetingManagementPage() {
   const [showAttendance, setShowAttendance] = useState(false);
 
   const handleCancel = (id: string) => {
-    if (confirm('Are you sure you want to cancel this meeting?')) cancelAction.mutate(id);
+    if (window.confirm('Are you sure you want to cancel this meeting?')) {
+      cancelAction.mutate(id);
+    }
   };
 
   const handleViewAttendance = async (meeting: Meeting) => {
@@ -49,25 +69,9 @@ export default function MeetingManagementPage() {
       const data = await getMeetingAttendance(meeting.id);
       setAttendance(data);
       setShowAttendance(true);
-    } catch (_error) {
+    } catch {
       notificationService.error('Failed to load attendance');
     }
-  };
-
-  const formatDate = (date: string) =>
-    new Date(date).toLocaleDateString('en-KE', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
-
-  const formatTime = (time: string) => {
-    const [hours, minutes] = time.split(':');
-    const hour = parseInt(hours || '0');
-    const ampm = hour >= 12 ? 'PM' : 'AM';
-    const hour12 = hour % 12 || 12;
-    return `${hour12}:${minutes || '00'} ${ampm}`;
   };
 
   const upcomingMeetings = meetings.filter(
@@ -92,7 +96,7 @@ export default function MeetingManagementPage() {
     {
       header: 'Attendance',
       key: 'attendanceCount',
-      render: (m) => <span className="text-sm">{m.attendanceCount || 0} members</span>,
+      render: (m) => <span className="text-sm">{m.attendanceCount ?? 0} members</span>,
     },
     {
       header: 'Status',
@@ -109,7 +113,7 @@ export default function MeetingManagementPage() {
       align: 'right',
       render: (m) => (
         <button
-          onClick={() => handleViewAttendance(m)}
+          onClick={() => void handleViewAttendance(m)}
           className="text-sm font-bold text-wiria-blue-dark hover:underline"
         >
           View Attendance

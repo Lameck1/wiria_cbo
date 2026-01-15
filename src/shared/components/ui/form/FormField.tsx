@@ -1,6 +1,8 @@
 import { useFormContext, Controller } from 'react-hook-form';
-import { Input } from '../Input';
+
 import { cn } from '@/shared/utils/helpers';
+
+import { Input } from '../Input';
 
 interface FormFieldProps {
     name: string;
@@ -46,7 +48,7 @@ export function FormField({
                         disabled={disabled}
                         required={required}
                         error={hasError ? error : undefined}
-                        helperText={!hasError ? description : undefined}
+                        helperText={hasError ? undefined : description}
                     />
                 )}
             />

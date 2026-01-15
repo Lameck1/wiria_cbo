@@ -37,7 +37,7 @@ export const inviteUser = async (data: InviteUserPayload) => {
   return client.post<UserInvitation>('/admin/users/invite', data);
 };
 
-export const getInvitations = async (status: string = 'PENDING') => {
+export const getInvitations = async (status = 'PENDING') => {
   return client.get<UserInvitation[]>(`/admin/users/invitations?status=${status}`);
 };
 

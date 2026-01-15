@@ -4,6 +4,7 @@
  */
 
 import { motion } from 'framer-motion';
+
 import { SectionHeader } from '@/shared/components/sections/SectionHeader';
 
 const STEPS = [

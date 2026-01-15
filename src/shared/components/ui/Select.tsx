@@ -1,4 +1,5 @@
 import { SelectHTMLAttributes, useId } from 'react';
+
 import { cn } from '@/shared/utils/helpers';
 
 export interface SelectOption {
@@ -10,7 +11,8 @@ export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
     label?: string;
     error?: string;
     helperText?: string;
-    options: readonly SelectOption[];
+    options?: readonly SelectOption[];
+    children?: React.ReactNode;
     ref?: React.Ref<HTMLSelectElement>;
 }
 
@@ -22,6 +24,7 @@ export function Select({
     className,
     id: providedId,
     ref,
+    children,
     ...props
 }: SelectProps) {
     const generatedId = useId();
@@ -31,7 +34,7 @@ export function Select({
     const hasError = !!error;
     const describedBy = [hasError ? errorId : null, helperText && !hasError ? helperId : null]
         .filter(Boolean)
-        .join(' ') || undefined;
+        .join(' ') ?? undefined;
 
     return (
         <div className="w-full">
@@ -56,7 +59,7 @@ export function Select({
                 aria-describedby={describedBy}
                 {...props}
             >
-                {options.map((option) => (
+                {children ?? options?.map((option) => (
                     <option key={option.value} value={option.value}>
                         {option.label}
                     </option>

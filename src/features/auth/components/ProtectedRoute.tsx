@@ -4,9 +4,11 @@
  */
 
 import { Navigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import { UserRole } from '@/shared/types';
+
 import { ROUTES } from '@/shared/constants/routes';
+import { UserRole } from '@/shared/types';
+
+import { useAuth } from '../context/AuthContext';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;

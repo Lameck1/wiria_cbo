@@ -5,6 +5,7 @@
 
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+
 import { FOCUS_AREAS, type FocusArea } from '@/features/home/constants/homeData';
 
 export function FocusAreasSection() {

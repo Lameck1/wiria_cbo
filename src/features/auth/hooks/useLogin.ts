@@ -4,12 +4,15 @@
  */
 
 import { useState } from 'react';
+
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import { notificationService } from '@/shared/services/notification/notificationService';
-import { ApiError } from '@/shared/services/api/client';
-import { UserRole } from '@/shared/types';
+
 import { ROUTES } from '@/shared/constants/routes';
+import { ApiError } from '@/shared/services/api/client';
+import { notificationService } from '@/shared/services/notification/notificationService';
+import { UserRole } from '@/shared/types';
+
+import { useAuth } from '../context/AuthContext';
 
 export function useLogin(isMember = false) {
   const [isLoading, setIsLoading] = useState(false);
@@ -38,10 +41,10 @@ export function useLogin(isMember = false) {
       } else {
         navigate(ROUTES.HOME, { replace: true });
       }
-    } catch (err) {
+    } catch (error_) {
       const message =
-        err instanceof ApiError
-          ? err.message || 'Invalid credentials'
+        error_ instanceof ApiError
+          ? error_.message || 'Invalid credentials'
           : 'Login failed. Please try again.';
       setError(message);
       notificationService.error(message);

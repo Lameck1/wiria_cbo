@@ -3,10 +3,12 @@
  * Focuses on Direct Bank Deposits while online systems are under maintenance.
  */
 
-import { Card, CardBody } from '@/shared/components/ui/Card';
+import { motion, AnimatePresence } from 'framer-motion';
+
 import { AlternatePaymentMethods } from '@/features/donations/components/AlternatePaymentMethods';
 import { DonationImpactSection } from '@/features/donations/components/DonationImpactSection';
-import { motion, AnimatePresence } from 'framer-motion';
+import { Card, CardBody } from '@/shared/components/ui/Card';
+
 
 function DonationsPage() {
   return (

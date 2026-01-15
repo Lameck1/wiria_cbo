@@ -135,13 +135,13 @@ export const getRecentApplications = async (limit = 5): Promise<RecentApplicatio
       id: app.id,
       name: `${app.firstName} ${app.lastName}`,
       type: app.type,
-      position: app.career?.title || app.opportunity?.title || 'N/A',
+      position: app.career?.title ?? app.opportunity?.title ?? 'N/A',
       date: app.createdAt,
       status: app.status,
     }));
   } catch (error) {
     console.error('Failed to fetch recent applications:', error);
-    return [];
+    throw new Error('Failed to load recent applications. Please try again.');
   }
 };
 
@@ -154,14 +154,14 @@ export const getRecentDonations = async (limit = 5): Promise<RecentDonation[]> =
     const donations = extractArray<DonationResponse>(response);
     return donations.slice(0, limit).map((d) => ({
       id: d.id,
-      donor: d.donorName || 'Anonymous',
+      donor: d.donorName ?? 'Anonymous',
       amount: Number(d.amount),
       date: d.createdAt,
       status: d.status,
     }));
   } catch (error) {
     console.error('Failed to fetch recent donations:', error);
-    return [];
+    throw new Error('Failed to load recent donations. Please try again.');
   }
 };
 
@@ -181,7 +181,7 @@ export const getRecentMessages = async (limit = 5): Promise<RecentMessage[]> => 
     }));
   } catch (error) {
     console.error('Failed to fetch recent messages:', error);
-    return [];
+    throw new Error('Failed to load recent messages. Please try again.');
   }
 };
 
@@ -191,16 +191,19 @@ export const getRecentMessages = async (limit = 5): Promise<RecentMessage[]> => 
  */
 export const getDashboardStats = async (): Promise<DashboardStats> => {
   try {
-    const [statsRes, recentApps, recentDonations, recentMessages] = await Promise.all([
+    const [statsResponse, recentApps, recentDonations, recentMessages] = await Promise.allSettled([
       apiClient.get('/admin/statistics'),
       getRecentApplications(),
       getRecentDonations(),
       getRecentMessages(),
     ]);
 
-    const statsData = extractData<DashboardStats>(statsRes);
+    // Extract stats data
+    const statsData =
+      statsResponse.status === 'fulfilled' ? extractData<DashboardStats>(statsResponse.value) : null;
     if (!statsData) throw new Error('Missing dashboard statistics data');
 
+    // Use fallback empty arrays for failed requests
     return {
       members: statsData.members,
       donations: statsData.donations,
@@ -209,38 +212,12 @@ export const getDashboardStats = async (): Promise<DashboardStats> => {
       applications: statsData.applications,
       tenders: statsData.tenders,
       news: statsData.news,
-      recentApplications: recentApps,
-      recentDonations: recentDonations,
-      recentMessages: recentMessages,
+      recentApplications: recentApps.status === 'fulfilled' ? recentApps.value : [],
+      recentDonations: recentDonations.status === 'fulfilled' ? recentDonations.value : [],
+      recentMessages: recentMessages.status === 'fulfilled' ? recentMessages.value : [],
     };
   } catch (error) {
     console.error('Failed to fetch consolidated dashboard stats:', error);
-    // Fallback to empty stats if API fails
-    return {
-      members: { total: 0, active: 0, pending: 0, expired: 0 },
-      donations: {
-        total: 0,
-        totalAmount: 0,
-        completed: 0,
-        pending: 0,
-        thisMonth: 0,
-        thisMonthAmount: 0,
-      },
-      contacts: { total: 0, unread: 0, responded: 0, pending: 0 },
-      safeguarding: { total: 0, open: 0, investigating: 0, resolved: 0, critical: 0 },
-      applications: {
-        total: 0,
-        pending: 0,
-        underReview: 0,
-        shortlisted: 0,
-        accepted: 0,
-        rejected: 0,
-      },
-      tenders: { total: 0, open: 0, closed: 0 },
-      news: { total: 0, published: 0, draft: 0 },
-      recentApplications: [],
-      recentDonations: [],
-      recentMessages: [],
-    };
+    throw new Error('Failed to load dashboard statistics. Please refresh the page.');
   }
 };

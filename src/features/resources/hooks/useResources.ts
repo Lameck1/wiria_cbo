@@ -5,8 +5,9 @@
  */
 
 import { useQuery } from '@tanstack/react-query';
-import { useBackendStatus } from '@/shared/services/backendStatus';
+
 import { staticResources } from '@/shared/data/static';
+import { useBackendStatus } from '@/shared/services/backendStatus';
 
 export interface Resource {
   id: string;
@@ -42,7 +43,7 @@ async function fetchResources(): Promise<Resource[]> {
   if (!response.ok) {
     throw new Error('Failed to fetch resources');
   }
-  const data: ResourcesApiResponse = await response.json();
+  const data = (await response.json()) as ResourcesApiResponse;
   return data.data?.data || [];
 }
 

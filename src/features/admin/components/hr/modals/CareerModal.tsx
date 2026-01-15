@@ -1,8 +1,9 @@
 import { useState } from 'react';
+
 import { Career, createCareer, updateCareer } from '@/features/admin/api/careers.api';
 import { Button } from '@/shared/components/ui/Button';
-import { notificationService } from '@/shared/services/notification/notificationService';
 import { Modal } from '@/shared/components/ui/Modal';
+import { notificationService } from '@/shared/services/notification/notificationService';
 
 interface CareerModalProps {
   career: Career | null;
@@ -10,30 +11,30 @@ interface CareerModalProps {
   onSuccess: () => void;
 }
 
+function handleArrayChange(
+  setter: React.Dispatch<React.SetStateAction<string[]>>,
+  index: number,
+  value: string
+) {
+  setter((previous: string[]) => {
+    const newArray = [...previous];
+    newArray[index] = value;
+    return newArray;
+  });
+}
+
 export function CareerModal({ career, onClose, onSuccess }: CareerModalProps) {
   const [responsibilities, setResponsibilities] = useState<string[]>(
-    career?.responsibilities || ['', '', '']
+    career?.responsibilities ?? ['', '', '']
   );
-  const [requirements, setRequirements] = useState<string[]>(career?.requirements || ['', '', '']);
-  const [desirable, setDesirable] = useState<string[]>(career?.desirable || []);
+  const [requirements, setRequirements] = useState<string[]>(career?.requirements ?? ['', '', '']);
+  const [desirable, setDesirable] = useState<string[]>(career?.desirable ?? []);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleArrayChange = (
-    setter: React.Dispatch<React.SetStateAction<string[]>>,
-    index: number,
-    value: string
-  ) => {
-    setter((prev: string[]) => {
-      const n = [...prev];
-      n[index] = value;
-      return n;
-    });
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     setIsSubmitting(true);
-    const formData = new FormData(e.currentTarget);
+    const formData = new FormData(event.currentTarget);
     const rawData = Object.fromEntries(formData.entries());
 
     const data: Partial<Career> = {
@@ -50,8 +51,7 @@ export function CareerModal({ career, onClose, onSuccess }: CareerModalProps) {
     };
 
     try {
-      if (career) await updateCareer(career.id, data);
-      else await createCareer(data);
+      await (career ? updateCareer(career.id, data) : createCareer(data));
       notificationService.success(career ? 'Updated' : 'Created');
       onSuccess();
     } catch (error: unknown) {
@@ -69,7 +69,7 @@ export function CareerModal({ career, onClose, onSuccess }: CareerModalProps) {
       title={career ? 'Edit Job Posting' : 'Post New Job'}
       size="3xl"
     >
-      <form onSubmit={handleSubmit} className="space-y-8">
+      <form onSubmit={(e) => void handleSubmit(e)} className="space-y-8">
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div className="space-y-2">
             <label className="text-sm font-bold text-gray-700" htmlFor="career-title">
@@ -172,25 +172,25 @@ export function CareerModal({ career, onClose, onSuccess }: CareerModalProps) {
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           <div className="space-y-4">
-            <label className="text-sm font-bold text-gray-700">Responsibilities *</label>
-            {responsibilities.map((r: string, i: number) => (
+            <h4 className="text-sm font-bold text-gray-700">Responsibilities *</h4>
+            {responsibilities.map((r: string, index: number) => (
               <input
-                key={i}
-                aria-label={`Responsibility ${i + 1}`}
+                key={index}
+                aria-label={`Responsibility ${index + 1}`}
                 value={r}
-                onChange={(e) => handleArrayChange(setResponsibilities, i, e.target.value)}
+                onChange={(event) => handleArrayChange(setResponsibilities, index, event.target.value)}
                 className="mb-2 w-full rounded-xl border-gray-200 p-3"
               />
             ))}
           </div>
           <div className="space-y-4">
-            <label className="text-sm font-bold text-gray-700">Requirements *</label>
-            {requirements.map((r: string, i: number) => (
+            <h4 className="text-sm font-bold text-gray-700">Requirements *</h4>
+            {requirements.map((r: string, index: number) => (
               <input
-                key={i}
-                aria-label={`Requirement ${i + 1}`}
+                key={index}
+                aria-label={`Requirement ${index + 1}`}
                 value={r}
-                onChange={(e) => handleArrayChange(setRequirements, i, e.target.value)}
+                onChange={(event) => handleArrayChange(setRequirements, index, event.target.value)}
                 className="mb-2 w-full rounded-xl border-gray-200 p-3"
               />
             ))}
@@ -198,13 +198,13 @@ export function CareerModal({ career, onClose, onSuccess }: CareerModalProps) {
         </div>
 
         <div className="space-y-4">
-          <label className="text-sm font-bold text-gray-700">Desirable Skills (Optional)</label>
-          {desirable.map((d: string, i: number) => (
+          <h4 className="text-sm font-bold text-gray-700">Desirable Skills (Optional)</h4>
+          {desirable.map((d: string, index: number) => (
             <input
-              key={i}
-              aria-label={`Desirable skill ${i + 1}`}
+              key={index}
+              aria-label={`Desirable skill ${index + 1}`}
               value={d}
-              onChange={(e) => handleArrayChange(setDesirable, i, e.target.value)}
+              onChange={(event) => handleArrayChange(setDesirable, index, event.target.value)}
               className="mb-2 w-full rounded-xl border-gray-200 p-3"
             />
           ))}

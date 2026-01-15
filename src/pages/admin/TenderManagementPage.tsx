@@ -1,10 +1,12 @@
 import { useState } from 'react';
+
 import { useQueryClient } from '@tanstack/react-query';
+
 import { Tender, getTenders, deleteTender } from '@/features/admin/api/tenders.api';
+import { TenderModal } from '@/features/admin/components/tenders/modals/TenderModal';
 import { Button } from '@/shared/components/ui/Button';
 import { DataTable, Column } from '@/shared/components/ui/DataTable';
 import { useAdminData, useAdminAction } from '@/shared/hooks/useAdminData';
-import { TenderModal } from '@/features/admin/components/tenders/modals/TenderModal';
 
 export default function TenderManagementPage() {
   const queryClient = useQueryClient();
@@ -13,14 +15,16 @@ export default function TenderManagementPage() {
   );
   const deleteAction = useAdminAction((id: string) => deleteTender(id), [['tenders']], {
     successMessage: 'Tender deleted successfully',
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['tenders'] }),
+    onSuccess: () => { void queryClient.invalidateQueries({ queryKey: ['tenders'] }); },
   });
 
   const [editingTender, setEditingTender] = useState<Tender | null>(null);
   const [showModal, setShowModal] = useState(false);
 
   const handleDelete = (id: string) => {
-    if (confirm('Are you sure you want to delete this tender?')) deleteAction.mutate(id);
+    if (window.confirm('Are you sure you want to delete this tender?')) {
+      deleteAction.mutate(id);
+    }
   };
 
   const columns: Column<Tender>[] = [
@@ -127,7 +131,7 @@ function TenderStatusBadge({ tender }: { tender: Tender }) {
   };
   return (
     <span
-      className={`rounded-full px-2 py-1 text-[10px] font-bold uppercase tracking-wider ${styles[status] || 'bg-gray-100'}`}
+      className={`rounded-full px-2 py-1 text-[10px] font-bold uppercase tracking-wider ${styles[status] ?? 'bg-gray-100'}`}
     >
       {status}
     </span>

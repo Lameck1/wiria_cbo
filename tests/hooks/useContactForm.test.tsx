@@ -3,8 +3,9 @@
  * Contact Form Hook Tests
  */
 
-import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+
 import { useContactForm } from '@/features/contact/hooks/useContactForm';
 import { apiClient } from '@/shared/services/api/client';
 import { notificationService } from '@/shared/services/notification/notificationService';
@@ -86,12 +87,12 @@ describe('useContactForm', () => {
   });
 
   it('should set isSubmitting to true during submission', async () => {
-    let resolvePromise: (value: unknown) => void;
+    let resolvePromise: (value: unknown) => void = () => {};
     const promise = new Promise((resolve) => {
       resolvePromise = resolve;
     });
 
-    vi.mocked(apiClient.post).mockReturnValue(promise as any);
+    vi.mocked(apiClient.post).mockReturnValue(promise as Promise<{ success: boolean }>);
 
     const { result } = renderHook(() => useContactForm());
 
@@ -103,13 +104,13 @@ describe('useContactForm', () => {
     };
 
     act(() => {
-      result.current.submitContactForm(formData);
+      void result.current.submitContactForm(formData);
     });
 
     expect(result.current.isSubmitting).toBe(true);
 
     await act(async () => {
-      resolvePromise!({ data: { success: true } });
+      resolvePromise({ data: { success: true } });
       await promise;
     });
 

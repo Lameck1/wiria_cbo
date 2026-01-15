@@ -10,11 +10,11 @@ export interface AdminMember {
   phone: string;
   status: MembershipStatus;
   joinDate: string;
-  payments: Array<{
+  payments: {
     amount: number;
     status: string;
     date: string;
-  }>;
+  }[];
   occupation?: string;
   gender?: string;
   nationalId?: string;
@@ -46,8 +46,7 @@ export const getMembers = async (filters: MemberFilters = {}) => {
   if (filters.status && filters.status !== 'ALL') params.append('status', filters.status);
   if (filters.search) params.append('search', filters.search);
 
-  const response = await client.get<MemberResponse>(`/admin/members?${params.toString()}`);
-  return response;
+  return await client.get<MemberResponse>(`/admin/members?${params.toString()}`);
 };
 
 /** Response structure for member status update operations */
@@ -57,11 +56,9 @@ interface MemberStatusUpdateResponse {
 }
 
 export const approveMember = async (id: string) => {
-  const response = await client.patch<MemberStatusUpdateResponse>(`/admin/members/${id}/approve`);
-  return response;
+  return await client.patch<MemberStatusUpdateResponse>(`/admin/members/${id}/approve`);
 };
 
 export const rejectMember = async (id: string, reason: string) => {
-  const response = await client.patch<MemberStatusUpdateResponse>(`/admin/members/${id}/reject`, { reason });
-  return response;
+  return await client.patch<MemberStatusUpdateResponse>(`/admin/members/${id}/reject`, { reason });
 };

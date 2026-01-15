@@ -4,9 +4,10 @@
  * Follows pattern from OpportunityModalContent
  */
 
-import { Job } from '../hooks/useCareers';
-import { JOB_TYPE_LABELS } from '../constants/careersData';
 import { formatDate } from '@/shared/utils/dateUtils';
+
+import { JOB_TYPE_LABELS } from '../constants/careersData';
+import { Job } from '../hooks/useCareers';
 
 interface JobModalContentProps {
   job: Job;
@@ -63,7 +64,7 @@ const StarIcon = () => (
 );
 
 export function JobModalContent({ job }: JobModalContentProps) {
-  const typeLabel = JOB_TYPE_LABELS[job.employmentType] || job.employmentType;
+  const typeLabel = JOB_TYPE_LABELS[job.employmentType] ?? job.employmentType;
   const deadlineDate = new Date(job.deadline);
   const isExpired = deadlineDate < new Date();
 
@@ -91,7 +92,7 @@ export function JobModalContent({ job }: JobModalContentProps) {
         <div className="rounded-xl border border-blue-200 bg-blue-50 p-4 text-center">
           <div className="mb-1 text-2xl">💰</div>
           <p className="mb-1 text-xs uppercase tracking-wide text-gray-500">Salary</p>
-          <p className="text-sm font-semibold text-gray-800">{job.salary || 'Competitive'}</p>
+          <p className="text-sm font-semibold text-gray-800">{job.salary ?? 'Competitive'}</p>
         </div>
       </div>
 
@@ -125,10 +126,10 @@ export function JobModalContent({ job }: JobModalContentProps) {
             Key Responsibilities
           </h3>
           <ul className="space-y-2">
-            {job.responsibilities.map((item, i) => (
-              <li key={i} className="flex items-start text-gray-700">
+            {job.responsibilities.map((item, index) => (
+              <li key={index} className="flex items-start text-gray-700">
                 <span className="mr-3 mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-purple-100 text-xs font-bold text-purple-600">
-                  {i + 1}
+                  {index + 1}
                 </span>
                 {item}
               </li>
@@ -147,8 +148,8 @@ export function JobModalContent({ job }: JobModalContentProps) {
             Requirements
           </h3>
           <ul className="space-y-2">
-            {job.requirements.map((item, i) => (
-              <li key={i} className="flex items-start text-gray-700">
+            {job.requirements.map((item, index) => (
+              <li key={index} className="flex items-start text-gray-700">
                 <span className="mr-3 flex-shrink-0 text-amber-500">
                   <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
@@ -176,9 +177,9 @@ export function JobModalContent({ job }: JobModalContentProps) {
             Nice to Have
           </h3>
           <div className="flex flex-wrap gap-2">
-            {job.desirable.map((item, i) => (
+            {job.desirable.map((item, index) => (
               <span
-                key={i}
+                key={index}
                 className="rounded-full border border-green-200 bg-green-50 px-3 py-1.5 text-sm text-green-700"
               >
                 {item}

@@ -30,11 +30,11 @@ export { formatDate } from './dateUtils';
  */
 export function formatPhoneNumber(phone: string): string {
   // Remove all non-digits
-  const cleaned = phone.replace(/\D/g, '');
+  const cleaned = phone.replaceAll(/\D/g, '');
 
   // Convert to international format if Kenyan number
   if (cleaned.startsWith('0') && cleaned.length === 10) {
-    return `+254${cleaned.substring(1)}`;
+    return `+254${cleaned.slice(1)}`;
   }
   if (cleaned.startsWith('254') && cleaned.length === 12) {
     return `+${cleaned}`;
@@ -51,14 +51,14 @@ export function formatPhoneNumber(phone: string): string {
  */
 export function truncate(text: string, maxLength: number): string {
   if (text.length <= maxLength) return text;
-  return `${text.substring(0, maxLength)}...`;
+  return `${text.slice(0, Math.max(0, maxLength))}...`;
 }
 
 /**
  * Debounce function
  */
 export function debounce<T extends (...args: unknown[]) => void>(
-  func: T,
+  function_: T,
   wait: number
 ): (...args: Parameters<T>) => void {
   let timeout: ReturnType<typeof setTimeout> | null = null;
@@ -66,7 +66,7 @@ export function debounce<T extends (...args: unknown[]) => void>(
   return function executedFunction(...args: Parameters<T>) {
     const later = () => {
       timeout = null;
-      func(...args);
+      function_(...args);
     };
 
     if (timeout) clearTimeout(timeout);

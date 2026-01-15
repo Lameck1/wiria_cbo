@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback, memo } from 'react';
+
 import {
   NewsUpdate,
   getAdminUpdates,
@@ -6,6 +7,7 @@ import {
   updateUpdate,
   deleteUpdate,
 } from '@/features/admin/api/news.api';
+import { FormModal, type FieldConfig } from '@/shared/components/modals/FormModal';
 import { Button } from '@/shared/components/ui/Button';
 import { notificationService } from '@/shared/services/notification/notificationService';
 import { extractArray, getErrorMessage } from '@/shared/utils/apiUtils';
@@ -31,19 +33,24 @@ export default function NewsManagementPage() {
   };
 
   useEffect(() => {
-    loadUpdates();
+    void loadUpdates();
   }, []);
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this update?')) return;
+  const handleDelete = useCallback(async (id: string) => {
+    if (!window.confirm('Are you sure you want to delete this update?')) return;
     try {
       await deleteUpdate(id);
       notificationService.success('Update deleted successfully');
-      loadUpdates();
-    } catch (_error) {
+      void loadUpdates();
+    } catch {
       notificationService.error('Failed to delete update');
     }
-  };
+  }, []);
+
+  const handleEdit = useCallback((update: NewsUpdate) => {
+    setEditingUpdate(update);
+    setShowModal(true);
+  }, []);
 
   // Filter updates by status
   const filteredUpdates =
@@ -104,11 +111,8 @@ export default function NewsManagementPage() {
               <NewsCard
                 key={update.id}
                 update={update}
-                onEdit={() => {
-                  setEditingUpdate(update);
-                  setShowModal(true);
-                }}
-                onDelete={() => handleDelete(update.id)}
+                onEdit={handleEdit}
+                onDelete={(id) => void handleDelete(id)}
               />
             ))
           ) : (
@@ -132,7 +136,7 @@ export default function NewsManagementPage() {
           onClose={() => setShowModal(false)}
           onSuccess={() => {
             setShowModal(false);
-            loadUpdates();
+            void loadUpdates();
           }}
         />
       )}
@@ -140,14 +144,14 @@ export default function NewsManagementPage() {
   );
 }
 
-function NewsCard({
+const NewsCard = memo(function NewsCard({
   update,
   onEdit,
   onDelete,
 }: {
   update: NewsUpdate;
-  onEdit: () => void;
-  onDelete: () => void;
+  onEdit: (update: NewsUpdate) => void;
+  onDelete: (id: string) => void;
 }) {
   return (
     <div className="flex h-full flex-col overflow-hidden rounded-xl border-t-4 border-wiria-yellow bg-white shadow-lg">
@@ -169,9 +173,9 @@ function NewsCard({
         </div>
         <h3 className="mb-2 line-clamp-2 text-lg font-bold text-wiria-blue-dark">{update.title}</h3>
         <p className="line-clamp-3 text-sm text-gray-600">
-          {update.excerpt ||
+          {update.excerpt ??
             (update.fullContent
-              ? update.fullContent.substring(0, 150) + '...'
+              ? update.fullContent.slice(0, 150) + '...'
               : 'No content available')}
         </p>
         <div className="mt-2">
@@ -183,16 +187,16 @@ function NewsCard({
         </div>
       </div>
       <div className="mt-auto flex justify-end gap-3 border-t bg-gray-50 p-4">
-        <button onClick={onEdit} className="text-sm font-bold text-wiria-blue-dark hover:underline">
+        <button onClick={() => onEdit(update)} className="text-sm font-bold text-wiria-blue-dark hover:underline">
           Edit
         </button>
-        <button onClick={onDelete} className="text-sm font-bold text-red-600 hover:underline">
+        <button onClick={() => onDelete(update.id)} className="text-sm font-bold text-red-600 hover:underline">
           Delete
         </button>
       </div>
     </div>
   );
-}
+});
 
 function NewsModal({
   update,
@@ -203,133 +207,92 @@ function NewsModal({
   onClose: () => void;
   onSuccess: () => void;
 }) {
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const data = {
-      title: formData.get('title') as string,
-      imageUrl: formData.get('imageUrl') as string,
-      category: formData.get('category') as string,
-      status: formData.get('status') as string,
-      fullContent: formData.get('fullContent') as string,
-      excerpt: formData.get('excerpt') as string,
-    };
-
+  const handleSubmit = async (data: Record<string, unknown>) => {
     try {
+      const payload = {
+        title: data['title'] as string,
+        imageUrl: data['imageUrl'] as string | undefined,
+        category: data['category'] as string,
+        status: data['status'] as string,
+        fullContent: data['fullContent'] as string,
+        excerpt: data['excerpt'] as string | undefined,
+      };
       if (update) {
-        await updateUpdate(update.id, data);
+        await updateUpdate(update.id, payload);
         notificationService.success('Update modified successfully');
       } else {
-        await createUpdate(data);
+        await createUpdate(payload);
         notificationService.success('Update created successfully');
       }
       onSuccess();
     } catch (error: unknown) {
       notificationService.error(getErrorMessage(error, 'Operation failed'));
+      throw error;
     }
   };
 
+  const fields: FieldConfig[] = [
+    {
+      name: 'title',
+      label: 'Title',
+      type: 'text',
+      required: true,
+      placeholder: 'e.g. New Community Program Launch'
+    },
+    {
+      name: 'imageUrl',
+      label: 'Image URL (Optional)',
+      type: 'text',
+      placeholder: 'https://...'
+    },
+    {
+      name: 'category',
+      label: 'Category',
+      type: 'select',
+      required: true,
+      options: [
+        { value: 'GENERAL', label: 'General' },
+        { value: 'EVENT', label: 'Event' },
+        { value: 'ANNOUNCEMENT', label: 'Announcement' },
+        { value: 'STORY', label: 'Success Story' },
+      ]
+    },
+    {
+      name: 'status',
+      label: 'Status',
+      type: 'select',
+      required: true,
+      options: [
+        { value: 'PUBLISHED', label: 'Published' },
+        { value: 'DRAFT', label: 'Draft' },
+      ]
+    },
+    {
+      name: 'fullContent',
+      label: 'Content',
+      type: 'textarea',
+      required: true,
+      placeholder: 'Describe the update in detail...',
+      rows: 8
+    },
+    {
+      name: 'excerpt',
+      label: 'Excerpt (Optional)',
+      type: 'textarea',
+      placeholder: 'Short summary...',
+      rows: 3
+    },
+  ];
+
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black bg-opacity-50 p-4">
-      <div className="flex max-h-[90vh] w-full max-w-3xl flex-col rounded-2xl bg-white shadow-2xl">
-        <div className="border-b p-6">
-          <h3 className="text-2xl font-bold">{update ? 'Edit Update' : 'Post New Update'}</h3>
-        </div>
-        <div className="flex-1 overflow-y-auto p-6">
-          <form id="news-form" onSubmit={handleSubmit}>
-            <div className="mb-4">
-              <label className="mb-2 block text-sm font-bold" htmlFor="news-title">
-                Title
-              </label>
-              <input
-                id="news-title"
-                name="title"
-                defaultValue={update?.title}
-                className="w-full rounded-lg border p-3"
-                required
-                placeholder="e.g. New Community Program Launch"
-              />
-            </div>
-            <div className="mb-4">
-              <label className="mb-2 block text-sm font-bold" htmlFor="news-imageUrl">
-                Image URL (Optional)
-              </label>
-              <input
-                id="news-imageUrl"
-                name="imageUrl"
-                defaultValue={update?.imageUrl}
-                className="w-full rounded-lg border p-3"
-                placeholder="https://..."
-              />
-            </div>
-            <div className="mb-4 grid grid-cols-2 gap-4">
-              <div>
-                <label className="mb-2 block text-sm font-bold" htmlFor="news-category">
-                  Category
-                </label>
-                <select
-                  id="news-category"
-                  name="category"
-                  defaultValue={update?.category || 'GENERAL'}
-                  className="w-full rounded-lg border p-3"
-                >
-                  <option value="GENERAL">General</option>
-                  <option value="EVENT">Event</option>
-                  <option value="ANNOUNCEMENT">Announcement</option>
-                  <option value="STORY">Success Story</option>
-                </select>
-              </div>
-              <div>
-                <label className="mb-2 block text-sm font-bold" htmlFor="news-status">
-                  Status
-                </label>
-                <select
-                  id="news-status"
-                  name="status"
-                  defaultValue={update?.status || 'PUBLISHED'}
-                  className="w-full rounded-lg border p-3"
-                >
-                  <option value="PUBLISHED">Published</option>
-                  <option value="DRAFT">Draft</option>
-                </select>
-              </div>
-            </div>
-            <div className="mb-6">
-              <label className="mb-2 block text-sm font-bold" htmlFor="news-fullContent">
-                Content
-              </label>
-              <textarea
-                id="news-fullContent"
-                name="fullContent"
-                defaultValue={update?.fullContent}
-                className="h-48 w-full rounded-lg border p-3"
-                required
-                placeholder="Describe the update in detail..."
-              />
-            </div>
-            <div className="mb-4">
-              <label className="mb-2 block text-sm font-bold" htmlFor="news-excerpt">
-                Excerpt (Optional)
-              </label>
-              <textarea
-                id="news-excerpt"
-                name="excerpt"
-                defaultValue={update?.excerpt}
-                className="h-20 w-full rounded-lg border p-3"
-                placeholder="Short summary..."
-              />
-            </div>
-            <div className="flex gap-4">
-              <Button type="submit" fullWidth>
-                Save Post
-              </Button>
-              <Button type="button" variant="secondary" fullWidth onClick={onClose}>
-                Cancel
-              </Button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
+    <FormModal
+      isOpen={true}
+      onClose={onClose}
+      onSubmit={handleSubmit}
+      title={update ? 'Edit Update' : 'Post New Update'}
+      fields={fields}
+      initialData={update ? { ...update } : undefined}
+      submitLabel="Save Post"
+    />
   );
 }

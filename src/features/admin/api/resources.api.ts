@@ -1,4 +1,5 @@
 import { apiClient as client } from '@/shared/services/api/client';
+import { storageService, STORAGE_KEYS } from '@/shared/services/storage/storageService';
 
 export interface Resource {
   id: string;
@@ -43,7 +44,7 @@ export const deleteResource = async (id: string) => {
   return client.delete(`/resources/${id}`);
 };
 
-export const uploadFile = async (file: File, folder: string = 'resources') => {
+export const uploadFile = async (file: File, folder = 'resources'): Promise<{ data: { url: string } }> => {
   // Client-side validation
   const maxSize = 10 * 1024 * 1024; // 10MB
   if (file.size > maxSize) {
@@ -56,11 +57,14 @@ export const uploadFile = async (file: File, folder: string = 'resources') => {
   formData.append('file', file);
   formData.append('folder', folder);
 
-  const token = localStorage.getItem('wiria_auth_token');
+  const token = storageService.get<string>(STORAGE_KEYS.AUTH_TOKEN);
+  if (!token) {
+    throw new Error('Authentication required. Please log in to upload files.');
+  }
 
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api'}/uploads`,
+      `${import.meta.env['VITE_API_BASE_URL'] ?? 'http://localhost:5001/api'}/uploads`,
       {
         method: 'POST',
         headers: {
@@ -71,7 +75,9 @@ export const uploadFile = async (file: File, folder: string = 'resources') => {
     );
 
     if (!response.ok) {
-      const errorData = await response.json().catch(() => null);
+      const errorData = (await response.json().catch(() => null)) as {
+        error?: { message?: string };
+      } | null;
 
       // Handle specific error cases
       if (response.status === 413 || errorData?.error?.message?.includes('too large')) {
@@ -90,27 +96,28 @@ export const uploadFile = async (file: File, folder: string = 'resources') => {
 
       // Generic error with status
       throw new Error(
-        errorData?.error?.message || `Upload failed (${response.status}). Please try again.`
+        errorData?.error?.message ?? `Upload failed (${response.status}). Please try again.`
       );
     }
 
-    return response.json();
+    const result = await response.json() as { url: string };
+    return { data: result };
   } catch (error: unknown) {
-    const err = error as { message?: string; name?: string };
+    const errorObject = error as { message?: string; name?: string };
     // Re-throw our custom errors
     if (
-      err.message?.includes('10MB') ||
-      err.message?.includes('Authentication') ||
-      err.message?.includes('permission')
+      errorObject.message?.includes('10MB') ||
+      errorObject.message?.includes('Authentication') ||
+      errorObject.message?.includes('permission')
     ) {
       throw error;
     }
 
     // Network or other errors
-    if (err.name === 'TypeError' && err.message?.includes('fetch')) {
+    if (errorObject.name === 'TypeError' && errorObject.message?.includes('fetch')) {
       throw new Error('Network error. Please check your connection and try again.');
     }
 
-    throw new Error(err.message || 'File upload failed. Please try again.');
+    throw new Error(errorObject.message ?? 'File upload failed. Please try again.');
   }
 };

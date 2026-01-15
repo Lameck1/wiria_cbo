@@ -1,10 +1,11 @@
 import { ReactNode } from 'react';
-import { useForm, FormProvider, UseFormReturn, DefaultValues, FieldValues } from 'react-hook-form';
+
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm, FormProvider, UseFormReturn, DefaultValues, FieldValues } from 'react-hook-form';
 import { z } from 'zod';
 
 interface FormProps<T extends FieldValues> {
-    schema: z.ZodType<T, any, any>;
+    schema: z.ZodType<T>;
     defaultValues?: DefaultValues<T>;
     children: (methods: UseFormReturn<T>) => ReactNode;
     onSubmit: (data: T) => void | Promise<void>;
@@ -21,6 +22,7 @@ export function Form<T extends FieldValues>({
     id,
 }: FormProps<T>) {
     const methods = useForm<T>({
+        // @ts-expect-error - Zod version mismatch between react-hook-form and zod
         resolver: zodResolver(schema),
         defaultValues,
         mode: 'onBlur', // Validate on blur for better UX
@@ -30,7 +32,7 @@ export function Form<T extends FieldValues>({
         <FormProvider {...methods}>
             <form
                 id={id}
-                onSubmit={methods.handleSubmit(onSubmit)}
+                onSubmit={(e) => void methods.handleSubmit(onSubmit)(e)}
                 className={`space-y-6 ${className}`}
                 noValidate
             >

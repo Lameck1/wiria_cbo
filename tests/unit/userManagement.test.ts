@@ -1,14 +1,14 @@
 // @vitest-environment jsdom
 
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { fireEvent } from '@testing-library/dom';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 
 // User Management TDD: Login, Profile View/Edit, Password Reset, Logout
 
 describe('User Management UI', () => {
   beforeEach(() => {
     document.body.innerHTML = '';
-    localStorage.clear();
+    window.localStorage.clear();
   });
 
   afterEach(() => {
@@ -32,14 +32,12 @@ describe('User Management UI', () => {
     if (!form || !errorDiv) throw new Error('Test DOM not initialized');
 
     let submitted = false;
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
       submitted = true;
-      const identifier = (form.querySelector('input[name="identifier"]') as HTMLInputElement | null)
-        ?.value;
-      const password = (form.querySelector('input[name="password"]') as HTMLInputElement | null)
-        ?.value;
-      if (!identifier || !password) {
+      const identifier = form.querySelector('input[name="identifier"]') as HTMLInputElement;
+      const password = form.querySelector('input[name="password"]') as HTMLInputElement;
+      if (!identifier?.value || !password?.value) {
         errorDiv.textContent = 'All fields required';
       }
     });
@@ -69,17 +67,19 @@ describe('User Management UI', () => {
       'fetch',
       vi.fn().mockResolvedValue({
         ok: false,
-        json: async () => ({ error: 'Invalid credentials' }),
+        json: () => ({ error: 'Invalid credentials' }),
       })
     );
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const res = await fetch('/api/auth/login', { method: 'POST' });
-      const data = await res.json();
-      if (!res.ok) {
-        errorDiv.textContent = data.error;
-      }
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      void (async () => {
+        const res = await fetch('/api/auth/login', { method: 'POST' });
+        const data = await res.json();
+        if (!res.ok) {
+          errorDiv.textContent = data.error;
+        }
+      })();
     });
 
     fireEvent.submit(form);
@@ -91,27 +91,29 @@ describe('User Management UI', () => {
       'fetch',
       vi.fn().mockResolvedValue({
         ok: true,
-        json: async () => ({ token: 'abc123' }),
+        json: () => ({ token: 'abc123' }),
       })
     );
 
-    const passwordInput = form.querySelector('input[name="password"]') as HTMLInputElement | null;
+    const passwordInput = form.querySelector('input[name="password"]');
     expect(passwordInput).not.toBeNull();
     if (!passwordInput) throw new Error('Missing password input');
-    passwordInput.value = 'correctpass';
+    (passwordInput as HTMLInputElement).value = 'correctpass';
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const res = await fetch('/api/auth/login', { method: 'POST' });
-      const data = await res.json();
-      if (res.ok) {
-        localStorage.setItem('wiria_auth_token', data.token);
-      }
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      void (async () => {
+        const res = await fetch('/api/auth/login', { method: 'POST' });
+        const data = await res.json();
+        if (res.ok) {
+          window.localStorage.setItem('wiria_auth_token', data.token);
+        }
+      })();
     });
 
     fireEvent.submit(form);
     await new Promise<void>((resolve) => setTimeout(resolve, 0));
-    expect(localStorage.getItem('wiria_auth_token')).toBe('abc123');
+    expect(window.localStorage.getItem('wiria_auth_token')).toBe('abc123');
   });
 
   it('renders user profile and allows editing', () => {
@@ -128,28 +130,28 @@ describe('User Management UI', () => {
       <div id="profile-success"></div>
     `;
 
-    const editBtn = document.getElementById('edit-profile-btn') as HTMLButtonElement | null;
+    const editButton = document.getElementById('edit-profile-btn') as HTMLButtonElement | null;
     const editForm = document.getElementById('profile-edit-form') as HTMLFormElement | null;
     const profileView = document.getElementById('profile-view') as HTMLDivElement | null;
     const successDiv = document.getElementById('profile-success') as HTMLDivElement | null;
-    expect(editBtn).not.toBeNull();
+    expect(editButton).not.toBeNull();
     expect(editForm).not.toBeNull();
     expect(profileView).not.toBeNull();
     expect(successDiv).not.toBeNull();
-    if (!editBtn || !editForm || !profileView || !successDiv)
+    if (!editButton || !editForm || !profileView || !successDiv)
       throw new Error('Test DOM not initialized');
 
-    editBtn.addEventListener('click', () => {
+    editButton.addEventListener('click', () => {
       profileView.style.display = 'none';
       editForm.style.display = 'block';
     });
 
-    fireEvent.click(editBtn);
+    fireEvent.click(editButton);
     expect(profileView.style.display).toBe('none');
     expect(editForm.style.display).toBe('block');
 
-    editForm.addEventListener('submit', (e) => {
-      e.preventDefault();
+    editForm.addEventListener('submit', (event) => {
+      event.preventDefault();
       successDiv.textContent = 'Profile updated!';
     });
 
@@ -172,11 +174,10 @@ describe('User Management UI', () => {
     expect(errorDiv).not.toBeNull();
     if (!form || !errorDiv) throw new Error('Test DOM not initialized');
 
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const email =
-        (form.querySelector('input[name="email"]') as HTMLInputElement | null)?.value ?? '';
-      if (!email.includes('@')) {
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const emailInput = form.querySelector('input[name="email"]') as HTMLInputElement;
+      if (emailInput && !emailInput.value.includes('@')) {
         errorDiv.textContent = 'Invalid email';
       }
     });
@@ -186,18 +187,18 @@ describe('User Management UI', () => {
   });
 
   it('logs out and clears token', () => {
-    localStorage.setItem('wiria_auth_token', 'abc123');
+    window.localStorage.setItem('wiria_auth_token', 'abc123');
     document.body.innerHTML = '<button id="logout-btn">Logout</button>';
 
-    const btn = document.getElementById('logout-btn') as HTMLButtonElement | null;
-    expect(btn).not.toBeNull();
-    if (!btn) throw new Error('Missing logout button');
+    const button = document.getElementById('logout-btn') as HTMLButtonElement | null;
+    expect(button).not.toBeNull();
+    if (!button) throw new Error('Missing logout button');
 
-    btn.addEventListener('click', () => {
-      localStorage.removeItem('wiria_auth_token');
+    button.addEventListener('click', () => {
+      window.localStorage.removeItem('wiria_auth_token');
     });
 
-    fireEvent.click(btn);
-    expect(localStorage.getItem('wiria_auth_token')).toBeNull();
+    fireEvent.click(button);
+    expect(window.localStorage.getItem('wiria_auth_token')).toBeNull();
   });
 });

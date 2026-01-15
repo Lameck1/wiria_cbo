@@ -1,21 +1,24 @@
-import { PortalLayout } from '@/features/membership/components/PortalLayout';
-import { Card, CardBody } from '@/shared/components/ui/Card';
-import { Button } from '@/shared/components/ui/Button';
-import { FormField } from '@/shared/components/ui/form';
-import { Input } from '@/shared/components/ui/Input';
-import { PaymentMethodToggle } from '@/features/donations/components/PaymentMethodToggle';
-import { PaymentInstructions } from '@/features/donations/components/PaymentInstructions';
-import { useAuth } from '@/features/auth/context/AuthContext';
-import { useMemberData } from '@/features/membership/hooks/useMemberData';
-import { useRenewal } from '@/features/membership/hooks/useRenewal';
-import { usePaymentPoller } from '@/features/donations/hooks/usePaymentPoller';
 import { useEffect } from 'react';
-import { formatPhoneNumber } from '@/shared/utils/helpers';
-import { useRenewalFeeCalculation } from '@/shared/hooks/useFeeCalculation';
+
+import { zodResolver } from '@hookform/resolvers/zod';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useForm, FormProvider, Controller } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+
+import { useAuth } from '@/features/auth/context/AuthContext';
+import { PaymentInstructions } from '@/features/donations/components/PaymentInstructions';
+import { PaymentMethodToggle } from '@/features/donations/components/PaymentMethodToggle';
+import { usePaymentPoller } from '@/features/donations/hooks/usePaymentPoller';
+import { PortalLayout } from '@/features/membership/components/PortalLayout';
+import { useMemberData } from '@/features/membership/hooks/useMemberData';
+import { useRenewal } from '@/features/membership/hooks/useRenewal';
 import { renewalSchema, RenewalFormSchema } from '@/features/membership/validation';
+import { Button } from '@/shared/components/ui/Button';
+import { Card, CardBody } from '@/shared/components/ui/Card';
+import { FormField } from '@/shared/components/ui/form';
+import { Input } from '@/shared/components/ui/Input';
+import { useRenewalFeeCalculation } from '@/shared/hooks/useFeeCalculation';
+import { formatPhoneNumber } from '@/shared/utils/helpers';
+
 import {
   RenewalSuccess,
   RenewalPending,
@@ -44,19 +47,19 @@ function MemberRenewalPage() {
   const { handleSubmit, watch, setValue, formState: { errors } } = methods;
 
   const paymentMethod = watch('paymentMethod');
-  const memberCount = watch('memberCount') || 1;
+  const memberCount = watch('memberCount') ?? 1;
   const agreedToDataProtection = watch('agreedToDataProtection');
   const agreedToCodeOfEthics = watch('agreedToCodeOfEthics');
   const transactionCode = watch('transactionCode');
 
   useEffect(() => {
-    fetchProfile();
+    void fetchProfile();
   }, [fetchProfile]);
 
   useEffect(() => {
     if (profile) {
-      setValue('memberCount', profile.currentMemberCount || 1);
-      setValue('phoneNumber', profile.phone || '');
+      setValue('memberCount', profile.currentMemberCount ?? 1);
+      setValue('phoneNumber', profile.phone ?? '');
     }
   }, [profile, setValue]);
 
@@ -69,7 +72,7 @@ function MemberRenewalPage() {
     onStatusCheck: checkPaymentStatus,
   });
 
-  const maxCount = profile?.maxMemberCountReached || profile?.currentMemberCount || 0;
+  const maxCount = profile?.maxMemberCountReached ?? profile?.currentMemberCount ?? 0;
 
   const feeBreakdown = useRenewalFeeCalculation({
     membershipType: isGroup ? 'GROUP' : 'INDIVIDUAL',
@@ -80,7 +83,7 @@ function MemberRenewalPage() {
   const onSubmit = async (data: RenewalFormSchema) => {
     await submitRenewal({
       paymentMethod: data.paymentMethod,
-      phoneNumber: formatPhoneNumber(data.phoneNumber || ''),
+      phoneNumber: formatPhoneNumber(data.phoneNumber ?? ''),
       transactionCode: data.paymentMethod === 'MANUAL' ? data.transactionCode : undefined,
       memberCount: isGroup ? data.memberCount : undefined,
       amount: feeBreakdown.total,
@@ -115,14 +118,14 @@ function MemberRenewalPage() {
               <motion.div key="form" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                 <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2">
                   <MembershipStatusCard
-                    membershipType={profile?.membershipType || 'INDIVIDUAL'}
+                    membershipType={profile?.membershipType ?? 'INDIVIDUAL'}
                     expiresAt={profile?.membershipExpiresAt}
                     daysUntilExpiry={daysUntilExpiry}
                   />
                   <TotalAmountCard total={feeBreakdown.total} />
                 </div>
 
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+                <form onSubmit={(e) => { e.preventDefault(); void handleSubmit(onSubmit)(e); }} className="space-y-8">
                   <AnimatePresence>
                     {isGroup && (
                       <motion.div
@@ -254,7 +257,7 @@ function MemberRenewalPage() {
                           </p>
                           <PaymentMethodToggle
                             selected={paymentMethod}
-                            onChange={(val) => setValue('paymentMethod', val)}
+                            onChange={(value) => setValue('paymentMethod', value)}
                             disabled={isSubmitting}
                           />
                         </div>

@@ -4,8 +4,11 @@
  */
 
 import { ReactNode } from 'react';
+
 import { Link, useNavigate } from 'react-router-dom';
+
 import { useAuth } from '@/features/auth/context/AuthContext';
+
 import { PortalNavigation } from './PortalNavigation';
 
 interface PortalLayoutProps {
@@ -57,7 +60,7 @@ export function PortalLayout({
               </span>
             )}
             <button
-              onClick={handleLogout}
+              onClick={() => { void handleLogout(); }}
               className="rounded-lg bg-gray-200 px-4 py-2 text-sm font-bold text-gray-700 transition-all hover:bg-gray-300"
             >
               Logout

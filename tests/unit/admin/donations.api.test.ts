@@ -1,9 +1,10 @@
 /**
  * Admin Donations API Tests
  */
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+
 import { getDonations, getDonationById, getDonationStatistics } from '@/features/admin/api/donations.api';
 
 const mockDonation = {
@@ -88,9 +89,10 @@ describe('donations.api', () => {
                 })
             );
 
-            const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
-            const result = await getDonations();
-            expect(result).toEqual([]);
+            const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+            
+            // Now expects error to be thrown
+            await expect(getDonations()).rejects.toThrow('Failed to load donations');
             consoleSpy.mockRestore();
         });
     });
@@ -117,7 +119,7 @@ describe('donations.api', () => {
                 })
             );
 
-            const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
+            const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
             const result = await getDonationById('999');
             expect(result).toBeNull();
             consoleSpy.mockRestore();
@@ -147,13 +149,10 @@ describe('donations.api', () => {
                 })
             );
 
-            const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
-            const result = await getDonationStatistics();
-            expect(result).toMatchObject({
-                total: 0,
-                totalAmount: 0,
-                completed: 0,
-            });
+            const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+            
+            // Now expects error to be thrown
+            await expect(getDonationStatistics()).rejects.toThrow('Failed to load donation statistics');
             consoleSpy.mockRestore();
         });
     });

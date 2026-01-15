@@ -4,6 +4,7 @@
  */
 
 import { motion } from 'framer-motion';
+
 import type { Tender } from '../hooks/useTenders';
 
 interface TenderCardProps {

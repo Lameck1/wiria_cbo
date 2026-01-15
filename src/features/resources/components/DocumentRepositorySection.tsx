@@ -4,11 +4,13 @@
  */
 
 import { useState, useCallback, useMemo } from 'react';
+
 import { motion, AnimatePresence } from 'framer-motion';
-import { useResources, Resource } from '../hooks/useResources';
+
 import { DocumentCard } from './DocumentCard';
-import { DocumentModal } from './DocumentModal';
 import { DocumentCardSkeleton } from './DocumentCardSkeleton';
+import { DocumentModal } from './DocumentModal';
+import { useResources, Resource } from '../hooks/useResources';
 
 // Available categories for filtering
 const CATEGORIES = [
@@ -27,20 +29,20 @@ export function DocumentRepositorySection() {
   // Filter resources by category
   const filteredResources = useMemo(() => {
     if (selectedCategory === 'ALL') return resources;
-    return resources.filter((doc) => doc.category === selectedCategory);
+    return resources.filter((document_) => document_.category === selectedCategory);
   }, [resources, selectedCategory]);
 
   // Get category counts
   const categoryCounts = useMemo(() => {
     const counts: Record<string, number> = { ALL: resources.length };
-    resources.forEach((doc) => {
-      counts[doc.category] = (counts[doc.category] || 0) + 1;
+    resources.forEach((document_) => {
+      counts[document_.category] = (counts[document_.category] ?? 0) + 1;
     });
     return counts;
   }, [resources]);
 
-  const handleOpenModal = useCallback((doc: Resource) => {
-    setSelectedDocument(doc);
+  const handleOpenModal = useCallback((document_: Resource) => {
+    setSelectedDocument(document_);
   }, []);
 
   const handleCloseModal = useCallback(() => {
@@ -155,12 +157,12 @@ export function DocumentRepositorySection() {
             ) : (
               // Document Cards with animation
               <AnimatePresence mode="popLayout">
-                {filteredResources.map((doc, index) => (
+                {filteredResources.map((document_, index) => (
                   <DocumentCard
-                    key={doc.id}
-                    document={doc}
+                    key={document_.id}
+                    document={document_}
                     index={index}
-                    onClick={() => handleOpenModal(doc)}
+                    onClick={() => handleOpenModal(document_)}
                   />
                 ))}
               </AnimatePresence>

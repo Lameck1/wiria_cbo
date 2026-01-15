@@ -4,9 +4,9 @@
 
  */
 
-import { Opportunity } from '../hooks/useOpportunities';
-import { OpportunityInfoCards } from './OpportunityInfoCards';
 import { OpportunityDetailSection } from './OpportunityDetailSection';
+import { OpportunityInfoCards } from './OpportunityInfoCards';
+import { Opportunity } from '../hooks/useOpportunities';
 
 interface OpportunityModalContentProps {
   opportunity: Opportunity;

@@ -4,7 +4,9 @@
  */
 
 import { useState, FormEvent } from 'react';
+
 import { motion, AnimatePresence } from 'framer-motion';
+
 import { useSafeguardingReport } from '../hooks/useSafeguardingReport';
 
 // status configuration with icons
@@ -41,6 +43,14 @@ const STATUS_CONFIG: Record<string, { bg: string; text: string; icon: string; la
   },
 };
 
+function formatDate(dateString: string): string {
+  return new Date(dateString).toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  });
+}
+
 export function ReportStatusLookup() {
   const [referenceNumber, setReferenceNumber] = useState('');
   const [email, setEmail] = useState('');
@@ -48,23 +58,15 @@ export function ReportStatusLookup() {
   const { lookupStatus, isLookingUp, lookupResult, lookupError, resetLookup } =
     useSafeguardingReport();
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    await lookupStatus(referenceNumber, email || undefined);
+  const handleSubmit = (event: FormEvent) => {
+    event.preventDefault();
+    void lookupStatus(referenceNumber, email || undefined);
   };
 
   const handleReset = () => {
     resetLookup();
     setReferenceNumber('');
     setEmail('');
-  };
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-GB', {
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric',
-    });
   };
 
   const statusConfig = lookupResult ? STATUS_CONFIG[lookupResult.status] : null;
@@ -83,7 +85,7 @@ export function ReportStatusLookup() {
         Check Report Status
       </h3>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={(e) => void handleSubmit(e)} className="space-y-4">
         <div>
           <label htmlFor="lookupReference" className="mb-1 block text-sm font-medium text-gray-700">
             Reference Number
@@ -92,7 +94,7 @@ export function ReportStatusLookup() {
             type="text"
             id="lookupReference"
             value={referenceNumber}
-            onChange={(e) => setReferenceNumber(e.target.value)}
+            onChange={(event) => setReferenceNumber(event.target.value)}
             required
             disabled={isLookingUp}
             className="w-full rounded-lg border border-gray-300 px-4 py-3 transition-all focus:border-wiria-blue-dark focus:ring-2 focus:ring-wiria-blue-dark disabled:bg-gray-50"
@@ -107,7 +109,7 @@ export function ReportStatusLookup() {
             type="email"
             id="lookupEmail"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(event) => setEmail(event.target.value)}
             disabled={isLookingUp}
             className="w-full rounded-lg border border-gray-300 px-4 py-3 transition-all focus:border-wiria-blue-dark focus:ring-2 focus:ring-wiria-blue-dark disabled:bg-gray-50"
             placeholder="Optional - for verification"
@@ -122,7 +124,7 @@ export function ReportStatusLookup() {
             <>
               <motion.svg
                 animate={{ rotate: 360 }}
-                transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                transition={{ duration: 1, repeat: Number.POSITIVE_INFINITY, ease: 'linear' }}
                 className="h-4 w-4"
                 fill="none"
                 viewBox="0 0 24 24"

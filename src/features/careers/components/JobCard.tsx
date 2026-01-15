@@ -4,8 +4,9 @@
  */
 
 import { motion } from 'framer-motion';
-import { Job } from '../hooks/useCareers';
+
 import { JOB_TYPE_LABELS } from '../constants/careersData';
+import { Job } from '../hooks/useCareers';
 
 interface JobCardProps {
   job: Job;
@@ -27,8 +28,17 @@ function getDeadlineColor(daysRemaining: number): string {
   return 'text-green-600 bg-green-50';
 }
 
+function getDepartment(title: string): string {
+  if (title.toLowerCase().includes('health')) return 'Health';
+  if (title.toLowerCase().includes('finance')) return 'Finance';
+  if (title.toLowerCase().includes('admin')) return 'Admin';
+  if (title.toLowerCase().includes('program')) return 'Programs';
+  if (title.toLowerCase().includes('monitor')) return 'M&E';
+  return 'General';
+}
+
 export function JobCard({ job, onClick }: JobCardProps) {
-  const typeLabel = JOB_TYPE_LABELS[job.employmentType] || job.employmentType;
+  const typeLabel = JOB_TYPE_LABELS[job.employmentType] ?? job.employmentType;
   const deadlineDate = new Date(job.deadline);
   const isExpired = deadlineDate < new Date();
   const daysRemaining = getDaysRemaining(job.deadline);
@@ -37,16 +47,6 @@ export function JobCard({ job, onClick }: JobCardProps) {
   const postedDate = new Date(job.createdAt);
   const daysSincePosted = Math.floor((Date.now() - postedDate.getTime()) / (1000 * 60 * 60 * 24));
   const isNew = daysSincePosted <= 7;
-
-  // Extract department from title or use default
-  const getDepartment = (title: string): string => {
-    if (title.toLowerCase().includes('health')) return 'Health';
-    if (title.toLowerCase().includes('finance')) return 'Finance';
-    if (title.toLowerCase().includes('admin')) return 'Admin';
-    if (title.toLowerCase().includes('program')) return 'Programs';
-    if (title.toLowerCase().includes('monitor')) return 'M&E';
-    return 'General';
-  };
 
   const department = getDepartment(job.title);
 
@@ -187,13 +187,13 @@ export function JobCard({ job, onClick }: JobCardProps) {
       {job.requirements && job.requirements.length > 0 && (
         <div className="flex flex-wrap gap-2 border-t border-gray-100 pt-4">
           <span className="mr-1 text-xs font-medium text-gray-400">Key requirements:</span>
-          {job.requirements.slice(0, 3).map((req, i) => (
+          {job.requirements.slice(0, 3).map((request, index) => (
             <span
-              key={i}
+              key={index}
               className="rounded-lg border border-gray-200 bg-gradient-to-r from-gray-50 to-gray-100 px-3 py-1 text-xs font-medium text-gray-700"
-              title={req}
+              title={request}
             >
-              {req.length > 25 ? req.substring(0, 25) + '...' : req}
+              {request.length > 25 ? request.slice(0, 25) + '...' : request}
             </span>
           ))}
           {job.requirements.length > 3 && (

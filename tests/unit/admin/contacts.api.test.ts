@@ -1,9 +1,9 @@
 /**
  * Admin Contacts API Tests
  */
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 const mockContact = {
     id: '1',
@@ -50,10 +50,11 @@ describe('contacts.api', () => {
                 })
             );
 
-            const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
+            const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
             const { getContacts } = await import('@/features/admin/api/contacts.api');
-            const result = await getContacts();
-            expect(result).toEqual([]);
+            
+            // Now expects error to be thrown instead of returning empty array
+            await expect(getContacts()).rejects.toThrow('Failed to load contacts');
             consoleSpy.mockRestore();
         });
     });
@@ -78,7 +79,7 @@ describe('contacts.api', () => {
                 })
             );
 
-            const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
+            const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
             const { getContactById } = await import('@/features/admin/api/contacts.api');
             const result = await getContactById('999');
             expect(result).toBeNull();

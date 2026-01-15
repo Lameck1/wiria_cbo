@@ -6,6 +6,7 @@
 
 import { SectionHeader } from '@/shared/components/sections/SectionHeader';
 import { IconCard } from '@/shared/components/ui/IconCard';
+
 import { WHY_JOIN_REASONS } from '../constants/careersData';
 
 // Icons mapping

@@ -38,7 +38,7 @@ export const getContacts = async (params?: { status?: string }): Promise<Contact
     return extractArray(response);
   } catch (error) {
     console.error('Failed to fetch contacts:', error);
-    return [];
+    throw new Error('Failed to load contacts. Please try again.');
   }
 };
 
@@ -75,23 +75,13 @@ export const archiveContact = async (id: string): Promise<boolean> => {
 export const getContactStatistics = async (): Promise<ContactStatistics> => {
   try {
     const response = await apiClient.get('/contact/statistics');
-    return (
-      extractData<ContactStatistics>(response) ?? {
-        total: 0,
-        pending: 0,
-        responded: 0,
-        archived: 0,
-        unread: 0,
-      }
-    );
+    const data = extractData<ContactStatistics>(response);
+    if (!data) {
+      throw new Error('Invalid statistics data received');
+    }
+    return data;
   } catch (error) {
     console.error('Failed to fetch contact statistics:', error);
-    return {
-      total: 0,
-      pending: 0,
-      responded: 0,
-      archived: 0,
-      unread: 0,
-    };
+    throw new Error('Failed to load contact statistics. Please try again.');
   }
 };

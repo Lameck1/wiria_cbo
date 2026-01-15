@@ -1,14 +1,16 @@
 import { useState } from 'react';
+
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+
 import {
   Resource,
   getAdminResources,
   deleteResource,
 } from '@/features/admin/api/resources.api';
+import { ResourceModal } from '@/features/admin/components/resources/ResourceModal';
 import { Button } from '@/shared/components/ui/Button';
 import { notificationService } from '@/shared/services/notification/notificationService';
 import { extractArray } from '@/shared/utils/apiUtils';
-import { ResourceModal } from '@/features/admin/components/resources/ResourceModal';
 
 export default function ResourceManagementPage() {
   const queryClient = useQueryClient();
@@ -27,15 +29,15 @@ export default function ResourceManagementPage() {
     mutationFn: deleteResource,
     onSuccess: () => {
       notificationService.success('Resource deleted successfully');
-      queryClient.invalidateQueries({ queryKey: ['admin', 'resources'] });
+      void queryClient.invalidateQueries({ queryKey: ['admin', 'resources'] });
     },
     onError: () => {
       notificationService.error('Failed to delete resource');
     },
   });
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this resource?')) return;
+  const handleDelete = (id: string) => {
+    if (!window.confirm('Are you sure you want to delete this resource?')) return;
     deleteMutation.mutate(id);
   };
 
@@ -102,7 +104,7 @@ export default function ResourceManagementPage() {
                       Edit
                     </button>
                     <button
-                      onClick={() => handleDelete(resource.id)}
+                      onClick={() => void handleDelete(resource.id)}
                       className="text-sm font-bold text-red-600 hover:text-red-800 transition-colors"
                     >
                       Delete

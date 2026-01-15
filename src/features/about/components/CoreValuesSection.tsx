@@ -4,6 +4,7 @@
  */
 
 import { motion } from 'framer-motion';
+
 import { CORE_VALUES } from '../constants/aboutData';
 
 // Meaningful SVG Icons for each value

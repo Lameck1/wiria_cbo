@@ -4,9 +4,10 @@
  */
 
 import { ReactElement } from 'react';
+
 import { ProtectedRoute } from '@/features/auth/components/ProtectedRoute';
-import { UserRole } from '@/shared/types';
 import { ROUTES } from '@/shared/constants/routes';
+import { UserRole } from '@/shared/types';
 
 /**
  * Wraps a component with member-only protection

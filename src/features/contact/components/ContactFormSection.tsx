@@ -1,8 +1,11 @@
 import { useState } from 'react';
+
 import { motion, AnimatePresence } from 'framer-motion';
-import { useContactForm } from '../hooks/useContactForm';
+
 import { Form, FormField, FormTextareaField } from '@/shared/components/ui/form';
 import { cn } from '@/shared/utils/helpers';
+
+import { useContactForm } from '../hooks/useContactForm';
 import { contactSchema, ContactFormSchema } from '../validation';
 
 const MESSAGE_MIN_LENGTH = 20;
@@ -15,7 +18,7 @@ export function ContactFormSection() {
   const onSubmit = async (data: ContactFormSchema) => {
     const success = await submitContactForm({
       ...data,
-      phone: data.phone || undefined,
+      phone: data.phone ?? undefined,
     });
     if (success) {
       setShowSuccess(true);
@@ -32,7 +35,7 @@ export function ContactFormSection() {
     >
       <Form schema={contactSchema} onSubmit={onSubmit} id="contact-form" className="space-y-6">
         {({ watch }) => {
-          const messageValue = watch('message') || '';
+          const messageValue = watch('message') ?? '';
           const messageLength = messageValue.length;
           const messagePercentage = Math.min((messageLength / MESSAGE_MAX_LENGTH) * 100, 100);
 

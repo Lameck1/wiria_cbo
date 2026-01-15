@@ -1,10 +1,11 @@
 /**
  * useFeeCalculation Hook Tests
  */
-import { describe, it, expect } from 'vitest';
 import { renderHook } from '@testing-library/react';
-import { useFeeCalculation, useRenewalFeeCalculation } from '@/shared/hooks/useFeeCalculation';
+import { describe, it, expect } from 'vitest';
+
 import { MEMBERSHIP_FEES } from '@/shared/constants/membership';
+import { useFeeCalculation, useRenewalFeeCalculation } from '@/shared/hooks/useFeeCalculation';
 
 describe('useFeeCalculation', () => {
     describe('INDIVIDUAL membership', () => {

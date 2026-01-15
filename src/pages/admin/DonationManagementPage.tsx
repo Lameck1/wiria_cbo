@@ -1,5 +1,7 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
+
 import { useSearchParams } from 'react-router-dom';
+
 import {
   getDonations,
   getDonationStatistics,
@@ -7,13 +9,13 @@ import {
   DonationStatistics,
 } from '@/features/admin/api/donations.api';
 import { AdminPageHeader } from '@/features/admin/components/layout/AdminPageHeader';
+import { Card, CardBody } from '@/shared/components/ui/Card';
 import { DataTable, Column } from '@/shared/components/ui/DataTable';
+import { Spinner } from '@/shared/components/ui/Spinner';
 import { StatusBadge } from '@/shared/components/ui/StatusBadge';
 import { useAdminData } from '@/shared/hooks/useAdminData';
-import { Card, CardBody } from '@/shared/components/ui/Card';
-import { Spinner } from '@/shared/components/ui/Spinner';
-import { formatCurrency } from '@/shared/utils/helpers';
 import { formatDateTime } from '@/shared/utils/dateUtils';
+import { formatCurrency } from '@/shared/utils/helpers';
 
 export default function DonationManagementPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -34,7 +36,17 @@ export default function DonationManagementPage() {
     }
   );
 
-  const statistics = statsList[0] || null;
+  const statistics = statsList[0] ?? null;
+
+  // Memoized callback for viewing donation details
+  const handleViewDetails = useCallback((donation: Donation) => {
+    setSelectedDonation(donation);
+  }, []);
+
+  // Memoized callback for closing modal
+  const handleCloseModal = useCallback(() => {
+    setSelectedDonation(null);
+  }, []);
 
   useEffect(() => {
     if (!highlightId || donations.length === 0) return;
@@ -91,7 +103,7 @@ export default function DonationManagementPage() {
         align: 'right',
         render: (d) => (
           <button
-            onClick={() => setSelectedDonation(d)}
+            onClick={() => handleViewDetails(d)}
             className="text-sm font-bold text-wiria-blue-dark hover:underline"
           >
             View Details
@@ -99,7 +111,7 @@ export default function DonationManagementPage() {
         ),
       },
     ],
-    []
+    [handleViewDetails]
   );
 
   return (
@@ -159,7 +171,7 @@ export default function DonationManagementPage() {
               title="Filter by status"
               aria-label="Filter donations by status"
               value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
+              onChange={(event) => setStatusFilter(event.target.value)}
               className="rounded-lg border px-4 py-2 text-sm outline-none focus:ring-2 focus:ring-wiria-blue-dark/20"
             >
               <option value="">All Statuses</option>
@@ -189,7 +201,7 @@ export default function DonationManagementPage() {
             <div className="flex items-center justify-between border-b p-6">
               <h3 className="text-xl font-bold text-wiria-blue-dark">Donation Details</h3>
               <button
-                onClick={() => setSelectedDonation(null)}
+                onClick={handleCloseModal}
                 className="rounded-lg p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors"
               >
                 ✕
@@ -249,7 +261,7 @@ export default function DonationManagementPage() {
             </div>
             <div className="border-t p-6">
               <button
-                onClick={() => setSelectedDonation(null)}
+                onClick={handleCloseModal}
                 className="w-full rounded-xl bg-gray-900 py-3 font-bold text-white shadow-lg transition-all hover:bg-black"
               >
                 Close

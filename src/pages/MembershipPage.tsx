@@ -1,18 +1,24 @@
-import { Card, CardBody } from '@/shared/components/ui/Card';
-import { Button } from '@/shared/components/ui/Button';
-import { useRegistration } from '@/features/membership/hooks/useRegistration';
-import { usePaymentPoller } from '@/features/donations/hooks/usePaymentPoller';
-import { useForm, FormProvider } from 'react-hook-form';
+import { useEffect } from 'react';
+
 import { zodResolver } from '@hookform/resolvers/zod';
-import { registrationSchema, RegistrationFormSchema } from '@/features/membership/validation';
-import { formatPhoneNumber } from '@/shared/utils/helpers';
-import { useFeeCalculation } from '@/shared/hooks/useFeeCalculation';
+import { AnimatePresence } from 'framer-motion';
+import { useForm, FormProvider } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
+
 import { useAuth } from '@/features/auth/context/AuthContext';
+import { usePaymentPoller } from '@/features/donations/hooks/usePaymentPoller';
+import { useRegistration } from '@/features/membership/hooks/useRegistration';
+import { registrationSchema, RegistrationFormSchema } from '@/features/membership/validation';
+import { Button } from '@/shared/components/ui/Button';
+import { Card, CardBody } from '@/shared/components/ui/Card';
+import { useFeeCalculation } from '@/shared/hooks/useFeeCalculation';
 import { useBackendStatus } from '@/shared/services/backendStatus';
 import { UserRole } from '@/shared/types';
-import { useEffect } from 'react';
-import { AnimatePresence } from 'framer-motion';
+import { formatPhoneNumber } from '@/shared/utils/helpers';
+
+
+
+
 
 import {
   MembershipHero,
@@ -62,7 +68,7 @@ function MembershipPage() {
   const { handleSubmit, watch, setValue } = methods;
 
   const membershipType = watch('membershipType');
-  const memberCount = watch('memberCount') || 1;
+  const memberCount = watch('memberCount') ?? 1;
 
   const feeBreakdown = useFeeCalculation({
     membershipType,
@@ -146,12 +152,12 @@ function MembershipPage() {
 
                         <MembershipTypeToggle
                           value={membershipType}
-                          onChange={(val) => setValue('membershipType', val)}
+                          onChange={(value) => setValue('membershipType', value)}
                           isDisabled={isFormDisabled}
                         />
                       </div>
 
-                      <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+                      <form onSubmit={(e) => { e.preventDefault(); void handleSubmit(onSubmit)(e); }} className="space-y-8">
                         <AnimatePresence mode="wait">
                           {membershipType === 'GROUP' && (
                             <GroupRegistrationSection

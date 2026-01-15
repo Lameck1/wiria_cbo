@@ -4,6 +4,7 @@
  */
 
 import { useMemo } from 'react';
+
 import { MEMBERSHIP_FEES } from '@/shared/constants/membership';
 
 export type MembershipType = 'INDIVIDUAL' | 'GROUP';

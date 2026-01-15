@@ -4,6 +4,7 @@
  */
 
 import { useMemo } from 'react';
+
 import {
   useMemberProfileQuery,
   useUpdateMemberProfileMutation,
@@ -106,25 +107,25 @@ export function useMemberData() {
     activityQuery.isLoading;
 
   const error =
-    (profileQuery.error as Error)?.message ||
-    (paymentsQuery.error as Error)?.message ||
+    (profileQuery.error)?.message ??
+    (paymentsQuery.error)?.message ??
     null;
 
   // Computed values
   const totalPayments = useMemo(() =>
-    (paymentsQuery.data || [])
+    (paymentsQuery.data ?? [])
       .filter((p: Payment) => p.status === 'COMPLETED')
       .reduce((sum: number, p: Payment) => sum + p.amount, 0),
     [paymentsQuery.data]
   );
 
   const pendingPayments = useMemo(() =>
-    (paymentsQuery.data || []).filter((p: Payment) => p.status === 'PENDING').length,
+    (paymentsQuery.data ?? []).filter((p: Payment) => p.status === 'PENDING').length,
     [paymentsQuery.data]
   );
 
   const upcomingMeetings = useMemo(() =>
-    (meetingsQuery.data || []).filter((m: Meeting) => m.status === 'UPCOMING').length,
+    (meetingsQuery.data ?? []).filter((m: Meeting) => m.status === 'UPCOMING').length,
     [meetingsQuery.data]
   );
 
@@ -138,12 +139,12 @@ export function useMemberData() {
   const isExpiringSoon = daysUntilExpiry !== null && daysUntilExpiry > 0 && daysUntilExpiry <= 30;
 
   return {
-    profile: profileQuery.data || null,
-    payments: paymentsQuery.data || [],
-    meetings: meetingsQuery.data || [],
-    availableMeetings: availableMeetingsQuery.data || [],
-    documents: documentsQuery.data || [],
-    activity: activityQuery.data || [],
+    profile: profileQuery.data ?? null,
+    payments: paymentsQuery.data ?? [],
+    meetings: meetingsQuery.data ?? [],
+    availableMeetings: availableMeetingsQuery.data ?? [],
+    documents: documentsQuery.data ?? [],
+    activity: activityQuery.data ?? [],
     isLoading,
     error,
     fetchProfile: profileQuery.refetch,

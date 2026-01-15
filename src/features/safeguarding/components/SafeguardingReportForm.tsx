@@ -1,8 +1,9 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { FormProvider } from 'react-hook-form';
+
 import { useSafeguardingForm } from '../hooks/useSafeguardingForm';
-import { ReporterStep } from './form/ReporterStep';
 import { ConcernStep } from './form/ConcernStep';
+import { ReporterStep } from './form/ReporterStep';
 import { SuccessView } from './form/SuccessView';
 
 const staggerContainer = {
@@ -38,7 +39,7 @@ export function SafeguardingReportForm() {
 
   return (
     <FormProvider {...form}>
-      <form id="safeguarding-form" className="space-y-6" onSubmit={submitAction}>
+      <form id="safeguarding-form" className="space-y-6" onSubmit={(event) => { void submitAction(event); }}>
         {/* Progress Steps Indicator */}
         <div className="mb-8">
           <div className="mb-2 flex items-center justify-between">
@@ -76,7 +77,7 @@ export function SafeguardingReportForm() {
                 isAnonymous={isAnonymous}
                 isSubmitting={isSubmitting}
                 setIsAnonymous={setIsAnonymous}
-                onNext={handleNextStep}
+                onNext={() => { void handleNextStep(); }}
               />
             ) : (
               <ConcernStep

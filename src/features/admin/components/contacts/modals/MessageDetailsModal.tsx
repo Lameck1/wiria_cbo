@@ -7,15 +7,16 @@ interface MessageDetailsModalProps {
   onReply: () => void;
 }
 
+const formatDate = (date: string) =>
+  new Date(date).toLocaleDateString('en-KE', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+
 export function MessageDetailsModal({ contact, onClose, onReply }: MessageDetailsModalProps) {
-  const formatDate = (date: string) =>
-    new Date(date).toLocaleDateString('en-KE', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
 
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black bg-opacity-50 p-4">
@@ -30,7 +31,7 @@ export function MessageDetailsModal({ contact, onClose, onReply }: MessageDetail
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <InfoItem label="From" value={contact.name} />
             <InfoItem label="Email" value={contact.email} />
-            <InfoItem label="Phone" value={contact.phone || 'N/A'} />
+            <InfoItem label="Phone" value={contact.phone ?? 'N/A'} />
             <InfoItem label="Received" value={formatDate(contact.createdAt)} />
           </div>
           <div>

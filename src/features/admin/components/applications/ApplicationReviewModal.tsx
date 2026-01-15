@@ -1,10 +1,11 @@
+import { z } from 'zod';
+
 import { Application, updateApplicationStatus } from '@/features/admin/api/opportunities.api';
 import { Button } from '@/shared/components/ui/Button';
-import { notificationService } from '@/shared/services/notification/notificationService';
+import { Form, FormSelectField, FormTextareaField } from '@/shared/components/ui/form';
 import { Modal } from '@/shared/components/ui/Modal';
 import { StatusBadge } from '@/shared/components/ui/StatusBadge';
-import { Form, FormSelectField, FormTextareaField } from '@/shared/components/ui/form';
-import { z } from 'zod';
+import { notificationService } from '@/shared/services/notification/notificationService';
 
 const reviewSchema = z.object({
   status: z.enum(['PENDING', 'UNDER_REVIEW', 'SHORTLISTED', 'INTERVIEWED', 'ACCEPTED', 'REJECTED']),
@@ -28,22 +29,22 @@ const STATUS_OPTIONS = [
   { value: 'REJECTED', label: 'Rejected' },
 ];
 
+const getFullUrl = (path?: string) => {
+  if (!path) return '#';
+  if (path.startsWith('http')) return path;
+  const baseUrl = (import.meta.env['VITE_API_BASE_URL'] as string | undefined) ?? '';
+  return `${baseUrl.replace('/api', '')}${path}`;
+};
+
 export function ApplicationReviewModal({ application, onClose, onSuccess }: ApplicationModalProps) {
   const handleUpdate = async (data: ReviewSchema) => {
     try {
-      await updateApplicationStatus(application.id, data.status, data.notes || '');
+      await updateApplicationStatus(application.id, data.status, data.notes ?? '');
       notificationService.success('Application status updated');
       onSuccess();
-    } catch (_error) {
+    } catch {
       notificationService.error('Failed to update status');
     }
-  };
-
-  const getFullUrl = (path?: string) => {
-    if (!path) return '#';
-    if (path.startsWith('http')) return path;
-    const baseUrl = import.meta.env.VITE_API_BASE_URL || '';
-    return `${baseUrl.replace('/api', '')}${path}`;
   };
 
   return (
@@ -78,14 +79,14 @@ export function ApplicationReviewModal({ application, onClose, onSuccess }: Appl
         <div>
           <p className="text-xs font-bold uppercase text-gray-400">Applied For</p>
           <p className="text-sm font-semibold text-wiria-blue-dark">
-            {application.career?.title || application.opportunity?.title || 'Unknown Position'}
+            {application.career?.title ?? application.opportunity?.title ?? 'Unknown Position'}
           </p>
         </div>
 
         <div className="max-h-60 overflow-y-auto rounded-xl border border-gray-100 bg-gray-50/50 p-4">
           <p className="mb-2 text-xs font-bold uppercase text-gray-400">Cover Letter / Statement</p>
           <p className="whitespace-pre-wrap text-sm text-gray-700">
-            {application.coverLetter || 'No cover letter provided.'}
+            {application.coverLetter ?? 'No cover letter provided.'}
           </p>
         </div>
 
@@ -109,15 +110,15 @@ export function ApplicationReviewModal({ application, onClose, onSuccess }: Appl
             <p className="mb-2 text-xs font-bold uppercase text-green-600">Additional Documents</p>
             {application.additionalDocs && application.additionalDocs.length > 0 ? (
               <div className="space-y-1">
-                {application.additionalDocs.map((doc, i) => (
+                {application.additionalDocs.map((document_, index) => (
                   <a
-                    key={i}
-                    href={getFullUrl(doc)}
+                    key={index}
+                    href={getFullUrl(document_)}
                     target="_blank"
                     rel="noreferrer"
                     className="block text-sm font-semibold text-wiria-blue-dark hover:underline"
                   >
-                    🔗 Document {i + 1}
+                    🔗 Document {index + 1}
                   </a>
                 ))}
               </div>
@@ -130,8 +131,8 @@ export function ApplicationReviewModal({ application, onClose, onSuccess }: Appl
         <Form
           schema={reviewSchema}
           defaultValues={{
-            status: application.status as ReviewSchema['status'],
-            notes: application.notes || '',
+            status: application.status,
+            notes: application.notes ?? '',
           }}
           onSubmit={handleUpdate}
           className="border-t border-gray-100 pt-6"

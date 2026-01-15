@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useFormContext } from 'react-hook-form';
+
 import { Button } from '@/shared/components/ui/Button';
 import { FormField, FormSelectField } from '@/shared/components/ui/form';
 
@@ -21,7 +22,7 @@ const staggerItem = {
 interface ReporterStepProps {
   isAnonymous: boolean;
   isSubmitting: boolean;
-  setIsAnonymous: (val: boolean) => void;
+  setIsAnonymous: (value: boolean) => void;
   onNext: () => void;
 }
 

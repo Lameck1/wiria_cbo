@@ -36,9 +36,9 @@ export function OpportunityDetailSection({
 
       {listStyle === 'gift' ? (
         <div className="grid gap-3 md:grid-cols-2">
-          {items.map((item, i) => (
+          {items.map((item, index) => (
             <div
-              key={i}
+              key={index}
               className="flex items-center rounded-lg border border-green-100 bg-gradient-to-r from-green-50 to-emerald-50 p-3"
             >
               <span className="mr-3 text-lg">🎁</span>
@@ -48,13 +48,13 @@ export function OpportunityDetailSection({
         </div>
       ) : (
         <ul className="space-y-2">
-          {items.map((item, i) => (
-            <li key={i} className="flex items-start text-gray-700">
+          {items.map((item, index) => (
+            <li key={index} className="flex items-start text-gray-700">
               {listStyle === 'numbered' ? (
                 <span
                   className={`h-6 w-6 rounded-full ${iconBgColor} ${listItemColor} mr-3 mt-0.5 flex flex-shrink-0 items-center justify-center text-xs font-bold`}
                 >
-                  {i + 1}
+                  {index + 1}
                 </span>
               ) : (
                 <span className={`${listItemColor} mr-3 flex-shrink-0`}>

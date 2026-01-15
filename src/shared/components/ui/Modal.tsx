@@ -4,7 +4,9 @@
  */
 
 import { ReactNode, useEffect, useId } from 'react';
+
 import { motion, AnimatePresence } from 'framer-motion';
+
 import { cn } from '@/shared/utils/helpers';
 
 export interface ModalProps {
@@ -43,11 +45,7 @@ export function Modal({
 
   // Prevent body scroll when modal is open
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
+    document.body.style.overflow = isOpen ? 'hidden' : 'unset';
     return () => {
       document.body.style.overflow = 'unset';
     };

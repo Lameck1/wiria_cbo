@@ -3,16 +3,18 @@
  */
 
 import { useState, useEffect } from 'react';
-import { useSearchParams, useNavigate, Link } from 'react-router-dom';
+
 import { motion, AnimatePresence } from 'framer-motion';
-import { Button } from '@/shared/components/ui/Button';
+import { useSearchParams, useNavigate, Link } from 'react-router-dom';
+
 import {
   verifyInvitation,
   acceptInvitation,
   VerifyInviteResponse,
 } from '@/features/auth/api/auth.api';
-import { notificationService } from '@/shared/services/notification/notificationService';
+import { Button } from '@/shared/components/ui/Button';
 import { ApiError } from '@/shared/services/api/client';
+import { notificationService } from '@/shared/services/notification/notificationService';
 
 export default function AcceptInvitePage() {
   const [searchParams] = useSearchParams();
@@ -38,16 +40,16 @@ export default function AcceptInvitePage() {
       try {
         const response = await verifyInvitation(token);
         setInviteData(response);
-      } catch (err: unknown) {
+      } catch (error_: unknown) {
         const message =
-          err instanceof ApiError ? err.message : 'The invitation link is invalid or has expired.';
+          error_ instanceof ApiError ? error_.message : 'The invitation link is invalid or has expired.';
         setError(message);
       } finally {
         setIsLoading(false);
       }
     };
 
-    verify();
+    void verify();
   }, [token]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -72,8 +74,8 @@ export default function AcceptInvitePage() {
       await acceptInvitation(token, password);
       notificationService.success('Invitation accepted! You can now log in.');
       navigate('/staff-login', { replace: true });
-    } catch (err: unknown) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to accept invitation';
+    } catch (error_: unknown) {
+      const errorMessage = error_ instanceof Error ? error_.message : 'Failed to accept invitation';
       notificationService.error(errorMessage);
       setIsSubmitting(false);
     }
@@ -136,14 +138,14 @@ export default function AcceptInvitePage() {
                   key="form"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  onSubmit={handleSubmit}
+                  onSubmit={(e) => void handleSubmit(e)}
                   className="space-y-6"
                 >
                   {/* Invitation Details Summary */}
                   <div className="mb-6 rounded-2xl border border-gray-100 bg-gray-50 p-4">
                     <div className="flex items-center gap-3">
                       <div className="bg-primary-100 text-primary-600 flex h-10 w-10 items-center justify-center rounded-full font-bold">
-                        {(inviteData?.firstName?.[0] || inviteData?.email?.[0] || 'U').toUpperCase()}
+                        {(inviteData?.firstName?.[0] ?? inviteData?.email?.[0] ?? 'U').toUpperCase()}
                       </div>
                       <div>
                         <p className="text-sm font-bold text-gray-900">

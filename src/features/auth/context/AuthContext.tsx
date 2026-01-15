@@ -12,11 +12,13 @@ import {
   useCallback,
   useMemo,
 } from 'react';
+
 import { useNavigate } from 'react-router-dom';
-import { User, Member, UserRole, AuthResponse } from '@/shared/types';
-import { storageService, STORAGE_KEYS } from '@/shared/services/storage/storageService';
-import { apiClient } from '@/shared/services/api/client';
+
 import { ROUTES } from '@/shared/constants/routes';
+import { apiClient } from '@/shared/services/api/client';
+import { storageService, STORAGE_KEYS } from '@/shared/services/storage/storageService';
+import { User, Member, UserRole, AuthResponse } from '@/shared/types';
 
 interface AuthContextType {
   user: User | Member | null;
@@ -90,11 +92,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // Register global 401 handler
     apiClient.setUnauthorizedCallback(() => {
       console.warn('Session expired - logging out');
-      logout(true);
+      void logout(true);
     });
 
     // Clean up callback on unmount
-    return () => apiClient.setUnauthorizedCallback(() => { });
+    return () => apiClient.setUnauthorizedCallback(() => {
+      // Cleanup - no action needed
+    });
   }, [checkAuth, logout]);
 
   const login = useCallback(

@@ -5,8 +5,9 @@
  */
 
 import { useQuery } from '@tanstack/react-query';
-import { useBackendStatus } from '@/shared/services/backendStatus';
+
 import { staticTenders } from '@/shared/data/static';
+import { useBackendStatus } from '@/shared/services/backendStatus';
 
 export interface Tender {
   id: string;
@@ -47,7 +48,7 @@ async function fetchTenders(): Promise<Tender[]> {
   if (!response.ok) {
     throw new Error('Failed to fetch tenders');
   }
-  const data: TendersApiResponse = await response.json();
+  const data = (await response.json()) as TendersApiResponse;
   return data.data?.data || [];
 }
 

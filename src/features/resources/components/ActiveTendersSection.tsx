@@ -5,11 +5,13 @@
  */
 
 import { useState, useCallback } from 'react';
+
 import { motion, AnimatePresence } from 'framer-motion';
-import { useTenders, Tender } from '../hooks/useTenders';
+
 import { TenderCard, getCountdown, getStatusBadge } from './TenderCard';
-import { TenderModal } from './TenderModal';
 import { TenderCardSkeleton, TenderTableRowSkeleton } from './TenderCardSkeleton';
+import { TenderModal } from './TenderModal';
+import { useTenders, Tender } from '../hooks/useTenders';
 
 export function ActiveTendersSection() {
   const { data: tenders = [], isLoading, isError } = useTenders();

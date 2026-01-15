@@ -1,7 +1,9 @@
 import { memo, useMemo } from 'react';
+
 import { Button } from '@/shared/components/ui/Button';
 import { DataTable, Column } from '@/shared/components/ui/DataTable';
 import { StatusBadge } from '@/shared/components/ui/StatusBadge';
+
 import { CareersTabProps, Career, Application } from './types';
 
 export const CareersTab = memo(function CareersTab({
@@ -16,7 +18,7 @@ export const CareersTab = memo(function CareersTab({
     const counts: Record<string, number> = {};
     applications.forEach((app: Application) => {
       if (app.careerId) {
-        counts[app.careerId] = (counts[app.careerId] || 0) + 1;
+        counts[app.careerId] = (counts[app.careerId] ?? 0) + 1;
       }
     });
     return counts;
@@ -34,7 +36,7 @@ export const CareersTab = memo(function CareersTab({
       key: 'applications',
       align: 'center',
       render: (c) => (
-        <span className="font-bold text-wiria-blue-dark">{applicationCounts[c.id] || 0}</span>
+        <span className="font-bold text-wiria-blue-dark">{applicationCounts[c.id] ?? 0}</span>
       ),
     },
     {

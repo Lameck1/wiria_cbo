@@ -2,6 +2,7 @@
  * Helpers Utils Tests
  */
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+
 import { cn, formatCurrency, formatPhoneNumber, truncate, debounce, sleep } from '@/shared/utils/helpers';
 
 describe('helpers', () => {
@@ -11,7 +12,7 @@ describe('helpers', () => {
         });
 
         it('handles conditional classes', () => {
-            expect(cn('base', true && 'active', false && 'hidden')).toBe('base active');
+            expect(cn('base', 'active', '')).toBe('base active');
         });
 
         it('filters falsy values', () => {
@@ -97,51 +98,51 @@ describe('helpers', () => {
         });
 
         it('delays function execution', () => {
-            const fn = vi.fn();
-            const debounced = debounce(fn, 100);
+            const function_ = vi.fn();
+            const debounced = debounce(function_, 100);
 
             debounced();
-            expect(fn).not.toHaveBeenCalled();
+            expect(function_).not.toHaveBeenCalled();
 
             vi.advanceTimersByTime(100);
-            expect(fn).toHaveBeenCalledTimes(1);
+            expect(function_).toHaveBeenCalledTimes(1);
         });
 
         it('only calls once for rapid calls', () => {
-            const fn = vi.fn();
-            const debounced = debounce(fn, 100);
+            const function_ = vi.fn();
+            const debounced = debounce(function_, 100);
 
             debounced();
             debounced();
             debounced();
 
             vi.advanceTimersByTime(100);
-            expect(fn).toHaveBeenCalledTimes(1);
+            expect(function_).toHaveBeenCalledTimes(1);
         });
 
         it('passes arguments to debounced function', () => {
-            const fn = vi.fn();
-            const debounced = debounce(fn, 100);
+            const function_ = vi.fn();
+            const debounced = debounce(function_, 100);
 
             debounced('arg1', 'arg2');
             vi.advanceTimersByTime(100);
 
-            expect(fn).toHaveBeenCalledWith('arg1', 'arg2');
+            expect(function_).toHaveBeenCalledWith('arg1', 'arg2');
         });
 
         it('resets timer on subsequent calls', () => {
-            const fn = vi.fn();
-            const debounced = debounce(fn, 100);
+            const function_ = vi.fn();
+            const debounced = debounce(function_, 100);
 
             debounced();
             vi.advanceTimersByTime(50);
             debounced();
             vi.advanceTimersByTime(50);
 
-            expect(fn).not.toHaveBeenCalled();
+            expect(function_).not.toHaveBeenCalled();
 
             vi.advanceTimersByTime(50);
-            expect(fn).toHaveBeenCalledTimes(1);
+            expect(function_).toHaveBeenCalledTimes(1);
         });
     });
 

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { apiClient } from '@/shared/services/api/client';
+
 import { Spinner } from '@/shared/components/ui/Spinner';
+import { apiClient } from '@/shared/services/api/client';
 import { formatRelativeTime } from '@/shared/utils/dateUtils';
 
 interface HistoryItem {
@@ -33,7 +34,7 @@ export function GroupCountHistory({ memberId }: GroupCountHistoryProps) {
       }
     };
 
-    fetchHistory();
+    void fetchHistory();
   }, [memberId]);
 
   if (isLoading) {
@@ -71,7 +72,7 @@ export function GroupCountHistory({ memberId }: GroupCountHistoryProps) {
                 {formatRelativeTime(item.createdAt)}
               </span>
             </div>
-            <p className="line-clamp-1 text-xs text-gray-600">{item.reason || 'Manual Update'}</p>
+            <p className="line-clamp-1 text-xs text-gray-600">{item.reason ?? 'Manual Update'}</p>
           </div>
         </div>
       ))}

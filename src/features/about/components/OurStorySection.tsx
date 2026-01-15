@@ -4,7 +4,36 @@
  */
 
 import { motion } from 'framer-motion';
+
 import { REGISTRATION_DETAILS } from '../constants/aboutData';
+
+// Helper component for section headers
+function SectionHeader({ icon, title }: { icon: string; title: string }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: -20 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6 }}
+      className="mb-6 flex items-center gap-3"
+    >
+      <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-red-100">
+        <span className="text-xl">{icon}</span>
+      </div>
+      <h4 className="text-lg font-bold text-gray-800">{title}</h4>
+    </motion.div>
+  );
+}
+
+// Helper component for stat boxes
+function StatBox({ value, label }: { value: string; label: string }) {
+  return (
+    <div className="rounded-xl border border-red-100 bg-white/50 p-3">
+      <p className="text-2xl font-black text-red-700">{value}</p>
+      <p className="text-xs font-bold uppercase tracking-tighter text-gray-600">{label}</p>
+    </div>
+  );
+}
 
 export function OurStorySection() {
   return (
@@ -32,18 +61,7 @@ export function OurStorySection() {
 
         {/* THE PROBLEM - Section 1 */}
         <div className="mb-12">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="mb-6 flex items-center gap-3"
-          >
-            <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-red-100">
-              <span className="text-xl">⚠️</span>
-            </div>
-            <h4 className="text-lg font-bold text-gray-800">The Reality We Face</h4>
-          </motion.div>
+          <SectionHeader icon="⚠️" title="The Reality We Face" />
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -86,24 +104,9 @@ export function OurStorySection() {
                     Critical Regional Challenges
                   </p>
                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-                    <div className="rounded-xl border border-red-100 bg-white/50 p-3">
-                      <p className="text-2xl font-black text-red-700">15.2%</p>
-                      <p className="text-xs font-bold uppercase tracking-tighter text-gray-600">
-                        HIV Prevalence
-                      </p>
-                    </div>
-                    <div className="rounded-xl border border-red-100 bg-white/50 p-3">
-                      <p className="text-2xl font-black text-red-700">23.2%</p>
-                      <p className="text-xs font-bold uppercase tracking-tighter text-gray-600">
-                        Teen Pregnancy
-                      </p>
-                    </div>
-                    <div className="rounded-xl border border-red-100 bg-white/50 p-3">
-                      <p className="text-2xl font-black text-red-700">37%</p>
-                      <p className="text-xs font-bold uppercase tracking-tighter text-gray-600">
-                        Child Marriage
-                      </p>
-                    </div>
+                    <StatBox value="15.2%" label="HIV Prevalence" />
+                    <StatBox value="23.2%" label="Teen Pregnancy" />
+                    <StatBox value="37%" label="Child Marriage" />
                   </div>
                   <p className="mt-4 text-[10px] font-bold uppercase italic tracking-widest text-gray-400">
                     Source: NACC 2023, KNBS 2022, Govt of Kenya 2023
@@ -139,18 +142,7 @@ export function OurStorySection() {
 
         {/* THE SOLUTION - Section 2 */}
         <div className="mb-12">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-            className="mb-6 flex items-center gap-3"
-          >
-            <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-yellow-100">
-              <span className="text-xl">💡</span>
-            </div>
-            <h4 className="text-lg font-bold text-gray-800">The Birth of WIRIA</h4>
-          </motion.div>
+          <SectionHeader icon="💡" title="The Birth of WIRIA" />
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -181,18 +173,7 @@ export function OurStorySection() {
 
         {/* THE IMPACT - Section 3 */}
         <div className="mb-12">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.8 }}
-            className="mb-6 flex items-center gap-3"
-          >
-            <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-green-100">
-              <span className="text-xl">🌟</span>
-            </div>
-            <h4 className="text-lg font-bold text-gray-800">Today & Tomorrow</h4>
-          </motion.div>
+          <SectionHeader icon="🌟" title="Today & Tomorrow" />
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}

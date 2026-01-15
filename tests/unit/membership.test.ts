@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 
-import { describe, it, expect, beforeEach } from 'vitest';
 import { fireEvent } from '@testing-library/dom';
+import { describe, it, expect, beforeEach } from 'vitest';
 
 // Membership Page TDD: Rendering, layout, form validation, submission, error/success states
 
@@ -41,7 +41,7 @@ describe('Membership Page', () => {
     expect(document.getElementById('main-footer')).toBeInTheDocument();
   });
 
-  it('validates required fields and email format', async () => {
+  it('validates required fields and email format', () => {
     document.body.innerHTML = `
       <form id="membership-form">
         <input name="firstName" required />
@@ -62,15 +62,15 @@ describe('Membership Page', () => {
     expect(errorDiv).not.toBeNull();
     if (!form || !errorDiv) throw new Error('Test DOM not initialized');
 
-    const email = form.querySelector('input[name="email"]') as HTMLInputElement | null;
+    const email = form.querySelector('input[name="email"]');
     expect(email).not.toBeNull();
     if (!email) throw new Error('Missing email input');
 
     let submitted = false;
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
       submitted = true;
-      if (!email.value.includes('@')) {
+      if (!(email as HTMLInputElement).value.includes('@')) {
         errorDiv.textContent = 'Invalid email';
       }
     });
@@ -80,7 +80,7 @@ describe('Membership Page', () => {
     expect(errorDiv.textContent).toBe('Invalid email');
   });
 
-  it('shows success message on valid submission', async () => {
+  it('shows success message on valid submission', () => {
     document.body.innerHTML = `
       <form id="membership-form">
         <input name="firstName" value="Jane" required />
@@ -110,7 +110,7 @@ describe('Membership Page', () => {
     expect(successDiv.textContent).toBe('Application submitted successfully!');
   });
 
-  it('handles backend error response', async () => {
+  it('handles backend error response', () => {
     document.body.innerHTML = `
       <form id="membership-form">
         <input name="firstName" value="Jane" required />

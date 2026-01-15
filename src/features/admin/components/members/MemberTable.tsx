@@ -1,6 +1,6 @@
-import { DataTable, Column } from '@/shared/components/ui/DataTable';
 import { AdminMember } from '@/features/membership/api/members.api';
 import { Button } from '@/shared/components/ui/Button';
+import { DataTable, Column } from '@/shared/components/ui/DataTable';
 import { StatusBadge } from '@/shared/components/ui/StatusBadge';
 
 interface MemberTableProps {
@@ -19,21 +19,21 @@ export function MemberTable({ members = [], isLoading, onViewDetails }: MemberTa
     {
       header: 'Name',
       key: 'name',
-      render: (m) => `${m.firstName} ${m.lastName}`,
+      render: (member) => `${member.firstName} ${member.lastName}`,
     },
     {
       header: 'Type',
       key: 'membershipType',
-      render: (m) => (
+      render: (member) => (
         <>
           <span
-            className={`rounded-md px-2 py-1 text-[10px] font-bold uppercase ${m.membershipType === 'GROUP' ? 'bg-purple-100 text-purple-700' : 'bg-blue-100 text-blue-700'
+            className={`rounded-md px-2 py-1 text-[10px] font-bold uppercase ${member.membershipType === 'GROUP' ? 'bg-purple-100 text-purple-700' : 'bg-blue-100 text-blue-700'
               }`}
           >
-            {m.membershipType}
+            {member.membershipType}
           </span>
-          {m.membershipType === 'GROUP' && (
-            <div className="mt-1 text-[10px] font-medium text-gray-500">{m.groupName}</div>
+          {member.membershipType === 'GROUP' && (
+            <div className="mt-1 text-[10px] font-medium text-gray-500">{member.groupName}</div>
           )}
         </>
       ),
@@ -41,34 +41,34 @@ export function MemberTable({ members = [], isLoading, onViewDetails }: MemberTa
     {
       header: 'Contact',
       key: 'contact',
-      render: (m) => (
+      render: (member) => (
         <>
-          <div>{m.email}</div>
-          <div className="text-xs text-gray-500">{m.phone}</div>
+          <div>{member.email}</div>
+          <div className="text-xs text-gray-500">{member.phone}</div>
         </>
       ),
     },
     {
       header: 'Status',
       key: 'status',
-      render: (m) => <StatusBadge status={m.status} />,
+      render: (member) => <StatusBadge status={member.status} />,
     },
     {
       header: 'Payment',
       key: 'payment',
-      render: (m) => <PaymentInfo payments={m.payments} />,
+      render: (member) => <PaymentInfo payments={member.payments} />,
     },
     {
       header: 'Join Date',
       key: 'joinDate',
-      render: (m) => new Date(m.joinDate).toLocaleDateString(),
+      render: (member) => new Date(member.joinDate).toLocaleDateString(),
     },
     {
       header: 'Actions',
       key: 'actions',
       align: 'right',
-      render: (m) => (
-        <Button size="sm" onClick={() => onViewDetails(m)}>
+      render: (member) => (
+        <Button size="sm" onClick={() => onViewDetails(member)}>
           Review
         </Button>
       ),

@@ -4,9 +4,11 @@
  */
 
 import { useState } from 'react';
+
 import { apiClient } from '@/shared/services/api/client';
-import { notificationService } from '@/shared/services/notification/notificationService';
 import { API_ENDPOINTS } from '@/shared/services/api/endpoints';
+import { notificationService } from '@/shared/services/notification/notificationService';
+
 import { DonationFormData, DonationResponse, PaymentStatusResponse } from '../types';
 
 export function useDonation() {
@@ -29,20 +31,20 @@ export function useDonation() {
         data
       );
 
-      const { donation, checkoutRequestId: reqId, message } = response.data;
+      const { donation, checkoutRequestId: requestId, message } = response.data;
 
       setDonationId(donation.id);
 
-      if (data.paymentMethod === 'STK_PUSH' && reqId) {
-        setCheckoutRequestId(reqId);
+      if (data.paymentMethod === 'STK_PUSH' && requestId) {
+        setCheckoutRequestId(requestId);
         setPaymentStatus('PENDING');
         notificationService.info('STK push sent to your phone. Please complete the payment.');
       } else {
         notificationService.success(message || 'Donation initiated successfully!');
       }
 
-      return { success: true, donationId: donation.id, checkoutRequestId: reqId };
-    } catch (_error) {
+      return { success: true, donationId: donation.id, checkoutRequestId: requestId };
+    } catch {
       notificationService.error('Failed to initiate donation. Please try again.');
       return { success: false };
     } finally {
@@ -68,7 +70,7 @@ export function useDonation() {
       }
 
       return status;
-    } catch (_error) {
+    } catch {
       return 'PENDING';
     }
   };
@@ -95,7 +97,7 @@ export function useDonation() {
         notificationService.error('Payment not found yet. Please wait a moment and try again.');
         return { success: false };
       }
-    } catch (_error) {
+    } catch {
       notificationService.error('Verification failed. Please try again.');
       return { success: false };
     } finally {

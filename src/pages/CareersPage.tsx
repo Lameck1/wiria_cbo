@@ -4,7 +4,6 @@
 
  */
 
-import { PageHero } from '@/shared/components/sections/PageHero';
 import {
   WhyJoinSection,
   CurrentJobsSection,
@@ -12,6 +11,7 @@ import {
   EqualOpportunitySection,
 } from '@/features/careers';
 import { CareerHeroStats } from '@/features/careers/components/CareerHeroStats';
+import { PageHero } from '@/shared/components/sections/PageHero';
 
 function CareersPage() {
   return (

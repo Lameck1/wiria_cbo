@@ -4,18 +4,20 @@
  */
 
 import { useState, useEffect } from 'react';
-import { useLocation, Link } from 'react-router-dom';
+
 import { motion } from 'framer-motion';
-import { PROGRAMS_DATA, CROSS_CUTTING_THEMES } from '@/features/programs/constants/programsData';
+import { useLocation, Link } from 'react-router-dom';
+
+import { useAuth } from '@/features/auth/context/AuthContext';
 import { ProgramDetail } from '@/features/programs/components/ProgramDetail';
 import { ProgramIcon } from '@/features/programs/components/ProgramIcons';
-import { useAuth } from '@/features/auth/context/AuthContext';
+import { PROGRAMS_DATA, CROSS_CUTTING_THEMES } from '@/features/programs/constants/programsData';
 import { UserRole } from '@/shared/types';
 
 function ProgramsPage() {
   const { user, isAuthenticated } = useAuth();
   const location = useLocation();
-  const [activeTab, setActiveTab] = useState(PROGRAMS_DATA[0]?.id || 'health-detail');
+  const [activeTab, setActiveTab] = useState(PROGRAMS_DATA[0]?.id ?? 'health-detail');
 
   // Handle hash-based navigation from Focus Areas
   useEffect(() => {

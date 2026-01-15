@@ -1,4 +1,5 @@
 import { memo } from 'react';
+
 import { motion } from 'framer-motion';
 
 export const MembershipHero = memo(function MembershipHero() {

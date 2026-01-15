@@ -3,7 +3,7 @@
  * Centralized HTTP client with TypeScript support
  */
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
+const API_BASE_URL: string = (import.meta.env['VITE_API_BASE_URL'] as string | undefined) ?? 'http://localhost:5001/api';
 
 type TokenResolver = () => string | null;
 
@@ -28,11 +28,7 @@ class ApiClient {
    * Keeping for backward compatibility during migration.
    */
   setAuthToken(token: string | null) {
-    if (token) {
-      this.tokenResolver = () => token;
-    } else {
-      this.tokenResolver = undefined;
-    }
+    this.tokenResolver = token ? () => token : undefined;
   }
 
   private onUnauthorizedCallback?: () => void;
@@ -69,7 +65,7 @@ class ApiClient {
 
       // Check if response is empty (e.g. 204 No Content or logout)
       const text = await response.text();
-      const data = text ? JSON.parse(text) : {};
+      const data: unknown = text ? JSON.parse(text) : {};
 
       if (!response.ok) {
         // Handle 401 Unauthorized
@@ -84,10 +80,11 @@ class ApiClient {
           }
         }
 
+        const dataObject = data as Record<string, unknown>;
         const errorMessage =
-          data.message ||
-          data.error?.message ||
-          (typeof data.error === 'string' ? data.error : null) ||
+          (dataObject['message'] as string) ??
+          ((dataObject['error'] as Record<string, unknown>)?.['message'] as string) ??
+          (typeof dataObject['error'] === 'string' ? dataObject['error'] : null) ??
           (response.status === 401
             ? 'Session expired or unauthorized'
             : 'An unexpected error occurred');

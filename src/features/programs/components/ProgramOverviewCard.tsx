@@ -4,8 +4,9 @@
  */
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { ProgramData } from '../constants/programsData';
+
 import { ProgramIcon, CheckIcon } from './ProgramIcons';
+import { ProgramData } from '../constants/programsData';
 
 interface ProgramOverviewCardProps {
   program: ProgramData;

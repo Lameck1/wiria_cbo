@@ -1,4 +1,5 @@
 import { useState } from 'react';
+
 import {
   Meeting,
   CreateMeetingData,
@@ -6,8 +7,8 @@ import {
   updateMeeting,
 } from '@/features/admin/api/meetings.api';
 import { Button } from '@/shared/components/ui/Button';
-import { notificationService } from '@/shared/services/notification/notificationService';
 import { Modal } from '@/shared/components/ui/Modal';
+import { notificationService } from '@/shared/services/notification/notificationService';
 
 interface MeetingFormModalProps {
   meeting: Meeting | null;
@@ -17,7 +18,7 @@ interface MeetingFormModalProps {
 
 export function MeetingFormModal({ meeting, onClose, onSuccess }: MeetingFormModalProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isVirtual, setIsVirtual] = useState(meeting?.isVirtual || false);
+  const [isVirtual, setIsVirtual] = useState(meeting?.isVirtual ?? false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -35,7 +36,7 @@ export function MeetingFormModal({ meeting, onClose, onSuccess }: MeetingFormMod
       isVirtual,
       virtualLink: isVirtual ? (formData.get('virtualLink') as string) : undefined,
       agenda: formData.get('agenda') as string,
-      capacity: formData.get('capacity') ? parseInt(formData.get('capacity') as string) : undefined,
+      capacity: formData.get('capacity') ? Number.parseInt(formData.get('capacity') as string) : undefined,
     };
 
     try {
@@ -47,7 +48,7 @@ export function MeetingFormModal({ meeting, onClose, onSuccess }: MeetingFormMod
         notificationService.success('Meeting scheduled');
       }
       onSuccess();
-    } catch (_error) {
+    } catch {
       notificationService.error('Failed to save meeting');
     } finally {
       setIsSubmitting(false);
@@ -61,7 +62,7 @@ export function MeetingFormModal({ meeting, onClose, onSuccess }: MeetingFormMod
       title={meeting ? 'Edit Meeting' : 'Schedule New Meeting'}
       size="2xl"
     >
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={(e) => void handleSubmit(e)} className="space-y-4">
         <div>
           <label htmlFor="meetingTitle" className="mb-2 block text-sm font-bold">
             Meeting Title *
@@ -157,7 +158,7 @@ export function MeetingFormModal({ meeting, onClose, onSuccess }: MeetingFormMod
               id="meetingCapacity"
               type="number"
               name="capacity"
-              defaultValue={meeting?.capacity || ''}
+              defaultValue={meeting?.capacity ?? ''}
               className="w-full rounded-lg border p-3"
               placeholder="e.g. 50"
             />

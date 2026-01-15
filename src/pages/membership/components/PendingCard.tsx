@@ -1,5 +1,7 @@
 import { memo } from 'react';
+
 import { motion } from 'framer-motion';
+
 import { Card, CardBody } from '@/shared/components/ui/Card';
 import { Spinner } from '@/shared/components/ui/Spinner';
 

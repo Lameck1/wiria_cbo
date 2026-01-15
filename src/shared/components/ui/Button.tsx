@@ -4,6 +4,7 @@
  */
 
 import { ButtonHTMLAttributes, ReactNode } from 'react';
+
 import { cn } from '@/shared/utils/helpers';
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -55,7 +56,7 @@ export function Button({
         fullWidth && 'w-full',
         className
       )}
-      disabled={disabled || isLoading}
+      disabled={disabled ?? isLoading}
       {...props}
     >
       {isLoading ? (

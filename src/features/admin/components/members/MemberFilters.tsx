@@ -1,3 +1,8 @@
+import React, { useState } from 'react';
+
+import { TIMING } from '@/shared/constants/config';
+import { useDebounce } from '@/shared/hooks/useDebounce';
+
 interface MemberFiltersProps {
   currentFilter: string;
   onFilterChange: (filter: string) => void;
@@ -5,6 +10,21 @@ interface MemberFiltersProps {
 }
 
 export function MemberFilters({ currentFilter, onFilterChange, onSearch }: MemberFiltersProps) {
+  const [searchValue, setSearchValue] = useState('');
+
+  // Debounce search value with configured delay
+  const debouncedSearchValue = useDebounce(searchValue, TIMING.DEBOUNCE_DEFAULT);
+
+  // Call onSearch when debounced value changes
+  React.useEffect(() => {
+    onSearch(debouncedSearchValue);
+  }, [debouncedSearchValue, onSearch]);
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setSearchValue(value);
+  };
+
   const tabs = [
     { id: 'ALL', label: 'All Members' },
     { id: 'PENDING', label: 'Pending' },
@@ -21,11 +41,10 @@ export function MemberFilters({ currentFilter, onFilterChange, onSearch }: Membe
           <button
             key={tab.id}
             onClick={() => onFilterChange(tab.id)}
-            className={`whitespace-nowrap border-b-2 px-6 py-3 font-semibold transition-all ${
-              currentFilter === tab.id
+            className={`whitespace-nowrap border-b-2 px-6 py-3 font-semibold transition-all ${currentFilter === tab.id
                 ? 'border-wiria-blue-dark text-wiria-blue-dark'
                 : 'border-transparent text-gray-600 hover:text-wiria-blue-dark'
-            }`}
+              }`}
           >
             {tab.label}
           </button>
@@ -38,7 +57,8 @@ export function MemberFilters({ currentFilter, onFilterChange, onSearch }: Membe
           type="text"
           placeholder="Search by name, email, phone, or member number..."
           className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-wiria-blue-dark md:w-96"
-          onChange={(e) => onSearch(e.target.value)}
+          value={searchValue}
+          onChange={handleSearchChange}
         />
       </div>
     </div>

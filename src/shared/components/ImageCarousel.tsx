@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface ImageCarouselProps {
@@ -23,11 +24,11 @@ export function ImageCarousel({
   const [failedImages, setFailedImages] = useState<Record<number, boolean>>({});
 
   const nextSlide = useCallback(() => {
-    setCurrentIndex((prev) => (prev + 1) % images.length);
+    setCurrentIndex((previous) => (previous + 1) % images.length);
   }, [images.length]);
 
-  const prevSlide = useCallback(() => {
-    setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
+  const previousSlide = useCallback(() => {
+    setCurrentIndex((previous) => (previous - 1 + images.length) % images.length);
   }, [images.length]);
 
   useEffect(() => {
@@ -38,7 +39,7 @@ export function ImageCarousel({
   }, [autoSlide, isPaused, autoSlideInterval, nextSlide, images.length]);
 
   const handleImageError = (index: number) => {
-    setFailedImages((prev) => ({ ...prev, [index]: true }));
+    setFailedImages((previous) => ({ ...previous, [index]: true }));
   };
 
   if (!images || images.length === 0) {
@@ -65,10 +66,10 @@ export function ImageCarousel({
   }
 
   const renderImage = (
-    src: string,
+    source: string,
     index: number,
     className: string,
-    isMotion: boolean = false
+    isMotion = false
   ) => {
     if (failedImages[index]) {
       return (
@@ -97,7 +98,7 @@ export function ImageCarousel({
       return (
         <motion.img
           key={currentIndex}
-          src={src}
+          src={source}
           alt={`${title} - image ${index + 1}`}
           initial={{ opacity: 0, scale: 1.05 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -111,7 +112,7 @@ export function ImageCarousel({
 
     return (
       <img
-        src={src}
+        src={source}
         alt={title}
         className={`${className} transition-transform duration-700 hover:scale-110`}
         onError={() => handleImageError(index)}
@@ -122,7 +123,7 @@ export function ImageCarousel({
   if (images.length === 1) {
     return (
       <div className={`w-full ${aspectRatio} overflow-hidden bg-gray-50`}>
-        {renderImage(images[0] || '', 0, 'w-full h-full object-cover')}
+        {renderImage(images[0] ?? '', 0, 'w-full h-full object-cover')}
       </div>
     );
   }
@@ -135,7 +136,7 @@ export function ImageCarousel({
     >
       <AnimatePresence initial={false} mode="wait">
         {renderImage(
-          images[currentIndex] || '',
+          images[currentIndex] ?? '',
           currentIndex,
           'absolute inset-0 w-full h-full object-cover',
           true
@@ -148,7 +149,7 @@ export function ImageCarousel({
           <button
             onClick={(e) => {
               e.stopPropagation();
-              prevSlide();
+              previousSlide();
             }}
             className="absolute left-3 top-1/2 z-10 -translate-y-1/2 rounded-full bg-black/20 p-2 text-white opacity-0 backdrop-blur-sm transition-all duration-300 hover:bg-black/50 group-hover:opacity-100"
             aria-label="Previous image"

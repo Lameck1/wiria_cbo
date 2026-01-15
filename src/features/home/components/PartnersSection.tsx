@@ -4,6 +4,7 @@
 
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+
 import { usePartners, Partner } from '../hooks/usePartners';
 
 export function PartnersSection() {
@@ -75,7 +76,7 @@ export function PartnersSection() {
                   className="w-40 sm:w-44"
                 >
                   <a
-                    href={partner.websiteUrl || '#'}
+                    href={partner.websiteUrl ?? '#'}
                     target={partner.websiteUrl ? '_blank' : undefined}
                     rel={partner.websiteUrl ? 'noopener noreferrer' : undefined}
                     className="group relative block flex h-32 flex-col items-center justify-center overflow-hidden rounded-2xl border border-gray-100 bg-white p-4 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-wiria-blue-dark/20 hover:shadow-xl"

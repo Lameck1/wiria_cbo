@@ -4,8 +4,9 @@
  */
 
 import { useQuery } from '@tanstack/react-query';
-import { useBackendStatus } from '@/shared/services/backendStatus';
+
 import { staticPartners } from '@/shared/data/static';
+import { useBackendStatus } from '@/shared/services/backendStatus';
 
 export interface Partner {
   id: string;
@@ -29,7 +30,7 @@ async function fetchPartners(): Promise<Partner[]> {
     throw new Error('Failed to fetch partners');
   }
 
-  const data: PartnersResponse = await response.json();
+  const data = (await response.json()) as PartnersResponse;
   return data.data?.data || data.data || [];
 }
 

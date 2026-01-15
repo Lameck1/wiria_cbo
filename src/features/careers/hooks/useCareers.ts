@@ -5,8 +5,9 @@
  */
 
 import { useQuery } from '@tanstack/react-query';
-import { useBackendStatus } from '@/shared/services/backendStatus';
+
 import { staticCareers } from '@/shared/data/static';
+import { useBackendStatus } from '@/shared/services/backendStatus';
 
 export interface Job {
   id: string;
@@ -35,7 +36,7 @@ async function fetchCareers(): Promise<Job[]> {
   if (!response.ok) {
     throw new Error('Failed to fetch careers');
   }
-  const data: CareersResponse = await response.json();
+  const data = (await response.json()) as CareersResponse;
   return data.data || [];
 }
 

@@ -2,6 +2,7 @@
 // @vitest-environment jsdom
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+
 import apiClient, { ApiError } from '@/shared/services/api/client';
 
 describe('apiClient', () => {
@@ -22,7 +23,7 @@ describe('apiClient', () => {
       fetchMock.mockResolvedValueOnce({
         ok: true,
         status: 200,
-        text: async () => JSON.stringify({ ok: true }),
+        text: () => JSON.stringify({ ok: true }),
       } as any);
 
       apiClient.setAuthToken('new-token');
@@ -43,7 +44,7 @@ describe('apiClient', () => {
       fetchMock.mockResolvedValue({
         ok: true,
         status: 200,
-        text: async () => JSON.stringify({ ok: true }),
+        text: () => JSON.stringify({ ok: true }),
       } as any);
 
       // Set token then clear it
@@ -52,9 +53,9 @@ describe('apiClient', () => {
       await apiClient.get('/test');
 
       // Should not have Authorization header
-      const lastCall = fetchMock.mock.calls[fetchMock.mock.calls.length - 1];
+      const lastCall = fetchMock.mock.calls.at(-1);
       expect(lastCall).toBeDefined();
-      const headers = (lastCall![1] as RequestInit).headers as Record<string, string>;
+      const headers = (lastCall![1]!).headers as Record<string, string>;
       expect(headers['Authorization']).toBeUndefined();
     });
   });
@@ -67,7 +68,7 @@ describe('apiClient', () => {
       fetchMock.mockResolvedValueOnce({
         ok: true,
         status: 200,
-        text: async () => JSON.stringify(mockResponse),
+        text: () => JSON.stringify(mockResponse),
       } as any);
 
       const result = await apiClient.request('/test', { method: 'GET' });
@@ -81,7 +82,7 @@ describe('apiClient', () => {
       fetchMock.mockResolvedValueOnce({
         ok: true,
         status: 200,
-        text: async () => JSON.stringify({ ok: true }),
+        text: () => JSON.stringify({ ok: true }),
       } as any);
 
       await apiClient.get('/test');
@@ -101,7 +102,7 @@ describe('apiClient', () => {
       fetchMock.mockResolvedValueOnce({
         ok: false,
         status: 400,
-        text: async () => JSON.stringify({ error: { message: 'Bad request' } }),
+        text: () => JSON.stringify({ error: { message: 'Bad request' } }),
       } as any);
 
       await expect(apiClient.request('/test')).rejects.toBeInstanceOf(ApiError);
@@ -123,7 +124,7 @@ describe('apiClient', () => {
       fetchMock.mockResolvedValueOnce({
         ok: true,
         status: 200,
-        text: async () => JSON.stringify({ data: [] }),
+        text: () => JSON.stringify({ data: [] }),
       } as any);
 
       await apiClient.get('/test', { page: '1', limit: '10' });
@@ -140,7 +141,7 @@ describe('apiClient', () => {
       fetchMock.mockResolvedValueOnce({
         ok: true,
         status: 200,
-        text: async () => JSON.stringify({ success: true }),
+        text: () => JSON.stringify({ success: true }),
       } as any);
 
       await apiClient.post('/test', body);

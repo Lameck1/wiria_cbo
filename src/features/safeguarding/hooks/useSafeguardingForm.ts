@@ -1,6 +1,8 @@
 import { useState, useCallback } from 'react';
-import { useForm } from 'react-hook-form';
+
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+
 import { useSafeguardingReport } from './useSafeguardingReport';
 import { safeguardingSchema, SafeguardingReportSchema } from '../validation';
 
@@ -42,14 +44,14 @@ export function useSafeguardingForm() {
   const isAnonymous = watch('isAnonymous');
 
   const onSubmit = async (data: SafeguardingReportSchema) => {
-    const success = await submitReport(data, evidenceFile || undefined);
+    const success = await submitReport(data, evidenceFile ?? undefined);
     if (success) {
       setShowSuccess(true);
     }
   };
 
   const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
+    if (e.target.files?.[0]) {
       setEvidenceFile(e.target.files[0]);
     }
   }, []);
@@ -71,7 +73,7 @@ export function useSafeguardingForm() {
     setCurrentStep('details');
   };
 
-  const handlePrevStep = useCallback(() => {
+  const handlePreviousStep = useCallback(() => {
     setCurrentStep('reporter');
   }, []);
 
@@ -94,10 +96,10 @@ export function useSafeguardingForm() {
     handleFileChange,
     clearFile,
     handleNextStep,
-    handlePrevStep,
+    handlePrevStep: handlePreviousStep,
     submitAction: handleSubmit(onSubmit),
     handleNewReport,
     progressPercentage: currentStep === 'reporter' ? 50 : 100,
-    setIsAnonymous: (val: boolean) => setValue('isAnonymous', val),
+    setIsAnonymous: (value: boolean) => setValue('isAnonymous', value),
   };
 }

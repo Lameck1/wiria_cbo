@@ -4,6 +4,7 @@
  */
 
 import { motion } from 'framer-motion';
+
 import { VOLUNTEER_ACTIVITIES, INTERNSHIP_AREAS } from '../constants/opportunitiesData';
 
 interface InfoCardProps {

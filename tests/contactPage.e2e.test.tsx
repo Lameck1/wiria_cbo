@@ -4,9 +4,9 @@
  * E2E Tests for Contact Page Flow
  * Tests the contact form submission process
  */
-import { describe, it, beforeEach, vi, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
+import { describe, it, beforeEach, vi, expect } from 'vitest';
 
 import ContactPage from '@/pages/ContactPage';
 
@@ -30,7 +30,7 @@ describe('Contact Page Flow', () => {
         vi.clearAllMocks();
     });
 
-    it('renders contact page with hero', async () => {
+    it('renders contact page with hero', () => {
         render(
             <MemoryRouter>
                 <ContactPage />
@@ -40,7 +40,7 @@ describe('Contact Page Flow', () => {
         expect(screen.getByText('Contact Us')).toBeInTheDocument();
     });
 
-    it('displays send message section', async () => {
+    it('displays send message section', () => {
         render(
             <MemoryRouter>
                 <ContactPage />
@@ -50,7 +50,7 @@ describe('Contact Page Flow', () => {
         expect(screen.getByText('Send us a Message')).toBeInTheDocument();
     });
 
-    it('shows contact form fields', async () => {
+    it('shows contact form fields', () => {
         render(
             <MemoryRouter>
                 <ContactPage />
@@ -61,10 +61,10 @@ describe('Contact Page Flow', () => {
         expect(screen.getByText(/full name/i)).toBeInTheDocument();
         expect(screen.getByText(/email address/i)).toBeInTheDocument();
         expect(screen.getByText(/subject/i)).toBeInTheDocument();
-        expect(screen.getByText(/message/i)).toBeInTheDocument();
+        expect(screen.getByLabelText(/message/i)).toBeInTheDocument();
     });
 
-    it('has submit button', async () => {
+    it('has submit button', () => {
         render(
             <MemoryRouter>
                 <ContactPage />

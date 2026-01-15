@@ -4,11 +4,13 @@
  */
 
 import { useEffect } from 'react';
+
 import { Link } from 'react-router-dom';
+
 import { PortalLayout } from '@/features/membership/components/PortalLayout';
 import { useMemberData } from '@/features/membership/hooks/useMemberData';
-import { Card, CardBody, CardHeader } from '@/shared/components/ui/Card';
 import { Button } from '@/shared/components/ui/Button';
+import { Card, CardBody, CardHeader } from '@/shared/components/ui/Card';
 import { Spinner } from '@/shared/components/ui/Spinner';
 
 function MemberPortalPage() {
@@ -27,7 +29,7 @@ function MemberPortalPage() {
   } = useMemberData();
 
   useEffect(() => {
-    fetchAll();
+    void fetchAll();
   }, [fetchAll]);
 
   if (isLoading && !profile) {
@@ -50,7 +52,7 @@ function MemberPortalPage() {
     ? 'Expired'
     : isExpiringSoon
       ? 'Expiring Soon'
-      : profile?.status || 'Active';
+      : profile?.status ?? 'Active';
   const statusTextColor = isExpired
     ? 'text-red-700'
     : isExpiringSoon
@@ -79,7 +81,7 @@ function MemberPortalPage() {
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
                 <span className="text-gray-500">Member ID:</span>
-                <span className="font-semibold text-gray-800">{profile?.memberNumber || '--'}</span>
+                <span className="font-semibold text-gray-800">{profile?.memberNumber ?? '--'}</span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-gray-500">Status:</span>
@@ -107,9 +109,9 @@ function MemberPortalPage() {
             <p className="mb-4 text-sm text-blue-100">
               {isExpired
                 ? 'Your membership has expired'
-                : daysUntilExpiry !== null
-                  ? `Expires in ${daysUntilExpiry} days`
-                  : 'Checking status...'}
+                : daysUntilExpiry === null
+                  ? 'Checking status...'
+                  : `Expires in ${daysUntilExpiry} days`}
             </p>
             <div className="mb-4">
               <div className="mb-1 flex justify-between text-xs">

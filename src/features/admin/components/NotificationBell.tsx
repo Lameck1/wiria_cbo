@@ -1,9 +1,12 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
+
 import { useNavigate } from 'react-router-dom';
+
 import { useAuth } from '@/features/auth/context/AuthContext';
 import { ROUTES } from '@/shared/constants/routes';
-import { useNotificationCountsQuery } from '../hooks/useNotificationQueries';
 import { UserRole } from '@/shared/types';
+
+import { useNotificationCountsQuery } from '../hooks/useNotificationQueries';
 
 export function NotificationBell() {
   const { isAuthenticated, user } = useAuth();
@@ -14,7 +17,7 @@ export function NotificationBell() {
   // Only enable query for staff/admin roles
   const isStaff = useMemo(() => {
     const allowedRoles = [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.STAFF];
-    return isAuthenticated && user?.role && allowedRoles.includes(user.role as UserRole);
+    return isAuthenticated && user?.role && allowedRoles.includes(user.role);
   }, [isAuthenticated, user]);
 
   const { data: counts, refetch } = useNotificationCountsQuery(isStaff);
@@ -65,7 +68,7 @@ export function NotificationBell() {
     const wasOpen = isOpen;
     setIsOpen(!isOpen);
     if (!wasOpen) {
-      refetch();
+      void refetch();
     }
   };
 
@@ -96,9 +99,9 @@ export function NotificationBell() {
             </div>
           ) : (
             <div className="max-h-80 overflow-y-auto">
-              {notifications.map((n, i) => (
+              {notifications.map((n, index) => (
                 <button
-                  key={i}
+                  key={index}
                   onClick={() => {
                     navigate(n.path);
                     setIsOpen(false);

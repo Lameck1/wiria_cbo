@@ -1,8 +1,10 @@
 import { memo } from 'react';
+
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Card, CardBody } from '@/shared/components/ui/Card';
+
 import { Button } from '@/shared/components/ui/Button';
+import { Card, CardBody } from '@/shared/components/ui/Card';
 
 interface RegistrationSuccessProps {
     membershipNumber: string | null;

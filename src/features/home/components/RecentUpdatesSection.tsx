@@ -4,11 +4,15 @@
  * Initially hidden, only shows if updates exist
  */
 
-import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
-import { useUpdates, Update } from '../hooks/useUpdates';
-import { UpdateModal } from './UpdateModal';
+
+import { motion } from 'framer-motion';
+
 import { ImageCarousel } from '@/shared/components/ImageCarousel';
+
+import { UpdateModal } from './UpdateModal';
+import { useUpdates, Update } from '../hooks/useUpdates';
+
 
 export function RecentUpdatesSection() {
   const { data: allUpdates = [], isLoading, isError } = useUpdates(20);
@@ -41,7 +45,7 @@ export function RecentUpdatesSection() {
     setIsModalOpen(true);
   };
 
-  const handlePrevPage = () => {
+  const handlePreviousPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
       const section = document.getElementById('recent-updates-section');
@@ -92,9 +96,9 @@ export function RecentUpdatesSection() {
             <>
               <div id="updates-container" className="mb-10 grid gap-8 md:grid-cols-2">
                 {pageUpdates.map((update: Update, index: number) => {
-                  const dateStr = update.publishedAt || update.date;
-                  const formattedDate = dateStr
-                    ? new Date(dateStr).toLocaleDateString('en-US', {
+                  const dateString = update.publishedAt ?? update.date;
+                  const formattedDate = dateString
+                    ? new Date(dateString).toLocaleDateString('en-US', {
                         year: 'numeric',
                         month: 'short',
                         day: 'numeric',
@@ -111,7 +115,7 @@ export function RecentUpdatesSection() {
                       className="group overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
                     >
                       <ImageCarousel
-                        images={update.images || [update.imageUrl]}
+                        images={update.images ?? [update.imageUrl]}
                         title={update.title}
                       />
                       <div className="p-6">
@@ -153,7 +157,7 @@ export function RecentUpdatesSection() {
                 <div id="pagination-controls" className="flex items-center justify-center gap-4">
                   <button
                     id="prev-page"
-                    onClick={handlePrevPage}
+                    onClick={handlePreviousPage}
                     disabled={currentPage === 1}
                     className="flex items-center gap-2 rounded-full bg-wiria-blue-dark px-5 py-2.5 text-white transition-all hover:bg-opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
                     aria-label="Previous page"

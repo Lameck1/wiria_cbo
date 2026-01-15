@@ -5,7 +5,7 @@ interface ResolveReportModalProps {
   report: SafeguardingReport;
   resolution: string;
   isSubmitting: boolean;
-  setResolution: (val: string) => void;
+  setResolution: (value: string) => void;
   onResolve: () => void;
   onCancel: () => void;
 }
@@ -26,10 +26,11 @@ export function ResolveReportModal({
           <p className="mt-1 font-mono text-sm text-gray-500">Ref: {report.referenceNumber}</p>
         </div>
         <div className="p-6">
-          <label className="mb-2 block text-sm font-bold text-gray-700">Resolution Details *</label>
+          <label htmlFor="resolution-details" className="mb-2 block text-sm font-bold text-gray-700">Resolution Details *</label>
           <textarea
+            id="resolution-details"
             value={resolution}
-            onChange={(e) => setResolution(e.target.value)}
+            onChange={(event) => setResolution(event.target.value)}
             className="h-40 w-full rounded-xl border border-gray-200 p-4 outline-none transition-all focus:ring-2 focus:ring-wiria-blue-dark"
             placeholder="Please describe how this concern was investigated and resolved in detail..."
             required

@@ -1,9 +1,11 @@
 import { useState } from 'react';
-import { Modal } from '@/shared/components/ui/Modal';
+
 import { Form } from '@/shared/components/ui/form';
+import { Modal } from '@/shared/components/ui/Modal';
+
 import { ApplicationFormFields } from './ApplicationFormFields';
-import { applicationSchema, ApplicationFormData } from '../types';
 import { useApplicationSubmission } from '../hooks/useApplicationSubmission';
+import { applicationSchema, ApplicationFormData } from '../types';
 
 interface ApplicationModalProps {
     isOpen: boolean;
@@ -102,7 +104,7 @@ export function ApplicationModal({ isOpen, onClose, onBack, title, itemId, type 
 
             <div className="p-6">
                 {isSuccess && <SuccessView title={title} email={submittedEmail} onClose={onClose} />}
-                {isError && <ErrorView error={error || ''} onRetry={reset} onClose={onClose} />}
+                {isError && <ErrorView error={error ?? ''} onRetry={reset} onClose={onClose} />}
                 {(isIdle || isSubmitting) && (
                     <Form schema={applicationSchema} onSubmit={handleFormSubmit}>
                         {() => (

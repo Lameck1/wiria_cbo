@@ -4,6 +4,7 @@
  */
 
 import { motion } from 'framer-motion';
+
 import { GOVERNANCE_LEVELS, SECRETARIAT_TEAM } from '../constants/aboutData';
 
 export function GovernanceSection() {
@@ -103,7 +104,7 @@ export function GovernanceSection() {
               {/* Connecting Line: Branch Point to Branches */}
               <div className="absolute -top-8 left-[16.6%] right-[16.6%] hidden h-0.5 bg-gray-200 md:block" />
 
-              {departments.map((dept, deptIdx) => (
+              {departments.map((dept, deptIndex) => (
                 <div key={dept.title} className="relative flex flex-col items-center">
                   {/* Vertical Connectors */}
                   <div className="hidden h-8 w-0.5 bg-gray-200 md:block" />
@@ -115,13 +116,13 @@ export function GovernanceSection() {
                       </h5>
 
                       <div className="flex flex-col items-center gap-12">
-                        {dept.members.map((member, mIdx) => (
+                        {dept.members.map((member, mIndex) => (
                           <motion.div
                             key={member.name}
                             initial={{ opacity: 0, scale: 0.9 }}
                             whileInView={{ opacity: 1, scale: 1 }}
                             viewport={{ once: true }}
-                            transition={{ delay: deptIdx * 0.2 + mIdx * 0.1 }}
+                            transition={{ delay: deptIndex * 0.2 + mIndex * 0.1 }}
                             className="group flex flex-col items-center"
                           >
                             <div className="mb-4 h-24 w-24 overflow-hidden rounded-full border-2 border-gray-100 bg-white shadow-md transition-all duration-300 group-hover:scale-105 group-hover:border-wiria-blue-dark group-hover:shadow-xl">

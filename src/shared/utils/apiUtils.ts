@@ -22,21 +22,21 @@ export function extractArray<T>(response: unknown, arrayKey?: string): T[] {
 
   // Handle object responses
   if (response && typeof response === 'object') {
-    const obj = response as Record<string, unknown>;
+    const object = response as Record<string, unknown>;
 
     // Check for specific key if provided (e.g., 'members', 'items')
-    if (arrayKey && Array.isArray(obj[arrayKey])) {
-      return obj[arrayKey] as T[];
+    if (arrayKey && Array.isArray(object[arrayKey])) {
+      return object[arrayKey] as T[];
     }
 
     // Standard { data: T[] } wrapper
-    if (Array.isArray(obj['data'])) {
-      return obj['data'] as T[];
+    if (Array.isArray(object['data'])) {
+      return object['data'] as T[];
     }
 
     // Nested { data: { data: T[] } } wrapper
-    if (obj['data'] && typeof obj['data'] === 'object') {
-      const nested = obj['data'] as Record<string, unknown>;
+    if (object['data'] && typeof object['data'] === 'object') {
+      const nested = object['data'] as Record<string, unknown>;
       if (Array.isArray(nested['data'])) {
         return nested['data'] as T[];
       }
@@ -65,11 +65,11 @@ export function extractData<T>(response: unknown): T | null {
   }
 
   if (typeof response === 'object') {
-    const obj = response as Record<string, unknown>;
+    const object = response as Record<string, unknown>;
 
     // If response has 'data' property, use it
-    if ('data' in obj && obj['data'] !== undefined) {
-      return obj['data'] as T;
+    if ('data' in object && object['data'] !== undefined) {
+      return object['data'] as T;
     }
 
     // Otherwise return the response itself

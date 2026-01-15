@@ -1,21 +1,22 @@
-import { createBrowserRouter, Link, Outlet } from 'react-router-dom';
 import { lazy } from 'react';
+
+import { createBrowserRouter, Link, Outlet } from 'react-router-dom';
+
+import { AdminLayout } from '@/features/admin/components/layout/AdminLayout';
+import { ProtectedRoute } from '@/features/auth/components/ProtectedRoute';
+import { ErrorBoundary } from '@/shared/components/ErrorBoundary';
 import { AppProviders } from '@/shared/components/layout/AppProviders';
 import { Layout } from '@/shared/components/layout/Layout';
-import { ProtectedRoute } from '@/features/auth/components/ProtectedRoute';
-import { UserRole } from '@/shared/types';
-import { AdminLayout } from '@/features/admin/components/layout/AdminLayout';
-import { ErrorBoundary } from '@/shared/components/ErrorBoundary';
 import { ROUTES } from '@/shared/constants/routes';
+import { UserRole } from '@/shared/types';
+
 import { createMemberRoute } from './routeProtection';
 
-// Eagerly load frequently visited pages
-import HomePage from '@/pages/HomePage';
-import AboutPage from '@/pages/AboutPage';
-import ProgramsPage from '@/pages/ProgramsPage';
-import ContactPage from '@/pages/ContactPage';
-
-// Lazy load others
+// Lazy load all pages for optimal code splitting
+const HomePage = lazy(() => import('@/pages/HomePage'));
+const AboutPage = lazy(() => import('@/pages/AboutPage'));
+const ProgramsPage = lazy(() => import('@/pages/ProgramsPage'));
+const ContactPage = lazy(() => import('@/pages/ContactPage'));
 const ResourcesPage = lazy(() => import('@/pages/ResourcesPage'));
 const OpportunitiesPage = lazy(() => import('@/pages/OpportunitiesPage'));
 const CareersPage = lazy(() => import('@/pages/CareersPage'));
@@ -41,7 +42,7 @@ const UserManagementPage = lazy(() => import('@/pages/admin/UserManagementPage')
 const NewsManagementPage = lazy(() => import('@/pages/admin/NewsManagementPage'));
 const ResourceManagementPage = lazy(() => import('@/pages/admin/ResourceManagementPage'));
 const TenderManagementPage = lazy(() => import('@/pages/admin/TenderManagementPage'));
-const HRManagementPage = lazy(() => import('@/pages/admin/HRManagementPage'));
+const HRManagementPage = lazy(() => import('@/pages/admin/hrManagementPage'));
 const DonationManagementPage = lazy(() => import('@/pages/admin/DonationManagementPage'));
 const ContactManagementPage = lazy(() => import('@/pages/admin/ContactManagementPage'));
 const SafeguardingManagementPage = lazy(() => import('@/pages/admin/SafeguardingManagementPage'));

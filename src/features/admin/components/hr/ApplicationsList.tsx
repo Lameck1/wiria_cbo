@@ -1,5 +1,6 @@
 import { DataTable, Column } from '@/shared/components/ui/DataTable';
 import { StatusBadge } from '@/shared/components/ui/StatusBadge';
+
 import { ApplicationsListProps, Application } from './types';
 
 export function ApplicationsList({ applications, onReview }: ApplicationsListProps) {
@@ -21,7 +22,7 @@ export function ApplicationsList({ applications, onReview }: ApplicationsListPro
       key: 'position',
       render: (app) => (
         <span className="font-medium text-gray-700">
-          {app.career?.title || app.opportunity?.title || 'Unknown'}
+          {app.career?.title ?? app.opportunity?.title ?? 'Unknown'}
         </span>
       ),
     },

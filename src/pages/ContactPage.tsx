@@ -4,8 +4,8 @@
  * Layout: Left = Map/Address/Contact Details | Right = Form Only
  */
 
-import { PageHero } from '@/shared/components/sections/PageHero';
 import { ContactFormSection, SafeguardingCallout, LocationMap } from '@/features/contact';
+import { PageHero } from '@/shared/components/sections/PageHero';
 
 function ContactPage() {
   return (

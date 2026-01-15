@@ -4,8 +4,10 @@
  */
 
 import { memo } from 'react';
-import { Link } from 'react-router-dom';
+
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
+
 import { ROUTES } from '@/shared/constants/routes';
 
 interface LoginDropdownProps {

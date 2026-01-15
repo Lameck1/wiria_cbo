@@ -4,8 +4,9 @@
  */
 
 import { ReactNode } from 'react';
-import { Header } from './Header';
+
 import { Footer } from './Footer';
+import { Header } from './Header';
 import { BackToTopButton } from '../ui/BackToTopButton';
 
 export interface LayoutProps {

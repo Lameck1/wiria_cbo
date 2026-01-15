@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-non-null-assertion */
 // @vitest-environment jsdom
 
-import { describe, it, beforeEach, vi, expect } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { describe, it, beforeEach, vi, expect } from 'vitest';
 
 import NewsManagementPage from '@/pages/admin/NewsManagementPage';
 
@@ -76,6 +76,10 @@ describe('NewsManagementPage', () => {
 
     await user.type(screen.getByPlaceholderText(/new community program launch/i), 'New Title');
     await user.type(screen.getByPlaceholderText(/describe the update in detail/i), 'New Content');
+    
+    // Select category and status
+    await user.selectOptions(screen.getByLabelText(/category/i), 'GENERAL');
+    await user.selectOptions(screen.getByLabelText(/status/i), 'PUBLISHED');
 
     await user.click(screen.getByRole('button', { name: /save post/i }));
 
@@ -111,7 +115,7 @@ describe('NewsManagementPage', () => {
         },
       ],
     });
-    deleteUpdateMock.mockResolvedValue({ success: true } as any);
+    deleteUpdateMock.mockResolvedValue({ success: true } as { success: boolean });
 
     render(<NewsManagementPage />);
 

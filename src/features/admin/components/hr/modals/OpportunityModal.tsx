@@ -1,4 +1,5 @@
 import { useState } from 'react';
+
 import {
   Opportunity,
   createOpportunity,
@@ -13,32 +14,32 @@ interface OpportunityModalProps {
   onSuccess: () => void;
 }
 
+function handleArrayChange(
+  setter: React.Dispatch<React.SetStateAction<string[]>>,
+  index: number,
+  value: string
+) {
+  setter((previous: string[]) => {
+    const newArray = [...previous];
+    newArray[index] = value;
+    return newArray;
+  });
+}
+
 export function OpportunityModal({ opportunity, onClose, onSuccess }: OpportunityModalProps) {
   const [responsibilities, setResponsibilities] = useState<string[]>(
-    opportunity?.responsibilities || ['', '', '']
+    opportunity?.responsibilities ?? ['', '', '']
   );
   const [requirements, setRequirements] = useState<string[]>(
-    opportunity?.requirements || ['', '', '']
+    opportunity?.requirements ?? ['', '', '']
   );
-  const [benefits, setBenefits] = useState<string[]>(opportunity?.benefits || []);
+  const [benefits, setBenefits] = useState<string[]>(opportunity?.benefits ?? []);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleArrayChange = (
-    setter: React.Dispatch<React.SetStateAction<string[]>>,
-    index: number,
-    value: string
-  ) => {
-    setter((prev: string[]) => {
-      const n = [...prev];
-      n[index] = value;
-      return n;
-    });
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     setIsSubmitting(true);
-    const formData = new FormData(e.currentTarget);
+    const formData = new FormData(event.currentTarget);
     const rawData = Object.fromEntries(formData.entries());
 
     const data = {
@@ -49,11 +50,10 @@ export function OpportunityModal({ opportunity, onClose, onSuccess }: Opportunit
     };
 
     try {
-      if (opportunity) await updateOpportunity(opportunity.id, data);
-      else await createOpportunity(data);
+      await (opportunity ? updateOpportunity(opportunity.id, data) : createOpportunity(data));
       notificationService.success('Success');
       onSuccess();
-    } catch (_error) {
+    } catch {
       notificationService.error('Error');
     } finally {
       setIsSubmitting(false);
@@ -75,7 +75,7 @@ export function OpportunityModal({ opportunity, onClose, onSuccess }: Opportunit
           </button>
         </div>
         <div className="flex-1 overflow-y-auto bg-gray-50/30 p-8">
-          <form onSubmit={handleSubmit} className="space-y-8">
+          <form onSubmit={(e) => void handleSubmit(e)} className="space-y-8">
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-700" htmlFor="opportunity-title">
@@ -137,29 +137,29 @@ export function OpportunityModal({ opportunity, onClose, onSuccess }: Opportunit
 
             <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
               <div className="space-y-4">
-                <label className="text-sm font-bold text-gray-700">
+                <h4 className="text-sm font-bold text-gray-700">
                   Responsibilities (One per line) *
-                </label>
-                {responsibilities.map((r, i) => (
+                </h4>
+                {responsibilities.map((r, index) => (
                   <input
-                    key={i}
-                    aria-label={`Opportunity responsibility ${i + 1}`}
+                    key={index}
+                    aria-label={`Opportunity responsibility ${index + 1}`}
                     value={r}
-                    onChange={(e) => handleArrayChange(setResponsibilities, i, e.target.value)}
+                    onChange={(event) => handleArrayChange(setResponsibilities, index, event.target.value)}
                     className="mb-2 w-full rounded-xl border-gray-200 p-3"
                   />
                 ))}
               </div>
               <div className="space-y-4">
-                <label className="text-sm font-bold text-gray-700">
+                <h4 className="text-sm font-bold text-gray-700">
                   Requirements (One per line) *
-                </label>
-                {requirements.map((r, i) => (
+                </h4>
+                {requirements.map((r, index) => (
                   <input
-                    key={i}
-                    aria-label={`Opportunity requirement ${i + 1}`}
+                    key={index}
+                    aria-label={`Opportunity requirement ${index + 1}`}
                     value={r}
-                    onChange={(e) => handleArrayChange(setRequirements, i, e.target.value)}
+                    onChange={(event) => handleArrayChange(setRequirements, index, event.target.value)}
                     className="mb-2 w-full rounded-xl border-gray-200 p-3"
                   />
                 ))}
@@ -167,13 +167,13 @@ export function OpportunityModal({ opportunity, onClose, onSuccess }: Opportunit
             </div>
 
             <div className="space-y-4">
-              <label className="text-sm font-bold text-gray-700">Benefits (One per line)</label>
-              {benefits.map((b, i) => (
+              <h4 className="text-sm font-bold text-gray-700">Benefits (One per line)</h4>
+              {benefits.map((b, index) => (
                 <input
-                  key={i}
-                  aria-label={`Benefit ${i + 1}`}
+                  key={index}
+                  aria-label={`Benefit ${index + 1}`}
                   value={b}
-                  onChange={(e) => handleArrayChange(setBenefits, i, e.target.value)}
+                  onChange={(event) => handleArrayChange(setBenefits, index, event.target.value)}
                   className="mb-2 w-full rounded-xl border-gray-200 p-3"
                 />
               ))}

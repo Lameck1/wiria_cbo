@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+
 import { apiClient } from '@/shared/services/api/client';
 
 export const ADMIN_KEYS = {
@@ -44,18 +45,18 @@ export function useNotificationCountsQuery(enabled = false) {
             };
 
             if (contactRes.status === 'fulfilled') {
-                const data = contactRes.value.data || contactRes.value;
-                counts.unreadMessages = data.new || data.unread || data.pending || 0;
+                const data = contactRes.value.data ?? contactRes.value;
+                counts.unreadMessages = data.new ?? data.unread ?? data.pending ?? 0;
             }
 
             if (appRes.status === 'fulfilled') {
-                const data = appRes.value.data || appRes.value;
-                counts.pendingApplications = data.pending || 0;
+                const data = appRes.value.data ?? appRes.value;
+                counts.pendingApplications = data.pending ?? 0;
             }
 
             if (safeRes.status === 'fulfilled') {
-                const data = safeRes.value.data || safeRes.value;
-                counts.criticalCases = data.critical || data.high || 0;
+                const data = safeRes.value.data ?? safeRes.value;
+                counts.criticalCases = data.critical ?? data.high ?? 0;
             }
 
             return counts;

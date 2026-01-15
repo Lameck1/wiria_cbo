@@ -1,9 +1,9 @@
 /**
  * Admin Meetings API Tests
  */
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 const mockMeeting = {
     id: '1',
@@ -54,10 +54,11 @@ describe('meetings.api', () => {
                 })
             );
 
-            const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
+            const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
             const { getMeetings } = await import('@/features/admin/api/meetings.api');
-            const result = await getMeetings();
-            expect(result).toEqual([]);
+            
+            // Now expects error to be thrown
+            await expect(getMeetings()).rejects.toThrow('Failed to load meetings');
             consoleSpy.mockRestore();
         });
     });
@@ -82,7 +83,7 @@ describe('meetings.api', () => {
                 })
             );
 
-            const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
+            const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
             const { getMeetingById } = await import('@/features/admin/api/meetings.api');
             const result = await getMeetingById('999');
             expect(result).toBeNull();

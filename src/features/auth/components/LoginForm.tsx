@@ -4,8 +4,10 @@
  */
 
 import { Link } from 'react-router-dom';
+
 import { Button } from '@/shared/components/ui/Button';
 import { Form, FormField } from '@/shared/components/ui/form';
+
 import { useLogin } from '../hooks/useLogin';
 import { loginSchema, LoginData } from '../schemas/auth.schema';
 
@@ -26,7 +28,7 @@ export function LoginForm({ isMember = false, title, subtitle }: LoginFormProps)
     <div className="w-full max-w-md">
       <div className="mb-8 text-center">
         <h1 className="mb-2 text-3xl font-bold text-wiria-blue-dark">
-          {title || (isMember ? 'Member Login' : 'Staff Login')}
+          {title ?? (isMember ? 'Member Login' : 'Staff Login')}
         </h1>
         {subtitle && <p className="text-gray-600">{subtitle}</p>}
       </div>

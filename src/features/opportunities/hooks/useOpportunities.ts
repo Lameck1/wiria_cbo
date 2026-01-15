@@ -4,8 +4,9 @@
  */
 
 import { useQuery } from '@tanstack/react-query';
-import { useBackendStatus } from '@/shared/services/backendStatus';
+
 import { staticOpportunities } from '@/shared/data/static';
+import { useBackendStatus } from '@/shared/services/backendStatus';
 
 export interface Opportunity {
   id: string;
@@ -44,7 +45,7 @@ async function fetchOpportunities(): Promise<Opportunity[]> {
     throw new Error('Failed to fetch opportunities');
   }
 
-  const data: OpportunitiesResponse = await response.json();
+  const data = (await response.json()) as OpportunitiesResponse;
   return data.data?.data || [];
 }
 

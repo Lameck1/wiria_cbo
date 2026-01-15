@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+
 import { cn } from '@/shared/utils/helpers';
 
 export interface Column<T> {
@@ -68,9 +69,9 @@ export function DataTable<T>({
       <table className="w-full border-collapse text-left">
         <thead className="border-b border-gray-100 bg-gray-50/50">
           <tr>
-            {columns.map((col, i) => (
+            {columns.map((col, index) => (
               <th
-                key={col.key || i}
+                key={col.key || index}
                 className={cn(
                   'px-6 py-4 text-sm font-bold uppercase tracking-wider text-gray-700',
                   col.align === 'center' && 'text-center',
@@ -94,9 +95,9 @@ export function DataTable<T>({
                 getRowClassName(item)
               )}
             >
-              {columns.map((col, i) => (
+              {columns.map((col, index) => (
                 <td
-                  key={col.key || i}
+                  key={col.key || index}
                   className={cn(
                     'px-6 py-4 text-sm text-gray-600',
                     col.align === 'center' && 'text-center',

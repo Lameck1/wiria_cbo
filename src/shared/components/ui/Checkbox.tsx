@@ -1,4 +1,5 @@
 import { InputHTMLAttributes, useId } from 'react';
+
 import { cn } from '@/shared/utils/helpers';
 
 export interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {

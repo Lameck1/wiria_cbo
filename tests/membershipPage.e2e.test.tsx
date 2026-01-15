@@ -4,13 +4,13 @@
  * E2E Tests for Membership Registration Flow
  * Tests the member registration page
  */
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 
-import MembershipPage from '@/pages/MembershipPage';
 import { AuthProvider } from '@/features/auth/context/AuthContext';
+import MembershipPage from '@/pages/MembershipPage';
 
 vi.mock('@/shared/services/notification/notificationService', () => ({
     notificationService: {
@@ -55,7 +55,7 @@ describe('Membership Registration Flow', () => {
         renderWithProviders(<MembershipPage />);
 
         await waitFor(() => {
-            expect(screen.getByText(/join wiria|membership/i)).toBeInTheDocument();
+            expect(screen.getByRole('heading', { name: /become a member/i })).toBeInTheDocument();
         });
     });
 
@@ -64,7 +64,7 @@ describe('Membership Registration Flow', () => {
 
         // Check for membership content
         await waitFor(() => {
-            expect(screen.getByText(/membership|wiria/i)).toBeInTheDocument();
+            expect(screen.getByRole('heading', { name: /membership information/i })).toBeInTheDocument();
         });
     });
 
