@@ -102,7 +102,7 @@ export default function UserManagementPage() {
       key: 'role',
       render: (index) => <StatusBadge status={index.role} />,
     },
-    { header: 'Invited By', key: 'inviter', render: (index) => index.inviter?.email || 'N/A' },
+    { header: 'Invited By', key: 'inviter', render: (index) => index.inviter?.email ?? 'N/A' },
     {
       header: 'Expires',
       key: 'expiresAt',

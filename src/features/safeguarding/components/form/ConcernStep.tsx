@@ -34,7 +34,7 @@ export function ConcernStep({
   onBack,
 }: ConcernStepProps) {
   const { watch, setValue } = useFormContext();
-  const category = watch('category');
+  const category = watch('category') as string;
 
   return (
     <div className="space-y-6">

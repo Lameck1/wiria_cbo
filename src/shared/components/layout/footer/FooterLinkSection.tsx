@@ -27,7 +27,7 @@ export function FooterLinkSection({ title, links }: FooterLinkSectionProps) {
             <Link
               to={link.to}
               onClick={link.onClick}
-              className={link.className || 'text-gray-300 transition-colors hover:text-white'}
+              className={link.className ?? 'text-gray-300 transition-colors hover:text-white'}
             >
               {link.label}
               {link.badge}

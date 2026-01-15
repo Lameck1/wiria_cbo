@@ -90,7 +90,7 @@ export function FormModal<T extends Record<string, unknown>>({
         return (
           <Textarea
             {...commonProps}
-            rows={field.rows || 4}
+            rows={field.rows ?? 4}
           />
         );
       }

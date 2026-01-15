@@ -48,11 +48,11 @@ const statusTypeMap: Record<string, BadgeType> = {
 };
 
 export function getStatusType(status: string): BadgeType {
-  return statusTypeMap[status.toUpperCase()] || 'info';
+  return statusTypeMap[status.toUpperCase()] ?? 'info';
 }
 
 export function StatusBadge({ status, type }: StatusBadgeProps) {
-  const badgeType = type || getStatusType(status);
+  const badgeType = type ?? getStatusType(status);
   const colorClass = colors[badgeType];
 
   return <span className={`rounded-full px-2 py-1 text-xs font-bold ${colorClass}`}>{status}</span>;
