@@ -87,12 +87,12 @@ describe('useContactForm', () => {
   });
 
   it('should set isSubmitting to true during submission', async () => {
-    let resolvePromise: (value: unknown) => void;
+    let resolvePromise: (value: unknown) => void = () => undefined;
     const promise = new Promise((resolve) => {
       resolvePromise = resolve;
     });
 
-    vi.mocked(apiClient.post).mockReturnValue(promise as any);
+    vi.mocked(apiClient.post).mockReturnValue(promise as Promise<{ success: boolean }>);
 
     const { result } = renderHook(() => useContactForm());
 
@@ -104,7 +104,7 @@ describe('useContactForm', () => {
     };
 
     act(() => {
-      result.current.submitContactForm(formData);
+      void result.current.submitContactForm(formData);
     });
 
     expect(result.current.isSubmitting).toBe(true);

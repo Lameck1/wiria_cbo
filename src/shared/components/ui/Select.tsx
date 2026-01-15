@@ -34,7 +34,7 @@ export function Select({
     const hasError = !!error;
     const describedBy = [hasError ? errorId : null, helperText && !hasError ? helperId : null]
         .filter(Boolean)
-        .join(' ') || undefined;
+        .join(' ') ?? undefined;
 
     return (
         <div className="w-full">
@@ -59,7 +59,7 @@ export function Select({
                 aria-describedby={describedBy}
                 {...props}
             >
-                {children ? children : options?.map((option) => (
+                {children ?? options?.map((option) => (
                     <option key={option.value} value={option.value}>
                         {option.label}
                     </option>

@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-non-null-assertion */
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 // @vitest-environment jsdom
 
 import type { ReactElement } from 'react';
@@ -10,6 +10,7 @@ import { describe, it, beforeEach, vi, expect } from 'vitest';
 
 
 import TenderManagementPage from '@/pages/admin/TenderManagementPage';
+import type { Tender } from '@/features/admin/api/tenders.api';
 
 vi.mock('@/features/admin/api/tenders.api', () => ({
   getTenders: vi.fn(),
@@ -59,7 +60,7 @@ describe('TenderManagementPage', () => {
           status: 'OPEN',
           downloadUrl: undefined,
         },
-      ] as any,
+      ] as Tender[],
     });
 
     renderWithQueryClient(<TenderManagementPage />);
@@ -74,7 +75,7 @@ describe('TenderManagementPage', () => {
     const getTendersMock = vi.mocked(getTenders);
     const createTenderMock = vi.mocked(createTender);
     getTendersMock.mockResolvedValue({ data: [] });
-    createTenderMock.mockResolvedValue({ success: true } as any);
+    createTenderMock.mockResolvedValue({ success: true } as { success: boolean });
 
     renderWithQueryClient(<TenderManagementPage />);
 

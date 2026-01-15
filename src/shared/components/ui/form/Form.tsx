@@ -31,7 +31,7 @@ export function Form<T extends FieldValues>({
         <FormProvider {...methods}>
             <form
                 id={id}
-                onSubmit={methods.handleSubmit(onSubmit)}
+                onSubmit={(e) => void methods.handleSubmit(onSubmit)(e)}
                 className={`space-y-6 ${className}`}
                 noValidate
             >

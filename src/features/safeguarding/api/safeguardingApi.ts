@@ -17,7 +17,7 @@ export const safeguardingApi = {
             formData.append('evidence', evidenceFile);
         }
 
-        const API_BASE_URL = import.meta.env['VITE_API_BASE_URL'] ?? 'http://localhost:5001/api';
+        const API_BASE_URL: string = (import.meta.env['VITE_API_BASE_URL'] as string | undefined) ?? 'http://localhost:5001/api';
         const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.SAFEGUARDING_SUBMIT}`, {
             method: 'POST',
             body: formData,

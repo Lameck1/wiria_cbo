@@ -92,7 +92,7 @@ describe('UserManagementPage (staff & admin management)', () => {
     const getUsersMock = vi.mocked(getUsers);
     const inviteUserMock = vi.mocked(inviteUser);
     getUsersMock.mockResolvedValue([]);
-    inviteUserMock.mockResolvedValue({ success: true } as any);
+    inviteUserMock.mockResolvedValue({ success: true } as { success: boolean });
 
     render(<UserManagementPage />, { wrapper: TestWrapper });
 
@@ -148,7 +148,7 @@ describe('UserManagementPage (staff & admin management)', () => {
         createdAt: new Date().toISOString(),
       },
     ]);
-    updateUserStatusMock.mockResolvedValue({ success: true } as any);
+    updateUserStatusMock.mockResolvedValue({ success: true } as { success: boolean });
 
     render(<UserManagementPage />, { wrapper: TestWrapper });
 

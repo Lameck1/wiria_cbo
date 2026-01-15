@@ -14,10 +14,10 @@ Object.defineProperty(window, 'matchMedia', {
     matches: false,
     media: query,
     onchange: null,
-    addListener: () => {}, // deprecated
-    removeListener: () => {}, // deprecated
-    addEventListener: () => {},
-    removeEventListener: () => {},
+    addListener: () => undefined, // deprecated
+    removeListener: () => undefined, // deprecated
+    addEventListener: () => undefined,
+    removeEventListener: () => undefined,
     dispatchEvent: () => false,
   }),
 });
@@ -27,7 +27,7 @@ const localStorageMock = (() => {
   let store: Record<string, string> = {};
 
   return {
-    getItem: (key: string) => store[key] || null,
+    getItem: (key: string) => store[key] ?? null,
     setItem: (key: string, value: string) => {
       store[key] = value.toString();
     },
@@ -45,21 +45,23 @@ Object.defineProperty(window, 'localStorage', {
 });
 
 // Mock IntersectionObserver for Framer Motion
-global.IntersectionObserver = class IntersectionObserver {
+class MockIntersectionObserver implements IntersectionObserver {
+  readonly root: Element | null = null;
+  readonly rootMargin: string = '';
+  readonly thresholds: ReadonlyArray<number> = [];
+
   observe() {
-    return null;
+    return undefined;
   }
   disconnect() {
-    return null;
+    return undefined;
   }
   unobserve() {
-    return null;
+    return undefined;
   }
-  takeRecords() {
+  takeRecords(): IntersectionObserverEntry[] {
     return [];
   }
-  root = null;
-  rootMargin = '';
-  thresholds = [];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-} as any;
+}
+
+global.IntersectionObserver = MockIntersectionObserver;

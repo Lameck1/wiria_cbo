@@ -1,6 +1,7 @@
 /**
  * Storage Service Tests
  */
+/* eslint-disable no-restricted-globals */
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 
 import { StorageService, storageService, STORAGE_KEYS } from '@/shared/services/storage/storageService';

@@ -122,7 +122,7 @@ export const validateEmail = (email: string): ValidationResult => {
 export const validateAmount = (amount: number | string): ValidationResult => {
   const numberAmount = typeof amount === 'string' ? Number.parseFloat(amount) : amount;
 
-  if (isNaN(numberAmount)) {
+  if (Number.isNaN(numberAmount)) {
     return { valid: false, error: 'Please enter a valid amount' };
   }
 
@@ -157,7 +157,7 @@ export const validateName = (name: string): ValidationResult => {
 
   const result = nameSchema.safeParse(name);
   if (!result.success) {
-    return { valid: false, error: result.error.errors[0]?.message || 'Invalid name' };
+    return { valid: false, error: result.error.errors[0]?.message ?? 'Invalid name' };
   }
 
   return { valid: true };

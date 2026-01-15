@@ -52,7 +52,7 @@ export function TenderModal({ tender, onClose, onSuccess }: TenderModalProps) {
     const formData = new FormData(form);
     const rawData = Object.fromEntries(formData.entries());
 
-    const fileInput = form.querySelector('#tender-file-input') as HTMLInputElement | null;
+    const fileInput = form.querySelector<HTMLInputElement>('#tender-file-input');
     let downloadUrl = (rawData['downloadUrl'] as string) || '';
 
     try {

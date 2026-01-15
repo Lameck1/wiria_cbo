@@ -29,7 +29,7 @@ export default function ResourceManagementPage() {
     mutationFn: deleteResource,
     onSuccess: () => {
       notificationService.success('Resource deleted successfully');
-      queryClient.invalidateQueries({ queryKey: ['admin', 'resources'] });
+      void queryClient.invalidateQueries({ queryKey: ['admin', 'resources'] });
     },
     onError: () => {
       notificationService.error('Failed to delete resource');

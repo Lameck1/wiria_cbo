@@ -12,7 +12,7 @@ describe('helpers', () => {
         });
 
         it('handles conditional classes', () => {
-            expect(cn('base', true && 'active', false && 'hidden')).toBe('base active');
+            expect(cn('base', 'active', '')).toBe('base active');
         });
 
         it('filters falsy values', () => {

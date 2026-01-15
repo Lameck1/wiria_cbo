@@ -89,7 +89,7 @@ describe('donations.api', () => {
                 })
             );
 
-            const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
+            const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
             
             // Now expects error to be thrown
             await expect(getDonations()).rejects.toThrow('Failed to load donations');
@@ -119,7 +119,7 @@ describe('donations.api', () => {
                 })
             );
 
-            const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
+            const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
             const result = await getDonationById('999');
             expect(result).toBeNull();
             consoleSpy.mockRestore();
@@ -149,7 +149,7 @@ describe('donations.api', () => {
                 })
             );
 
-            const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
+            const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
             
             // Now expects error to be thrown
             await expect(getDonationStatistics()).rejects.toThrow('Failed to load donation statistics');

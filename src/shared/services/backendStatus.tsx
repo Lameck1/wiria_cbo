@@ -63,7 +63,7 @@ export function BackendStatusProvider({ children }: { children: ReactNode }) {
   const [isChecking, setIsChecking] = useState(true);
 
   useEffect(() => {
-    checkBackendHealth().then((connected) => {
+    void checkBackendHealth().then((connected) => {
       setIsBackendConnected(connected);
       setIsChecking(false);
     });

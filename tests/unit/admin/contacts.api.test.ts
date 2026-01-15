@@ -50,7 +50,7 @@ describe('contacts.api', () => {
                 })
             );
 
-            const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
+            const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
             const { getContacts } = await import('@/features/admin/api/contacts.api');
             
             // Now expects error to be thrown instead of returning empty array
@@ -79,7 +79,7 @@ describe('contacts.api', () => {
                 })
             );
 
-            const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
+            const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
             const { getContactById } = await import('@/features/admin/api/contacts.api');
             const result = await getContactById('999');
             expect(result).toBeNull();

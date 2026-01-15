@@ -3,7 +3,7 @@
  * Centralized HTTP client with TypeScript support
  */
 
-const API_BASE_URL = import.meta.env['VITE_API_BASE_URL'] ?? 'http://localhost:5001/api';
+const API_BASE_URL: string = (import.meta.env['VITE_API_BASE_URL'] as string | undefined) ?? 'http://localhost:5001/api';
 
 type TokenResolver = () => string | null;
 
@@ -11,7 +11,7 @@ class ApiClient {
   private baseURL: string;
   private tokenResolver?: TokenResolver;
 
-  constructor(baseURL: string = API_BASE_URL) {
+  constructor(baseURL: string = API_BASE_URL as string) {
     this.baseURL = baseURL;
   }
 
@@ -82,9 +82,9 @@ class ApiClient {
 
         const dataObj = data as Record<string, unknown>;
         const errorMessage =
-          (dataObj.message as string) ||
-          ((dataObj.error as Record<string, unknown>)?.message as string) ||
-          (typeof dataObj['error'] === 'string' ? dataObj['error'] : null) ||
+          (dataObj.message as string) ??
+          ((dataObj.error as Record<string, unknown>)?.message as string) ??
+          (typeof dataObj['error'] === 'string' ? dataObj['error'] : null) ??
           (response.status === 401
             ? 'Session expired or unauthorized'
             : 'An unexpected error occurred');
