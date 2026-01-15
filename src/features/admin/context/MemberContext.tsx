@@ -31,7 +31,7 @@ export function MemberProvider({ children, filter, search }: MemberProviderProps
       value={{
         members,
         isLoading,
-        refetch,
+        refetch: async () => { await refetch(); },
         filter,
         search,
       }}

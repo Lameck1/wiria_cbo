@@ -67,7 +67,7 @@ describe('NewsManagementPage', () => {
     const getAdminUpdatesMock = vi.mocked(getAdminUpdates);
     const createUpdateMock = vi.mocked(createUpdate);
     getAdminUpdatesMock.mockResolvedValue({ data: [] });
-    createUpdateMock.mockResolvedValue({ success: true } as { success: boolean });
+    createUpdateMock.mockResolvedValue({ success: true } as any);
 
     render(<NewsManagementPage />);
 

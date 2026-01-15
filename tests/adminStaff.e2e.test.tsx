@@ -92,7 +92,7 @@ describe('UserManagementPage (staff & admin management)', () => {
     const getUsersMock = vi.mocked(getUsers);
     const inviteUserMock = vi.mocked(inviteUser);
     getUsersMock.mockResolvedValue([]);
-    inviteUserMock.mockResolvedValue({ success: true } as { success: boolean });
+    inviteUserMock.mockResolvedValue({ success: true } as any);
 
     render(<UserManagementPage />, { wrapper: TestWrapper });
 

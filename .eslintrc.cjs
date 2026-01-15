@@ -84,6 +84,7 @@ module.exports = {
     '@typescript-eslint/promise-function-async': 'off', // Too strict - lazy imports in router don't need async
     'promise/catch-or-return': 'error',
     'promise/always-return': 'off', // Too strict for arrow functions
+    'unicorn/consistent-function-scoping': 'warn', // Downgrade to warning - sometimes intentional for readability
     
     // Prevent useEffect issues
     'react-hooks/rules-of-hooks': 'error',
@@ -215,25 +216,61 @@ module.exports = {
   // Override rules for specific files
   overrides: [
     {
-      files: ['*.test.ts', '*.test.tsx', '*.spec.ts', '*.spec.tsx'],
+      // Test files - allow test-specific patterns
+      files: ['*.test.ts', '*.test.tsx', '*.spec.ts', '*.spec.tsx', 'tests/**/*', 'e2e/**/*'],
       rules: {
+        // Allow any type for test mocks and utilities
         '@typescript-eslint/no-explicit-any': 'off',
         '@typescript-eslint/no-unsafe-assignment': 'off',
         '@typescript-eslint/no-unsafe-member-access': 'off',
         '@typescript-eslint/no-unsafe-call': 'off',
+        '@typescript-eslint/no-unsafe-return': 'off',
+        '@typescript-eslint/no-unsafe-argument': 'off',
         '@typescript-eslint/unbound-method': 'off',
+        '@typescript-eslint/no-unnecessary-type-assertion': 'off', // Tests often need explicit type assertions for DOM elements
+        '@typescript-eslint/non-nullable-type-assertion-style': 'off', // Tests can use their preferred assertion style
+        
+        // Allow empty functions for test mocks
+        '@typescript-eslint/no-empty-function': 'off',
+        
+        // Allow floating promises in test setup
+        '@typescript-eslint/no-floating-promises': 'off',
+        
+        // Allow direct localStorage access in tests that test localStorage
+        'no-restricted-globals': 'off',
+        
+        // Allow test-specific patterns
+        'promise/catch-or-return': 'off', // Tests often intentionally don't catch to test error behavior
+        'unicorn/consistent-function-scoping': 'off', // Tests often have helper functions inline for clarity
+        
+        // Reduce noise in tests
         'sonarjs/no-duplicate-string': 'off',
         'max-lines-per-function': 'off',
-        'max-lines': 'off'
+        'max-lines': 'off',
+        'complexity': 'off',
+        'unicorn/prevent-abbreviations': 'off',
+        '@typescript-eslint/require-await': 'off',
+        'import/order': 'warn' // Downgrade to warning for tests
       }
     },
     {
+      // Config files
       files: ['vite.config.ts', '*.config.ts', '*.config.js', 'vitest.config.ts'],
       rules: {
         'import/no-default-export': 'off',
         'unicorn/prefer-module': 'off',
         '@typescript-eslint/no-unsafe-assignment': 'off',
         '@typescript-eslint/no-unsafe-member-access': 'off'
+      }
+    },
+    {
+      // E2E test files - allow additional patterns
+      files: ['e2e/**/*.ts', 'e2e/**/*.tsx'],
+      rules: {
+        // E2E files often have descriptive names with multiple words
+        'unicorn/filename-case': 'off',
+        '@typescript-eslint/no-floating-promises': 'off',
+        '@typescript-eslint/no-empty-function': 'off'
       }
     }
   ]

@@ -19,17 +19,17 @@ function ResourcesPage() {
 
   // Handle hash-based scrolling (e.g., /resources#tenders)
   useEffect(() => {
-    if (location.hash) {
-      // Small delay to ensure the page has rendered
-      const timeoutId = setTimeout(() => {
-        const elementId = location.hash.slice(1);
-        const element = document.getElementById(elementId);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      }, 100);
-      return () => clearTimeout(timeoutId);
-    }
+    if (!location.hash) return;
+    
+    // Small delay to ensure the page has rendered
+    const timeoutId = setTimeout(() => {
+      const elementId = location.hash.slice(1);
+      const element = document.getElementById(elementId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 100);
+    return () => clearTimeout(timeoutId);
   }, [location.hash]);
   return (
     <main>

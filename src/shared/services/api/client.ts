@@ -82,8 +82,8 @@ class ApiClient {
 
         const dataObject = data as Record<string, unknown>;
         const errorMessage =
-          (dataObject.message as string) ??
-          ((dataObject.error as Record<string, unknown>)?.message as string) ??
+          (dataObject['message'] as string) ??
+          ((dataObject['error'] as Record<string, unknown>)?.['message'] as string) ??
           (typeof dataObject['error'] === 'string' ? dataObject['error'] : null) ??
           (response.status === 401
             ? 'Session expired or unauthorized'

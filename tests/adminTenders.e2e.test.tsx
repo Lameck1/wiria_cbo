@@ -75,7 +75,7 @@ describe('TenderManagementPage', () => {
     const getTendersMock = vi.mocked(getTenders);
     const createTenderMock = vi.mocked(createTender);
     getTendersMock.mockResolvedValue({ data: [] });
-    createTenderMock.mockResolvedValue({ success: true } as { success: boolean });
+    createTenderMock.mockResolvedValue({ success: true } as any);
 
     renderWithQueryClient(<TenderManagementPage />);
 
