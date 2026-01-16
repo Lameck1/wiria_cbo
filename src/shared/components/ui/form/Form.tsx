@@ -1,8 +1,10 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm, FormProvider, UseFormReturn, DefaultValues, FieldValues } from 'react-hook-form';
-import { z } from 'zod';
+import { useForm, FormProvider } from 'react-hook-form';
+
+import type { UseFormReturn, DefaultValues, FieldValues } from 'react-hook-form';
+import type { z } from 'zod';
 
 interface FormProps<T extends FieldValues> {
     schema: z.ZodType<T>;

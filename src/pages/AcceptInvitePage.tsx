@@ -7,10 +7,11 @@ import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 
+import type {
+  VerifyInviteResponse} from '@/features/auth/api/auth.api';
 import {
   acceptInvitation,
-  verifyInvitation,
-  VerifyInviteResponse,
+  verifyInvitation
 } from '@/features/auth/api/auth.api';
 import { Button } from '@/shared/components/ui/Button';
 import { ApiError } from '@/shared/services/api/client';

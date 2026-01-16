@@ -12,7 +12,9 @@ import { TenderCard } from './TenderCard';
 import { TenderCardSkeleton, TenderTableRowSkeleton } from './TenderCardSkeleton';
 import { getCountdown, getStatusBadge } from './TenderCardUtils';
 import { TenderModal } from './TenderModal';
-import { Tender, useTenders } from '../hooks/useTenders';
+import { useTenders } from '../hooks/useTenders';
+
+import type { Tender} from '../hooks/useTenders';
 
 interface TendersContentViewProps {
   openTenders: Tender[];

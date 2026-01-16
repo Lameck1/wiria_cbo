@@ -3,7 +3,7 @@
  * Reusable card for displaying dashboard statistics.
  */
 
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 interface StatCardProps {
     /** Main label displayed above the number */

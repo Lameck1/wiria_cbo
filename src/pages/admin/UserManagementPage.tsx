@@ -1,8 +1,9 @@
 import { useState } from 'react';
 
-import {
+import type {
   AdminUser,
-  UserInvitation,
+  UserInvitation} from '@/features/admin/api/users.api';
+import {
   cancelInvitation,
   getInvitations,
   getUsers,

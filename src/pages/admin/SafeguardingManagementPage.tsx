@@ -1,10 +1,11 @@
 import { useState } from 'react';
 
+import type {
+  SafeguardingReport} from '@/features/admin/api/safeguarding.api';
 import {
   getSafeguardingReports,
   updateSafeguardingReport as updateReport,
-  resolveSafeguardingReport as resolveReport,
-  SafeguardingReport,
+  resolveSafeguardingReport as resolveReport
 } from '@/features/admin/api/safeguarding.api';
 import { AdminPageHeader } from '@/features/admin/components/layout/AdminPageHeader';
 import { INCIDENT_TYPES, PRIORITY_COLORS, STATUS_COLORS } from '@/features/admin/components/safeguarding/constants';

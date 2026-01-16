@@ -3,7 +3,8 @@
  * Accessible modal dialog with backdrop
  */
 
-import { ReactNode, useEffect, useId } from 'react';
+import type { ReactNode} from 'react';
+import { useEffect, useId } from 'react';
 
 import { AnimatePresence, motion } from 'framer-motion';
 

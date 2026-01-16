@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
-import { Application, updateApplicationStatus } from '@/features/admin/api/opportunities.api';
+import type { Application} from '@/features/admin/api/opportunities.api';
+import { updateApplicationStatus } from '@/features/admin/api/opportunities.api';
 import { Button } from '@/shared/components/ui/Button';
 import { Form, FormSelectField, FormTextareaField } from '@/shared/components/ui/form';
 import { Modal } from '@/shared/components/ui/Modal';

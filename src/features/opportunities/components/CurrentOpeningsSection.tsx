@@ -12,9 +12,12 @@ import { ApplicationModal } from '@/features/applications/components/Application
 
 import { EmptyStateView } from './EmptyStateView';
 import { OpportunityCard } from './OpportunityCard';
-import { OpportunityFilters, OpportunityTypeFilter } from './OpportunityFilters';
+import { OpportunityFilters } from './OpportunityFilters';
 import { OpportunityModal } from './OpportunityModal';
-import { useOpportunities, Opportunity } from '../hooks/useOpportunities';
+import { useOpportunities } from '../hooks/useOpportunities';
+
+import type { OpportunityTypeFilter } from './OpportunityFilters';
+import type { Opportunity } from '../hooks/useOpportunities';
 
 type ModalView = 'none' | 'details' | 'apply';
 

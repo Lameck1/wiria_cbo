@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
-import { Career, createCareer, updateCareer } from '@/features/admin/api/careers.api';
+import type { Career} from '@/features/admin/api/careers.api';
+import { createCareer, updateCareer } from '@/features/admin/api/careers.api';
 import { Button } from '@/shared/components/ui/Button';
 import { Modal } from '@/shared/components/ui/Modal';
 import { notificationService } from '@/shared/services/notification/notificationService';

@@ -1,11 +1,12 @@
 import { useState } from 'react';
 
+import type {
+  Meeting,
+  MeetingAttendance} from '@/features/admin/api/meetings.api';
 import {
   cancelMeeting,
   getMeetingAttendance,
-  getMeetings,
-  Meeting,
-  MeetingAttendance,
+  getMeetings
 } from '@/features/admin/api/meetings.api';
 import { getMeetingColumns } from '@/features/admin/components/meetings/MeetingTableColumns';
 import { AttendanceModal } from '@/features/admin/components/meetings/modals/AttendanceModal';

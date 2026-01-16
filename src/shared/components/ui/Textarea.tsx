@@ -1,4 +1,5 @@
-import { TextareaHTMLAttributes, useId } from 'react';
+import type { TextareaHTMLAttributes} from 'react';
+import { useId } from 'react';
 
 import { cn } from '@/shared/utils/helpers';
 

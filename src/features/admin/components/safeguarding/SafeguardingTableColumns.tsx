@@ -1,5 +1,5 @@
-import { SafeguardingReport } from '@/features/admin/api/safeguarding.api';
-import { Column } from '@/shared/components/ui/DataTable';
+import type { SafeguardingReport } from '@/features/admin/api/safeguarding.api';
+import type { Column } from '@/shared/components/ui/DataTable';
 import { StatusBadge } from '@/shared/components/ui/StatusBadge';
 import { formatDate } from '@/shared/utils/helpers';
 

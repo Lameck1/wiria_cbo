@@ -1,6 +1,7 @@
-import { AdminMember } from '@/features/membership/api/members.api';
+import type { AdminMember } from '@/features/membership/api/members.api';
 import { Button } from '@/shared/components/ui/Button';
-import { DataTable, Column } from '@/shared/components/ui/DataTable';
+import type { Column } from '@/shared/components/ui/DataTable';
+import { DataTable } from '@/shared/components/ui/DataTable';
 import { StatusBadge } from '@/shared/components/ui/StatusBadge';
 
 interface MemberTableProps {

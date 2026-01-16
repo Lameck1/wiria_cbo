@@ -6,7 +6,8 @@
 import { motion } from 'framer-motion';
 
 import { JOB_TYPE_LABELS } from '../constants/careersData';
-import { Job } from '../hooks/useCareers';
+
+import type { Job } from '../hooks/useCareers';
 
 interface JobCardProps {
   job: Job;

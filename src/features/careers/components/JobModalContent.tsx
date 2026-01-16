@@ -7,7 +7,8 @@
 import { formatDate } from '@/shared/utils/dateUtils';
 
 import { JOB_TYPE_LABELS } from '../constants/careersData';
-import { Job } from '../hooks/useCareers';
+
+import type { Job } from '../hooks/useCareers';
 
 interface JobModalContentProps {
   job: Job;

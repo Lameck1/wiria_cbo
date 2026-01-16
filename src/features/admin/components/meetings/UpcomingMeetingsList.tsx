@@ -1,4 +1,4 @@
-import { Meeting } from '@/features/admin/api/meetings.api';
+import type { Meeting } from '@/features/admin/api/meetings.api';
 
 import { STATUS_COLORS, TYPE_LABELS, formatDate, formatTime } from './constants';
 

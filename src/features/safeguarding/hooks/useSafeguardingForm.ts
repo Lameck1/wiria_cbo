@@ -5,8 +5,10 @@ import { useForm } from 'react-hook-form';
 
 import { TIMING } from '@/shared/constants/config';
 
-import { SafeguardingReportSchema, safeguardingSchema } from '../validation';
+import { safeguardingSchema } from '../validation';
 import { useSafeguardingReport } from './useSafeguardingReport';
+
+import type { SafeguardingReportSchema} from '../validation';
 
 export type FormStep = 'reporter' | 'details';
 

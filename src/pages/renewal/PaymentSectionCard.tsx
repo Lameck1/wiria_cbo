@@ -1,11 +1,12 @@
-import { FieldErrors, UseFormRegister, UseFormSetValue } from 'react-hook-form';
 
 import { PaymentInstructions } from '@/features/donations/components/PaymentInstructions';
 import { PaymentMethodToggle } from '@/features/donations/components/PaymentMethodToggle';
-import { RenewalFormSchema } from '@/features/membership/validation';
+import type { RenewalFormSchema } from '@/features/membership/validation';
 import { Button } from '@/shared/components/ui/Button';
 import { Card, CardBody } from '@/shared/components/ui/Card';
 import { FormField } from '@/shared/components/ui/form';
+
+import type { FieldErrors, UseFormRegister, UseFormSetValue } from 'react-hook-form';
 
 interface PaymentSectionCardProps {
   paymentMethod: 'STK_PUSH' | 'MANUAL';

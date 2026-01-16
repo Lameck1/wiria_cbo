@@ -3,7 +3,7 @@ import { useState, useCallback } from 'react';
 import { apiClient } from '@/shared/services/api/client';
 import { logger } from '@/shared/services/logger';
 
-import { ApplicationFormData, ApplicationPayload } from '../types';
+import type { ApplicationFormData, ApplicationPayload } from '../types';
 
 export type SubmitStatus = 'idle' | 'submitting' | 'success' | 'error';
 

@@ -1,7 +1,7 @@
 import { apiClient } from '@/shared/services/api/client';
 import { API_ENDPOINTS } from '@/shared/services/api/endpoints';
 
-import { SafeguardingReportData, ReportLookupResult } from '../hooks/useSafeguardingReport';
+import type { SafeguardingReportData, ReportLookupResult } from '../hooks/useSafeguardingReport';
 
 export const safeguardingApi = {
     submit: async (data: SafeguardingReportData, evidenceFile?: File): Promise<{ data: { referenceNumber: string } }> => {

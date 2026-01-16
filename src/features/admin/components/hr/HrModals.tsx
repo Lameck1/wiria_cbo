@@ -1,5 +1,5 @@
-import { Career } from '@/features/admin/api/careers.api';
-import { Application, Opportunity } from '@/features/admin/api/opportunities.api';
+import type { Career } from '@/features/admin/api/careers.api';
+import type { Application, Opportunity } from '@/features/admin/api/opportunities.api';
 import { ApplicationReviewModal } from '@/features/admin/components/applications/ApplicationReviewModal';
 import { CareerModal } from '@/features/admin/components/hr/modals/CareerModal';
 import { OpportunityModal } from '@/features/admin/components/hr/modals/OpportunityModal';

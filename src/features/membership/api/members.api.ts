@@ -1,5 +1,5 @@
 import { apiClient as client } from '@/shared/services/api/client';
-import { MembershipStatus } from '@/shared/types';
+import type { MembershipStatus } from '@/shared/types';
 
 export interface AdminMember {
   id: string;

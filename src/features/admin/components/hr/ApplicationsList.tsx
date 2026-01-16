@@ -1,7 +1,8 @@
-import { DataTable, Column } from '@/shared/components/ui/DataTable';
+import type { Column } from '@/shared/components/ui/DataTable';
+import { DataTable } from '@/shared/components/ui/DataTable';
 import { StatusBadge } from '@/shared/components/ui/StatusBadge';
 
-import { ApplicationsListProps, Application } from './types';
+import type { ApplicationsListProps, Application } from './types';
 
 export function ApplicationsList({ applications, onReview }: ApplicationsListProps) {
   const columns: Column<Application>[] = [

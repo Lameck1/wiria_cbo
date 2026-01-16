@@ -4,13 +4,15 @@
  */
 
 import { motion } from 'framer-motion';
-import { Control, Controller } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
-import { RenewalFormSchema } from '@/features/membership/validation';
+import type { RenewalFormSchema } from '@/features/membership/validation';
 import { Button } from '@/shared/components/ui/Button';
 import { Card, CardBody } from '@/shared/components/ui/Card';
 import { Input } from '@/shared/components/ui/Input';
+
+import type { Control} from 'react-hook-form';
 
 interface RenewalSuccessProps {
     onNavigate?: () => void;

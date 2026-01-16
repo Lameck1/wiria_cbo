@@ -11,7 +11,9 @@ import { motion } from 'framer-motion';
 import { ImageCarousel } from '@/shared/components/ImageCarousel';
 
 import { UpdateModal } from './UpdateModal';
-import { useUpdates, Update } from '../hooks/useUpdates';
+import { useUpdates } from '../hooks/useUpdates';
+
+import type { Update } from '../hooks/useUpdates';
 
 interface RecentUpdatesListProps {
   updates: Update[];

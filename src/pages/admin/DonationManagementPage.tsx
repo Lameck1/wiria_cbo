@@ -2,11 +2,12 @@ import { useEffect, useState, useMemo, useCallback } from 'react';
 
 import { useSearchParams } from 'react-router-dom';
 
+import type {
+  Donation,
+  DonationStatistics} from '@/features/admin/api/donations.api';
 import {
   getDonations,
-  getDonationStatistics,
-  Donation,
-  DonationStatistics,
+  getDonationStatistics
 } from '@/features/admin/api/donations.api';
 import { DonationDetailsModal } from '@/features/admin/components/donations/DonationDetailsModal';
 import { DonationStatsGrid } from '@/features/admin/components/donations/DonationStatsGrid';

@@ -2,11 +2,13 @@ import { useState } from 'react';
 
 import { useQueryClient } from '@tanstack/react-query';
 
-import { Tender, getTenders, deleteTender } from '@/features/admin/api/tenders.api';
+import type { Tender} from '@/features/admin/api/tenders.api';
+import { getTenders, deleteTender } from '@/features/admin/api/tenders.api';
 import { TenderModal } from '@/features/admin/components/tenders/modals/TenderModal';
 import { ConfirmDialog } from '@/shared/components/modals/ConfirmDialog';
 import { Button } from '@/shared/components/ui/Button';
-import { DataTable, Column } from '@/shared/components/ui/DataTable';
+import type { Column } from '@/shared/components/ui/DataTable';
+import { DataTable } from '@/shared/components/ui/DataTable';
 import { useAdminData, useAdminAction } from '@/shared/hooks/useAdminData';
 
 export default function TenderManagementPage() {

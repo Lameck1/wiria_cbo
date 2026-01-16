@@ -1,6 +1,8 @@
 import { useFormContext, Controller } from 'react-hook-form';
 
-import { Select, SelectOption } from '../Select';
+import { Select } from '../Select';
+
+import type { SelectOption } from '../Select';
 
 interface FormSelectFieldProps {
     name: string;

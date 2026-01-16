@@ -4,7 +4,7 @@
  * Open/Closed: Extensible via props for different list styles
  */
 
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 interface OpportunityDetailSectionProps {
   title: string;

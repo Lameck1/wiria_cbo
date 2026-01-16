@@ -106,6 +106,13 @@ module.exports = {
     // Require explicit return types for exported functions
     '@typescript-eslint/explicit-module-boundary-types': 'off', // Too strict for current codebase
     
+    // Enforce consistent type imports for better tree-shaking and clarity
+    '@typescript-eslint/consistent-type-imports': ['error', {
+      prefer: 'type-imports',
+      disallowTypeAnnotations: true,
+      fixStyle: 'separate-type-imports',
+    }],
+    
     // Prevent magic numbers
     '@typescript-eslint/no-magic-numbers': 'off', // Too noisy for current codebase
     

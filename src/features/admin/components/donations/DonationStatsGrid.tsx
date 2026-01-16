@@ -1,4 +1,4 @@
-import { DonationStatistics } from '@/features/admin/api/donations.api';
+import type { DonationStatistics } from '@/features/admin/api/donations.api';
 import { Card, CardBody } from '@/shared/components/ui/Card';
 import { Spinner } from '@/shared/components/ui/Spinner';
 import { formatCurrency } from '@/shared/utils/helpers';

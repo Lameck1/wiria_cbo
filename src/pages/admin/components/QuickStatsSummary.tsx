@@ -3,7 +3,7 @@
  * Compact summary statistics card for dashboard sidebar
  */
 
-import { DashboardStats } from '@/features/admin/api/dashboard.api';
+import type { DashboardStats } from '@/features/admin/api/dashboard.api';
 
 interface QuickStatsSummaryProps {
     stats: DashboardStats | null;

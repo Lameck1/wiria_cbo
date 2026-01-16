@@ -1,8 +1,9 @@
 import { useState } from 'react';
 
-import {
+import type {
   CreateMeetingData,
-  Meeting,
+  Meeting} from '@/features/admin/api/meetings.api';
+import {
   createMeeting,
   updateMeeting,
 } from '@/features/admin/api/meetings.api';

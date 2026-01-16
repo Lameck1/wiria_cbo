@@ -5,7 +5,9 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
-import { usePartners, Partner } from '../hooks/usePartners';
+import { usePartners } from '../hooks/usePartners';
+
+import type { Partner } from '../hooks/usePartners';
 
 export function PartnersSection() {
   const { data: partners = [], isLoading, isError } = usePartners();

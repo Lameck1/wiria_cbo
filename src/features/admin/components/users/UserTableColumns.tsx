@@ -1,5 +1,5 @@
-import { AdminUser, UserInvitation } from '@/features/admin/api/users.api';
-import { Column } from '@/shared/components/ui/DataTable';
+import type { AdminUser, UserInvitation } from '@/features/admin/api/users.api';
+import type { Column } from '@/shared/components/ui/DataTable';
 import { StatusBadge } from '@/shared/components/ui/StatusBadge';
 import { formatDate } from '@/shared/utils/dateUtils';
 

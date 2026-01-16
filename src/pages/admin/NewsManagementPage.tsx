@@ -1,7 +1,8 @@
 import { memo, useCallback, useState } from 'react';
 
+import type {
+  NewsUpdate} from '@/features/admin/api/news.api';
 import {
-  NewsUpdate,
   createUpdate,
   deleteUpdate,
   getAdminUpdates,

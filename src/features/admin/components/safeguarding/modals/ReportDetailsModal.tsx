@@ -1,4 +1,4 @@
-import { SafeguardingReport } from '@/features/admin/api/safeguarding.api';
+import type { SafeguardingReport } from '@/features/admin/api/safeguarding.api';
 import { Button } from '@/shared/components/ui/Button';
 
 interface ReportDetailsModalProps {

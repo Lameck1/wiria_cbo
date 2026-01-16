@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react';
 
 import { useSearchParams } from 'react-router-dom';
 
+import type {
+  Contact} from '@/features/admin/api/contacts.api';
 import {
   archiveContact,
-  Contact,
   getContacts,
   respondToContact,
 } from '@/features/admin/api/contacts.api';
@@ -12,7 +13,8 @@ import { MessageDetailsModal } from '@/features/admin/components/contacts/modals
 import { ReplyModal } from '@/features/admin/components/contacts/modals/ReplyModal';
 import { AdminPageHeader } from '@/features/admin/components/layout/AdminPageHeader';
 import { ConfirmDialog } from '@/shared/components/modals/ConfirmDialog';
-import { Column, DataTable } from '@/shared/components/ui/DataTable';
+import type { Column} from '@/shared/components/ui/DataTable';
+import { DataTable } from '@/shared/components/ui/DataTable';
 import { StatusBadge } from '@/shared/components/ui/StatusBadge';
 import { useAdminAction, useAdminData } from '@/shared/hooks/useAdminData';
 

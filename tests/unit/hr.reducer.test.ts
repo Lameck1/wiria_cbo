@@ -2,7 +2,6 @@ import { describe, expect, it } from 'vitest';
 
 import type { Application, Career, Opportunity } from '@/features/admin/api/opportunities.api';
 import type { HRTab } from '@/features/admin/components/hr/HrTabs';
-
 import HRManagementPage from '@/pages/admin/HRManagementPage';
 
 describe('HR management reducer behavior', () => {

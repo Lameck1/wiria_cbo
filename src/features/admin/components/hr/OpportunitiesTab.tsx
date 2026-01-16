@@ -6,10 +6,11 @@
 import { memo, useMemo } from 'react';
 
 import { Button } from '@/shared/components/ui/Button';
-import { DataTable, Column } from '@/shared/components/ui/DataTable';
+import type { Column } from '@/shared/components/ui/DataTable';
+import { DataTable } from '@/shared/components/ui/DataTable';
 import { StatusBadge } from '@/shared/components/ui/StatusBadge';
 
-import { OpportunitiesTabProps, Opportunity, Application } from './types';
+import type { OpportunitiesTabProps, Opportunity, Application } from './types';
 
 export const OpportunitiesTab = memo(function OpportunitiesTab({
   opportunities,

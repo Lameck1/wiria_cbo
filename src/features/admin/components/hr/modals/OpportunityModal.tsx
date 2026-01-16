@@ -1,7 +1,8 @@
 import { useState } from 'react';
 
+import type {
+  Opportunity} from '@/features/admin/api/opportunities.api';
 import {
-  Opportunity,
   createOpportunity,
   updateOpportunity,
 } from '@/features/admin/api/opportunities.api';

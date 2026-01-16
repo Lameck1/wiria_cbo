@@ -1,4 +1,4 @@
-import { Contact } from '@/features/admin/api/contacts.api';
+import type { Contact } from '@/features/admin/api/contacts.api';
 import { Button } from '@/shared/components/ui/Button';
 
 interface MessageDetailsModalProps {

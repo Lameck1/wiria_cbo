@@ -1,4 +1,4 @@
-import { Donation } from '@/features/admin/api/donations.api';
+import type { Donation } from '@/features/admin/api/donations.api';
 import { StatusBadge } from '@/shared/components/ui/StatusBadge';
 import { formatDateTime } from '@/shared/utils/dateUtils';
 import { formatCurrency } from '@/shared/utils/helpers';

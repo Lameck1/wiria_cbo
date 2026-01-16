@@ -25,12 +25,13 @@ interface NotificationStore {
   clearAll: () => void;
 }
 
-const createNotificationId = () => {
-  if (typeof crypto !== 'undefined' && 'randomUUID' in crypto) {
-    return crypto.randomUUID();
-  }
-
-  return Math.random().toString(36).slice(2, 9);
+/**
+ * Generate a unique notification ID using the Web Crypto API
+ * crypto.randomUUID() provides cryptographically strong random UUIDs
+ * and is available in all modern browsers (Chrome 92+, Firefox 95+, Safari 15.4+)
+ */
+const createNotificationId = (): string => {
+  return crypto.randomUUID();
 };
 
 export const useNotificationStore = create<NotificationStore>((set) => ({

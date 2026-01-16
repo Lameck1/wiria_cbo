@@ -1,4 +1,5 @@
-import { AdminMember, approveMember, rejectMember } from '@/features/membership/api/members.api';
+import type { AdminMember} from '@/features/membership/api/members.api';
+import { approveMember, rejectMember } from '@/features/membership/api/members.api';
 import { Button } from '@/shared/components/ui/Button';
 import { Modal } from '@/shared/components/ui/Modal';
 import { notificationService } from '@/shared/services/notification/notificationService';

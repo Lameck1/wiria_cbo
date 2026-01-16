@@ -10,7 +10,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { DocumentCard } from './DocumentCard';
 import { DocumentCardSkeleton } from './DocumentCardSkeleton';
 import { DocumentModal } from './DocumentModal';
-import { useResources, Resource } from '../hooks/useResources';
+import { useResources } from '../hooks/useResources';
+
+import type { Resource } from '../hooks/useResources';
 
 // Available categories for filtering
 const CATEGORIES = [

@@ -1,6 +1,7 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
-import { AdminMember, getMembers } from '@/features/membership/api/members.api';
+import type { AdminMember} from '@/features/membership/api/members.api';
+import { getMembers } from '@/features/membership/api/members.api';
 import { useAdminData } from '@/shared/hooks/useAdminData';
 
 import { MemberContext } from './MemberContextBase';

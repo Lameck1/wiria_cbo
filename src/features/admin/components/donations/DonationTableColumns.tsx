@@ -1,5 +1,5 @@
-import { Donation } from '@/features/admin/api/donations.api';
-import { Column } from '@/shared/components/ui/DataTable';
+import type { Donation } from '@/features/admin/api/donations.api';
+import type { Column } from '@/shared/components/ui/DataTable';
 import { StatusBadge } from '@/shared/components/ui/StatusBadge';
 import { formatDateTime } from '@/shared/utils/dateUtils';
 import { formatCurrency } from '@/shared/utils/helpers';

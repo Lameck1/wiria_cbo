@@ -4,11 +4,13 @@
  * Provides reusable test utilities for consistent testing across the application
  */
 
-import { ReactElement } from 'react';
+import type { ReactElement } from 'react';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { render, RenderOptions } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
+
+import type { RenderOptions } from '@testing-library/react';
 
 /**
  * Creates a fresh QueryClient for each test to avoid state leakage

@@ -3,7 +3,8 @@
  * Form input with label, error display, and validation
  */
 
-import { InputHTMLAttributes, ReactNode, useId } from 'react';
+import type { InputHTMLAttributes, ReactNode} from 'react';
+import { useId } from 'react';
 
 import { cn } from '@/shared/utils/helpers';
 

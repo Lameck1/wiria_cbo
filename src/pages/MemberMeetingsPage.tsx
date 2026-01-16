@@ -6,7 +6,8 @@
 import { useEffect, useState } from 'react';
 
 import { PortalLayout } from '@/features/membership/components/PortalLayout';
-import { Meeting, useMemberData } from '@/features/membership/hooks/useMemberData';
+import type { Meeting} from '@/features/membership/hooks/useMemberData';
+import { useMemberData } from '@/features/membership/hooks/useMemberData';
 import { Button } from '@/shared/components/ui/Button';
 import { Card, CardBody } from '@/shared/components/ui/Card';
 import { Spinner } from '@/shared/components/ui/Spinner';

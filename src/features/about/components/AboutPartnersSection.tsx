@@ -5,7 +5,8 @@
 
 import { motion } from 'framer-motion';
 
-import { usePartners, Partner } from '@/features/home/hooks/usePartners';
+import type { Partner } from '@/features/home/hooks/usePartners';
+import { usePartners } from '@/features/home/hooks/usePartners';
 
 // Partner type badge colors
 const TYPE_COLORS: Record<string, { bg: string; text: string }> = {

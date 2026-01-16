@@ -1,4 +1,5 @@
-import { InputHTMLAttributes, useId } from 'react';
+import type { InputHTMLAttributes} from 'react';
+import { useId } from 'react';
 
 import { cn } from '@/shared/utils/helpers';
 

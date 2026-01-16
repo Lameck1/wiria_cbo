@@ -5,7 +5,8 @@ import { Controller, FormProvider, useForm, useFormContext } from 'react-hook-fo
 
 import { PortalLayout } from '@/features/membership/components/PortalLayout';
 import { useMemberData } from '@/features/membership/hooks/useMemberData';
-import { ProfileFormSchema, profileSchema } from '@/features/membership/validation';
+import type { ProfileFormSchema} from '@/features/membership/validation';
+import { profileSchema } from '@/features/membership/validation';
 import { Button } from '@/shared/components/ui/Button';
 import { Card, CardBody } from '@/shared/components/ui/Card';
 import { FormField } from '@/shared/components/ui/form';

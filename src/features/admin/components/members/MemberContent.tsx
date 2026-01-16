@@ -1,5 +1,5 @@
 import { useMember } from '@/features/admin/context/useMember';
-import { AdminMember } from '@/features/membership/api/members.api';
+import type { AdminMember } from '@/features/membership/api/members.api';
 
 import { MemberDetailsModal } from './MemberDetailsModal';
 import { MemberFilters } from './MemberFilters';

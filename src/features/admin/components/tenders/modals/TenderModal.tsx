@@ -3,7 +3,8 @@ import { useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 
 import { uploadFile } from '@/features/admin/api/resources.api';
-import { Tender, createTender, updateTender } from '@/features/admin/api/tenders.api';
+import type { Tender} from '@/features/admin/api/tenders.api';
+import { createTender, updateTender } from '@/features/admin/api/tenders.api';
 import { Button } from '@/shared/components/ui/Button';
 import { Modal } from '@/shared/components/ui/Modal';
 import { notificationService } from '@/shared/services/notification/notificationService';

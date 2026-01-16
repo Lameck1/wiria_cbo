@@ -3,7 +3,7 @@
  * Reusable card container
  */
 
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 import { cn } from '@/shared/utils/helpers';
 

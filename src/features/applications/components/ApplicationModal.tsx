@@ -5,7 +5,9 @@ import { Modal } from '@/shared/components/ui/Modal';
 
 import { ApplicationFormFields } from './ApplicationFormFields';
 import { useApplicationSubmission } from '../hooks/useApplicationSubmission';
-import { applicationSchema, ApplicationFormData } from '../types';
+import { applicationSchema } from '../types';
+
+import type { ApplicationFormData } from '../types';
 
 interface ApplicationModalProps {
     isOpen: boolean;

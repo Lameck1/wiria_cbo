@@ -3,8 +3,8 @@
  * Shared interfaces for HR-related components
  */
 
-import { Career } from '@/features/admin/api/careers.api';
-import { Application, Opportunity } from '@/features/admin/api/opportunities.api';
+import type { Career } from '@/features/admin/api/careers.api';
+import type { Application, Opportunity } from '@/features/admin/api/opportunities.api';
 
 
 export interface CareersTabProps {

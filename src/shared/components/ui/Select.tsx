@@ -1,4 +1,5 @@
-import { SelectHTMLAttributes, useId } from 'react';
+import type { SelectHTMLAttributes} from 'react';
+import { useId } from 'react';
 
 import { cn } from '@/shared/utils/helpers';
 

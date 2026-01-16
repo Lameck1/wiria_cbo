@@ -5,7 +5,9 @@ import { apiClient } from '@/shared/services/api/client';
 import { UserRole } from '@/shared/types';
 import { extractData } from '@/shared/utils/apiUtils';
 
-import { DashboardStats, getDashboardStats } from '../api/dashboard.api';
+import { getDashboardStats } from '../api/dashboard.api';
+
+import type { DashboardStats} from '../api/dashboard.api';
 
 export interface TrendPointBase {
     month: string;

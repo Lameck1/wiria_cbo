@@ -3,7 +3,7 @@
  * Helper functions for cleaner protected route definitions
  */
 
-import { ReactElement } from 'react';
+import type { ReactElement } from 'react';
 
 import { ProtectedRoute } from '@/features/auth/components/ProtectedRoute';
 import { ROUTES } from '@/shared/constants/routes';

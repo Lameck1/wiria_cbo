@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 
 import type { Tender } from '@/features/admin/api/tenders.api';
 
