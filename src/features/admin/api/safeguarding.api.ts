@@ -4,6 +4,7 @@
  */
 
 import { apiClient } from '@/shared/services/api/client';
+import { logger } from '@/shared/services/logger';
 import { extractArray, extractData } from '@/shared/utils/apiUtils';
 
 export interface SafeguardingReport {
@@ -58,7 +59,7 @@ export const getSafeguardingReports = async (params?: {
     const response = await apiClient.get(`/safeguarding${queryString}`);
     return extractArray<SafeguardingReport>(response);
   } catch (error) {
-    console.error('Failed to fetch safeguarding reports:', error);
+    logger.error('Failed to fetch safeguarding reports:', error);
     throw new Error('Failed to load safeguarding reports. Please try again.');
   }
 };
@@ -68,7 +69,7 @@ export const getSafeguardingReportById = async (id: string): Promise<Safeguardin
     const response = await apiClient.get(`/safeguarding/${id}`);
     return extractData<SafeguardingReport>(response);
   } catch (error) {
-    console.error('Failed to fetch safeguarding report:', error);
+    logger.error('Failed to fetch safeguarding report:', error);
     return null;
   }
 };
@@ -81,7 +82,7 @@ export const updateSafeguardingReport = async (
     await apiClient.patch(`/safeguarding/${id}`, data);
     return true;
   } catch (error) {
-    console.error('Failed to update safeguarding report:', error);
+    logger.error('Failed to update safeguarding report:', error);
     throw error;
   }
 };
@@ -94,7 +95,7 @@ export const assignSafeguardingReport = async (
     await apiClient.post(`/safeguarding/${id}/assign`, { assignedTo });
     return true;
   } catch (error) {
-    console.error('Failed to assign safeguarding report:', error);
+    logger.error('Failed to assign safeguarding report:', error);
     throw error;
   }
 };
@@ -107,7 +108,7 @@ export const resolveSafeguardingReport = async (
     await apiClient.post(`/safeguarding/${id}/resolve`, { resolution });
     return true;
   } catch (error) {
-    console.error('Failed to resolve safeguarding report:', error);
+    logger.error('Failed to resolve safeguarding report:', error);
     throw error;
   }
 };
@@ -121,7 +122,7 @@ export const getSafeguardingStatistics = async (): Promise<SafeguardingStatistic
     }
     return data;
   } catch (error) {
-    console.error('Failed to fetch safeguarding statistics:', error);
+    logger.error('Failed to fetch safeguarding statistics:', error);
     throw new Error('Failed to load safeguarding statistics. Please try again.');
   }
 };

@@ -1,25 +1,14 @@
-import { createContext, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
+import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 
 import { ROUTES } from '@/shared/constants/routes';
 import { apiClient } from '@/shared/services/api/client';
-import { storageService, STORAGE_KEYS } from '@/shared/services/storage/storageService';
-import { User, Member, UserRole, AuthResponse } from '@/shared/types';
+import { logger } from '@/shared/services/logger';
+import { STORAGE_KEYS, storageService } from '@/shared/services/storage/storageService';
+import { AuthResponse, Member, User, UserRole } from '@/shared/types';
 
-export interface AuthContextType {
-  user: User | Member | null;
-  isAuthenticated: boolean;
-  isLoading: boolean;
-  login: (
-    credentials: { identifier: string; password: string },
-    isMember?: boolean
-  ) => Promise<User | Member>;
-  logout: (expired?: boolean) => Promise<void>;
-  checkAuth: () => void;
-}
-
-export const AuthContext = createContext<AuthContextType | undefined>(undefined);
+import { AuthContext } from './AuthContextBase';
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | Member | null>(null);
@@ -54,7 +43,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           }
         }
       } catch (error) {
-        console.error('Logout API call failed:', error);
+        logger.error('Logout API call failed:', error);
       } finally {
         // Clear local state
         apiClient.setTokenResolver(() => null);
@@ -78,7 +67,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     // Register global 401 handler
     apiClient.setUnauthorizedCallback(() => {
-      console.warn('Session expired - logging out');
+      logger.warn('Session expired - logging out');
       void logout(true);
     });
 

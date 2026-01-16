@@ -1,22 +1,31 @@
-import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery, useSuspenseQuery, type UseQueryResult, type UseSuspenseQueryResult } from '@tanstack/react-query';
 
+import { TIMING } from '@/shared/constants/config';
 import { apiClient } from '@/shared/services/api/client';
 import { UserRole } from '@/shared/types';
 import { extractData } from '@/shared/utils/apiUtils';
 
-import { getDashboardStats, DashboardStats } from '../api/dashboard.api';
+import { DashboardStats, getDashboardStats } from '../api/dashboard.api';
 
-/** Trend data structure for charts */
+export interface TrendPointBase {
+    month: string;
+}
+
+export interface DonationTrendPoint extends TrendPointBase {
+    amount: number;
+}
+
+export interface MemberTrendPoint extends TrendPointBase {
+    count: number;
+}
+
+/** Trend data structure for charts and API responses */
 export interface TrendData {
-    donations: { month: string; amount: number }[];
-    members: { month: string; count: number }[];
+    donations: DonationTrendPoint[];
+    members: MemberTrendPoint[];
 }
 
-/** API response type for trends endpoint */
-interface TrendsResponse {
-    donations: { month: string; amount: number }[];
-    members: { month: string; count: number }[];
-}
+type TrendsResponse = TrendData;
 
 const DASHBOARD_KEYS = {
     all: ['admin', 'dashboard'] as const,
@@ -24,52 +33,40 @@ const DASHBOARD_KEYS = {
     trends: () => [...DASHBOARD_KEYS.all, 'trends'] as const,
 };
 
-/**
- * Hook for fetching dashboard statistics
- */
-export function useDashboardStats() {
+export function useDashboardStats(): UseQueryResult<DashboardStats> {
     return useQuery<DashboardStats>({
         queryKey: DASHBOARD_KEYS.stats(),
         queryFn: getDashboardStats,
-        staleTime: 1000 * 60 * 5, // 5 minutes
+        staleTime: TIMING.QUERY_DEFAULT_STALE_TIME,
     });
 }
 
-/**
- * Suspense-enabled hook for dashboard statistics
- */
-export function useSuspenseDashboardStats() {
+export function useSuspenseDashboardStats(): UseSuspenseQueryResult<DashboardStats> {
     return useSuspenseQuery<DashboardStats>({
         queryKey: DASHBOARD_KEYS.stats(),
         queryFn: getDashboardStats,
-        staleTime: 1000 * 60 * 5,
+        staleTime: TIMING.QUERY_DEFAULT_STALE_TIME,
     });
 }
 
-/**
- * Hook for fetching dashboard trend data
- */
-export function useDashboardTrends() {
+export function useDashboardTrends(): UseQueryResult<TrendData> {
     return useQuery<TrendData>({
         queryKey: DASHBOARD_KEYS.trends(),
         queryFn: async () => {
             return apiClient.get<TrendsResponse>('/admin/trends');
         },
-        staleTime: 1000 * 60 * 10, // 10 minutes
+        staleTime: TIMING.QUERY_DEFAULT_STALE_TIME,
     });
 }
 
-/**
- * Suspense-enabled hook for dashboard statistics
- */
-export function useSuspenseDashboardTrends() {
+export function useSuspenseDashboardTrends(): UseSuspenseQueryResult<TrendData> {
     return useSuspenseQuery<TrendData>({
         queryKey: DASHBOARD_KEYS.trends(),
         queryFn: async () => {
             const response = await apiClient.get<TrendsResponse>('/admin/trends');
             return extractData<TrendData>(response) ?? { donations: [], members: [] };
         },
-        staleTime: 1000 * 60 * 10,
+        staleTime: TIMING.QUERY_DEFAULT_STALE_TIME,
     });
 }
 

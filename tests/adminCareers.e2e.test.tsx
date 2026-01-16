@@ -8,7 +8,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { getAdminCareers } from '@/features/admin/api/careers.api';
 import { getAdminOpportunities, getApplications } from '@/features/admin/api/opportunities.api';
-import HRManagementPage from '@/pages/admin/hrManagementPage';
+import HRManagementPage from '@/pages/admin/HRManagementPage';
 
 // Create a fresh QueryClient for tests
 function createTestQueryClient() {

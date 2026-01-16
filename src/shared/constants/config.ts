@@ -17,8 +17,12 @@ export const TIMING = {
   API_TIMEOUT: 30000,
   /** Health check timeout */
   HEALTH_CHECK_TIMEOUT: 5000,
+  PAYMENT_POLL_INTERVAL: 5000,
+  QUERY_DEFAULT_STALE_TIME: 5 * 60 * 1000,
   /** Toast notification display duration */
   TOAST_DURATION: 3000,
+  SUCCESS_MESSAGE_DURATION: 5000,
+  SUBMIT_COOLDOWN: 10000,
   /** Animation duration for transitions */
   ANIMATION_DURATION: 200,
   /** Polling interval for real-time updates */

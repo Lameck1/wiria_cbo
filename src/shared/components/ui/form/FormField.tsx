@@ -27,12 +27,11 @@ export function FormField({
 }: FormFieldProps) {
     const {
         control,
-        formState: { errors, touchedFields },
+        formState: { errors },
     } = useFormContext();
 
     const error = errors[name]?.message as string | undefined;
-    const isTouched = !!touchedFields[name];
-    const hasError = !!(error && isTouched);
+    const hasError = !!error;
 
     return (
         <div className={cn('space-y-1.5', className)}>

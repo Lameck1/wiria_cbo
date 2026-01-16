@@ -4,6 +4,7 @@
  */
 
 import { apiClient } from '@/shared/services/api/client';
+import { logger } from '@/shared/services/logger';
 import { extractArray, extractData } from '@/shared/utils/apiUtils';
 
 // Types for dashboard statistics
@@ -140,7 +141,7 @@ export const getRecentApplications = async (limit = 5): Promise<RecentApplicatio
       status: app.status,
     }));
   } catch (error) {
-    console.error('Failed to fetch recent applications:', error);
+    logger.error('Failed to fetch recent applications:', error);
     throw new Error('Failed to load recent applications. Please try again.');
   }
 };
@@ -160,7 +161,7 @@ export const getRecentDonations = async (limit = 5): Promise<RecentDonation[]> =
       status: d.status,
     }));
   } catch (error) {
-    console.error('Failed to fetch recent donations:', error);
+    logger.error('Failed to fetch recent donations:', error);
     throw new Error('Failed to load recent donations. Please try again.');
   }
 };
@@ -180,7 +181,7 @@ export const getRecentMessages = async (limit = 5): Promise<RecentMessage[]> => 
       status: m.status,
     }));
   } catch (error) {
-    console.error('Failed to fetch recent messages:', error);
+    logger.error('Failed to fetch recent messages:', error);
     throw new Error('Failed to load recent messages. Please try again.');
   }
 };
@@ -217,7 +218,7 @@ export const getDashboardStats = async (): Promise<DashboardStats> => {
       recentMessages: recentMessages.status === 'fulfilled' ? recentMessages.value : [],
     };
   } catch (error) {
-    console.error('Failed to fetch consolidated dashboard stats:', error);
+    logger.error('Failed to fetch consolidated dashboard stats:', error);
     throw new Error('Failed to load dashboard statistics. Please refresh the page.');
   }
 };

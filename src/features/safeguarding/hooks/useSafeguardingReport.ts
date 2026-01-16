@@ -1,8 +1,9 @@
 import { useState } from 'react';
 
-import { useBackendStatus } from '@/shared/services/useBackendStatus';
 import { emailJsService } from '@/shared/services/emailJsService';
+import { logger } from '@/shared/services/logger';
 import { notificationService } from '@/shared/services/notification/notificationService';
+import { useBackendStatus } from '@/shared/services/useBackendStatus';
 
 import { safeguardingApi } from '../api/safeguardingApi';
 
@@ -52,25 +53,39 @@ export function useSafeguardingReport() {
           );
           return true;
         } catch (apiError) {
-          console.warn(
+          logger.warn(
             '[useSafeguardingReport] Primary API failed, attempting EmailJS fallback...',
             apiError
           );
-          await emailJsService.sendSafeguardingReport(data);
+          const result = await emailJsService.sendSafeguardingReport(data);
+          if (result.status === 'SUCCESS') {
+            notificationService.success(
+              'Your report has been submitted directly to our safeguarding team via our offline channel.'
+            );
+            return true;
+          }
+          logger.error('[useSafeguardingReport] EmailJS fallback failed', result);
+          notificationService.error(
+            'Failed to submit report via our alternative channel. Please try again later.'
+          );
+          return false;
+        }
+      } else {
+        const result = await emailJsService.sendSafeguardingReport(data);
+        if (result.status === 'SUCCESS') {
           notificationService.success(
             'Your report has been submitted directly to our safeguarding team via our offline channel.'
           );
           return true;
         }
-      } else {
-        await emailJsService.sendSafeguardingReport(data);
-        notificationService.success(
-          'Your report has been submitted directly to our safeguarding team via our offline channel.'
+        logger.error('[useSafeguardingReport] EmailJS submission failed', result);
+        notificationService.error(
+          'Failed to submit report via our alternative channel. Please try again later.'
         );
-        return true;
+        return false;
       }
     } catch (error) {
-      console.error('[useSafeguardingReport] Report submission failed:', error);
+      logger.error('[useSafeguardingReport] Report submission failed:', error);
       notificationService.error(
         'Failed to submit report. Please try again or contact us directly.'
       );

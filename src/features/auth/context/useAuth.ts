@@ -1,8 +1,6 @@
 import { use } from 'react';
 
-
-import type { AuthContextType } from './AuthContext';
-import { AuthContext } from './AuthContext';
+import { AuthContext, type AuthContextType } from './AuthContextBase';
 
 export function useAuth(): AuthContextType {
     const context = use(AuthContext);
@@ -11,4 +9,3 @@ export function useAuth(): AuthContextType {
     }
     return context;
 }
-

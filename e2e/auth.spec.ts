@@ -1,64 +1,75 @@
-import { test, expect } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
+
+async function disableExternalFonts(page: Page) {
+  await page.route('https://fonts.googleapis.com/*', (route) => route.abort());
+  await page.route('https://fonts.gstatic.com/*', (route) => route.abort());
+}
 
 test.describe('Authentication', () => {
   test('should navigate to login page', async ({ page }) => {
-    await page.goto('/');
-    
-    // Find and click login link
-    const loginLink = page.getByRole('link', { name: /login|sign in/i });
-    if (await loginLink.isVisible()) {
-      await loginLink.click();
-      
-      // Should navigate to login page
-      await expect(page).toHaveURL(/\/login/);
-    }
+    await disableExternalFonts(page);
+    await page.goto('/member-login', { waitUntil: 'domcontentloaded' });
+
+    // Should navigate directly to member login page
+    await expect(page).toHaveURL(/\/member-login/);
+    await expect(
+      page.getByRole('heading', { name: /member portal login/i })
+    ).toBeVisible();
   });
 
   test('should show login form', async ({ page }) => {
-    await page.goto('/login');
-    
+    await disableExternalFonts(page);
+    await page.goto('/member-login', { waitUntil: 'domcontentloaded' });
+
     // Login form should be present
-    await expect(page.getByLabel(/email|username/i)).toBeVisible();
-    await expect(page.getByLabel(/password/i)).toBeVisible();
-    await expect(page.getByRole('button', { name: /login|sign in/i })).toBeVisible();
+    const main = page.getByRole('main');
+    await expect(main.getByLabel(/email or phone|username or email/i)).toBeVisible();
+    await expect(main.getByLabel(/password/i)).toBeVisible();
+    await expect(main.getByRole('button', { name: /login|sign in/i })).toBeVisible();
   });
 
   test('should show validation error for empty form', async ({ page }) => {
-    await page.goto('/login');
-    
+    await disableExternalFonts(page);
+    await page.goto('/member-login', { waitUntil: 'domcontentloaded' });
+
     // Try to submit without filling form
-    const submitButton = page.getByRole('button', { name: /login|sign in/i });
+    const main = page.getByRole('main');
+    const submitButton = main.getByRole('button', { name: /login/i });
     await submitButton.click();
-    
+
     // Should show validation errors
-    await expect(page.locator('text=/required|email|password/i')).toBeVisible();
+    await expect(
+      page.getByText(/username, email or phone is required/i)
+    ).toBeVisible();
   });
 
   test('should show error for invalid credentials', async ({ page }) => {
-    await page.goto('/login');
-    
+    await disableExternalFonts(page);
+    await page.goto('/member-login', { waitUntil: 'domcontentloaded' });
+
     // Fill form with invalid credentials
-    await page.getByLabel(/email|username/i).fill('invalid@example.com');
-    await page.getByLabel(/password/i).fill('wrongpassword');
-    
+    const main = page.getByRole('main');
+    await main.getByLabel(/email or phone|username or email/i).fill('invalid@example.com');
+    await main.getByLabel(/password/i).fill('wrongpassword');
+
     // Submit form
-    await page.getByRole('button', { name: /login|sign in/i }).click();
-    
+    await main.getByRole('button', { name: /login/i }).click();
+
     // Should show error message (adjust based on actual implementation)
     // This is a placeholder - may need adjustment based on actual error handling
     await page.waitForTimeout(2000); // Wait for potential API call
   });
 
   test('should navigate to forgot password', async ({ page }) => {
-    await page.goto('/login');
-    
+    await disableExternalFonts(page);
+    await page.goto('/member-login', { waitUntil: 'domcontentloaded' });
+
     // Find forgot password link
-    const forgotPasswordLink = page.getByRole('link', { name: /forgot.*password/i });
-    if (await forgotPasswordLink.isVisible()) {
-      await forgotPasswordLink.click();
-      
-      // Should navigate to password reset page
-      await expect(page).toHaveURL(/\/forgot-password|\/reset-password/);
-    }
+    const main = page.getByRole('main');
+    const forgotPasswordLink = main.getByRole('link', { name: /forgot password\?/i });
+    await forgotPasswordLink.click();
+
+    // Should navigate to password reset page
+    await expect(page).toHaveURL(/\/reset-password/);
   });
 });

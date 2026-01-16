@@ -12,6 +12,7 @@ import { Card, CardBody } from '@/shared/components/ui/Card';
 import { Input } from '@/shared/components/ui/Input';
 import { apiClient } from '@/shared/services/api/client';
 import { API_ENDPOINTS } from '@/shared/services/api/endpoints';
+import { logger } from '@/shared/services/logger';
 import { notificationService } from '@/shared/services/notification/notificationService';
 
 type Step = 'request' | 'confirm' | 'success';
@@ -253,7 +254,7 @@ function ResetPasswordPage() {
       notificationService.error(
         'Failed to send reset link. Please check your email and try again.',
       );
-      console.error('Reset request error:', error);
+      logger.error('Reset request error:', error);
     } finally {
       setIsLoading(false);
     }
@@ -283,7 +284,7 @@ function ResetPasswordPage() {
       setStep('success');
     } catch (error) {
       notificationService.error('Failed to reset password. Token may be invalid or expired.');
-      console.error('Reset confirm error:', error);
+      logger.error('Reset confirm error:', error);
     } finally {
       setIsLoading(false);
     }

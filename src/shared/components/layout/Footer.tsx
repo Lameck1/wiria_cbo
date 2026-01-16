@@ -5,9 +5,10 @@
 
 import { useNavigate } from 'react-router-dom';
 
+import { TIMING } from '@/shared/constants/config';
 import { ROUTES } from '@/shared/constants/routes';
-import { useBackendStatus } from '@/shared/services/useBackendStatus';
 import { notificationService } from '@/shared/services/notification/notificationService';
+import { useBackendStatus } from '@/shared/services/useBackendStatus';
 
 import {
   FooterBrand,
@@ -29,7 +30,7 @@ export function Footer() {
       event.preventDefault();
       notificationService.info(
         `${label} is temporarily unavailable while we finalize our server setup. Please check back soon!`,
-        5000
+        TIMING.TOAST_DURATION
       );
     }
   };

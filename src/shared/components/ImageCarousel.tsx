@@ -1,6 +1,8 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
+
+import { TIMING } from '@/shared/constants/config';
 
 interface CarouselRenderConfig {
   source: string;
@@ -86,7 +88,7 @@ interface ImageCarouselProps {
 export function ImageCarousel({
   images,
   autoSlide = true,
-  autoSlideInterval = 5000,
+  autoSlideInterval = TIMING.ANIMATION_DURATION * 25,
   aspectRatio = 'aspect-[16/9]',
   showControls = true,
   title = 'Update image',

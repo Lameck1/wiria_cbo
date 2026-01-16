@@ -1,42 +1,30 @@
-import { useEffect, useState, useCallback, memo } from 'react';
+import { memo, useCallback, useState } from 'react';
 
 import {
   NewsUpdate,
-  getAdminUpdates,
   createUpdate,
-  updateUpdate,
   deleteUpdate,
+  getAdminUpdates,
+  updateUpdate,
 } from '@/features/admin/api/news.api';
-import { FormModal, type FieldConfig } from '@/shared/components/modals/FormModal';
 import { ConfirmDialog } from '@/shared/components/modals/ConfirmDialog';
+import { FormModal, type FieldConfig } from '@/shared/components/modals/FormModal';
 import { Button } from '@/shared/components/ui/Button';
+import { useAdminData } from '@/shared/hooks/useAdminData';
 import { notificationService } from '@/shared/services/notification/notificationService';
-import { extractArray, getErrorMessage } from '@/shared/utils/apiUtils';
+import { getErrorMessage } from '@/shared/utils/apiUtils';
 
 export default function NewsManagementPage() {
-  const [updates, setUpdates] = useState<NewsUpdate[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [editingUpdate, setEditingUpdate] = useState<NewsUpdate | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [statusFilter, setStatusFilter] = useState<string>('ALL');
   const [updateIdToDelete, setUpdateIdToDelete] = useState<string | null>(null);
 
-  const loadUpdates = async () => {
-    setIsLoading(true);
-    try {
-      const response = await getAdminUpdates();
-      setUpdates(extractArray<NewsUpdate>(response));
-    } catch (error) {
-      console.error(error);
-      notificationService.error('Failed to load news/updates');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    void loadUpdates();
-  }, []);
+  const {
+    items: updates,
+    isLoading,
+    refetch,
+  } = useAdminData<NewsUpdate>(['admin-news-updates'], getAdminUpdates);
 
   const handleDelete = useCallback((id: string) => {
     setUpdateIdToDelete(id);
@@ -47,7 +35,7 @@ export default function NewsManagementPage() {
     try {
       await deleteUpdate(updateIdToDelete);
       notificationService.success('Update deleted successfully');
-      void loadUpdates();
+      void refetch();
     } catch {
       notificationService.error('Failed to delete update');
     } finally {
@@ -144,7 +132,7 @@ export default function NewsManagementPage() {
           onClose={() => setShowModal(false)}
           onSuccess={() => {
             setShowModal(false);
-            void loadUpdates();
+            void refetch();
           }}
         />
       )}

@@ -10,6 +10,7 @@ import { Layout } from '@/shared/components/layout/Layout';
 import { ROUTES } from '@/shared/constants/routes';
 import { UserRole } from '@/shared/types';
 
+import { AdminErrorFallback, MemberErrorFallback } from './RouteErrorFallbacks';
 import { createMemberRoute } from './routeProtection';
 
 // Lazy load all pages for optimal code splitting
@@ -42,11 +43,12 @@ const UserManagementPage = lazy(() => import('@/pages/admin/UserManagementPage')
 const NewsManagementPage = lazy(() => import('@/pages/admin/NewsManagementPage'));
 const ResourceManagementPage = lazy(() => import('@/pages/admin/ResourceManagementPage'));
 const TenderManagementPage = lazy(() => import('@/pages/admin/TenderManagementPage'));
-const HRManagementPage = lazy(() => import('@/pages/admin/hrManagementPage'));
+const HRManagementPage = lazy(() => import('@/pages/admin/HRManagementPage'));
 const DonationManagementPage = lazy(() => import('@/pages/admin/DonationManagementPage'));
 const ContactManagementPage = lazy(() => import('@/pages/admin/ContactManagementPage'));
 const SafeguardingManagementPage = lazy(() => import('@/pages/admin/SafeguardingManagementPage'));
 const MeetingManagementPage = lazy(() => import('@/pages/admin/MeetingManagementPage'));
+
 
 export const router = createBrowserRouter(
   [
@@ -59,13 +61,14 @@ export const router = createBrowserRouter(
             <div className="text-center">
               <h1 className="mb-4 text-4xl font-bold text-gray-800">Critical Error</h1>
               <p className="mb-6 text-gray-600">The application encountered a fatal error.</p>
-              <Link to="/" className="text-wiria-blue-dark hover:underline">Return to Home</Link>
+              <Link to="/" className="text-wiria-blue-dark hover:underline">
+                Return to Home
+              </Link>
             </div>
           </ErrorBoundary>
         </div>
       ),
       children: [
-        // Public pages nested under Layout
         {
           element: (
             <Layout>
@@ -83,21 +86,19 @@ export const router = createBrowserRouter(
             { path: ROUTES.DONATIONS, element: <DonationsPage /> },
             { path: ROUTES.MEMBERSHIP, element: <MembershipPage /> },
             { path: ROUTES.SAFEGUARDING, element: <SafeguardingPage /> },
-
-            // Auth routes
             { path: ROUTES.MEMBER_LOGIN, element: <MemberLoginPage /> },
             { path: ROUTES.STAFF_LOGIN, element: <StaffLoginPage /> },
             { path: ROUTES.RESET_PASSWORD, element: <ResetPasswordPage /> },
             { path: ROUTES.ACCEPT_INVITE, element: <AcceptInvitePage /> },
-          ]
+          ],
         },
-
-        // Protected Member Portal
         {
           element: (
-            <Layout>
-              <Outlet />
-            </Layout>
+            <ErrorBoundary fallback={<MemberErrorFallback />}>
+              <Layout>
+                <Outlet />
+              </Layout>
+            </ErrorBoundary>
           ),
           children: [
             createMemberRoute(ROUTES.MEMBER_PORTAL, <MemberPortalPage />),
@@ -105,21 +106,21 @@ export const router = createBrowserRouter(
             createMemberRoute(ROUTES.MEMBER_RENEWAL, <MemberRenewalPage />),
             createMemberRoute(ROUTES.MEMBER_PAYMENTS, <MemberPaymentsPage />),
             createMemberRoute(ROUTES.MEMBER_MEETINGS, <MemberMeetingsPage />),
-          ]
+          ],
         },
-
-        // Protected Admin/Staff
         {
           path: ROUTES.ADMIN,
           element: (
-            <ProtectedRoute
-              allowedRoles={[UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.STAFF]}
-              redirectTo={ROUTES.STAFF_LOGIN}
-            >
-              <AdminLayout>
-                <Outlet />
-              </AdminLayout>
-            </ProtectedRoute>
+            <ErrorBoundary fallback={<AdminErrorFallback />}>
+              <ProtectedRoute
+                allowedRoles={[UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.STAFF]}
+                redirectTo={ROUTES.STAFF_LOGIN}
+              >
+                <AdminLayout>
+                  <Outlet />
+                </AdminLayout>
+              </ProtectedRoute>
+            </ErrorBoundary>
           ),
           children: [
             { index: true, element: <AdminDashboardPage /> },
@@ -135,8 +136,6 @@ export const router = createBrowserRouter(
             { path: 'meetings', element: <MeetingManagementPage /> },
           ],
         },
-
-        // 404
         {
           path: '*',
           element: (

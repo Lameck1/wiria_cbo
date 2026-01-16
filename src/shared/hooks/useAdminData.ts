@@ -1,5 +1,6 @@
-import { useQuery, useMutation, useQueryClient, QueryKey } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient, type QueryKey } from '@tanstack/react-query';
 
+import { logger } from '@/shared/services/logger';
 import { notificationService } from '@/shared/services/notification/notificationService';
 import { extractArray } from '@/shared/utils/apiUtils';
 
@@ -26,7 +27,7 @@ export function useAdminData<T>(
         if (options.onError) {
           options.onError(error);
         } else {
-          console.error(`Error fetching ${queryKey.join('/')}:`, error);
+          logger.error(`Error fetching ${queryKey.join('/')}:`, error);
           notificationService.error('Failed to load data. Please try again.');
         }
         throw error;
@@ -70,7 +71,7 @@ export function useAdminAction<TInput, TResponse>(
       options.onSuccess?.(data);
     },
     onError: (error) => {
-      console.error('Action failed:', error);
+      logger.error('Action failed:', error);
       notificationService.error(options.errorMessage ?? 'Operation failed');
     },
   });

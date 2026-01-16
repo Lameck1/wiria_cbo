@@ -4,6 +4,7 @@
  */
 
 import { apiClient } from '@/shared/services/api/client';
+import { logger } from '@/shared/services/logger';
 import { extractArray, extractData } from '@/shared/utils/apiUtils';
 
 export interface Donation {
@@ -39,7 +40,7 @@ export const getDonations = async (params?: { status?: string }): Promise<Donati
     const response = await apiClient.get(`/donations${queryString}`);
     return extractArray<Donation>(response);
   } catch (error) {
-    console.error('Failed to fetch donations:', error);
+    logger.error('Failed to fetch donations:', error);
     throw new Error('Failed to load donations. Please try again.');
   }
 };
@@ -49,7 +50,7 @@ export const getDonationById = async (id: string): Promise<Donation | null> => {
     const response = await apiClient.get(`/donations/${id}`);
     return extractData<Donation>(response);
   } catch (error) {
-    console.error('Failed to fetch donation:', error);
+    logger.error('Failed to fetch donation:', error);
     return null;
   }
 };
@@ -63,7 +64,7 @@ export const getDonationStatistics = async (): Promise<DonationStatistics> => {
     }
     return data;
   } catch (error) {
-    console.error('Failed to fetch donation statistics:', error);
+    logger.error('Failed to fetch donation statistics:', error);
     throw new Error('Failed to load donation statistics. Please try again.');
   }
 };

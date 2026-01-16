@@ -9,8 +9,8 @@ import { useCallback, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { TenderCard } from './TenderCard';
-import { getCountdown, getStatusBadge } from './TenderCardUtils';
 import { TenderCardSkeleton, TenderTableRowSkeleton } from './TenderCardSkeleton';
+import { getCountdown, getStatusBadge } from './TenderCardUtils';
 import { TenderModal } from './TenderModal';
 import { Tender, useTenders } from '../hooks/useTenders';
 

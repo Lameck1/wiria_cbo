@@ -5,8 +5,9 @@
 
 import { motion } from 'framer-motion';
 
-import type { Tender } from '../hooks/useTenders';
 import { getCountdown, getStatusBadge } from './TenderCardUtils';
+
+import type { Tender } from '../hooks/useTenders';
 
 interface TenderCardProps {
   tender: Tender;
@@ -119,11 +120,10 @@ export function TenderCard({ tender, onClick, index = 0 }: TenderCardProps) {
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
         disabled={isExpired}
-        className={`flex w-full items-center justify-center gap-2 rounded-lg px-4 py-2.5 font-semibold transition-colors ${
-          isExpired
-            ? 'cursor-not-allowed bg-gray-200 text-gray-500'
-            : 'bg-wiria-blue-dark text-white hover:bg-wiria-yellow'
-        }`}
+        className={`flex w-full items-center justify-center gap-2 rounded-lg px-4 py-2.5 font-semibold transition-colors ${isExpired
+          ? 'cursor-not-allowed bg-gray-200 text-gray-500'
+          : 'bg-wiria-blue-dark text-white hover:bg-wiria-yellow'
+          }`}
       >
         {isExpired ? 'Tender Closed' : 'View Details'}
         {!isExpired && (

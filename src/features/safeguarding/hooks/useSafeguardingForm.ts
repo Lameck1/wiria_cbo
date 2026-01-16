@@ -1,10 +1,12 @@
-import { useState, useCallback } from 'react';
+import { useCallback, useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
+import { TIMING } from '@/shared/constants/config';
+
+import { SafeguardingReportSchema, safeguardingSchema } from '../validation';
 import { useSafeguardingReport } from './useSafeguardingReport';
-import { safeguardingSchema, SafeguardingReportSchema } from '../validation';
 
 export type FormStep = 'reporter' | 'details';
 
@@ -12,6 +14,7 @@ export function useSafeguardingForm() {
   const [currentStep, setCurrentStep] = useState<FormStep>('reporter');
   const [evidenceFile, setEvidenceFile] = useState<File | null>(null);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [lastSubmitTime, setLastSubmitTime] = useState(0);
 
   const { submitReport, submittedReference, resetSubmission } = useSafeguardingReport();
 
@@ -44,6 +47,12 @@ export function useSafeguardingForm() {
   const isAnonymous = watch('isAnonymous');
 
   const onSubmit = async (data: SafeguardingReportSchema) => {
+    const now = Date.now();
+    if (now - lastSubmitTime < TIMING.SUBMIT_COOLDOWN) {
+      return;
+    }
+
+    setLastSubmitTime(now);
     const success = await submitReport(data, evidenceFile ?? undefined);
     if (success) {
       setShowSuccess(true);

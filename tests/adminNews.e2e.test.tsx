@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-non-null-assertion */
 // @vitest-environment jsdom
 
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
@@ -8,6 +9,19 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { createUpdate, deleteUpdate, getAdminUpdates } from '@/features/admin/api/news.api';
 import NewsManagementPage from '@/pages/admin/NewsManagementPage';
 import { notificationService } from '@/shared/services/notification/notificationService';
+
+function createTestQueryClient() {
+  return new QueryClient({
+    defaultOptions: {
+      queries: { retry: false },
+      mutations: { retry: false },
+    },
+  });
+}
+
+function TestWrapper({ children }: { children: React.ReactNode }) {
+  return <QueryClientProvider client={createTestQueryClient()}>{children}</QueryClientProvider>;
+}
 
 vi.mock('@/features/admin/api/news.api', () => ({
   getAdminUpdates: vi.fn(),
@@ -54,7 +68,7 @@ describe('NewsManagementPage', () => {
       ],
     });
 
-    render(<NewsManagementPage />);
+    render(<NewsManagementPage />, { wrapper: TestWrapper });
 
     expect(await screen.findByText('News 1')).toBeInTheDocument();
     expect(await screen.findByText('News 2')).toBeInTheDocument();
@@ -68,7 +82,7 @@ describe('NewsManagementPage', () => {
     getAdminUpdatesMock.mockResolvedValue({ data: [] });
     createUpdateMock.mockResolvedValue({ success: true } as any);
 
-    render(<NewsManagementPage />);
+    render(<NewsManagementPage />, { wrapper: TestWrapper });
 
     await user.click(await screen.findByRole('button', { name: /post new update/i }));
     expect(screen.getByRole('heading', { name: /post new update/i })).toBeInTheDocument();
@@ -114,12 +128,16 @@ describe('NewsManagementPage', () => {
     });
     deleteUpdateMock.mockResolvedValue({ success: true } as { success: boolean });
 
-    render(<NewsManagementPage />);
+    render(<NewsManagementPage />, { wrapper: TestWrapper });
 
     await user.click(await screen.findByRole('button', { name: /delete/i }));
 
     const deleteButtons = await screen.findAllByRole('button', { name: /delete/i });
-    await user.click(deleteButtons[1]);
+    const confirmDeleteButton = deleteButtons[1];
+    if (!confirmDeleteButton) {
+      throw new Error('Expected confirmation delete button to exist');
+    }
+    await user.click(confirmDeleteButton);
 
     await waitFor(() => {
       expect(deleteUpdate).toHaveBeenCalledWith('1');

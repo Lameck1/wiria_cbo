@@ -11,6 +11,7 @@ interface FormProps<T extends FieldValues> {
     onSubmit: (data: T) => void | Promise<void>;
     className?: string;
     id?: string;
+    resetOnSuccess?: boolean;
 }
 
 export function Form<T extends FieldValues>({
@@ -20,6 +21,7 @@ export function Form<T extends FieldValues>({
     onSubmit,
     className = '',
     id,
+    resetOnSuccess = false,
 }: FormProps<T>) {
     const methods = useForm<T>({
         // @ts-expect-error - Zod version mismatch between react-hook-form and zod
@@ -32,7 +34,14 @@ export function Form<T extends FieldValues>({
         <FormProvider {...methods}>
             <form
                 id={id}
-                onSubmit={(event) => void methods.handleSubmit(onSubmit)(event)}
+                onSubmit={(event) =>
+                    void methods.handleSubmit(async (data) => {
+                        await onSubmit(data);
+                        if (resetOnSuccess) {
+                            methods.reset();
+                        }
+                    })(event)
+                }
                 className={`space-y-6 ${className}`}
                 noValidate
             >

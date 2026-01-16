@@ -1,10 +1,9 @@
 import { use } from 'react';
 
-import { BackendStatusContext } from './backendStatus';
-import type { BackendStatusContextType } from './backendStatus';
+import { BackendStatusContext, type BackendStatusContextType } from './backendStatusContext';
 
 export function useBackendStatus(): BackendStatusContextType {
   return use(BackendStatusContext);
 }
 
-export { recheckBackendStatus } from './backendStatus';
+export { recheckBackendStatus } from './backendStatusService';

@@ -4,6 +4,7 @@
  */
 
 import { apiClient } from '@/shared/services/api/client';
+import { logger } from '@/shared/services/logger';
 import { extractArray, extractData } from '@/shared/utils/apiUtils';
 
 export interface Meeting {
@@ -64,7 +65,7 @@ export const getMeetings = async (params?: {
     const response = await apiClient.get(`/admin/meetings${queryString}`);
     return extractArray<Meeting>(response);
   } catch (error) {
-    console.error('Failed to fetch meetings:', error);
+    logger.error('Failed to fetch meetings:', error);
     throw new Error('Failed to load meetings. Please try again.');
   }
 };
@@ -74,7 +75,7 @@ export const getMeetingById = async (id: string): Promise<Meeting | null> => {
     const response = await apiClient.get(`/admin/meetings/${id}`);
     return extractData<Meeting>(response);
   } catch (error) {
-    console.error('Failed to fetch meeting:', error);
+    logger.error('Failed to fetch meeting:', error);
     return null;
   }
 };
@@ -97,7 +98,7 @@ export const cancelMeeting = async (id: string): Promise<boolean> => {
     await apiClient.patch(`/admin/meetings/${id}`, { status: 'CANCELLED' });
     return true;
   } catch (error) {
-    console.error('Failed to cancel meeting:', error);
+    logger.error('Failed to cancel meeting:', error);
     throw error;
   }
 };
@@ -107,7 +108,7 @@ export const getMeetingAttendance = async (id: string): Promise<MeetingAttendanc
     const response = await apiClient.get(`/admin/meetings/${id}/attendance`);
     return extractArray<MeetingAttendance>(response, 'attendance');
   } catch (error) {
-    console.error('Failed to fetch meeting attendance:', error);
+    logger.error('Failed to fetch meeting attendance:', error);
     throw new Error('Failed to load meeting attendance. Please try again.');
   }
 };

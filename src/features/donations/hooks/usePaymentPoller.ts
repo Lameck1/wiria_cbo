@@ -5,6 +5,8 @@
 
 import { useEffect, useRef } from 'react';
 
+import { TIMING } from '@/shared/constants/config';
+
 interface UsePaymentPollerProps {
   donationId: string | null;
   isActive: boolean;
@@ -16,9 +18,14 @@ export function usePaymentPoller({
   donationId,
   isActive,
   onStatusCheck,
-  interval = 5000, // 5 seconds
+  interval = TIMING.PAYMENT_POLL_INTERVAL,
 }: UsePaymentPollerProps) {
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const callbackRef = useRef(onStatusCheck);
+
+  useEffect(() => {
+    callbackRef.current = onStatusCheck;
+  }, [onStatusCheck]);
 
   useEffect(() => {
     if (!isActive || !donationId) {
@@ -31,13 +38,18 @@ export function usePaymentPoller({
 
     // Initial check
     const checkStatus = async () => {
-      const status = await onStatusCheck(donationId);
+      const callback = callbackRef.current;
+      if (!callback) {
+        return;
+      }
+
+      const status = await callback(donationId);
 
       // Stop polling if payment is complete or failed
       if ((status === 'COMPLETED' || status === 'FAILED') && intervalRef.current) {
-          clearInterval(intervalRef.current);
-          intervalRef.current = null;
-        }
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
     };
 
     void checkStatus();
@@ -52,5 +64,5 @@ export function usePaymentPoller({
         intervalRef.current = null;
       }
     };
-  }, [donationId, isActive, onStatusCheck, interval]);
+  }, [donationId, isActive, interval]);
 }

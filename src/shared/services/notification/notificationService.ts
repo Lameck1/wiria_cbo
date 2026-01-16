@@ -5,6 +5,8 @@
 
 import { create } from 'zustand';
 
+import { TIMING } from '@/shared/constants/config';
+
 export type NotificationType = 'success' | 'error' | 'warning' | 'info';
 
 export interface Notification {
@@ -23,11 +25,19 @@ interface NotificationStore {
   clearAll: () => void;
 }
 
+const createNotificationId = () => {
+  if (typeof crypto !== 'undefined' && 'randomUUID' in crypto) {
+    return crypto.randomUUID();
+  }
+
+  return Math.random().toString(36).slice(2, 9);
+};
+
 export const useNotificationStore = create<NotificationStore>((set) => ({
   notifications: [],
   addNotification: (notification) => {
-    const id = Math.random().toString(36).slice(2, 9);
-    const duration = notification.duration ?? 5000;
+    const id = createNotificationId();
+    const duration = notification.duration ?? TIMING.TOAST_DURATION;
     const newNotification: Notification = {
       id,
       type: notification.type,

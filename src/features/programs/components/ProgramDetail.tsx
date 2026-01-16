@@ -15,7 +15,7 @@ const PROGRAM_STYLES: Record<
   {
     iconBg: string;
     iconText: string;
-    cardGradient: string;
+    gradientClass: string;
     borderColor: string;
     checkColor: string;
   }
@@ -23,28 +23,28 @@ const PROGRAM_STYLES: Record<
   'wellness-detail': {
     iconBg: 'bg-green-100',
     iconText: 'text-green-600',
-    cardGradient: 'linear-gradient(to bottom right, #dcfce7, #bbf7d0)', // green-50 to green-100
+    gradientClass: 'bg-gradient-to-br from-green-50 to-green-100',
     borderColor: 'border-green-500',
     checkColor: 'text-green-600',
   },
   'inclusion-detail': {
     iconBg: 'bg-purple-100',
     iconText: 'text-purple-600',
-    cardGradient: 'linear-gradient(to bottom right, #fae8ff, #f3e8ff)', // purple-50 to purple-100
+    gradientClass: 'bg-gradient-to-br from-purple-50 to-purple-100',
     borderColor: 'border-purple-500',
     checkColor: 'text-purple-600',
   },
   'rights-detail': {
     iconBg: 'bg-blue-100',
     iconText: 'text-blue-600',
-    cardGradient: 'linear-gradient(to bottom right, #dbeafe, #bfdbfe)', // blue-50 to blue-100
+    gradientClass: 'bg-gradient-to-br from-blue-50 to-blue-100',
     borderColor: 'border-blue-600',
     checkColor: 'text-blue-600',
   },
   'impact-advocacy-detail': {
     iconBg: 'bg-yellow-100',
     iconText: 'text-yellow-600',
-    cardGradient: 'linear-gradient(to bottom right, #fef9c3, #fef08a)', // yellow-50 to yellow-100
+    gradientClass: 'bg-gradient-to-br from-yellow-50 to-yellow-100',
     borderColor: 'border-yellow-500',
     checkColor: 'text-yellow-600',
   },
@@ -63,7 +63,7 @@ export function ProgramDetail({ program }: ProgramDetailProps) {
   const styles = PROGRAM_STYLES[program.id] ?? {
     iconBg: 'bg-green-100',
     iconText: 'text-green-600',
-    cardGradient: 'linear-gradient(to bottom right, #dcfce7, #bbf7d0)',
+    gradientClass: 'bg-gradient-to-br from-green-50 to-green-100',
     borderColor: 'border-green-500',
     checkColor: 'text-green-600',
   };
@@ -151,8 +151,7 @@ export function ProgramDetail({ program }: ProgramDetailProps) {
               variants={itemVariants}
               transition={{ type: 'spring', bounce: 0, duration: 0.6 }}
               whileHover={{ y: -4, boxShadow: '0 10px 30px rgba(0,0,0,0.1)' }}
-              className="rounded-xl p-8"
-              style={{ background: styles.cardGradient }}
+              className={`rounded-xl p-8 ${styles.gradientClass}`}
             >
               <h3 className="mb-4 text-2xl font-bold text-wiria-blue-dark">
                 {program.approach.title}
@@ -164,8 +163,7 @@ export function ProgramDetail({ program }: ProgramDetailProps) {
               variants={itemVariants}
               transition={{ type: 'spring', bounce: 0, duration: 0.6 }}
               whileHover={{ y: -4, boxShadow: '0 10px 30px rgba(0,0,0,0.1)' }}
-              className="rounded-xl p-8"
-              style={{ background: styles.cardGradient }}
+              className={`rounded-xl p-8 ${styles.gradientClass}`}
             >
               <h3 className="mb-4 text-2xl font-bold text-wiria-blue-dark">Impact Metrics</h3>
               <ImpactMetrics metrics={program.metrics} color={program.color.text} />

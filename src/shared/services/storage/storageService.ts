@@ -1,7 +1,4 @@
-/**
- * Storage Service
- * Type-safe localStorage wrapper
- */
+import { logger } from '@/shared/services/logger';
 
 export class StorageService {
   private prefix: string;
@@ -38,7 +35,7 @@ export class StorageService {
       window.localStorage.setItem(storageKey, serialized);
       this.trackedKeys.add(storageKey);
     } catch (error) {
-      console.error('Error saving to localStorage:', error);
+      logger.error('Error saving to localStorage:', error);
     }
   }
 
@@ -56,7 +53,7 @@ export class StorageService {
         return item as unknown as T;
       }
     } catch (error) {
-      console.error('Error reading from localStorage:', error);
+      logger.error('Error reading from localStorage:', error);
       return null;
     }
   }

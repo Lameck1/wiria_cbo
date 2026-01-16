@@ -2,8 +2,12 @@ import { ReactNode } from 'react';
 
 import { useAuth } from '@/features/auth/context/useAuth';
 
-import { canAccessModule as checkModuleAccess, useSuspenseDashboardStats, useSuspenseDashboardTrends } from '../hooks/useDashboardData';
 import { DashboardContext, type DashboardContextValue } from './DashboardContextBase';
+import {
+  canAccessModule as checkModuleAccess,
+  useSuspenseDashboardStats,
+  useSuspenseDashboardTrends,
+} from '../hooks/useDashboardData';
 
 interface DashboardProviderProps {
   children: ReactNode;

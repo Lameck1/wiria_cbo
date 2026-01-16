@@ -8,20 +8,24 @@ import { BackendStatusProvider } from '@/shared/services/backendStatus';
 
 import { ScrollToTop } from './ScrollToTop';
 
-/**
- * AppProviders provides the global context shells for the entire application.
- * It does NOT include any UI layout wrappers like Header or Footer.
- */
 export function AppProviders() {
-    return (
-        <BackendStatusProvider>
-            <AuthProvider>
-                <ScrollToTop />
-                <Suspense fallback={<div className="min-h-screen bg-gray-50" />}>
-                    <Outlet />
-                </Suspense>
-                <ToastContainer />
-            </AuthProvider>
-        </BackendStatusProvider>
-    );
+  return (
+    <BackendStatusProvider>
+      <AuthProvider>
+        <ScrollToTop />
+        <Suspense fallback={<PageLoadingSkeleton />}>
+          <Outlet />
+        </Suspense>
+        <ToastContainer />
+      </AuthProvider>
+    </BackendStatusProvider>
+  );
+}
+
+function PageLoadingSkeleton() {
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-gray-50">
+      <div className="h-10 w-10 animate-spin rounded-full border-4 border-gray-300 border-t-wiria-blue-dark" />
+    </div>
+  );
 }

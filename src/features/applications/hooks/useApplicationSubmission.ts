@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
-
+ 
 import { apiClient } from '@/shared/services/api/client';
+import { logger } from '@/shared/services/logger';
 
 import { ApplicationFormData, ApplicationPayload } from '../types';
 
@@ -39,7 +40,7 @@ export function useApplicationSubmission() {
             await apiClient.post('/applications', payload);
             setStatus('success');
         } catch (error_) {
-            console.error('Application submission error:', error_);
+            logger.error('Application submission error:', error_);
             setError(error_ instanceof Error ? error_.message : 'Failed to submit application');
             setStatus('error');
         }

@@ -1,7 +1,4 @@
-/**
- * API Client
- * Centralized HTTP client with TypeScript support
- */
+import { logger } from '@/shared/services/logger';
 
 const API_BASE_URL: string = (import.meta.env['VITE_API_BASE_URL'] as string | undefined) ?? 'http://localhost:5001/api';
 
@@ -51,9 +48,8 @@ class ApiClient {
   }
 
   private handleError(response: Response, data: unknown, endpoint: string): never {
-    // Handle 401 Unauthorized
     if (response.status === 401) {
-      console.warn('[ApiClient] Unauthorized access detected');
+      logger.warn('[ApiClient] Unauthorized access detected');
 
       // Only trigger callback if we're not currently attempting to login
       // to avoid redirecting while the user is typing credentials

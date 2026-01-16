@@ -3,7 +3,9 @@
  * Handles automated form submissions when the backend is offline
  */
 
-import { init, send } from '@emailjs/browser';
+import { init, send, type EmailJSResponseStatus } from '@emailjs/browser';
+
+import { logger } from '@/shared/services/logger';
 
 const SERVICE_ID = String(import.meta.env['VITE_EMAILJS_SERVICE_ID'] ?? '');
 const TEMPLATE_ID = String(import.meta.env['VITE_EMAILJS_TEMPLATE_ID'] ?? '');
@@ -15,10 +17,27 @@ if (PUBLIC_KEY) {
   init(PUBLIC_KEY);
 }
 
-export interface EmailJSResponse {
-  status: number;
-  text: string;
+export type EmailSendStatus = 'SUCCESS' | 'CONFIG_MISSING' | 'PROVIDER_ERROR';
+
+export interface EmailSendResult {
+  status: EmailSendStatus;
+  message: string;
 }
+
+const mapResponseToResult = (response: EmailJSResponseStatus, context: string): EmailSendResult => {
+  if (response.status >= 200 && response.status < 300) {
+    return { status: 'SUCCESS', message: `${context} sent successfully` };
+  }
+  return {
+    status: 'PROVIDER_ERROR',
+    message: `${context} provider error (${response.status})`,
+  };
+};
+
+const configMissingResult: EmailSendResult = {
+  status: 'CONFIG_MISSING',
+  message: 'Email service configuration is missing',
+};
 
 export const emailJsService = {
   /**
@@ -30,9 +49,10 @@ export const emailJsService = {
     phone?: string;
     subject: string;
     message: string;
-  }): Promise<EmailJSResponse> {
+  }): Promise<EmailSendResult> {
     if (!SERVICE_ID || !TEMPLATE_ID || !PUBLIC_KEY) {
-      return { status: 0, text: 'Configuration missing' };
+      logger.warn('[EmailJS] Contact form configuration missing');
+      return configMissingResult;
     }
 
     const templateParams = {
@@ -45,10 +65,18 @@ export const emailJsService = {
     };
 
     try {
-      return await send(SERVICE_ID, TEMPLATE_ID, templateParams);
+      const response = await send(SERVICE_ID, TEMPLATE_ID, templateParams);
+      const result = mapResponseToResult(response, 'Contact form');
+      if (result.status === 'PROVIDER_ERROR') {
+        logger.error('[EmailJS] Failed to send contact form', response);
+      }
+      return result;
     } catch (error) {
-      console.error('[EmailJS] Failed to send contact form', error);
-      throw error;
+      logger.error('[EmailJS] Failed to send contact form', error);
+      return {
+        status: 'PROVIDER_ERROR',
+        message: 'Contact form could not be sent',
+      };
     }
   },
 
@@ -66,11 +94,12 @@ export const emailJsService = {
     location?: string;
     personsInvolved?: string;
     description: string;
-  }): Promise<EmailJSResponse> {
+  }): Promise<EmailSendResult> {
     const targetTemplateId = SAFEGUARDING_TEMPLATE_ID ?? TEMPLATE_ID;
 
     if (!SERVICE_ID || !targetTemplateId || !PUBLIC_KEY) {
-      return { status: 0, text: 'Configuration missing' };
+      logger.warn('[EmailJS] Safeguarding configuration missing');
+      return configMissingResult;
     }
 
     const templateParams = {
@@ -88,16 +117,25 @@ export const emailJsService = {
     };
 
     try {
-      return await send(SERVICE_ID, targetTemplateId, templateParams);
+      const response = await send(SERVICE_ID, targetTemplateId, templateParams);
+      const result = mapResponseToResult(response, 'Safeguarding report');
+      if (result.status === 'PROVIDER_ERROR') {
+        logger.error('[EmailJS] Failed to send safeguarding report', response);
+      }
+      return result;
     } catch (error) {
-      console.error('[EmailJS] Failed to send safeguarding report', error);
-      throw error;
+      logger.error('[EmailJS] Failed to send safeguarding report', error);
+      return {
+        status: 'PROVIDER_ERROR',
+        message: 'Safeguarding report could not be sent',
+      };
     }
   },
 
-  async sendNewsletterSubscription(data: { email: string }): Promise<EmailJSResponse> {
+  async sendNewsletterSubscription(data: { email: string }): Promise<EmailSendResult> {
     if (!SERVICE_ID || !TEMPLATE_ID || !PUBLIC_KEY) {
-      return { status: 0, text: 'Configuration missing' };
+      logger.warn('[EmailJS] Newsletter configuration missing');
+      return configMissingResult;
     }
 
     const templateParams = {
@@ -110,10 +148,18 @@ export const emailJsService = {
     };
 
     try {
-      return await send(SERVICE_ID, TEMPLATE_ID, templateParams);
+      const response = await send(SERVICE_ID, TEMPLATE_ID, templateParams);
+      const result = mapResponseToResult(response, 'Newsletter subscription');
+      if (result.status === 'PROVIDER_ERROR') {
+        logger.error('[EmailJS] Failed to send newsletter subscription', response);
+      }
+      return result;
     } catch (error) {
-      console.error('[EmailJS] Failed to send newsletter subscription', error);
-      throw error;
+      logger.error('[EmailJS] Failed to send newsletter subscription', error);
+      return {
+        status: 'PROVIDER_ERROR',
+        message: 'Newsletter subscription could not be sent',
+      };
     }
   },
 };

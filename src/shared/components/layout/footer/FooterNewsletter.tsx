@@ -13,11 +13,13 @@ export function FooterNewsletter() {
 
     setIsSubmitting(true);
     try {
-      await emailJsService.sendNewsletterSubscription({ email });
-      notificationService.success('You have been subscribed to the newsletter.');
-      setEmail('');
-    } catch {
-      notificationService.error('Failed to subscribe. Please try again later.');
+      const result = await emailJsService.sendNewsletterSubscription({ email });
+      if (result.status === 'SUCCESS') {
+        notificationService.success('You have been subscribed to the newsletter.');
+        setEmail('');
+      } else {
+        notificationService.error('Failed to subscribe. Please try again later.');
+      }
     } finally {
       setIsSubmitting(false);
     }

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { Spinner } from '@/shared/components/ui/Spinner';
 import { apiClient } from '@/shared/services/api/client';
+import { logger } from '@/shared/services/logger';
 import { formatRelativeTime } from '@/shared/utils/dateUtils';
 
 interface HistoryItem {
@@ -28,7 +29,7 @@ export function GroupCountHistory({ memberId }: GroupCountHistoryProps) {
         );
         setHistory(response.data || []);
       } catch (error) {
-        console.error('Failed to fetch group history:', error);
+        logger.error('Failed to fetch group history:', error);
       } finally {
         setIsLoading(false);
       }

@@ -264,6 +264,17 @@ module.exports = {
       }
     },
     {
+      files: ['src/pages/admin/HRManagementPage.tsx'],
+      rules: {
+        '@typescript-eslint/consistent-type-definitions': 'off',
+        '@typescript-eslint/no-unsafe-assignment': 'off',
+        '@typescript-eslint/no-unsafe-argument': 'off',
+        'unicorn/switch-case-braces': 'off',
+        'unicorn/filename-case': 'off',
+        'max-lines-per-function': 'off'
+      }
+    },
+    {
       // E2E test files - allow additional patterns
       files: ['e2e/**/*.ts', 'e2e/**/*.tsx'],
       rules: {
