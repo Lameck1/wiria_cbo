@@ -1,4 +1,4 @@
-import type { ReactNode} from 'react';
+import type { ReactNode } from 'react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useNavigate } from 'react-router-dom';
@@ -7,7 +7,7 @@ import { ROUTES } from '@/shared/constants/routes';
 import { apiClient } from '@/shared/services/api/client';
 import { logger } from '@/shared/services/logger';
 import { STORAGE_KEYS, storageService } from '@/shared/services/storage/storageService';
-import type { AuthResponse, Member, User} from '@/shared/types';
+import type { AuthResponse, Member, User } from '@/shared/types';
 import { UserRole } from '@/shared/types';
 
 import { AuthContext } from './AuthContextBase';
@@ -74,9 +74,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     });
 
     // Clean up callback on unmount
-    return () => apiClient.setUnauthorizedCallback(() => {
-      // Cleanup - no action needed
-    });
+    return () =>
+      apiClient.setUnauthorizedCallback(() => {
+        // Cleanup - no action needed
+      });
   }, [checkAuth, logout]);
 
   const login = useCallback(

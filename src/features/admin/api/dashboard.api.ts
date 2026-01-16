@@ -201,7 +201,9 @@ export const getDashboardStats = async (): Promise<DashboardStats> => {
 
     // Extract stats data
     const statsData =
-      statsResponse.status === 'fulfilled' ? extractData<DashboardStats>(statsResponse.value) : null;
+      statsResponse.status === 'fulfilled'
+        ? extractData<DashboardStats>(statsResponse.value)
+        : null;
     if (!statsData) throw new Error('Missing dashboard statistics data');
 
     // Use fallback empty arrays for failed requests

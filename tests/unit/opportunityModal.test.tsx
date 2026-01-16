@@ -55,8 +55,8 @@ describe('ApplicationModal integration test (form submission)', () => {
         itemId={opportunity.id}
         type="OPPORTUNITY"
         isOpen
-        onClose={() => { }}
-        onBack={() => { }}
+        onClose={() => {}}
+        onBack={() => {}}
       />
     );
   }
@@ -87,7 +87,10 @@ describe('ApplicationModal integration test (form submission)', () => {
       target: { value: 'Computer Science' },
     });
     fireEvent.change(screen.getByLabelText(/why are you interested/i), {
-      target: { value: 'A very long motivation text that is definitely more than one hundred characters long to satisfy the zod validation schema requirements.' },
+      target: {
+        value:
+          'A very long motivation text that is definitely more than one hundred characters long to satisfy the zod validation schema requirements.',
+      },
     });
     fireEvent.change(screen.getByLabelText(/cv\/resume/i), {
       target: { value: 'https://drive.google.com/cv' },

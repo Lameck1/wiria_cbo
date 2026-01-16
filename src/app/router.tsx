@@ -49,7 +49,6 @@ const ContactManagementPage = lazy(() => import('@/pages/admin/ContactManagement
 const SafeguardingManagementPage = lazy(() => import('@/pages/admin/SafeguardingManagementPage'));
 const MeetingManagementPage = lazy(() => import('@/pages/admin/MeetingManagementPage'));
 
-
 export const router = createBrowserRouter(
   [
     {

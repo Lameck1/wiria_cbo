@@ -9,7 +9,10 @@ export class StorageService {
     this.trackedKeys = new Set<string>();
 
     if (typeof window !== 'undefined' && window.localStorage) {
-      const storage = window.localStorage as unknown as { length?: number; key?: (index: number) => string | null };
+      const storage = window.localStorage as unknown as {
+        length?: number;
+        key?: (index: number) => string | null;
+      };
       if (typeof storage.key === 'function' && typeof storage.length === 'number') {
         for (let index = 0; index < storage.length; index += 1) {
           const key = storage.key(index);

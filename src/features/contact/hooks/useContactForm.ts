@@ -35,9 +35,7 @@ export function useContactForm() {
           );
           const result = await emailJsService.sendContactForm(data);
           if (result.status === 'SUCCESS') {
-            notificationService.success(
-              'Your message has been sent via our alternative channel.'
-            );
+            notificationService.success('Your message has been sent via our alternative channel.');
             return true;
           }
           logger.error('[useContactForm] EmailJS fallback failed', result);
@@ -49,9 +47,7 @@ export function useContactForm() {
       } else {
         const result = await emailJsService.sendContactForm(data);
         if (result.status === 'SUCCESS') {
-          notificationService.success(
-            'Your message has been sent via our alternative channel.'
-          );
+          notificationService.success('Your message has been sent via our alternative channel.');
           return true;
         }
         logger.error('[useContactForm] EmailJS submission failed', result);

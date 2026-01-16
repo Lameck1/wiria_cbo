@@ -35,4 +35,3 @@ export function getStatusBadge(status: string, isUrgent: boolean, isExpired: boo
   }
   return { text: status, bgClass: 'bg-gray-100 text-gray-600', dotClass: 'bg-gray-400' };
 }
-

@@ -27,7 +27,10 @@ export const nameSchema = z
 
 export const passwordSchema = z
   .string()
-  .min(LIMITS.MIN_PASSWORD_LENGTH, `Password must be at least ${LIMITS.MIN_PASSWORD_LENGTH} characters`)
+  .min(
+    LIMITS.MIN_PASSWORD_LENGTH,
+    `Password must be at least ${LIMITS.MIN_PASSWORD_LENGTH} characters`
+  )
   .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
   .regex(/\d/, 'Password must contain at least one number')
   .regex(/[^\dA-Za-z]/, 'Password must contain at least one special character');
@@ -131,7 +134,10 @@ export const validateAmount = (amount: number | string): ValidationResult => {
   }
 
   if (numberAmount > LIMITS.MAX_DONATION) {
-    return { valid: false, error: `Maximum donation amount is KES ${LIMITS.MAX_DONATION.toLocaleString()}` };
+    return {
+      valid: false,
+      error: `Maximum donation amount is KES ${LIMITS.MAX_DONATION.toLocaleString()}`,
+    };
   }
 
   return { valid: true };
@@ -162,4 +168,3 @@ export const validateName = (name: string): ValidationResult => {
 
   return { valid: true };
 };
-

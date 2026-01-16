@@ -98,10 +98,11 @@ export function PartnersSection() {
 
                     {/* Partner name - always visible */}
                     <span
-                      className={`relative z-10 text-center font-semibold transition-colors duration-300 ${partner.logoUrl
+                      className={`relative z-10 text-center font-semibold transition-colors duration-300 ${
+                        partner.logoUrl
                           ? 'text-xs text-gray-500 group-hover:text-wiria-blue-dark'
                           : 'text-sm text-wiria-blue-dark group-hover:text-wiria-yellow'
-                        }`}
+                      }`}
                     >
                       {partner.name}
                     </span>

@@ -29,19 +29,10 @@ export function ConfirmDialog({
       <div className="space-y-6">
         <div className="text-sm text-gray-700">{message}</div>
         <div className="flex justify-end gap-3">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={onCancel}
-            disabled={isConfirming}
-          >
+          <Button type="button" variant="outline" onClick={onCancel} disabled={isConfirming}>
             {cancelLabel}
           </Button>
-          <Button
-            type="button"
-            onClick={onConfirm}
-            isLoading={isConfirming}
-          >
+          <Button type="button" onClick={onConfirm} isLoading={isConfirming}>
             {confirmLabel}
           </Button>
         </div>
@@ -49,4 +40,3 @@ export function ConfirmDialog({
     </Modal>
   );
 }
-

@@ -11,7 +11,10 @@ test.describe('Navigation', () => {
     await page.goto('/', { waitUntil: 'domcontentloaded' });
 
     // Click About link in main navigation
-    await page.getByRole('link', { name: /^about$/i }).first().click();
+    await page
+      .getByRole('link', { name: /^about$/i })
+      .first()
+      .click();
 
     // Should navigate to about page
     await expect(page).toHaveURL(/\/about/);

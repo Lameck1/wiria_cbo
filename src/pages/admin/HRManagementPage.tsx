@@ -1,22 +1,16 @@
 import { useReducer } from 'react';
 
-import type {
-  Career} from '@/features/admin/api/careers.api';
-import {
-  deleteCareer,
-  getAdminCareers as getCareers,
-} from '@/features/admin/api/careers.api';
-import type {
-  Application,
-  Opportunity} from '@/features/admin/api/opportunities.api';
+import type { Career } from '@/features/admin/api/careers.api';
+import { deleteCareer, getAdminCareers as getCareers } from '@/features/admin/api/careers.api';
+import type { Application, Opportunity } from '@/features/admin/api/opportunities.api';
 import {
   deleteOpportunity,
   getApplications,
-  getAdminOpportunities as getOpportunities
+  getAdminOpportunities as getOpportunities,
 } from '@/features/admin/api/opportunities.api';
 import { ApplicationsList, CareersTab, OpportunitiesTab } from '@/features/admin/components/hr';
 import { HRModals } from '@/features/admin/components/hr/HrModals';
-import type { HRTab} from '@/features/admin/components/hr/HrTabs';
+import type { HRTab } from '@/features/admin/components/hr/HrTabs';
 import { HRTabs } from '@/features/admin/components/hr/HrTabs';
 import { AdminPageHeader } from '@/features/admin/components/layout/AdminPageHeader';
 import { ConfirmDialog } from '@/shared/components/modals/ConfirmDialog';
@@ -101,20 +95,17 @@ function hrReducer(state: HRState, action: HRAction): HRState {
 }
 
 export default function HRManagementPage() {
-  const [state, dispatch] = useReducer(
-    hrReducer,
-    {
-      activeTab: 'CAREERS',
-      selectedCareer: null,
-      selectedOpportunity: null,
-      selectedApplication: null,
-      showCareerModal: false,
-      showOpportunityModal: false,
-      showApplicationModal: false,
-      careerIdToDelete: null,
-      opportunityIdToDelete: null,
-    }
-  );
+  const [state, dispatch] = useReducer(hrReducer, {
+    activeTab: 'CAREERS',
+    selectedCareer: null,
+    selectedOpportunity: null,
+    selectedApplication: null,
+    showCareerModal: false,
+    showOpportunityModal: false,
+    showApplicationModal: false,
+    careerIdToDelete: null,
+    opportunityIdToDelete: null,
+  });
 
   const {
     activeTab,

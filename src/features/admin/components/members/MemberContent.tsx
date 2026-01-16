@@ -5,7 +5,6 @@ import { MemberDetailsModal } from './MemberDetailsModal';
 import { MemberFilters } from './MemberFilters';
 import { MemberTable } from './MemberTable';
 
-
 interface MemberContentProps {
   filter: string;
   search: string;
@@ -27,22 +26,16 @@ export function MemberContent({
 
   return (
     <>
-      <MemberFilters
-        currentFilter={filter}
-        onFilterChange={onFilterChange}
-        onSearch={onSearch}
-      />
+      <MemberFilters currentFilter={filter} onFilterChange={onFilterChange} onSearch={onSearch} />
 
-      <MemberTable
-        members={members}
-        isLoading={isLoading}
-        onViewDetails={onSelectMember}
-      />
+      <MemberTable members={members} isLoading={isLoading} onViewDetails={onSelectMember} />
 
       <MemberDetailsModal
         member={selectedMember}
         onClose={() => onSelectMember(null)}
-        onStatusChange={() => { void refetch(); }}
+        onStatusChange={() => {
+          void refetch();
+        }}
       />
     </>
   );

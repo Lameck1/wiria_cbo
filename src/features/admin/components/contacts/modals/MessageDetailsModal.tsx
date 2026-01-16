@@ -17,7 +17,6 @@ const formatDate = (date: string) =>
   });
 
 export function MessageDetailsModal({ contact, onClose, onReply }: MessageDetailsModalProps) {
-
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black bg-opacity-50 p-4">
       <div className="flex max-h-[90vh] w-full max-w-2xl flex-col rounded-2xl bg-white shadow-2xl">

@@ -2,13 +2,8 @@ import { useEffect, useState, useMemo, useCallback } from 'react';
 
 import { useSearchParams } from 'react-router-dom';
 
-import type {
-  Donation,
-  DonationStatistics} from '@/features/admin/api/donations.api';
-import {
-  getDonations,
-  getDonationStatistics
-} from '@/features/admin/api/donations.api';
+import type { Donation, DonationStatistics } from '@/features/admin/api/donations.api';
+import { getDonations, getDonationStatistics } from '@/features/admin/api/donations.api';
 import { DonationDetailsModal } from '@/features/admin/components/donations/DonationDetailsModal';
 import { DonationStatsGrid } from '@/features/admin/components/donations/DonationStatsGrid';
 import { getDonationColumns } from '@/features/admin/components/donations/DonationTableColumns';
@@ -59,10 +54,7 @@ export default function DonationManagementPage() {
     setSearchParams(next, { replace: true });
   }, [donations, highlightId, searchParams, setSearchParams]);
 
-  const columns = useMemo(
-    () => getDonationColumns(handleViewDetails),
-    [handleViewDetails]
-  );
+  const columns = useMemo(() => getDonationColumns(handleViewDetails), [handleViewDetails]);
 
   return (
     <div className="space-y-8">

@@ -55,7 +55,7 @@ describe('apiClient', () => {
       // Should not have Authorization header
       const lastCall = fetchMock.mock.calls.at(-1);
       expect(lastCall).toBeDefined();
-      const headers = (lastCall![1]!).headers as Record<string, string>;
+      const headers = lastCall![1]!.headers as Record<string, string>;
       expect(headers['Authorization']).toBeUndefined();
     });
   });

@@ -1,7 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 
-
 import { HRTabs } from '@/features/admin/components/hr/HrTabs';
 
 describe('HRTabs', () => {
@@ -35,4 +34,3 @@ describe('HRTabs', () => {
     expect(applicationsTab.className).toContain('bg-wiria-blue-dark');
   });
 });
-

@@ -2,18 +2,13 @@ import { useEffect, useState } from 'react';
 
 import { useSearchParams } from 'react-router-dom';
 
-import type {
-  Contact} from '@/features/admin/api/contacts.api';
-import {
-  archiveContact,
-  getContacts,
-  respondToContact,
-} from '@/features/admin/api/contacts.api';
+import type { Contact } from '@/features/admin/api/contacts.api';
+import { archiveContact, getContacts, respondToContact } from '@/features/admin/api/contacts.api';
 import { MessageDetailsModal } from '@/features/admin/components/contacts/modals/MessageDetailsModal';
 import { ReplyModal } from '@/features/admin/components/contacts/modals/ReplyModal';
 import { AdminPageHeader } from '@/features/admin/components/layout/AdminPageHeader';
 import { ConfirmDialog } from '@/shared/components/modals/ConfirmDialog';
-import type { Column} from '@/shared/components/ui/DataTable';
+import type { Column } from '@/shared/components/ui/DataTable';
 import { DataTable } from '@/shared/components/ui/DataTable';
 import { StatusBadge } from '@/shared/components/ui/StatusBadge';
 import { useAdminAction, useAdminData } from '@/shared/hooks/useAdminData';
@@ -57,10 +52,11 @@ function StatusFilterBar({
         <button
           key={filter.value}
           onClick={() => setStatusFilter(filter.value)}
-          className={`rounded-xl px-6 py-2 text-sm font-bold transition-all ${statusFilter === filter.value
+          className={`rounded-xl px-6 py-2 text-sm font-bold transition-all ${
+            statusFilter === filter.value
               ? 'bg-wiria-blue-dark text-white shadow-md'
               : 'text-gray-500 hover:bg-gray-50 hover:text-wiria-blue-dark'
-            }`}
+          }`}
         >
           {filter.label}
         </button>
@@ -102,7 +98,10 @@ function getColumns(
       align: 'right',
       render: (c) => (
         <div className="flex justify-end gap-3">
-          <button onClick={() => setSelectedContact(c)} className="text-xs font-bold text-wiria-blue-dark hover:underline">
+          <button
+            onClick={() => setSelectedContact(c)}
+            className="text-xs font-bold text-wiria-blue-dark hover:underline"
+          >
             Details
           </button>
           {c.status === 'NEW' && (

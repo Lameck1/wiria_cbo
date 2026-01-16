@@ -9,7 +9,7 @@ import { cn } from '@/shared/utils/helpers';
 import { useContactForm } from '../hooks/useContactForm';
 import { contactSchema } from '../validation';
 
-import type { ContactFormSchema} from '../validation';
+import type { ContactFormSchema } from '../validation';
 
 const MESSAGE_MIN_LENGTH = 20;
 const MESSAGE_MAX_LENGTH = 2000;

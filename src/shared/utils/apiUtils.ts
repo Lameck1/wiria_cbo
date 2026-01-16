@@ -40,11 +40,11 @@ export function extractArray<T>(response: unknown, arrayKey?: string): T[] {
   const nestedData = object['data'];
   if (nestedData && typeof nestedData === 'object') {
     const nested = nestedData as Record<string, unknown>;
-    
+
     if (Array.isArray(nested['data'])) {
       return nested['data'] as T[];
     }
-    
+
     // Check for named arrays in nested data
     if (arrayKey && Array.isArray(nested[arrayKey])) {
       return nested[arrayKey] as T[];

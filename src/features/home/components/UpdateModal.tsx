@@ -11,7 +11,6 @@ import { ImageCarousel } from '@/shared/components/ImageCarousel';
 
 import type { Update } from '../hooks/useUpdates';
 
-
 interface UpdateModalProps {
   update: Update | null;
   isOpen: boolean;

@@ -79,9 +79,9 @@ function ProblemNarrative() {
         <p>
           Homa Bay County bears a disproportionate burden, with some of the highest rates in the
           country: <strong>HIV prevalence at 15.2%</strong>,{' '}
-          <strong>adolescent pregnancy at 23.2%</strong>, and{' '}
-          <strong>child marriage at 37%</strong> (National AIDS Control Council [NACC], 2023;
-          Kenya National Bureau of Statistics [KNBS] & ICF, 2022; KELIN, 2023).
+          <strong>adolescent pregnancy at 23.2%</strong>, and <strong>child marriage at 37%</strong>{' '}
+          (National AIDS Control Council [NACC], 2023; Kenya National Bureau of Statistics [KNBS] &
+          ICF, 2022; KELIN, 2023).
         </p>
         <p>
           These overlapping vulnerabilities significantly increase girls’ risk of sexual abuse,
@@ -111,9 +111,9 @@ function ProblemNarrative() {
           </div>
         </motion.div>
         <p>
-          For girls and young women, the consequences are devastating. Poverty often forces them into
-          transactional sex simply to access food, remain in school, or survive—perpetuating cycles
-          of HIV infection, abuse, and social exclusion.
+          For girls and young women, the consequences are devastating. Poverty often forces them
+          into transactional sex simply to access food, remain in school, or survive—perpetuating
+          cycles of HIV infection, abuse, and social exclusion.
         </p>
       </motion.div>
     </div>
@@ -204,8 +204,18 @@ function RegistrationDetailsCard() {
     >
       <div className="mb-4 flex items-center gap-4">
         <div className="flex h-12 w-12 items-center justify-center rounded-full bg-wiria-green-light/20">
-          <svg className="h-6 w-6 text-wiria-green-light" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          <svg
+            className="h-6 w-6 text-wiria-green-light"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
           </svg>
         </div>
         <h3 className="text-xl font-bold text-wiria-blue-dark md:text-2xl">Registration Details</h3>
@@ -213,7 +223,9 @@ function RegistrationDetailsCard() {
       <ul className="space-y-3 text-base text-gray-700">
         {REGISTRATION_DETAILS.map((detail) => (
           <li key={detail.label} className="flex items-start gap-3">
-            <span className="min-w-[140px] font-semibold text-wiria-blue-dark">{detail.label}:</span>
+            <span className="min-w-[140px] font-semibold text-wiria-blue-dark">
+              {detail.label}:
+            </span>
             {detail.value}
           </li>
         ))}

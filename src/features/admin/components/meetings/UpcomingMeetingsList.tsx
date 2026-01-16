@@ -69,8 +69,7 @@ export function UpcomingMeetingsList({
               <p className="flex items-center gap-2 font-bold text-gray-800">
                 {meeting.isVirtual ? (
                   <>
-                    <span className="h-2 w-2 animate-pulse rounded-full bg-green-500" />{' '}
-                    Virtual
+                    <span className="h-2 w-2 animate-pulse rounded-full bg-green-500" /> Virtual
                   </>
                 ) : (
                   meeting.location
@@ -84,12 +83,7 @@ export function UpcomingMeetingsList({
                   className="mt-1 flex items-center gap-1 text-xs font-bold text-blue-600 transition-colors hover:text-blue-800"
                 >
                   Join Meeting{' '}
-                  <svg
-                    className="h-3 w-3"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
+                  <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"

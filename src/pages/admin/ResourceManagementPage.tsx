@@ -2,12 +2,8 @@ import { useState } from 'react';
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
-import type {
-  Resource} from '@/features/admin/api/resources.api';
-import {
-  getAdminResources,
-  deleteResource,
-} from '@/features/admin/api/resources.api';
+import type { Resource } from '@/features/admin/api/resources.api';
+import { getAdminResources, deleteResource } from '@/features/admin/api/resources.api';
 import { ResourceModal } from '@/features/admin/components/resources/ResourceModal';
 import { ConfirmDialog } from '@/shared/components/modals/ConfirmDialog';
 import { Button } from '@/shared/components/ui/Button';
@@ -18,7 +14,7 @@ export default function ResourceManagementPage() {
   const queryClient = useQueryClient();
   const [editingResource, setEditingResource] = useState<Resource | null>(null);
   const [showModal, setShowModal] = useState(false);
-   const [resourceIdToDelete, setResourceIdToDelete] = useState<string | null>(null);
+  const [resourceIdToDelete, setResourceIdToDelete] = useState<string | null>(null);
 
   const { data: resources = [], isLoading } = useQuery({
     queryKey: ['admin', 'resources'],
@@ -78,7 +74,9 @@ export default function ResourceManagementPage() {
                 <th className="px-6 py-4 font-semibold uppercase tracking-wider">Type</th>
                 <th className="px-6 py-4 font-semibold uppercase tracking-wider">Public</th>
                 <th className="px-6 py-4 font-semibold uppercase tracking-wider">Downloads</th>
-                <th className="px-6 py-4 text-right font-semibold uppercase tracking-wider">Actions</th>
+                <th className="px-6 py-4 text-right font-semibold uppercase tracking-wider">
+                  Actions
+                </th>
               </tr>
             </thead>
             <tbody className="divide-y text-slate-600">
@@ -107,13 +105,13 @@ export default function ResourceManagementPage() {
                         setEditingResource(resource);
                         setShowModal(true);
                       }}
-                      className="mr-4 text-sm font-bold text-wiria-blue-dark hover:text-blue-800 transition-colors"
+                      className="mr-4 text-sm font-bold text-wiria-blue-dark transition-colors hover:text-blue-800"
                     >
                       Edit
                     </button>
                     <button
                       onClick={() => void handleDelete(resource.id)}
-                      className="text-sm font-bold text-red-600 hover:text-red-800 transition-colors"
+                      className="text-sm font-bold text-red-600 transition-colors hover:text-red-800"
                     >
                       Delete
                     </button>

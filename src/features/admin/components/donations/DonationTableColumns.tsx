@@ -20,9 +20,7 @@ export const getDonationColumns = (
   {
     header: 'Amount',
     key: 'amount',
-    render: (d) => (
-      <span className="font-bold text-green-600">{formatCurrency(d.amount)}</span>
-    ),
+    render: (d) => <span className="font-bold text-green-600">{formatCurrency(d.amount)}</span>,
   },
   {
     header: 'Method',

@@ -39,7 +39,13 @@ export function SafeguardingReportForm() {
 
   return (
     <FormProvider {...form}>
-      <form id="safeguarding-form" className="space-y-6" onSubmit={(event) => { void submitAction(event); }}>
+      <form
+        id="safeguarding-form"
+        className="space-y-6"
+        onSubmit={(event) => {
+          void submitAction(event);
+        }}
+      >
         {/* Progress Steps Indicator */}
         <div className="mb-8">
           <div className="mb-2 flex items-center justify-between">
@@ -77,7 +83,9 @@ export function SafeguardingReportForm() {
                 isAnonymous={isAnonymous}
                 isSubmitting={isSubmitting}
                 setIsAnonymous={setIsAnonymous}
-                onNext={() => { void handleNextStep(); }}
+                onNext={() => {
+                  void handleNextStep();
+                }}
               />
             ) : (
               <ConcernStep

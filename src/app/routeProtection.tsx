@@ -13,43 +13,43 @@ import { UserRole } from '@/shared/types';
  * Wraps a component with member-only protection
  */
 export function withMemberProtection(element: ReactElement): ReactElement {
-    return (
-        <ProtectedRoute allowedRoles={[UserRole.MEMBER]} redirectTo={ROUTES.MEMBER_LOGIN}>
-            {element}
-        </ProtectedRoute>
-    );
+  return (
+    <ProtectedRoute allowedRoles={[UserRole.MEMBER]} redirectTo={ROUTES.MEMBER_LOGIN}>
+      {element}
+    </ProtectedRoute>
+  );
 }
 
 /**
  * Wraps a component with admin/staff protection
  */
 export function withAdminProtection(element: ReactElement): ReactElement {
-    return (
-        <ProtectedRoute
-            allowedRoles={[UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.STAFF]}
-            redirectTo={ROUTES.STAFF_LOGIN}
-        >
-            {element}
-        </ProtectedRoute>
-    );
+  return (
+    <ProtectedRoute
+      allowedRoles={[UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.STAFF]}
+      redirectTo={ROUTES.STAFF_LOGIN}
+    >
+      {element}
+    </ProtectedRoute>
+  );
 }
 
 /**
  * Creates a protected route object for use in router config
  */
 export function createMemberRoute(path: string, element: ReactElement) {
-    return {
-        path,
-        element: withMemberProtection(element),
-    };
+  return {
+    path,
+    element: withMemberProtection(element),
+  };
 }
 
 /**
  * Creates a protected admin route object
  */
 export function createAdminRoute(path: string, element: ReactElement) {
-    return {
-        path,
-        element: withAdminProtection(element),
-    };
+  return {
+    path,
+    element: withAdminProtection(element),
+  };
 }

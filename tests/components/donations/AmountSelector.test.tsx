@@ -10,7 +10,6 @@ import { describe, it, expect, vi } from 'vitest';
 
 import { AmountSelector } from '@/features/donations/components/AmountSelector';
 
-
 describe('AmountSelector', () => {
   it('should render suggested amounts', () => {
     const onAmountChange = vi.fn();

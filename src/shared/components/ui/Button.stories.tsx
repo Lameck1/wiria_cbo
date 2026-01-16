@@ -58,8 +58,6 @@ export const Ghost: Story = {
   },
 };
 
-
-
 export const Small: Story = {
   args: {
     size: 'sm',

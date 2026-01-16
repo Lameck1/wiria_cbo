@@ -1,8 +1,6 @@
 import { useState } from 'react';
 
-import type {
-  AdminUser,
-  UserInvitation} from '@/features/admin/api/users.api';
+import type { AdminUser, UserInvitation } from '@/features/admin/api/users.api';
 import {
   cancelInvitation,
   getInvitations,
@@ -11,7 +9,10 @@ import {
 } from '@/features/admin/api/users.api';
 import { AdminPageHeader } from '@/features/admin/components/layout/AdminPageHeader';
 import { InviteUserModal } from '@/features/admin/components/users/modals/InviteUserModal';
-import { getInviteColumns, getUserColumns } from '@/features/admin/components/users/UserTableColumns';
+import {
+  getInviteColumns,
+  getUserColumns,
+} from '@/features/admin/components/users/UserTableColumns';
 import { ConfirmDialog } from '@/shared/components/modals/ConfirmDialog';
 import { Button } from '@/shared/components/ui/Button';
 import { Card, CardBody } from '@/shared/components/ui/Card';
@@ -79,9 +80,7 @@ export default function UserManagementPage() {
         title="User Management"
         description="Manage system administrators and staff invitations."
       >
-        <Button onClick={() => setShowInviteModal(true)}>
-          + Invite User
-        </Button>
+        <Button onClick={() => setShowInviteModal(true)}>+ Invite User</Button>
       </AdminPageHeader>
 
       <Card className="overflow-hidden border-none shadow-sm">
@@ -89,19 +88,21 @@ export default function UserManagementPage() {
           {/* Tabs */}
           <div className="flex border-b bg-gray-50/50">
             <button
-              className={`px-8 py-4 text-sm font-bold transition-all ${activeTab === 'ACTIVE'
-                ? 'border-b-2 border-wiria-blue-dark bg-white text-wiria-blue-dark'
-                : 'text-gray-500 hover:bg-gray-100/50 hover:text-gray-700'
-                }`}
+              className={`px-8 py-4 text-sm font-bold transition-all ${
+                activeTab === 'ACTIVE'
+                  ? 'border-b-2 border-wiria-blue-dark bg-white text-wiria-blue-dark'
+                  : 'text-gray-500 hover:bg-gray-100/50 hover:text-gray-700'
+              }`}
               onClick={() => setActiveTab('ACTIVE')}
             >
               Active Users
             </button>
             <button
-              className={`px-8 py-4 text-sm font-bold transition-all ${activeTab === 'PENDING'
-                ? 'border-b-2 border-wiria-blue-dark bg-white text-wiria-blue-dark'
-                : 'text-gray-500 hover:bg-gray-100/50 hover:text-gray-700'
-                }`}
+              className={`px-8 py-4 text-sm font-bold transition-all ${
+                activeTab === 'PENDING'
+                  ? 'border-b-2 border-wiria-blue-dark bg-white text-wiria-blue-dark'
+                  : 'text-gray-500 hover:bg-gray-100/50 hover:text-gray-700'
+              }`}
               onClick={() => setActiveTab('PENDING')}
             >
               Pending Invitations

@@ -8,7 +8,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/features/auth/context/useAuth';
 import { usePaymentPoller } from '@/features/donations/hooks/usePaymentPoller';
 import { useRegistration } from '@/features/membership/hooks/useRegistration';
-import type { RegistrationFormSchema} from '@/features/membership/validation';
+import type { RegistrationFormSchema } from '@/features/membership/validation';
 import { registrationSchema } from '@/features/membership/validation';
 import { Button } from '@/shared/components/ui/Button';
 import { Card, CardBody } from '@/shared/components/ui/Card';

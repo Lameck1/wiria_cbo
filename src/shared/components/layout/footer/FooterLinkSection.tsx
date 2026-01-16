@@ -18,9 +18,7 @@ interface FooterLinkSectionProps {
 export function FooterLinkSection({ title, links }: FooterLinkSectionProps) {
   return (
     <div className="min-w-[200px] flex-1 text-center lg:text-left">
-      <h4 className="mb-4 text-sm font-bold uppercase tracking-wider text-wiria-yellow">
-        {title}
-      </h4>
+      <h4 className="mb-4 text-sm font-bold uppercase tracking-wider text-wiria-yellow">{title}</h4>
       <ul className="flex flex-col items-center space-y-3 text-sm lg:items-start">
         {links.map((link, index) => (
           <li key={`${link.to}-${index}`}>

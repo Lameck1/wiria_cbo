@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import type { AdminMember} from '@/features/membership/api/members.api';
+import type { AdminMember } from '@/features/membership/api/members.api';
 import { getMembers } from '@/features/membership/api/members.api';
 import { useAdminData } from '@/shared/hooks/useAdminData';
 
@@ -13,7 +13,11 @@ interface MemberProviderProps {
 }
 
 export function MemberProvider({ children, filter, search }: MemberProviderProps) {
-  const { items: members, isLoading, refetch } = useAdminData<AdminMember>(
+  const {
+    items: members,
+    isLoading,
+    refetch,
+  } = useAdminData<AdminMember>(
     ['admin', 'members', filter, search],
     () => getMembers({ status: filter, search }),
     { arrayKey: 'members' }
@@ -24,7 +28,9 @@ export function MemberProvider({ children, filter, search }: MemberProviderProps
       value={{
         members,
         isLoading,
-        refetch: async () => { await refetch(); },
+        refetch: async () => {
+          await refetch();
+        },
         filter,
         search,
       }}

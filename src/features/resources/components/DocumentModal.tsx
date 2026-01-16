@@ -272,11 +272,7 @@ export function DocumentModal({ document, isOpen, onClose }: DocumentModalProps)
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="3xl" noPadding>
-      <DocumentHeader
-        document={document}
-        formattedDate={formattedDate}
-        onClose={onClose}
-      />
+      <DocumentHeader document={document} formattedDate={formattedDate} onClose={onClose} />
       <div className="p-6">
         <DocumentPreviewSection
           isPDF={isPDF}
@@ -309,11 +305,7 @@ export function DocumentModal({ document, isOpen, onClose }: DocumentModalProps)
         )}
         <DocumentDetailsSection document={document} />
       </div>
-      <DocumentFooter
-        hasDocument={hasDocument}
-        onDownload={handleDownload}
-        onClose={onClose}
-      />
+      <DocumentFooter hasDocument={hasDocument} onDownload={handleDownload} onClose={onClose} />
     </Modal>
   );
 }

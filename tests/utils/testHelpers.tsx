@@ -1,6 +1,6 @@
 /**
  * Test Utilities and Helpers
- * 
+ *
  * Provides reusable test utilities for consistent testing across the application
  */
 
@@ -50,9 +50,7 @@ export function renderWithProviders(
   function Wrapper({ children }: { children: React.ReactNode }) {
     return (
       <BrowserRouter>
-        <QueryClientProvider client={queryClient}>
-          {children}
-        </QueryClientProvider>
+        <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
       </BrowserRouter>
     );
   }
@@ -66,7 +64,7 @@ export function renderWithProviders(
 /**
  * Wait for async operations to complete
  */
-export const waitFor = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+export const waitFor = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 /**
  * Mock localStorage for tests
@@ -83,7 +81,7 @@ export function mockLocalStorage() {
       delete store[key];
     },
     clear: () => {
-      Object.keys(store).forEach(key => delete store[key]);
+      Object.keys(store).forEach((key) => delete store[key]);
     },
     get length() {
       return Object.keys(store).length;

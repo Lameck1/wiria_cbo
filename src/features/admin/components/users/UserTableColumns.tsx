@@ -34,7 +34,9 @@ export const getUserColumns = (
       <button
         onClick={() => onStatusChange(u.email, u.status)}
         className={`text-sm font-bold transition-colors hover:underline ${
-          u.status === 'ACTIVE' ? 'text-red-500 hover:text-red-700' : 'text-green-600 hover:text-green-800'
+          u.status === 'ACTIVE'
+            ? 'text-red-500 hover:text-red-700'
+            : 'text-green-600 hover:text-green-800'
         }`}
       >
         {u.status === 'ACTIVE' ? 'Deactivate' : 'Activate'}
@@ -43,9 +45,7 @@ export const getUserColumns = (
   },
 ];
 
-export const getInviteColumns = (
-  onCancel: (id: string) => void
-): Column<UserInvitation>[] => [
+export const getInviteColumns = (onCancel: (id: string) => void): Column<UserInvitation>[] => [
   { header: 'Email', key: 'email', className: 'font-medium' },
   {
     header: 'Role',

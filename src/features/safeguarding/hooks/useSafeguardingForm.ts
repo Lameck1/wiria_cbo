@@ -8,7 +8,7 @@ import { TIMING } from '@/shared/constants/config';
 import { safeguardingSchema } from '../validation';
 import { useSafeguardingReport } from './useSafeguardingReport';
 
-import type { SafeguardingReportSchema} from '../validation';
+import type { SafeguardingReportSchema } from '../validation';
 
 export type FormStep = 'reporter' | 'details';
 

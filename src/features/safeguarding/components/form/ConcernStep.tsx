@@ -49,10 +49,11 @@ export function ConcernStep({
               type="button"
               onClick={() => setValue('category', cat.value, { shouldValidate: true })}
               disabled={isSubmitting}
-              className={`rounded-xl border-2 p-3 text-left transition-all ${category === cat.value
-                ? 'border-slate-600 bg-slate-50 shadow-md'
-                : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
-                } disabled:opacity-50`}
+              className={`rounded-xl border-2 p-3 text-left transition-all ${
+                category === cat.value
+                  ? 'border-slate-600 bg-slate-50 shadow-md'
+                  : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+              } disabled:opacity-50`}
             >
               <span className="text-xl">{cat.icon}</span>
               <span

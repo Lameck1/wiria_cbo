@@ -245,7 +245,9 @@ export function TenderCriteriaFields({
             <input
               aria-label={`Required document ${index + 1}`}
               value={item}
-              onChange={(event) => handleArrayChange(setRequiredDocuments, index, event.target.value)}
+              onChange={(event) =>
+                handleArrayChange(setRequiredDocuments, index, event.target.value)
+              }
               className="flex-1 rounded-lg border p-2 text-sm"
               required
             />

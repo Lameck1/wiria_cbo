@@ -23,14 +23,14 @@ The official frontend application for the **WIRIA Community Based Organization**
 
 ## 🛠 Features
 
-| Module | Description |
-| :--- | :--- |
-| **Admin Dashboard** | Real-time statistics, trend charts, and management panels for applications, memberships, and safeguarding cases. |
-| **Membership Portal** | Multi-step registration, login, and customized member activities/meetings. |
-| **Donation System** | Integrated flow for processing community support and tracking history. |
-| **HR & Careers** | Management of job listings, volunteer opportunities, and tender applications. |
-| **Safeguarding** | Secure reporting and case management for community protection. |
-| **Resources & News** | Dynamic CMS for publishing updates, policy documents, and community tools. |
+| Module                | Description                                                                                                      |
+| :-------------------- | :--------------------------------------------------------------------------------------------------------------- |
+| **Admin Dashboard**   | Real-time statistics, trend charts, and management panels for applications, memberships, and safeguarding cases. |
+| **Membership Portal** | Multi-step registration, login, and customized member activities/meetings.                                       |
+| **Donation System**   | Integrated flow for processing community support and tracking history.                                           |
+| **HR & Careers**      | Management of job listings, volunteer opportunities, and tender applications.                                    |
+| **Safeguarding**      | Secure reporting and case management for community protection.                                                   |
+| **Resources & News**  | Dynamic CMS for publishing updates, policy documents, and community tools.                                       |
 
 ---
 
@@ -56,18 +56,22 @@ src/
 ## ⚙️ Development
 
 ### Prerequisites
+
 - Node.js >= 18
 - npm >= 9
 
 ### Installation
+
 ```bash
 npm install
 ```
 
 ### Running Locally
+
 ```bash
 npm run dev
 ```
+
 The application will be available at `http://localhost:5173`.
 
 ---
@@ -84,6 +88,7 @@ The application will be available at `http://localhost:5173`.
 - `npm run deploy`: Automated deployment to GitHub Pages.
 
 ### Code Quality Scripts
+
 - `npm run audit:full`: Run all quality checks (deps, code, bundle, unused).
 - `npm run audit:deps`: Check dependencies for security issues.
 - `npm run audit:code`: Run lint and type-check.
@@ -99,6 +104,7 @@ The application will be available at `http://localhost:5173`.
 ## 🚢 Deployment
 
 This application is configured for deployment via **GitHub Pages**.
+
 1. Ensure `VITE_API_BASE_URL` is set in your environment for the build.
 2. Run `npm run deploy`.
 3. The build process automatically handles Hashing, Minification, and Tree Shaking.
@@ -108,6 +114,7 @@ This application is configured for deployment via **GitHub Pages**.
 ## 🤝 Contributing
 
 We follow a professional engineering standard:
+
 1. Use **Semantic HTML** and **Tailwind CSS**.
 2. All new forms must use the unified `Form` abstraction in `shared/components/ui/form`.
 3. Ensure all API calls are typed and wrapped in TanStack Query.
@@ -117,4 +124,5 @@ We follow a professional engineering standard:
 📖 See [CODE_QUALITY.md](./CODE_QUALITY.md) for comprehensive code quality guidelines, tools, and best practices.
 
 ---
+
 © 2026 WIRIA CBO. Licensed under MIT.

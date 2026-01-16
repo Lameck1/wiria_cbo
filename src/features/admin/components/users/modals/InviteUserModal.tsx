@@ -47,7 +47,10 @@ export function InviteUserModal({ onClose, onSuccess }: InviteUserModalProps) {
       <form onSubmit={(event) => void handleSubmit(event)} className="space-y-6 p-2">
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div className="md:col-span-2">
-            <label className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-gray-500" htmlFor="invite-email">
+            <label
+              className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-gray-500"
+              htmlFor="invite-email"
+            >
               Email Address *
             </label>
             <input
@@ -56,12 +59,14 @@ export function InviteUserModal({ onClose, onSuccess }: InviteUserModalProps) {
               type="email"
               required
               placeholder="e.g. staff@wiria.org"
-              className="w-full rounded-xl border-gray-200 bg-gray-50 p-3 outline-none focus:border-wiria-blue-dark focus:ring-2 focus:ring-wiria-blue-dark/20 transition-all"
+              className="w-full rounded-xl border-gray-200 bg-gray-50 p-3 outline-none transition-all focus:border-wiria-blue-dark focus:ring-2 focus:ring-wiria-blue-dark/20"
               disabled={isLoading}
             />
           </div>
           <div>
-            <label className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-gray-500" htmlFor="invite-firstName"
+            <label
+              className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-gray-500"
+              htmlFor="invite-firstName"
             >
               First Name
             </label>
@@ -69,31 +74,37 @@ export function InviteUserModal({ onClose, onSuccess }: InviteUserModalProps) {
               id="invite-firstName"
               name="firstName"
               placeholder="e.g. Jane"
-              className="w-full rounded-xl border-gray-200 bg-gray-50 p-3 outline-none focus:border-wiria-blue-dark focus:ring-2 focus:ring-wiria-blue-dark/20 transition-all"
+              className="w-full rounded-xl border-gray-200 bg-gray-50 p-3 outline-none transition-all focus:border-wiria-blue-dark focus:ring-2 focus:ring-wiria-blue-dark/20"
               disabled={isLoading}
             />
           </div>
           <div>
-            <label className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-gray-500" htmlFor="invite-lastName">
+            <label
+              className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-gray-500"
+              htmlFor="invite-lastName"
+            >
               Last Name
             </label>
             <input
               id="invite-lastName"
               name="lastName"
               placeholder="e.g. Doe"
-              className="w-full rounded-xl border-gray-200 bg-gray-50 p-3 outline-none focus:border-wiria-blue-dark focus:ring-2 focus:ring-wiria-blue-dark/20 transition-all"
+              className="w-full rounded-xl border-gray-200 bg-gray-50 p-3 outline-none transition-all focus:border-wiria-blue-dark focus:ring-2 focus:ring-wiria-blue-dark/20"
               disabled={isLoading}
             />
           </div>
           <div className="md:col-span-2">
-            <label className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-gray-500" htmlFor="invite-role">
+            <label
+              className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-gray-500"
+              htmlFor="invite-role"
+            >
               System Role *
             </label>
             <select
               id="invite-role"
               name="role"
               required
-              className="w-full rounded-xl border-gray-200 bg-gray-50 p-3 outline-none focus:border-wiria-blue-dark focus:ring-2 focus:ring-wiria-blue-dark/20 transition-all appearance-none"
+              className="w-full appearance-none rounded-xl border-gray-200 bg-gray-50 p-3 outline-none transition-all focus:border-wiria-blue-dark focus:ring-2 focus:ring-wiria-blue-dark/20"
               disabled={isLoading}
             >
               <option value="">Select a role...</option>

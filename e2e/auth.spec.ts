@@ -12,9 +12,7 @@ test.describe('Authentication', () => {
 
     // Should navigate directly to member login page
     await expect(page).toHaveURL(/\/member-login/);
-    await expect(
-      page.getByRole('heading', { name: /member portal login/i })
-    ).toBeVisible();
+    await expect(page.getByRole('heading', { name: /member portal login/i })).toBeVisible();
   });
 
   test('should show login form', async ({ page }) => {
@@ -38,9 +36,7 @@ test.describe('Authentication', () => {
     await submitButton.click();
 
     // Should show validation errors
-    await expect(
-      page.getByText(/username, email or phone is required/i)
-    ).toBeVisible();
+    await expect(page.getByText(/username, email or phone is required/i)).toBeVisible();
   });
 
   test('should show error for invalid credentials', async ({ page }) => {

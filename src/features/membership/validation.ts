@@ -96,9 +96,7 @@ export const renewalSchema = z.object({
 export const profileSchema = z.object({
   firstName: z.string().min(2, 'First name must be at least 2 characters'),
   lastName: z.string().min(2, 'Last name must be at least 2 characters'),
-  phone: z
-    .string()
-    .regex(/^(\+?254|0)[17]\d{8}$/, 'Please enter a valid Kenyan phone number'),
+  phone: z.string().regex(/^(\+?254|0)[17]\d{8}$/, 'Please enter a valid Kenyan phone number'),
   occupation: z.string().optional(),
   address: z.string().optional(),
   county: z.string().optional(),

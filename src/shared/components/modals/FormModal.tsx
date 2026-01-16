@@ -6,7 +6,15 @@ import { Modal } from '@/shared/components/ui/Modal';
 import { Select } from '@/shared/components/ui/Select';
 import { Textarea } from '@/shared/components/ui/Textarea';
 
-export type FieldType = 'text' | 'email' | 'password' | 'number' | 'date' | 'textarea' | 'select' | 'file';
+export type FieldType =
+  | 'text'
+  | 'email'
+  | 'password'
+  | 'number'
+  | 'date'
+  | 'textarea'
+  | 'select'
+  | 'file';
 
 export interface SelectOption {
   label: string;
@@ -87,12 +95,7 @@ export function FormModal<T extends Record<string, unknown>>({
 
     switch (field.type) {
       case 'textarea': {
-        return (
-          <Textarea
-            {...commonProps}
-            rows={field.rows ?? 4}
-          />
-        );
+        return <Textarea {...commonProps} rows={field.rows ?? 4} />;
       }
 
       case 'select': {
@@ -121,23 +124,11 @@ export function FormModal<T extends Record<string, unknown>>({
 
       case 'number':
       case 'date': {
-        return (
-          <Input
-            {...commonProps}
-            type={field.type}
-            min={field.min}
-            max={field.max}
-          />
-        );
+        return <Input {...commonProps} type={field.type} min={field.min} max={field.max} />;
       }
 
       default: {
-        return (
-          <Input
-            {...commonProps}
-            type={field.type}
-          />
-        );
+        return <Input {...commonProps} type={field.type} />;
       }
     }
   };
@@ -149,10 +140,10 @@ export function FormModal<T extends Record<string, unknown>>({
           <div key={field.name as string}>
             <label
               htmlFor={field.name as string}
-              className="block text-sm font-medium text-gray-700 mb-1"
+              className="mb-1 block text-sm font-medium text-gray-700"
             >
               {field.label}
-              {field.required && <span className="text-red-500 ml-1">*</span>}
+              {field.required && <span className="ml-1 text-red-500">*</span>}
             </label>
             {renderField(field)}
           </div>
@@ -161,19 +152,10 @@ export function FormModal<T extends Record<string, unknown>>({
         {children}
 
         <div className="flex justify-end gap-3 pt-4">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={onClose}
-            disabled={isSubmitting}
-          >
+          <Button type="button" variant="outline" onClick={onClose} disabled={isSubmitting}>
             {cancelLabel}
           </Button>
-          <Button
-            type="submit"
-            disabled={isSubmitting}
-            isLoading={isSubmitting}
-          >
+          <Button type="submit" disabled={isSubmitting} isLoading={isSubmitting}>
             {isSubmitting ? 'Submitting...' : submitLabel}
           </Button>
         </div>

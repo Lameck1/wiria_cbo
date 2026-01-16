@@ -23,12 +23,9 @@ describe('useDebounce', () => {
   });
 
   it('should debounce value changes', () => {
-    const { result, rerender } = renderHook(
-      ({ value, delay }) => useDebounce(value, delay),
-      {
-        initialProps: { value: 'initial', delay: 500 },
-      }
-    );
+    const { result, rerender } = renderHook(({ value, delay }) => useDebounce(value, delay), {
+      initialProps: { value: 'initial', delay: 500 },
+    });
 
     expect(result.current).toBe('initial');
 
@@ -52,12 +49,9 @@ describe('useDebounce', () => {
   });
 
   it('should reset timer on rapid value changes', () => {
-    const { result, rerender } = renderHook(
-      ({ value }) => useDebounce(value, 500),
-      {
-        initialProps: { value: 'initial' },
-      }
-    );
+    const { result, rerender } = renderHook(({ value }) => useDebounce(value, 500), {
+      initialProps: { value: 'initial' },
+    });
 
     // Update value multiple times
     rerender({ value: 'update1' });
@@ -80,12 +74,9 @@ describe('useDebounce', () => {
   });
 
   it('should handle different delay values', () => {
-    const { result, rerender } = renderHook(
-      ({ value, delay }) => useDebounce(value, delay),
-      {
-        initialProps: { value: 'initial', delay: 1000 },
-      }
-    );
+    const { result, rerender } = renderHook(({ value, delay }) => useDebounce(value, delay), {
+      initialProps: { value: 'initial', delay: 1000 },
+    });
 
     rerender({ value: 'updated', delay: 1000 });
 
@@ -123,10 +114,9 @@ describe('useDebounce', () => {
   });
 
   it('should cleanup timeout on unmount', () => {
-    const { unmount, rerender } = renderHook(
-      ({ value }) => useDebounce(value, 500),
-      { initialProps: { value: 'initial' } }
-    );
+    const { unmount, rerender } = renderHook(({ value }) => useDebounce(value, 500), {
+      initialProps: { value: 'initial' },
+    });
 
     rerender({ value: 'updated' });
     unmount();
@@ -141,10 +131,9 @@ describe('useDebounce', () => {
   });
 
   it('should handle empty strings', () => {
-    const { result, rerender } = renderHook(
-      ({ value }) => useDebounce(value, 300),
-      { initialProps: { value: 'initial' } }
-    );
+    const { result, rerender } = renderHook(({ value }) => useDebounce(value, 300), {
+      initialProps: { value: 'initial' },
+    });
 
     rerender({ value: '' });
     act(() => {
@@ -154,10 +143,9 @@ describe('useDebounce', () => {
   });
 
   it('should handle null and undefined', () => {
-    const { result, rerender } = renderHook(
-      ({ value }) => useDebounce(value, 300),
-      { initialProps: { value: 'initial' as string | null | undefined } }
-    );
+    const { result, rerender } = renderHook(({ value }) => useDebounce(value, 300), {
+      initialProps: { value: 'initial' as string | null | undefined },
+    });
 
     rerender({ value: null });
     act(() => {

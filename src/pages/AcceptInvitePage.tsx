@@ -7,12 +7,8 @@ import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 
-import type {
-  VerifyInviteResponse} from '@/features/auth/api/auth.api';
-import {
-  acceptInvitation,
-  verifyInvitation
-} from '@/features/auth/api/auth.api';
+import type { VerifyInviteResponse } from '@/features/auth/api/auth.api';
+import { acceptInvitation, verifyInvitation } from '@/features/auth/api/auth.api';
 import { Button } from '@/shared/components/ui/Button';
 import { ApiError } from '@/shared/services/api/client';
 import { notificationService } from '@/shared/services/notification/notificationService';
@@ -103,7 +99,11 @@ const InviteForm = ({
 
     <div className="space-y-4">
       <div>
-        <label htmlFor="password" title="New Password" className="mb-1.5 block text-sm font-bold text-gray-700">
+        <label
+          htmlFor="password"
+          title="New Password"
+          className="mb-1.5 block text-sm font-bold text-gray-700"
+        >
           New Password
         </label>
         <input
@@ -119,7 +119,11 @@ const InviteForm = ({
       </div>
 
       <div>
-        <label htmlFor="confirmPassword" title="Confirm Password" className="mb-1.5 block text-sm font-bold text-gray-700">
+        <label
+          htmlFor="confirmPassword"
+          title="Confirm Password"
+          className="mb-1.5 block text-sm font-bold text-gray-700"
+        >
           Confirm Password
         </label>
         <input
@@ -172,7 +176,9 @@ export default function AcceptInvitePage() {
         setInviteData(response);
       } catch (error_: unknown) {
         const message =
-          error_ instanceof ApiError ? error_.message : 'The invitation link is invalid or has expired.';
+          error_ instanceof ApiError
+            ? error_.message
+            : 'The invitation link is invalid or has expired.';
         setError(message);
       } finally {
         setIsLoading(false);
@@ -222,7 +228,9 @@ export default function AcceptInvitePage() {
           {/* Header */}
           <div className="from-primary-600 to-primary-700 bg-gradient-to-r p-8 text-center">
             <h1 className="mb-2 text-2xl font-bold text-white">Join the WIRIA Team</h1>
-            <p className="text-primary-100 text-sm opacity-90">Please set up your account password to continue.</p>
+            <p className="text-primary-100 text-sm opacity-90">
+              Please set up your account password to continue.
+            </p>
           </div>
 
           <div className="p-8">

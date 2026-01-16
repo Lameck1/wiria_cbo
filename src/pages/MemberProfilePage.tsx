@@ -5,7 +5,7 @@ import { Controller, FormProvider, useForm, useFormContext } from 'react-hook-fo
 
 import { PortalLayout } from '@/features/membership/components/PortalLayout';
 import { useMemberData } from '@/features/membership/hooks/useMemberData';
-import type { ProfileFormSchema} from '@/features/membership/validation';
+import type { ProfileFormSchema } from '@/features/membership/validation';
 import { profileSchema } from '@/features/membership/validation';
 import { Button } from '@/shared/components/ui/Button';
 import { Card, CardBody } from '@/shared/components/ui/Card';
@@ -20,10 +20,10 @@ interface ProfileFieldProps {
 
 function ProfileField({ label, value }: ProfileFieldProps) {
   return (
-    <div className="rounded-xl bg-gray-50/50 p-4 border border-gray-100/50">
+    <div className="rounded-xl border border-gray-100/50 bg-gray-50/50 p-4">
       <p className="mb-1 text-xs font-bold uppercase tracking-wider text-gray-500">{label}</p>
       <p className="text-lg font-semibold text-gray-800">
-        {Array.isArray(value) ? value.join(', ') : value ?? '--'}
+        {Array.isArray(value) ? value.join(', ') : (value ?? '--')}
       </p>
     </div>
   );
@@ -50,10 +50,7 @@ function MemberProfileView({ profile, onEdit }: MemberProfileViewProps) {
       </div>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        <ProfileField
-          label="Full Name"
-          value={`${profile?.firstName} ${profile?.lastName}`}
-        />
+        <ProfileField label="Full Name" value={`${profile?.firstName} ${profile?.lastName}`} />
         <ProfileField label="Email Address" value={profile?.email} />
         <ProfileField label="Phone Number" value={profile?.phone} />
         <ProfileField label="National ID" value={profile?.nationalId} />
@@ -97,12 +94,7 @@ function MemberProfileEditForm({ isSaving, onSubmit, onCancel }: MemberProfileEd
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <FormField label="First Name" name="firstName" required />
         <FormField label="Last Name" name="lastName" required />
-        <FormField
-          label="Phone"
-          name="phone"
-          type="tel"
-          placeholder="e.g. 0712345678"
-        />
+        <FormField label="Phone" name="phone" type="tel" placeholder="e.g. 0712345678" />
         <FormField label="Occupation" name="occupation" />
         <div className="md:col-span-2">
           <FormField label="Address" name="address" />
@@ -112,10 +104,7 @@ function MemberProfileEditForm({ isSaving, onSubmit, onCancel }: MemberProfileEd
         <FormField label="Ward" name="ward" />
         <div className="md:col-span-2">
           <div className="space-y-1.5">
-            <label
-              htmlFor="interests"
-              className="text-sm font-semibold text-wiria-blue-dark"
-            >
+            <label htmlFor="interests" className="text-sm font-semibold text-wiria-blue-dark">
               Interests
             </label>
             <Controller
@@ -130,7 +119,7 @@ function MemberProfileEditForm({ isSaving, onSubmit, onCancel }: MemberProfileEd
                       event.target.value.split(',').map((valueItem) => valueItem.trim())
                     )
                   }
-                  className="block w-full rounded-lg border border-gray-300 bg-white p-3 text-wiria-blue-dark focus:border-wiria-blue-dark focus:ring-1 focus:ring-wiria-blue-dark outline-none transition-all"
+                  className="block w-full rounded-lg border border-gray-300 bg-white p-3 text-wiria-blue-dark outline-none transition-all focus:border-wiria-blue-dark focus:ring-1 focus:ring-wiria-blue-dark"
                 />
               )}
             />
@@ -154,7 +143,7 @@ function MemberProfileEditForm({ isSaving, onSubmit, onCancel }: MemberProfileEd
                       event.target.value.split(',').map((valueItem) => valueItem.trim())
                     )
                   }
-                  className="block w-full rounded-lg border border-gray-300 bg-white p-3 text-wiria-blue-dark focus:border-wiria-blue-dark focus:ring-1 focus:ring-wiria-blue-dark outline-none transition-all"
+                  className="block w-full rounded-lg border border-gray-300 bg-white p-3 text-wiria-blue-dark outline-none transition-all focus:border-wiria-blue-dark focus:ring-1 focus:ring-wiria-blue-dark"
                 />
               )}
             />
@@ -163,13 +152,13 @@ function MemberProfileEditForm({ isSaving, onSubmit, onCancel }: MemberProfileEd
         </div>
       </div>
 
-      <div className="flex gap-4 pt-4 border-t">
-        <Button type="submit" className="flex-1 h-12" isLoading={isSaving}>
+      <div className="flex gap-4 border-t pt-4">
+        <Button type="submit" className="h-12 flex-1" isLoading={isSaving}>
           Save Changes
         </Button>
         <Button
           type="button"
-          className="flex-1 h-12"
+          className="h-12 flex-1"
           variant="outline"
           onClick={onCancel}
           disabled={isSaving}
@@ -180,7 +169,6 @@ function MemberProfileEditForm({ isSaving, onSubmit, onCancel }: MemberProfileEd
     </form>
   );
 }
-
 
 function MemberProfilePage() {
   const { profile, isLoading, fetchProfile, updateProfile } = useMemberData();
@@ -239,7 +227,7 @@ function MemberProfilePage() {
   return (
     <PortalLayout title="Member Profile" subtitle="View and manage your profile information">
       <div className="max-w-4xl">
-        <Card className="border-none shadow-xl overflow-hidden">
+        <Card className="overflow-hidden border-none shadow-xl">
           <div className="h-2 w-full bg-gradient-to-r from-wiria-blue-dark via-wiria-yellow to-wiria-green-light" />
 
           <CardBody className="p-8">

@@ -14,7 +14,7 @@ import { getCountdown, getStatusBadge } from './TenderCardUtils';
 import { TenderModal } from './TenderModal';
 import { useTenders } from '../hooks/useTenders';
 
-import type { Tender} from '../hooks/useTenders';
+import type { Tender } from '../hooks/useTenders';
 
 interface TendersContentViewProps {
   openTenders: Tender[];
@@ -28,9 +28,7 @@ const ActiveTendersHeader = () => (
     viewport={{ once: true }}
     className="mb-10 text-center"
   >
-    <h2 className="mb-4 text-2xl font-bold text-wiria-blue-dark md:text-3xl">
-      Active Tenders
-    </h2>
+    <h2 className="mb-4 text-2xl font-bold text-wiria-blue-dark md:text-3xl">Active Tenders</h2>
     <div className="mx-auto h-1 w-24 rounded-full bg-gradient-to-r from-wiria-yellow to-wiria-green-light" />
   </motion.div>
 );
@@ -45,18 +43,10 @@ const TendersLoadingView = () => (
       <table className="min-w-full bg-white">
         <thead className="bg-wiria-blue-dark text-white">
           <tr>
-            <th className="px-4 py-3 text-left text-sm font-semibold uppercase">
-              Ref No.
-            </th>
-            <th className="px-4 py-3 text-left text-sm font-semibold uppercase">
-              Description
-            </th>
-            <th className="px-4 py-3 text-left text-sm font-semibold uppercase">
-              Deadline
-            </th>
-            <th className="px-4 py-3 text-center text-sm font-semibold uppercase">
-              Actions
-            </th>
+            <th className="px-4 py-3 text-left text-sm font-semibold uppercase">Ref No.</th>
+            <th className="px-4 py-3 text-left text-sm font-semibold uppercase">Description</th>
+            <th className="px-4 py-3 text-left text-sm font-semibold uppercase">Deadline</th>
+            <th className="px-4 py-3 text-center text-sm font-semibold uppercase">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -76,9 +66,7 @@ const TendersErrorView = () => (
   >
     <div className="mb-4 text-5xl">😔</div>
     <p className="mb-2 font-semibold text-red-600">Failed to load tenders</p>
-    <p className="text-sm text-red-500">
-      Please refresh the page or try again later.
-    </p>
+    <p className="text-sm text-red-500">Please refresh the page or try again later.</p>
   </motion.div>
 );
 
@@ -89,12 +77,7 @@ const TendersEmptyView = () => (
     className="rounded-xl border-2 border-dashed border-gray-200 bg-white p-12 text-center"
   >
     <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-100">
-      <svg
-        className="h-8 w-8 text-gray-400"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
+      <svg className="h-8 w-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -105,19 +88,13 @@ const TendersEmptyView = () => (
     </div>
     <p className="mb-2 font-semibold text-gray-600">No Active Tenders</p>
     <p className="mb-4 text-sm text-gray-500">
-      There are currently no open tenders. New opportunities are posted
-      regularly.
+      There are currently no open tenders. New opportunities are posted regularly.
     </p>
     <a
       href="mailto:wiriacbo@gmail.com?subject=Tender%20Inquiry"
       className="inline-flex items-center gap-2 font-semibold text-wiria-blue-dark transition-colors hover:text-wiria-yellow"
     >
-      <svg
-        className="h-4 w-4"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
+      <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -130,10 +107,7 @@ const TendersEmptyView = () => (
   </motion.div>
 );
 
-const TendersContentView = ({
-  openTenders,
-  onTenderClick,
-}: TendersContentViewProps) => (
+const TendersContentView = ({ openTenders, onTenderClick }: TendersContentViewProps) => (
   <>
     <div className="space-y-4 lg:hidden">
       <AnimatePresence mode="popLayout">
@@ -156,59 +130,34 @@ const TendersContentView = ({
       <table className="min-w-full bg-white">
         <thead className="bg-wiria-blue-dark text-white">
           <tr>
-            <th className="px-4 py-3 text-left text-sm font-semibold uppercase">
-              Ref No.
-            </th>
-            <th className="px-4 py-3 text-left text-sm font-semibold uppercase">
-              Description
-            </th>
-            <th className="px-4 py-3 text-left text-sm font-semibold uppercase">
-              Deadline
-            </th>
-            <th className="px-4 py-3 text-center text-sm font-semibold uppercase">
-              Actions
-            </th>
+            <th className="px-4 py-3 text-left text-sm font-semibold uppercase">Ref No.</th>
+            <th className="px-4 py-3 text-left text-sm font-semibold uppercase">Description</th>
+            <th className="px-4 py-3 text-left text-sm font-semibold uppercase">Deadline</th>
+            <th className="px-4 py-3 text-center text-sm font-semibold uppercase">Actions</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-100 text-gray-700">
           {openTenders.map((tender) => {
-            const { days, hours, isUrgent, isExpired } = getCountdown(
-              tender.deadline
-            );
-            const statusBadge = getStatusBadge(
-              tender.status,
-              isUrgent,
-              isExpired
-            );
+            const { days, hours, isUrgent, isExpired } = getCountdown(tender.deadline);
+            const statusBadge = getStatusBadge(tender.status, isUrgent, isExpired);
             const deadlineDate = new Date(tender.deadline);
 
             return (
-              <tr
-                key={tender.id}
-                className="transition-colors hover:bg-gray-50"
-              >
+              <tr key={tender.id} className="transition-colors hover:bg-gray-50">
                 <td className="px-4 py-4">
-                  <span className="font-mono text-sm text-wiria-blue-dark">
-                    {tender.refNo}
-                  </span>
+                  <span className="font-mono text-sm text-wiria-blue-dark">{tender.refNo}</span>
                   <div className="mt-1">
                     <span
                       className={`inline-flex items-center gap-1 rounded px-2 py-0.5 text-xs font-semibold ${statusBadge.bgClass}`}
                     >
-                      <span
-                        className={`h-1.5 w-1.5 rounded-full ${statusBadge.dotClass}`}
-                      />
+                      <span className={`h-1.5 w-1.5 rounded-full ${statusBadge.dotClass}`} />
                       {statusBadge.text}
                     </span>
                   </div>
                 </td>
                 <td className="px-4 py-4">
-                  <p className="font-semibold text-wiria-blue-dark">
-                    {tender.title}
-                  </p>
-                  <p className="line-clamp-1 text-sm text-gray-500">
-                    {tender.description}
-                  </p>
+                  <p className="font-semibold text-wiria-blue-dark">{tender.title}</p>
+                  <p className="line-clamp-1 text-sm text-gray-500">{tender.description}</p>
                 </td>
                 <td className="px-4 py-4">
                   <p className="font-semibold text-gray-700">
@@ -220,8 +169,9 @@ const TendersContentView = ({
                   </p>
                   {!isExpired && (
                     <div
-                      className={`mt-1 flex items-center gap-1 text-xs font-semibold ${isUrgent ? 'text-red-600' : 'text-blue-600'
-                        }`}
+                      className={`mt-1 flex items-center gap-1 text-xs font-semibold ${
+                        isUrgent ? 'text-red-600' : 'text-blue-600'
+                      }`}
                     >
                       <svg
                         className="h-3 w-3"
@@ -283,18 +233,11 @@ export function ActiveTendersSection() {
           ) : openTenders.length === 0 ? (
             <TendersEmptyView />
           ) : (
-            <TendersContentView
-              openTenders={openTenders}
-              onTenderClick={handleOpenModal}
-            />
+            <TendersContentView openTenders={openTenders} onTenderClick={handleOpenModal} />
           )}
         </div>
       </section>
-      <TenderModal
-        tender={selectedTender}
-        isOpen={!!selectedTender}
-        onClose={handleCloseModal}
-      />
+      <TenderModal tender={selectedTender} isOpen={!!selectedTender} onClose={handleCloseModal} />
     </>
   );
 }

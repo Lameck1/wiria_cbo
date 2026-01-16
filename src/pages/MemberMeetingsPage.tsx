@@ -6,7 +6,7 @@
 import { useEffect, useState } from 'react';
 
 import { PortalLayout } from '@/features/membership/components/PortalLayout';
-import type { Meeting} from '@/features/membership/hooks/useMemberData';
+import type { Meeting } from '@/features/membership/hooks/useMemberData';
 import { useMemberData } from '@/features/membership/hooks/useMemberData';
 import { Button } from '@/shared/components/ui/Button';
 import { Card, CardBody } from '@/shared/components/ui/Card';
@@ -57,7 +57,7 @@ const MeetingCard = ({
   showRsvpButton = true,
   loadingMeetingId,
   onRsvp,
-  onCancelRsvp
+  onCancelRsvp,
 }: {
   meeting: Meeting;
   showRsvpButton?: boolean;
@@ -69,17 +69,19 @@ const MeetingCard = ({
     <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
       <div className="flex-1">
         <div className="mb-2 flex items-center gap-3">
-          <span className={`rounded px-2 py-1 text-xs font-bold uppercase ${getMeetingTypeStyles(meeting.type)}`}>
+          <span
+            className={`rounded px-2 py-1 text-xs font-bold uppercase ${getMeetingTypeStyles(meeting.type)}`}
+          >
             {meeting.type}
           </span>
-          <span className={`rounded px-2 py-1 text-xs font-semibold ${getMeetingStatusStyles(meeting.status)}`}>
+          <span
+            className={`rounded px-2 py-1 text-xs font-semibold ${getMeetingStatusStyles(meeting.status)}`}
+          >
             {meeting.status}
           </span>
         </div>
         <h3 className="mb-2 text-lg font-bold text-wiria-blue-dark">{meeting.title}</h3>
-        {meeting.description && (
-          <p className="mb-3 text-sm text-gray-600">{meeting.description}</p>
-        )}
+        {meeting.description && <p className="mb-3 text-sm text-gray-600">{meeting.description}</p>}
         <div className="flex flex-wrap gap-4 text-sm text-gray-500">
           <div className="flex items-center gap-1">
             <span>📅</span>
@@ -117,13 +119,21 @@ const MeetingCard = ({
             </Button>
           ) : (
             <Button
-              variant={meeting.capacity && (meeting.attendeesCount ?? 0) >= meeting.capacity ? "outline" : "primary"}
+              variant={
+                meeting.capacity && (meeting.attendeesCount ?? 0) >= meeting.capacity
+                  ? 'outline'
+                  : 'primary'
+              }
               size="sm"
               onClick={() => onRsvp(meeting.id)}
               isLoading={loadingMeetingId === meeting.id}
-              disabled={meeting.capacity ? (meeting.attendeesCount ?? 0) >= meeting.capacity : false}
+              disabled={
+                meeting.capacity ? (meeting.attendeesCount ?? 0) >= meeting.capacity : false
+              }
             >
-              {meeting.capacity && (meeting.attendeesCount ?? 0) >= meeting.capacity ? "Fully Booked" : "RSVP Now"}
+              {meeting.capacity && (meeting.attendeesCount ?? 0) >= meeting.capacity
+                ? 'Fully Booked'
+                : 'RSVP Now'}
             </Button>
           )}
         </div>
@@ -180,11 +190,9 @@ function MemberMeetingsPage() {
       ? "You haven't RSVP'd to any meetings yet"
       : 'No available meetings at this time';
 
-  const tabButtonBaseClass =
-    'border-b-2 px-6 pb-4 pt-4 text-sm font-bold transition-colors';
+  const tabButtonBaseClass = 'border-b-2 px-6 pb-4 pt-4 text-sm font-bold transition-colors';
 
-  const currentMeetings =
-    activeTab === MY_MEETINGS_TAB ? meetings : availableMeetings;
+  const currentMeetings = activeTab === MY_MEETINGS_TAB ? meetings : availableMeetings;
 
   if (isLoading && meetings.length === 0) {
     return (
@@ -211,8 +219,8 @@ function MemberMeetingsPage() {
               }}
               className={`${tabButtonBaseClass} ${
                 activeTab === MY_MEETINGS_TAB
-                ? 'border-wiria-blue-dark text-wiria-blue-dark'
-                : 'border-transparent text-gray-500 hover:text-gray-700'
+                  ? 'border-wiria-blue-dark text-wiria-blue-dark'
+                  : 'border-transparent text-gray-500 hover:text-gray-700'
               }`}
             >
               My Meetings
@@ -220,8 +228,8 @@ function MemberMeetingsPage() {
                 <span
                   className={`ml-2 rounded-full px-2 py-0.5 text-xs ${
                     activeTab === MY_MEETINGS_TAB
-                    ? 'bg-wiria-blue-dark text-white'
-                    : 'bg-gray-200 text-gray-700'
+                      ? 'bg-wiria-blue-dark text-white'
+                      : 'bg-gray-200 text-gray-700'
                   }`}
                 >
                   {meetings.length}
@@ -234,8 +242,8 @@ function MemberMeetingsPage() {
               }}
               className={`${tabButtonBaseClass} ${
                 activeTab === AVAILABLE_MEETINGS_TAB
-                ? 'border-wiria-blue-dark text-wiria-blue-dark'
-                : 'border-transparent text-gray-500 hover:text-gray-700'
+                  ? 'border-wiria-blue-dark text-wiria-blue-dark'
+                  : 'border-transparent text-gray-500 hover:text-gray-700'
               }`}
             >
               Available Meetings
@@ -243,8 +251,8 @@ function MemberMeetingsPage() {
                 <span
                   className={`ml-2 rounded-full px-2 py-0.5 text-xs ${
                     activeTab === AVAILABLE_MEETINGS_TAB
-                    ? 'bg-wiria-blue-dark text-white'
-                    : 'bg-gray-200 text-gray-700'
+                      ? 'bg-wiria-blue-dark text-white'
+                      : 'bg-gray-200 text-gray-700'
                   }`}
                 >
                   {availableMeetings.length}
@@ -261,9 +269,7 @@ function MemberMeetingsPage() {
           {currentMeetings.length === 0 ? (
             <div className="py-12 text-center">
               <div className="mb-4 text-6xl">📅</div>
-              <p className="text-gray-500">
-                {noMeetingsMessage}
-              </p>
+              <p className="text-gray-500">{noMeetingsMessage}</p>
             </div>
           ) : (
             <div className="space-y-4">
