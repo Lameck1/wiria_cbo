@@ -5,9 +5,23 @@
 
 export class StorageService {
   private prefix: string;
+  private trackedKeys: Set<string>;
 
   constructor(prefix = 'wiria_') {
     this.prefix = prefix;
+    this.trackedKeys = new Set<string>();
+
+    if (typeof window !== 'undefined' && window.localStorage) {
+      const storage = window.localStorage as unknown as { length?: number; key?: (index: number) => string | null };
+      if (typeof storage.key === 'function' && typeof storage.length === 'number') {
+        for (let index = 0; index < storage.length; index += 1) {
+          const key = storage.key(index);
+          if (key?.startsWith(this.prefix)) {
+            this.trackedKeys.add(key);
+          }
+        }
+      }
+    }
   }
 
   private getKey(key: string): string {
@@ -19,8 +33,10 @@ export class StorageService {
       if (value === undefined) {
         return;
       }
+      const storageKey = this.getKey(key);
       const serialized = JSON.stringify(value);
-      window.localStorage.setItem(this.getKey(key), serialized);
+      window.localStorage.setItem(storageKey, serialized);
+      this.trackedKeys.add(storageKey);
     } catch (error) {
       console.error('Error saving to localStorage:', error);
     }
@@ -46,11 +62,18 @@ export class StorageService {
   }
 
   remove(key: string): void {
-    window.localStorage.removeItem(this.getKey(key));
+    const storageKey = this.getKey(key);
+    window.localStorage.removeItem(storageKey);
+    this.trackedKeys.delete(storageKey);
   }
 
   clear(): void {
-    window.localStorage.clear();
+    if (typeof window === 'undefined' || !window.localStorage) return;
+
+    for (const key of this.trackedKeys) {
+      window.localStorage.removeItem(key);
+    }
+    this.trackedKeys.clear();
   }
 
   has(key: string): boolean {

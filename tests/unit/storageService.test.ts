@@ -2,9 +2,9 @@
  * Storage Service Tests
  */
 /* eslint-disable no-restricted-globals */
-import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { StorageService, storageService, STORAGE_KEYS } from '@/shared/services/storage/storageService';
+import { STORAGE_KEYS, StorageService, storageService } from '@/shared/services/storage/storageService';
 
 describe('StorageService', () => {
     let storage: StorageService;
@@ -137,8 +137,8 @@ describe('StorageService', () => {
             expect(storage.has('key2')).toBe(false);
 
             // Verify the actual localStorage keys are gone
-            expect(window.localStorage.getItem('wiria_key1')).toBeNull();
-            expect(window.localStorage.getItem('wiria_key2')).toBeNull();
+            expect(window.localStorage.getItem('test_key1')).toBeNull();
+            expect(window.localStorage.getItem('test_key2')).toBeNull();
         });
 
         it('handles empty storage', () => {
