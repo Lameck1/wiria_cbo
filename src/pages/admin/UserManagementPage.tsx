@@ -11,6 +11,7 @@ import {
 import { AdminPageHeader } from '@/features/admin/components/layout/AdminPageHeader';
 import { InviteUserModal } from '@/features/admin/components/users/modals/InviteUserModal';
 import { getInviteColumns, getUserColumns } from '@/features/admin/components/users/UserTableColumns';
+import { ConfirmDialog } from '@/shared/components/modals/ConfirmDialog';
 import { Button } from '@/shared/components/ui/Button';
 import { Card, CardBody } from '@/shared/components/ui/Card';
 import { DataTable } from '@/shared/components/ui/DataTable';
@@ -19,6 +20,9 @@ import { useAdminAction, useAdminData } from '@/shared/hooks/useAdminData';
 export default function UserManagementPage() {
   const [activeTab, setActiveTab] = useState<'ACTIVE' | 'PENDING'>('ACTIVE');
   const [showInviteModal, setShowInviteModal] = useState(false);
+  const [statusChangeEmail, setStatusChangeEmail] = useState<string | null>(null);
+  const [statusChangeNextStatus, setStatusChangeNextStatus] = useState<string | null>(null);
+  const [invitationIdToCancel, setInvitationIdToCancel] = useState<string | null>(null);
 
   const { items: users, isLoading: isLoadingUsers } = useAdminData<AdminUser>(['users'], getUsers, {
     enabled: activeTab === 'ACTIVE',
@@ -44,13 +48,25 @@ export default function UserManagementPage() {
 
   const handleStatusChange = (email: string, currentStatus: string) => {
     const newStatus = currentStatus === 'ACTIVE' ? 'SUSPENDED' : 'ACTIVE';
-    if (!window.confirm(`Are you sure you want to change status to ${newStatus}?`)) return;
-    updateStatusAction.mutate({ email, status: newStatus });
+    setStatusChangeEmail(email);
+    setStatusChangeNextStatus(newStatus);
+  };
+
+  const handleConfirmStatusChange = () => {
+    if (!statusChangeEmail || !statusChangeNextStatus) return;
+    updateStatusAction.mutate({ email: statusChangeEmail, status: statusChangeNextStatus });
+    setStatusChangeEmail(null);
+    setStatusChangeNextStatus(null);
   };
 
   const handleCancelInvite = (id: string) => {
-    if (!window.confirm('Cancel this invitation?')) return;
-    cancelInviteAction.mutate(id);
+    setInvitationIdToCancel(id);
+  };
+
+  const handleConfirmCancelInvite = () => {
+    if (!invitationIdToCancel) return;
+    cancelInviteAction.mutate(invitationIdToCancel);
+    setInvitationIdToCancel(null);
   };
 
   const userColumns = getUserColumns(handleStatusChange);
@@ -122,6 +138,25 @@ export default function UserManagementPage() {
           }}
         />
       )}
+      <ConfirmDialog
+        isOpen={statusChangeEmail !== null && statusChangeNextStatus !== null}
+        title="Change User Status"
+        message={`Are you sure you want to change status to ${statusChangeNextStatus}?`}
+        confirmLabel="Change Status"
+        onConfirm={handleConfirmStatusChange}
+        onCancel={() => {
+          setStatusChangeEmail(null);
+          setStatusChangeNextStatus(null);
+        }}
+      />
+      <ConfirmDialog
+        isOpen={invitationIdToCancel !== null}
+        title="Cancel Invitation"
+        message="Cancel this invitation?"
+        confirmLabel="Cancel Invitation"
+        onConfirm={handleConfirmCancelInvite}
+        onCancel={() => setInvitationIdToCancel(null)}
+      />
     </div>
   );
 }

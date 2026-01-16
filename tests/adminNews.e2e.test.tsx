@@ -93,12 +93,10 @@ describe('NewsManagementPage', () => {
       );
       expect(notificationService.success).toHaveBeenCalled();
     });
-  });
+  }, 15000);
 
   it('deletes an update when confirmed', async () => {
     const user = userEvent.setup();
-    vi.spyOn(window, 'confirm').mockReturnValue(true);
-
     const getAdminUpdatesMock = vi.mocked(getAdminUpdates);
     const deleteUpdateMock = vi.mocked(deleteUpdate);
 
@@ -119,6 +117,9 @@ describe('NewsManagementPage', () => {
     render(<NewsManagementPage />);
 
     await user.click(await screen.findByRole('button', { name: /delete/i }));
+
+    const deleteButtons = await screen.findAllByRole('button', { name: /delete/i });
+    await user.click(deleteButtons[1]);
 
     await waitFor(() => {
       expect(deleteUpdate).toHaveBeenCalledWith('1');

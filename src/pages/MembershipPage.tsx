@@ -5,20 +5,16 @@ import { AnimatePresence } from 'framer-motion';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { useAuth } from '@/features/auth/context/AuthContext';
+import { useAuth } from '@/features/auth/context/useAuth';
 import { usePaymentPoller } from '@/features/donations/hooks/usePaymentPoller';
 import { useRegistration } from '@/features/membership/hooks/useRegistration';
 import { RegistrationFormSchema, registrationSchema } from '@/features/membership/validation';
 import { Button } from '@/shared/components/ui/Button';
 import { Card, CardBody } from '@/shared/components/ui/Card';
 import { useFeeCalculation } from '@/shared/hooks/useFeeCalculation';
-import { useBackendStatus } from '@/shared/services/backendStatus';
+import { useBackendStatus } from '@/shared/services/useBackendStatus';
 import { UserRole } from '@/shared/types';
 import { formatPhoneNumber } from '@/shared/utils/helpers';
-
-
-
-
 
 import {
   ConsentCheckboxes,
@@ -35,7 +31,7 @@ import {
 
 interface MembershipRegistrationLayoutProps {
   isBackendConnected: boolean;
-  paymentStatus: string;
+  paymentStatus: 'PENDING' | 'COMPLETED' | 'FAILED' | 'CANCELLED' | null;
   paymentMethod: RegistrationFormSchema['paymentMethod'];
   membershipType: RegistrationFormSchema['membershipType'];
   membershipNumber: string | null;

@@ -11,6 +11,7 @@ import { getMeetingColumns } from '@/features/admin/components/meetings/MeetingT
 import { AttendanceModal } from '@/features/admin/components/meetings/modals/AttendanceModal';
 import { MeetingFormModal } from '@/features/admin/components/meetings/modals/MeetingFormModal';
 import { UpcomingMeetingsList } from '@/features/admin/components/meetings/UpcomingMeetingsList';
+import { ConfirmDialog } from '@/shared/components/modals/ConfirmDialog';
 import { Button } from '@/shared/components/ui/Button';
 import { DataTable } from '@/shared/components/ui/DataTable';
 import { useAdminAction, useAdminData } from '@/shared/hooks/useAdminData';
@@ -27,11 +28,16 @@ export default function MeetingManagementPage() {
   const [selectedMeeting, setSelectedMeeting] = useState<Meeting | null>(null);
   const [attendance, setAttendance] = useState<MeetingAttendance[]>([]);
   const [showAttendance, setShowAttendance] = useState(false);
+  const [meetingIdToCancel, setMeetingIdToCancel] = useState<string | null>(null);
 
   const handleCancel = (id: string) => {
-    if (window.confirm('Are you sure you want to cancel this meeting?')) {
-      cancelAction.mutate(id);
-    }
+    setMeetingIdToCancel(id);
+  };
+
+  const handleConfirmCancel = () => {
+    if (!meetingIdToCancel) return;
+    cancelAction.mutate(meetingIdToCancel);
+    setMeetingIdToCancel(null);
   };
 
   const handleViewAttendance = async (meeting: Meeting) => {
@@ -123,6 +129,14 @@ export default function MeetingManagementPage() {
           onClose={() => setShowAttendance(false)}
         />
       )}
+      <ConfirmDialog
+        isOpen={meetingIdToCancel !== null}
+        title="Cancel Meeting"
+        message="Are you sure you want to cancel this meeting?"
+        confirmLabel="Cancel Meeting"
+        onConfirm={handleConfirmCancel}
+        onCancel={() => setMeetingIdToCancel(null)}
+      />
     </div>
   );
 }

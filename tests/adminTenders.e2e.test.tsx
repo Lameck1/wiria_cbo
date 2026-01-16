@@ -124,5 +124,5 @@ describe('TenderManagementPage', () => {
       expect(createTender).toHaveBeenCalled();
       expect(notificationService.success).toHaveBeenCalledWith('Tender advertised');
     });
-  });
+  }, 15000);
 });

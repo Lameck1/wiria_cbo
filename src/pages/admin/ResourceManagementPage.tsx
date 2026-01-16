@@ -8,6 +8,7 @@ import {
   deleteResource,
 } from '@/features/admin/api/resources.api';
 import { ResourceModal } from '@/features/admin/components/resources/ResourceModal';
+import { ConfirmDialog } from '@/shared/components/modals/ConfirmDialog';
 import { Button } from '@/shared/components/ui/Button';
 import { notificationService } from '@/shared/services/notification/notificationService';
 import { extractArray } from '@/shared/utils/apiUtils';
@@ -16,6 +17,7 @@ export default function ResourceManagementPage() {
   const queryClient = useQueryClient();
   const [editingResource, setEditingResource] = useState<Resource | null>(null);
   const [showModal, setShowModal] = useState(false);
+   const [resourceIdToDelete, setResourceIdToDelete] = useState<string | null>(null);
 
   const { data: resources = [], isLoading } = useQuery({
     queryKey: ['admin', 'resources'],
@@ -37,8 +39,13 @@ export default function ResourceManagementPage() {
   });
 
   const handleDelete = (id: string) => {
-    if (!window.confirm('Are you sure you want to delete this resource?')) return;
-    deleteMutation.mutate(id);
+    setResourceIdToDelete(id);
+  };
+
+  const handleConfirmDelete = () => {
+    if (!resourceIdToDelete) return;
+    deleteMutation.mutate(resourceIdToDelete);
+    setResourceIdToDelete(null);
   };
 
   return (
@@ -132,6 +139,14 @@ export default function ResourceManagementPage() {
           onSuccess={() => setShowModal(false)}
         />
       )}
+      <ConfirmDialog
+        isOpen={resourceIdToDelete !== null}
+        title="Delete Resource"
+        message="Are you sure you want to delete this resource?"
+        confirmLabel="Delete"
+        onConfirm={handleConfirmDelete}
+        onCancel={() => setResourceIdToDelete(null)}
+      />
     </div>
   );
 }

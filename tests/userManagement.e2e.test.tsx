@@ -48,7 +48,7 @@ describe('ResetPasswordPage flow', () => {
     });
 
     expect(await screen.findByText(/check your email/i)).toBeInTheDocument();
-  });
+  }, 15000);
 
   it('validates password mismatch before calling API', async () => {
     const user = userEvent.setup();

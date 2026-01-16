@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { apiClient } from '@/shared/services/api/client';
 import { API_ENDPOINTS } from '@/shared/services/api/endpoints';
-import { useBackendStatus } from '@/shared/services/backendStatus';
+import { useBackendStatus } from '@/shared/services/useBackendStatus';
 import { emailJsService } from '@/shared/services/emailJsService';
 import { notificationService } from '@/shared/services/notification/notificationService';
 

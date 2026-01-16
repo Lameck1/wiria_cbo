@@ -8,6 +8,7 @@ import {
   deleteUpdate,
 } from '@/features/admin/api/news.api';
 import { FormModal, type FieldConfig } from '@/shared/components/modals/FormModal';
+import { ConfirmDialog } from '@/shared/components/modals/ConfirmDialog';
 import { Button } from '@/shared/components/ui/Button';
 import { notificationService } from '@/shared/services/notification/notificationService';
 import { extractArray, getErrorMessage } from '@/shared/utils/apiUtils';
@@ -18,6 +19,7 @@ export default function NewsManagementPage() {
   const [editingUpdate, setEditingUpdate] = useState<NewsUpdate | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [statusFilter, setStatusFilter] = useState<string>('ALL');
+  const [updateIdToDelete, setUpdateIdToDelete] = useState<string | null>(null);
 
   const loadUpdates = async () => {
     setIsLoading(true);
@@ -36,16 +38,22 @@ export default function NewsManagementPage() {
     void loadUpdates();
   }, []);
 
-  const handleDelete = useCallback(async (id: string) => {
-    if (!window.confirm('Are you sure you want to delete this update?')) return;
+  const handleDelete = useCallback((id: string) => {
+    setUpdateIdToDelete(id);
+  }, []);
+
+  const handleConfirmDelete = async () => {
+    if (!updateIdToDelete) return;
     try {
-      await deleteUpdate(id);
+      await deleteUpdate(updateIdToDelete);
       notificationService.success('Update deleted successfully');
       void loadUpdates();
     } catch {
       notificationService.error('Failed to delete update');
+    } finally {
+      setUpdateIdToDelete(null);
     }
-  }, []);
+  };
 
   const handleEdit = useCallback((update: NewsUpdate) => {
     setEditingUpdate(update);
@@ -140,6 +148,14 @@ export default function NewsManagementPage() {
           }}
         />
       )}
+      <ConfirmDialog
+        isOpen={updateIdToDelete !== null}
+        title="Delete Update"
+        message="Are you sure you want to delete this update?"
+        confirmLabel="Delete"
+        onConfirm={() => void handleConfirmDelete()}
+        onCancel={() => setUpdateIdToDelete(null)}
+      />
     </div>
   );
 }

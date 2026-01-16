@@ -94,4 +94,26 @@ export const emailJsService = {
       throw error;
     }
   },
+
+  async sendNewsletterSubscription(data: { email: string }): Promise<EmailJSResponse> {
+    if (!SERVICE_ID || !TEMPLATE_ID || !PUBLIC_KEY) {
+      return { status: 0, text: 'Configuration missing' };
+    }
+
+    const templateParams = {
+      name: data.email,
+      email: data.email,
+      phone: 'N/A',
+      title: 'Newsletter subscription',
+      message: 'Please add this email to the newsletter mailing list.',
+      form_type: 'NEWSLETTER_SUBSCRIPTION',
+    };
+
+    try {
+      return await send(SERVICE_ID, TEMPLATE_ID, templateParams);
+    } catch (error) {
+      console.error('[EmailJS] Failed to send newsletter subscription', error);
+      throw error;
+    }
+  },
 };

@@ -151,7 +151,6 @@ export function MemberDetailsModal({ member, onClose, onStatusChange }: MemberDe
   if (!member) return null;
 
   const handleApprove = async () => {
-    if (!window.confirm(`Approve membership for ${member.firstName} ${member.lastName}?`)) return;
     try {
       await approveMember(member.id);
       notificationService.success(`${member.firstName} has been approved!`);
@@ -163,11 +162,8 @@ export function MemberDetailsModal({ member, onClose, onStatusChange }: MemberDe
   };
 
   const handleReject = async () => {
-    const reason = window.prompt(`Reject ${member.firstName}? Please provide a reason:`);
-    if (!reason) return;
-
     try {
-      await rejectMember(member.id, reason);
+      await rejectMember(member.id, 'Rejected by admin');
       notificationService.success('Application rejected');
       onStatusChange();
       onClose();

@@ -7,7 +7,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { AuthProvider } from '@/features/auth/context/AuthContext';
 import MembershipPage from '@/pages/MembershipPage';
@@ -22,9 +22,8 @@ vi.mock('@/shared/services/notification/notificationService', () => ({
     },
 }));
 
-vi.mock('@/shared/services/backendStatus', () => ({
-    BackendStatusProvider: ({ children }: { children: React.ReactNode }) => children,
-    useBackendStatus: () => ({ isConnected: true }),
+vi.mock('@/shared/services/useBackendStatus', () => ({
+    useBackendStatus: () => ({ isBackendConnected: false, isChecking: false }),
 }));
 
 const queryClient = new QueryClient({

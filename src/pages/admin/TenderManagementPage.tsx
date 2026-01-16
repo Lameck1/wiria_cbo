@@ -4,6 +4,7 @@ import { useQueryClient } from '@tanstack/react-query';
 
 import { Tender, getTenders, deleteTender } from '@/features/admin/api/tenders.api';
 import { TenderModal } from '@/features/admin/components/tenders/modals/TenderModal';
+import { ConfirmDialog } from '@/shared/components/modals/ConfirmDialog';
 import { Button } from '@/shared/components/ui/Button';
 import { DataTable, Column } from '@/shared/components/ui/DataTable';
 import { useAdminData, useAdminAction } from '@/shared/hooks/useAdminData';
@@ -20,11 +21,16 @@ export default function TenderManagementPage() {
 
   const [editingTender, setEditingTender] = useState<Tender | null>(null);
   const [showModal, setShowModal] = useState(false);
+  const [tenderIdToDelete, setTenderIdToDelete] = useState<string | null>(null);
 
   const handleDelete = (id: string) => {
-    if (window.confirm('Are you sure you want to delete this tender?')) {
-      deleteAction.mutate(id);
-    }
+    setTenderIdToDelete(id);
+  };
+
+  const handleConfirmDelete = () => {
+    if (!tenderIdToDelete) return;
+    deleteAction.mutate(tenderIdToDelete);
+    setTenderIdToDelete(null);
   };
 
   const columns: Column<Tender>[] = [
@@ -114,6 +120,14 @@ export default function TenderManagementPage() {
           onSuccess={() => setShowModal(false)}
         />
       )}
+      <ConfirmDialog
+        isOpen={tenderIdToDelete !== null}
+        title="Delete Tender"
+        message="Are you sure you want to delete this tender?"
+        confirmLabel="Delete"
+        onConfirm={handleConfirmDelete}
+        onCancel={() => setTenderIdToDelete(null)}
+      />
     </div>
   );
 }

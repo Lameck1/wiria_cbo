@@ -17,6 +17,7 @@ import { HRModals } from '@/features/admin/components/hr/HrModals';
 import { HRTab, HRTabs } from '@/features/admin/components/hr/HrTabs';
 import { AdminPageHeader } from '@/features/admin/components/layout/AdminPageHeader';
 import { useAdminAction, useAdminData } from '@/shared/hooks/useAdminData';
+import { ConfirmDialog } from '@/shared/components/modals/ConfirmDialog';
 
 export default function HRManagementPage() {
   const [activeTab, setActiveTab] = useState<HRTab>('CAREERS');
@@ -26,6 +27,8 @@ export default function HRManagementPage() {
   const [showCareerModal, setShowCareerModal] = useState(false);
   const [showOpportunityModal, setShowOpportunityModal] = useState(false);
   const [showApplicationModal, setShowApplicationModal] = useState(false);
+  const [careerIdToDelete, setCareerIdToDelete] = useState<string | null>(null);
+  const [opportunityIdToDelete, setOpportunityIdToDelete] = useState<string | null>(null);
 
   // Data Fetching
   const { items: careers, isLoading: isLoadingCareers } = useAdminData<Career>(
@@ -54,15 +57,23 @@ export default function HRManagementPage() {
   );
 
   const handleDeleteCareer = (id: string) => {
-    if (window.confirm('Are you sure you want to delete this job posting?')) {
-      deleteCareerAction.mutate(id);
-    }
+    setCareerIdToDelete(id);
   };
 
   const handleDeleteOpp = (id: string) => {
-    if (window.confirm('Are you sure you want to delete this opportunity?')) {
-      deleteOppAction.mutate(id);
-    }
+    setOpportunityIdToDelete(id);
+  };
+
+  const handleConfirmDeleteCareer = () => {
+    if (!careerIdToDelete) return;
+    deleteCareerAction.mutate(careerIdToDelete);
+    setCareerIdToDelete(null);
+  };
+
+  const handleConfirmDeleteOpp = () => {
+    if (!opportunityIdToDelete) return;
+    deleteOppAction.mutate(opportunityIdToDelete);
+    setOpportunityIdToDelete(null);
   };
 
   const handleReviewApplication = (app: Application) => {
@@ -124,7 +135,6 @@ export default function HRManagementPage() {
           </>
         )}
       </main>
-
       <HRModals
         showCareerModal={showCareerModal}
         selectedCareer={selectedCareer}
@@ -144,6 +154,22 @@ export default function HRManagementPage() {
           setShowApplicationModal(false);
           setSelectedApplication(null);
         }}
+      />
+      <ConfirmDialog
+        isOpen={careerIdToDelete !== null}
+        title="Delete Job Posting"
+        message="Are you sure you want to delete this job posting? This action cannot be undone."
+        confirmLabel="Delete"
+        onConfirm={handleConfirmDeleteCareer}
+        onCancel={() => setCareerIdToDelete(null)}
+      />
+      <ConfirmDialog
+        isOpen={opportunityIdToDelete !== null}
+        title="Delete Opportunity"
+        message="Are you sure you want to delete this opportunity? This action cannot be undone."
+        confirmLabel="Delete"
+        onConfirm={handleConfirmDeleteOpp}
+        onCancel={() => setOpportunityIdToDelete(null)}
       />
     </div>
   );

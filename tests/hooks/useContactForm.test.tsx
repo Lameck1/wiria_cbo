@@ -14,7 +14,7 @@ vi.mock('@/shared/services/api/client');
 vi.mock('@/shared/services/notification/notificationService');
 
 // Mock useBackendStatus to simulate backend connected state
-vi.mock('@/shared/services/backendStatus', () => ({
+vi.mock('@/shared/services/useBackendStatus', () => ({
   useBackendStatus: () => ({ isBackendConnected: true }),
 }));
 

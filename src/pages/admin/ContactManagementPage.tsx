@@ -3,17 +3,18 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import {
-  getContacts,
-  respondToContact,
   archiveContact,
   Contact,
+  getContacts,
+  respondToContact,
 } from '@/features/admin/api/contacts.api';
 import { MessageDetailsModal } from '@/features/admin/components/contacts/modals/MessageDetailsModal';
 import { ReplyModal } from '@/features/admin/components/contacts/modals/ReplyModal';
 import { AdminPageHeader } from '@/features/admin/components/layout/AdminPageHeader';
-import { DataTable, Column } from '@/shared/components/ui/DataTable';
+import { ConfirmDialog } from '@/shared/components/modals/ConfirmDialog';
+import { Column, DataTable } from '@/shared/components/ui/DataTable';
 import { StatusBadge } from '@/shared/components/ui/StatusBadge';
-import { useAdminData, useAdminAction } from '@/shared/hooks/useAdminData';
+import { useAdminAction, useAdminData } from '@/shared/hooks/useAdminData';
 
 function formatDate(date: string): string {
   return new Date(date).toLocaleDateString('en-KE', {
@@ -54,11 +55,10 @@ function StatusFilterBar({
         <button
           key={filter.value}
           onClick={() => setStatusFilter(filter.value)}
-          className={`rounded-xl px-6 py-2 text-sm font-bold transition-all ${
-            statusFilter === filter.value
+          className={`rounded-xl px-6 py-2 text-sm font-bold transition-all ${statusFilter === filter.value
               ? 'bg-wiria-blue-dark text-white shadow-md'
               : 'text-gray-500 hover:bg-gray-50 hover:text-wiria-blue-dark'
-          }`}
+            }`}
         >
           {filter.label}
         </button>
@@ -150,6 +150,7 @@ export default function ContactManagementPage() {
   const [selectedContact, setSelectedContact] = useState<Contact | null>(null);
   const [showReplyModal, setShowReplyModal] = useState(false);
   const [replyText, setReplyText] = useState('');
+  const [contactIdToArchive, setContactIdToArchive] = useState<string | null>(null);
 
   // Auto-open highlighted contact
   useEffect(() => {
@@ -180,9 +181,13 @@ export default function ContactManagementPage() {
   };
 
   const handleArchive = (id: string) => {
-    if (window.confirm('Are you sure you want to archive this message?')) {
-      archiveAction.mutate(id);
-    }
+    setContactIdToArchive(id);
+  };
+
+  const handleConfirmArchive = () => {
+    if (!contactIdToArchive) return;
+    archiveAction.mutate(contactIdToArchive);
+    setContactIdToArchive(null);
   };
 
   const columns = getColumns(
@@ -234,6 +239,14 @@ export default function ContactManagementPage() {
           }}
         />
       )}
+      <ConfirmDialog
+        isOpen={contactIdToArchive !== null}
+        title="Archive Message"
+        message="Are you sure you want to archive this message?"
+        confirmLabel="Archive"
+        onConfirm={handleConfirmArchive}
+        onCancel={() => setContactIdToArchive(null)}
+      />
     </div>
   );
 }

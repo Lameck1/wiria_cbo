@@ -20,9 +20,8 @@ vi.mock('@/shared/services/notification/notificationService', () => ({
     },
 }));
 
-vi.mock('@/shared/services/backendStatus', () => ({
-    BackendStatusProvider: ({ children }: { children: React.ReactNode }) => children,
-    useBackendStatus: () => ({ isConnected: true }),
+vi.mock('@/shared/services/useBackendStatus', () => ({
+    useBackendStatus: () => ({ isBackendConnected: true, isChecking: false }),
 }));
 
 describe('Contact Page Flow', () => {

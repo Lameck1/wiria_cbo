@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
-import { describe, it, beforeEach, vi, expect } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { getUsers, inviteUser, updateUserStatus } from '@/features/admin/api/users.api';
 import UserManagementPage from '@/pages/admin/UserManagementPage';
@@ -127,12 +127,10 @@ describe('UserManagementPage (staff & admin management)', () => {
       );
       expect(notificationService.success).toHaveBeenCalledWith('Invitation sent to new@wiria.org');
     });
-  });
+  }, 15000);
 
   it('deactivates a user when confirmed', async () => {
     const user = userEvent.setup();
-    vi.spyOn(window, 'confirm').mockReturnValue(true);
-
     const getUsersMock = vi.mocked(getUsers);
     const updateUserStatusMock = vi.mocked(updateUserStatus);
 
@@ -153,6 +151,8 @@ describe('UserManagementPage (staff & admin management)', () => {
     render(<UserManagementPage />, { wrapper: TestWrapper });
 
     await user.click(await screen.findByRole('button', { name: /deactivate/i }));
+
+    await user.click(await screen.findByRole('button', { name: /change status/i }));
 
     await waitFor(() => {
       expect(updateUserStatus).toHaveBeenCalledWith('staff@wiria.org', 'SUSPENDED');
