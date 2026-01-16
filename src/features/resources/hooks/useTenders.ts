@@ -7,7 +7,7 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { staticTenders } from '@/shared/data/static';
-import { useBackendStatus } from '@/shared/services/backendStatus';
+import { useBackendStatus } from '@/shared/services/useBackendStatus';
 
 export interface Tender {
   id: string;

@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useMemo } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 
-import { useAuth } from '@/features/auth/context/AuthContext';
+import { useAuth } from '@/features/auth/context/useAuth';
 import { ROUTES } from '@/shared/constants/routes';
 import { UserRole } from '@/shared/types';
 

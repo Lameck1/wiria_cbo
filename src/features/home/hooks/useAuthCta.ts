@@ -7,8 +7,8 @@
 
 import { useMemo } from 'react';
 
-import { useAuth } from '@/features/auth/context/AuthContext';
-import { useBackendStatus } from '@/shared/services/backendStatus';
+import { useAuth } from '@/features/auth/context/useAuth';
+import { useBackendStatus } from '@/shared/services/useBackendStatus';
 import { UserRole } from '@/shared/types';
 
 interface AuthCTAConfig {

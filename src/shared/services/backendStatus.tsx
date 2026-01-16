@@ -3,17 +3,17 @@
  * Detects if the backend API is available and provides a React hook for components
  */
 
-import { useState, useEffect, createContext, use, ReactNode } from 'react';
+import { createContext, ReactNode, useEffect, useState } from 'react';
 
 const DISABLE_BACKEND_HEALTHCHECK =
   String(import.meta.env['VITE_DISABLE_BACKEND_HEALTHCHECK'] ?? 'false') === 'true';
 
-interface BackendStatusContextType {
+export interface BackendStatusContextType {
   isBackendConnected: boolean;
   isChecking: boolean;
 }
 
-const BackendStatusContext = createContext<BackendStatusContextType>({
+export const BackendStatusContext = createContext<BackendStatusContextType>({
   isBackendConnected: false,
   isChecking: true,
 });
@@ -87,15 +87,6 @@ export function BackendStatusProvider({ children }: { children: ReactNode }) {
 /**
  * Hook to access backend connection status
  */
-// eslint-disable-next-line react-refresh/only-export-components
-export function useBackendStatus(): BackendStatusContextType {
-  return use(BackendStatusContext);
-}
-
-/**
- * Utility to manually recheck backend status (useful for retry logic)
- */
-// eslint-disable-next-line react-refresh/only-export-components
 export async function recheckBackendStatus(): Promise<boolean> {
   cachedStatus = null;
   checkPromise = null;

@@ -2,7 +2,7 @@ import { AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
 import { ROUTES } from '@/shared/constants/routes';
-import { useBackendStatus } from '@/shared/services/backendStatus';
+import { useBackendStatus } from '@/shared/services/useBackendStatus';
 import { UserRole } from '@/shared/types';
 
 import { LoginDropdown } from '../LoginDropdown';

@@ -13,7 +13,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-import { useAuth } from '@/features/auth/context/AuthContext';
+import { useAuth } from '@/features/auth/context/useAuth';
 import { ROUTES } from '@/shared/constants/routes';
 
 import { HeaderLogo, DesktopNav, AuthActions } from './header';

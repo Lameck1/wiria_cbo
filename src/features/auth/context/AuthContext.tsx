@@ -1,17 +1,4 @@
-/**
- * Auth Context
- * Manages authentication state and user session
- */
-
-import {
-  createContext,
-  use,
-  ReactNode,
-  useState,
-  useEffect,
-  useCallback,
-  useMemo,
-} from 'react';
+import { createContext, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 
@@ -20,7 +7,7 @@ import { apiClient } from '@/shared/services/api/client';
 import { storageService, STORAGE_KEYS } from '@/shared/services/storage/storageService';
 import { User, Member, UserRole, AuthResponse } from '@/shared/types';
 
-interface AuthContextType {
+export interface AuthContextType {
   user: User | Member | null;
   isAuthenticated: boolean;
   isLoading: boolean;
@@ -32,7 +19,7 @@ interface AuthContextType {
   checkAuth: () => void;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | Member | null>(null);
@@ -134,13 +121,4 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   );
 
   return <AuthContext value={contextValue}>{children}</AuthContext>;
-}
-
-// eslint-disable-next-line react-refresh/only-export-components
-export function useAuth() {
-  const context = use(AuthContext);
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
 }

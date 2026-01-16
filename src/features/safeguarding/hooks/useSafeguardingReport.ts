@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { useBackendStatus } from '@/shared/services/backendStatus';
+import { useBackendStatus } from '@/shared/services/useBackendStatus';
 import { emailJsService } from '@/shared/services/emailJsService';
 import { notificationService } from '@/shared/services/notification/notificationService';
 

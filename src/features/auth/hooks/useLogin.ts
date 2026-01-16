@@ -12,7 +12,7 @@ import { ApiError } from '@/shared/services/api/client';
 import { notificationService } from '@/shared/services/notification/notificationService';
 import { UserRole } from '@/shared/types';
 
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/useAuth';
 
 export function useLogin(isMember = false) {
   const [isLoading, setIsLoading] = useState(false);

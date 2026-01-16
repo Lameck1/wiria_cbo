@@ -4,7 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 import { GlobalSearch } from '@/features/admin/components/GlobalSearch';
 import { NotificationBell } from '@/features/admin/components/NotificationBell';
-import { useAuth } from '@/features/auth/context/AuthContext';
+import { useAuth } from '@/features/auth/context/useAuth';
 import { ROUTES } from '@/shared/constants/routes';
 import { UserRole } from '@/shared/types';
 

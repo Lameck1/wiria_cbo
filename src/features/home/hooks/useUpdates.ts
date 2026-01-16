@@ -6,7 +6,7 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { staticUpdates } from '@/shared/data/static';
-import { useBackendStatus } from '@/shared/services/backendStatus';
+import { useBackendStatus } from '@/shared/services/useBackendStatus';
 
 export interface Update {
   id: string;

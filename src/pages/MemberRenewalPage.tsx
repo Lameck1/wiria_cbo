@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { AnimatePresence, motion } from 'framer-motion';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import { useAuth } from '@/features/auth/context/AuthContext';
+import { useAuth } from '@/features/auth/context/useAuth';
 import { usePaymentPoller } from '@/features/donations/hooks/usePaymentPoller';
 import { PortalLayout } from '@/features/membership/components/PortalLayout';
 import { useMemberData } from '@/features/membership/hooks/useMemberData';

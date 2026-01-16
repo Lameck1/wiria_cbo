@@ -6,7 +6,7 @@
 import { useNavigate } from 'react-router-dom';
 
 import { ROUTES } from '@/shared/constants/routes';
-import { useBackendStatus } from '@/shared/services/backendStatus';
+import { useBackendStatus } from '@/shared/services/useBackendStatus';
 import { notificationService } from '@/shared/services/notification/notificationService';
 
 import {

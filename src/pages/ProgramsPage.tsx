@@ -8,7 +8,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useLocation, Link } from 'react-router-dom';
 
-import { useAuth } from '@/features/auth/context/AuthContext';
+import { useAuth } from '@/features/auth/context/useAuth';
 import { ProgramDetail } from '@/features/programs/components/ProgramDetail';
 import { ProgramIcon } from '@/features/programs/components/ProgramIcons';
 import { PROGRAMS_DATA, CROSS_CUTTING_THEMES } from '@/features/programs/constants/programsData';

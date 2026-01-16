@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { Link, NavLink } from 'react-router-dom';
 
 import { ROUTES } from '@/shared/constants/routes';
-import { useBackendStatus } from '@/shared/services/backendStatus';
+import { useBackendStatus } from '@/shared/services/useBackendStatus';
 import { UserRole } from '@/shared/types';
 
 // Navigation items configuration

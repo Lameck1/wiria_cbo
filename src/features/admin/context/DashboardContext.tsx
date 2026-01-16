@@ -1,9 +1,9 @@
 import { ReactNode } from 'react';
 
-import { useAuth } from '@/features/auth/context/AuthContext';
+import { useAuth } from '@/features/auth/context/useAuth';
 
-import { DashboardContext, type DashboardContextValue } from './DashboardContextBase';
 import { canAccessModule as checkModuleAccess, useSuspenseDashboardStats, useSuspenseDashboardTrends } from '../hooks/useDashboardData';
+import { DashboardContext, type DashboardContextValue } from './DashboardContextBase';
 
 interface DashboardProviderProps {
   children: ReactNode;
