@@ -2,13 +2,13 @@ import { useEffect } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AnimatePresence } from 'framer-motion';
-import { useForm, FormProvider } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { useAuth } from '@/features/auth/context/AuthContext';
 import { usePaymentPoller } from '@/features/donations/hooks/usePaymentPoller';
 import { useRegistration } from '@/features/membership/hooks/useRegistration';
-import { registrationSchema, RegistrationFormSchema } from '@/features/membership/validation';
+import { RegistrationFormSchema, registrationSchema } from '@/features/membership/validation';
 import { Button } from '@/shared/components/ui/Button';
 import { Card, CardBody } from '@/shared/components/ui/Card';
 import { useFeeCalculation } from '@/shared/hooks/useFeeCalculation';
@@ -21,17 +21,142 @@ import { formatPhoneNumber } from '@/shared/utils/helpers';
 
 
 import {
-  MembershipHero,
-  OfflineInfoCard,
-  RegistrationSuccess,
-  PendingPaymentCard,
-  FeeBreakdownSection,
   ConsentCheckboxes,
-  MembershipTypeToggle,
-  GroupRegistrationSection,
-  PersonalInfoSection,
   ContactLocationSection,
+  FeeBreakdownSection,
+  GroupRegistrationSection,
+  MembershipHero,
+  MembershipTypeToggle,
+  OfflineInfoCard,
+  PendingPaymentCard,
+  PersonalInfoSection,
+  RegistrationSuccess,
 } from './membership/components';
+
+interface MembershipRegistrationLayoutProps {
+  isBackendConnected: boolean;
+  paymentStatus: string;
+  paymentMethod: RegistrationFormSchema['paymentMethod'];
+  membershipType: RegistrationFormSchema['membershipType'];
+  membershipNumber: string | null;
+  handleStartOver: () => void;
+  isFormDisabled: boolean;
+  feeBreakdown: ReturnType<typeof useFeeCalculation>;
+  totalFee: number;
+  isSubmitting: boolean;
+  onMembershipTypeChange: (value: RegistrationFormSchema['membershipType']) => void;
+  onPaymentMethodChange: (method: RegistrationFormSchema['paymentMethod']) => void;
+  onSubmitForm: (event: React.FormEvent<HTMLFormElement>) => void;
+}
+
+function MembershipRegistrationLayout({
+  isBackendConnected,
+  paymentStatus,
+  paymentMethod,
+  membershipType,
+  membershipNumber,
+  handleStartOver,
+  isFormDisabled,
+  feeBreakdown,
+  totalFee,
+  isSubmitting,
+  onMembershipTypeChange,
+  onPaymentMethodChange,
+  onSubmitForm,
+}: MembershipRegistrationLayoutProps) {
+  return (
+    <section className="py-16">
+      <div className="container mx-auto px-4">
+        <div className="mx-auto max-w-3xl">
+          {!isBackendConnected && <OfflineInfoCard />}
+
+          {isBackendConnected && (
+            <>
+              {paymentStatus === 'COMPLETED' && (
+                <RegistrationSuccess
+                  membershipNumber={membershipNumber}
+                  onStartOver={handleStartOver}
+                />
+              )}
+
+              {paymentStatus === 'PENDING' && paymentMethod === 'STK_PUSH' && (
+                <PendingPaymentCard />
+              )}
+
+              {paymentStatus !== 'COMPLETED' && (
+                <Card className="border-none shadow-2xl">
+                  <CardBody className="p-8">
+                    <div className="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-center">
+                      <h2 className="text-2xl font-bold text-wiria-blue-dark">
+                        Membership Registration
+                      </h2>
+
+                      <MembershipTypeToggle
+                        value={membershipType}
+                        onChange={onMembershipTypeChange}
+                        isDisabled={isFormDisabled}
+                      />
+                    </div>
+
+                    <form onSubmit={onSubmitForm} className="space-y-8">
+                      <AnimatePresence mode="wait">
+                        {membershipType === 'GROUP' && (
+                          <GroupRegistrationSection isDisabled={isFormDisabled} />
+                        )}
+                      </AnimatePresence>
+
+                      <PersonalInfoSection
+                        isDisabled={isFormDisabled}
+                        membershipType={membershipType}
+                      />
+
+                      <ContactLocationSection isDisabled={isFormDisabled} />
+
+                      <FeeBreakdownSection
+                        feeBreakdown={feeBreakdown}
+                        totalFee={totalFee}
+                        paymentMethod={paymentMethod}
+                        onPaymentMethodChange={onPaymentMethodChange}
+                        isDisabled={isFormDisabled}
+                      />
+
+                      <ConsentCheckboxes isDisabled={isFormDisabled} />
+
+                      <Button
+                        type="submit"
+                        fullWidth
+                        size="lg"
+                        isLoading={isSubmitting}
+                        disabled={paymentStatus === 'PENDING'}
+                        className="h-14 text-lg shadow-lg transition-all hover:shadow-xl"
+                      >
+                        {isSubmitting
+                          ? 'Processing...'
+                          : paymentStatus === 'PENDING'
+                            ? 'Payment Pending...'
+                            : 'Complete Registration'}
+                      </Button>
+
+                      <p className="text-center text-sm text-gray-600">
+                        Already a member?{' '}
+                        <Link
+                          to="/member-login"
+                          className="font-bold text-wiria-blue-dark hover:underline"
+                        >
+                          Login here
+                        </Link>
+                      </p>
+                    </form>
+                  </CardBody>
+                </Card>
+              )}
+            </>
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
 
 function MembershipPage() {
   const { user, isAuthenticated } = useAuth();
@@ -118,113 +243,24 @@ function MembershipPage() {
   return (
     <FormProvider {...methods}>
       <MembershipHero />
-
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <div className="mx-auto max-w-3xl">
-            {/* Backend Offline - Show Info Only */}
-            {!isBackendConnected && <OfflineInfoCard />}
-
-            {/* Backend Online - Show Registration Form */}
-            {isBackendConnected && (
-              <>
-                {/* Success State */}
-                {paymentStatus === 'COMPLETED' && (
-                  <RegistrationSuccess
-                    membershipNumber={membershipNumber}
-                    onStartOver={handleStartOver}
-                  />
-                )}
-
-                {/* Pending Payment */}
-                {paymentStatus === 'PENDING' && paymentMethod === 'STK_PUSH' && (
-                  <PendingPaymentCard />
-                )}
-
-                {/* Registration Form */}
-                {paymentStatus !== 'COMPLETED' && (
-                  <Card className="border-none shadow-2xl">
-                    <CardBody className="p-8">
-                      <div className="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-center">
-                        <h2 className="text-2xl font-bold text-wiria-blue-dark">
-                          Membership Registration
-                        </h2>
-
-                        <MembershipTypeToggle
-                          value={membershipType}
-                          onChange={(value) => setValue('membershipType', value)}
-                          isDisabled={isFormDisabled}
-                        />
-                      </div>
-
-                      <form onSubmit={(e) => { e.preventDefault(); void handleSubmit(onSubmit)(e); }} className="space-y-8">
-                        <AnimatePresence mode="wait">
-                          {membershipType === 'GROUP' && (
-                            <GroupRegistrationSection
-                              isDisabled={isFormDisabled}
-                            />
-                          )}
-                        </AnimatePresence>
-
-                        <PersonalInfoSection
-                          isDisabled={isFormDisabled}
-                          membershipType={membershipType}
-                        />
-
-                        <ContactLocationSection
-                          isDisabled={isFormDisabled}
-                        />
-
-                        {/* Payment Section */}
-                        <FeeBreakdownSection
-                          feeBreakdown={feeBreakdown}
-                          totalFee={totalFee}
-                          paymentMethod={paymentMethod}
-                          onPaymentMethodChange={(method: 'STK_PUSH' | 'MANUAL') =>
-                            setValue('paymentMethod', method)
-                          }
-                          isDisabled={isFormDisabled}
-                        />
-
-                        {/* Consent */}
-                        <ConsentCheckboxes
-                          isDisabled={isFormDisabled}
-                        />
-
-                        {/* Submit */}
-                        <Button
-                          type="submit"
-                          fullWidth
-                          size="lg"
-                          isLoading={isSubmitting}
-                          disabled={paymentStatus === 'PENDING'}
-                          className="h-14 text-lg shadow-lg transition-all hover:shadow-xl"
-                        >
-                          {isSubmitting
-                            ? 'Processing...'
-                            : paymentStatus === 'PENDING'
-                              ? 'Payment Pending...'
-                              : 'Complete Registration'}
-                        </Button>
-
-                        <p className="text-center text-sm text-gray-600">
-                          Already a member?{' '}
-                          <Link
-                            to="/member-login"
-                            className="font-bold text-wiria-blue-dark hover:underline"
-                          >
-                            Login here
-                          </Link>
-                        </p>
-                      </form>
-                    </CardBody>
-                  </Card>
-                )}
-              </>
-            )}
-          </div>
-        </div>
-      </section>
+      <MembershipRegistrationLayout
+        isBackendConnected={isBackendConnected}
+        paymentStatus={paymentStatus}
+        paymentMethod={paymentMethod}
+        membershipType={membershipType}
+        membershipNumber={membershipNumber}
+        handleStartOver={handleStartOver}
+        isFormDisabled={isFormDisabled}
+        feeBreakdown={feeBreakdown}
+        totalFee={totalFee}
+        isSubmitting={isSubmitting}
+        onMembershipTypeChange={(value) => setValue('membershipType', value)}
+        onPaymentMethodChange={(method) => setValue('paymentMethod', method)}
+        onSubmitForm={(event) => {
+          event.preventDefault();
+          void handleSubmit(onSubmit)(event);
+        }}
+      />
     </FormProvider>
   );
 }

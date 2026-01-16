@@ -66,7 +66,7 @@ export function EmptyStateView({ hasFilters = false, onClearFilters }: EmptyStat
         </p>
         <form
           className="mx-auto flex max-w-md flex-col gap-3 sm:flex-row"
-          onSubmit={(e) => e.preventDefault()}
+          onSubmit={(event) => event.preventDefault()}
         >
           <input
             type="email"

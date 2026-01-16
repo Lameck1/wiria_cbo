@@ -3,11 +3,12 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
-import { describe, it, beforeEach, vi, expect } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { AuthProvider } from '@/features/auth/context/AuthContext';
 import ResetPasswordPage from '@/pages/ResetPasswordPage';
 import { apiClient } from '@/shared/services/api/client';
+import { notificationService } from '@/shared/services/notification/notificationService';
 
 vi.mock('@/shared/services/notification/notificationService', () => ({
   notificationService: {
@@ -18,8 +19,6 @@ vi.mock('@/shared/services/notification/notificationService', () => ({
     handleError: vi.fn(),
   },
 }));
-
-import { notificationService } from '@/shared/services/notification/notificationService';
 
 describe('ResetPasswordPage flow', () => {
   beforeEach(() => {

@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 interface FooterLink {
   to: string;
   label: ReactNode;
-  onClick?: (e: React.MouseEvent) => void;
+  onClick?: (event: React.MouseEvent) => void;
   badge?: React.ReactNode;
   className?: string;
 }
@@ -22,8 +22,8 @@ export function FooterLinkSection({ title, links }: FooterLinkSectionProps) {
         {title}
       </h4>
       <ul className="flex flex-col items-center space-y-3 text-sm lg:items-start">
-        {links.map((link) => (
-          <li key={link.to}>
+        {links.map((link, index) => (
+          <li key={`${link.to}-${index}`}>
             <Link
               to={link.to}
               onClick={link.onClick}

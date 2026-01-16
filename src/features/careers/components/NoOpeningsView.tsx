@@ -13,8 +13,8 @@ export function NoOpeningsView() {
   const [email, setEmail] = useState('');
   const [isSubscribed, setIsSubscribed] = useState(false);
 
-  const handleSubscribe = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubscribe = (event: React.FormEvent) => {
+    event.preventDefault();
     setIsSubscribed(true);
   };
 
@@ -57,7 +57,7 @@ export function NoOpeningsView() {
             <input
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(event) => setEmail(event.target.value)}
               placeholder="Enter your email for job alerts"
               required
               className="flex-1 rounded-full border-0 bg-white px-4 py-2 outline-none focus:ring-2 focus:ring-wiria-blue-dark"

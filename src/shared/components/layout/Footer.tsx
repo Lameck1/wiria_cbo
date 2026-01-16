@@ -11,22 +11,22 @@ import { notificationService } from '@/shared/services/notification/notification
 
 import {
   FooterBrand,
-  FooterNewsletter,
-  FooterLinkSection,
   FooterContact,
-  FooterSocial,
   FooterCopyright,
+  FooterLinkSection,
+  FooterNewsletter,
+  FooterSocial,
 } from './footer';
 
 export function Footer() {
   const { isBackendConnected } = useBackendStatus();
   const navigate = useNavigate();
 
-  const handleProtectedLink = (e: React.MouseEvent, route: string, label: string) => {
+  const handleProtectedLink = (event: React.MouseEvent, route: string, label: string) => {
     if (isBackendConnected) {
       navigate(route);
     } else {
-      e.preventDefault();
+      event.preventDefault();
       notificationService.info(
         `${label} is temporarily unavailable while we finalize our server setup. Please check back soon!`,
         5000
@@ -47,7 +47,7 @@ export function Footer() {
     {
       to: ROUTES.MEMBER_MEETINGS,
       label: 'Meetings',
-      onClick: (e: React.MouseEvent) => handleProtectedLink(e, ROUTES.MEMBER_MEETINGS, 'Member Meetings'),
+      onClick: (event: React.MouseEvent) => handleProtectedLink(event, ROUTES.MEMBER_MEETINGS, 'Member Meetings'),
       badge: isBackendConnected ? undefined : soonBadge,
       className: `flex items-center gap-2 text-gray-300 transition-colors hover:text-white ${!isBackendConnected && 'cursor-not-allowed opacity-60'}`,
     },
@@ -71,7 +71,7 @@ export function Footer() {
     {
       to: ROUTES.STAFF_LOGIN,
       label: 'Staff Portal',
-      onClick: (e: React.MouseEvent) => handleProtectedLink(e, ROUTES.STAFF_LOGIN, 'Staff Portal'),
+      onClick: (event: React.MouseEvent) => handleProtectedLink(event, ROUTES.STAFF_LOGIN, 'Staff Portal'),
       badge: isBackendConnected ? undefined : soonBadge,
       className: `flex items-center gap-2 text-gray-300 transition-colors hover:text-white ${!isBackendConnected && 'cursor-not-allowed opacity-60'}`,
     },

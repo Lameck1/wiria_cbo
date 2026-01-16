@@ -3,7 +3,7 @@
  * Search across members, donations, and contacts
  */
 
-import { useState, useEffect, useRef , useDeferredValue } from 'react';
+import { useDeferredValue, useEffect, useRef, useState } from 'react';
 
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
@@ -43,8 +43,8 @@ export function GlobalSearch() {
 
   // Close dropdown when clicking outside
   useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
         setIsOpen(false);
       }
     };
@@ -101,7 +101,7 @@ export function GlobalSearch() {
           ref={inputRef}
           type="text"
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          onChange={(event) => setQuery(event.target.value)}
           onFocus={() => results && setIsOpen(true)}
           placeholder="Search members, donations, messages..."
           className="w-full rounded-lg border bg-gray-50 py-2 pl-10 pr-4 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-wiria-blue-dark"

@@ -1,17 +1,9 @@
-import { createContext, useContext, ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 import { AdminMember, getMembers } from '@/features/membership/api/members.api';
 import { useAdminData } from '@/shared/hooks/useAdminData';
 
-interface MemberContextValue {
-  members: AdminMember[];
-  isLoading: boolean;
-  refetch: () => Promise<void>;
-  filter: string;
-  search: string;
-}
-
-const MemberContext = createContext<MemberContextValue | undefined>(undefined);
+import { MemberContext } from './MemberContextBase';
 
 interface MemberProviderProps {
   children: ReactNode;
@@ -41,10 +33,4 @@ export function MemberProvider({ children, filter, search }: MemberProviderProps
   );
 }
 
-export function useMember() {
-  const context = useContext(MemberContext);
-  if (context === undefined) {
-    throw new Error('useMember must be used within a MemberProvider');
-  }
-  return context;
-}
+export default MemberProvider;

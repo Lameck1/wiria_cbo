@@ -2,6 +2,78 @@ import { useState, useEffect, useCallback } from 'react';
 
 import { motion, AnimatePresence } from 'framer-motion';
 
+interface CarouselRenderConfig {
+  source: string;
+  index: number;
+  className: string;
+  altText: string;
+  isMotion?: boolean;
+  currentIndex: number;
+  failedImages: Record<number, boolean>;
+  fallbackTitle: string;
+  onImageError: (index: number) => void;
+}
+
+function renderCarouselImage({
+  source,
+  index,
+  className,
+  altText,
+  isMotion = false,
+  currentIndex,
+  failedImages,
+  fallbackTitle,
+  onImageError,
+}: CarouselRenderConfig) {
+  if (failedImages[index]) {
+    return (
+      <div
+        className={`${className} flex flex-col items-center justify-center bg-gradient-to-br from-gray-50 to-gray-200 p-4 text-center`}
+      >
+        <svg
+          className="mb-2 h-10 w-10 text-gray-300"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={1.5}
+            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+          />
+        </svg>
+        <span className="px-2 text-xs font-medium text-gray-400">{fallbackTitle}</span>
+      </div>
+    );
+  }
+
+  if (isMotion) {
+    return (
+      <motion.img
+        key={currentIndex}
+        src={source}
+        alt={altText}
+        initial={{ opacity: 0, scale: 1.05 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.6, ease: 'easeOut' }}
+        className={className}
+        onError={() => onImageError(index)}
+      />
+    );
+  }
+
+  return (
+    <img
+      src={source}
+      alt={altText}
+      className={`${className} transition-transform duration-700 hover:scale-110`}
+      onError={() => onImageError(index)}
+    />
+  );
+}
+
 interface ImageCarouselProps {
   images: string[];
   autoSlide?: boolean;
@@ -65,65 +137,20 @@ export function ImageCarousel({
     );
   }
 
-  const renderImage = (
-    source: string,
-    index: number,
-    className: string,
-    isMotion = false
-  ) => {
-    if (failedImages[index]) {
-      return (
-        <div
-          className={`${className} flex flex-col items-center justify-center bg-gradient-to-br from-gray-50 to-gray-200 p-4 text-center`}
-        >
-          <svg
-            className="mb-2 h-10 w-10 text-gray-300"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={1.5}
-              d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-            />
-          </svg>
-          <span className="px-2 text-xs font-medium text-gray-400">{title}</span>
-        </div>
-      );
-    }
-
-    if (isMotion) {
-      return (
-        <motion.img
-          key={currentIndex}
-          src={source}
-          alt={`${title} - image ${index + 1}`}
-          initial={{ opacity: 0, scale: 1.05 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.6, ease: 'easeOut' }}
-          className={className}
-          onError={() => handleImageError(index)}
-        />
-      );
-    }
-
-    return (
-      <img
-        src={source}
-        alt={title}
-        className={`${className} transition-transform duration-700 hover:scale-110`}
-        onError={() => handleImageError(index)}
-      />
-    );
-  };
-
   if (images.length === 1) {
     return (
       <div className={`w-full ${aspectRatio} overflow-hidden bg-gray-50`}>
-        {renderImage(images[0] ?? '', 0, 'w-full h-full object-cover')}
+        {renderCarouselImage({
+          source: images[0] ?? '',
+          index: 0,
+          className: 'w-full h-full object-cover',
+          altText: title,
+          isMotion: false,
+          currentIndex,
+          failedImages,
+          fallbackTitle: title,
+          onImageError: handleImageError,
+        })}
       </div>
     );
   }
@@ -135,20 +162,25 @@ export function ImageCarousel({
       onMouseLeave={() => setIsPaused(false)}
     >
       <AnimatePresence initial={false} mode="wait">
-        {renderImage(
-          images[currentIndex] ?? '',
+        {renderCarouselImage({
+          source: images[currentIndex] ?? '',
+          index: currentIndex,
+          className: 'absolute inset-0 w-full h-full object-cover',
+          altText: `${title} - image ${currentIndex + 1}`,
+          isMotion: true,
           currentIndex,
-          'absolute inset-0 w-full h-full object-cover',
-          true
-        )}
+          failedImages,
+          fallbackTitle: title,
+          onImageError: handleImageError,
+        })}
       </AnimatePresence>
 
       {showControls && (
         <>
           {/* Navigation Arrows */}
           <button
-            onClick={(e) => {
-              e.stopPropagation();
+            onClick={(event) => {
+              event.stopPropagation();
               previousSlide();
             }}
             className="absolute left-3 top-1/2 z-10 -translate-y-1/2 rounded-full bg-black/20 p-2 text-white opacity-0 backdrop-blur-sm transition-all duration-300 hover:bg-black/50 group-hover:opacity-100"
@@ -164,8 +196,8 @@ export function ImageCarousel({
             </svg>
           </button>
           <button
-            onClick={(e) => {
-              e.stopPropagation();
+            onClick={(event) => {
+              event.stopPropagation();
               nextSlide();
             }}
             className="absolute right-3 top-1/2 z-10 -translate-y-1/2 rounded-full bg-black/20 p-2 text-white opacity-0 backdrop-blur-sm transition-all duration-300 hover:bg-black/50 group-hover:opacity-100"
@@ -181,8 +213,8 @@ export function ImageCarousel({
             {images.map((_, index) => (
               <button
                 key={index}
-                onClick={(e) => {
-                  e.stopPropagation();
+                onClick={(event) => {
+                  event.stopPropagation();
                   setCurrentIndex(index);
                 }}
                 className={`h-1.5 w-1.5 rounded-full transition-all duration-300 ${index === currentIndex ? 'w-5 bg-white' : 'bg-white/40'

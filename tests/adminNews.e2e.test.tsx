@@ -3,9 +3,11 @@
 
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, it, beforeEach, vi, expect } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
+import { createUpdate, deleteUpdate, getAdminUpdates } from '@/features/admin/api/news.api';
 import NewsManagementPage from '@/pages/admin/NewsManagementPage';
+import { notificationService } from '@/shared/services/notification/notificationService';
 
 vi.mock('@/features/admin/api/news.api', () => ({
   getAdminUpdates: vi.fn(),
@@ -23,9 +25,6 @@ vi.mock('@/shared/services/notification/notificationService', () => ({
     handleError: vi.fn(),
   },
 }));
-
-import { getAdminUpdates, createUpdate, deleteUpdate } from '@/features/admin/api/news.api';
-import { notificationService } from '@/shared/services/notification/notificationService';
 
 describe('NewsManagementPage', () => {
   beforeEach(() => {
@@ -76,7 +75,7 @@ describe('NewsManagementPage', () => {
 
     await user.type(screen.getByPlaceholderText(/new community program launch/i), 'New Title');
     await user.type(screen.getByPlaceholderText(/describe the update in detail/i), 'New Content');
-    
+
     // Select category and status
     await user.selectOptions(screen.getByLabelText(/category/i), 'GENERAL');
     await user.selectOptions(screen.getByLabelText(/status/i), 'PUBLISHED');

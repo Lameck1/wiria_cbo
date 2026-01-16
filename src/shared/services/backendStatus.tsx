@@ -5,6 +5,9 @@
 
 import { useState, useEffect, createContext, use, ReactNode } from 'react';
 
+const DISABLE_BACKEND_HEALTHCHECK =
+  String(import.meta.env['VITE_DISABLE_BACKEND_HEALTHCHECK'] ?? 'false') === 'true';
+
 interface BackendStatusContextType {
   isBackendConnected: boolean;
   isChecking: boolean;
@@ -20,6 +23,11 @@ let cachedStatus: boolean | null = null;
 let checkPromise: Promise<boolean> | null = null;
 
 async function checkBackendHealth(): Promise<boolean> {
+  if (DISABLE_BACKEND_HEALTHCHECK) {
+    cachedStatus = false;
+    return false;
+  }
+
   // Return cached result if available
   if (cachedStatus !== null) {
     return cachedStatus;

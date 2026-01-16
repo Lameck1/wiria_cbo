@@ -4,7 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { describe, it, expect } from 'vitest';
 
 import { AuthProvider } from '@/features/auth/context/AuthContext';
-import HomePage from '@/pages/HomePage';
+import HomePageComponent from '@/pages/HomePage';
 
 function createTestQueryClient() {
   return new QueryClient({
@@ -24,7 +24,7 @@ describe('HomePage', () => {
       <QueryClientProvider client={queryClient}>
         <MemoryRouter>
           <AuthProvider>
-            <HomePage />
+            <HomePageComponent />
           </AuthProvider>
         </MemoryRouter>
       </QueryClientProvider>

@@ -3,7 +3,7 @@
  * Handles automated form submissions when the backend is offline
  */
 
-import emailjs from '@emailjs/browser';
+import { init, send } from '@emailjs/browser';
 
 const SERVICE_ID = String(import.meta.env['VITE_EMAILJS_SERVICE_ID'] ?? '');
 const TEMPLATE_ID = String(import.meta.env['VITE_EMAILJS_TEMPLATE_ID'] ?? '');
@@ -12,7 +12,7 @@ const PUBLIC_KEY = String(import.meta.env['VITE_EMAILJS_PUBLIC_KEY'] ?? '');
 
 // Initialize EmailJS
 if (PUBLIC_KEY) {
-  emailjs.init(PUBLIC_KEY);
+  init(PUBLIC_KEY);
 }
 
 export interface EmailJSResponse {
@@ -45,7 +45,7 @@ export const emailJsService = {
     };
 
     try {
-      return await emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams);
+      return await send(SERVICE_ID, TEMPLATE_ID, templateParams);
     } catch (error) {
       console.error('[EmailJS] Failed to send contact form', error);
       throw error;
@@ -88,7 +88,7 @@ export const emailJsService = {
     };
 
     try {
-      return await emailjs.send(SERVICE_ID, targetTemplateId, templateParams);
+      return await send(SERVICE_ID, targetTemplateId, templateParams);
     } catch (error) {
       console.error('[EmailJS] Failed to send safeguarding report', error);
       throw error;

@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom';
 
 import { ROUTES } from '@/shared/constants/routes';
 
-export const NAV_ITEMS = [
+const NAV_ITEMS = [
     { to: ROUTES.HOME, label: 'Home' },
     { to: ROUTES.ABOUT, label: 'About' },
     { to: ROUTES.PROGRAMS, label: 'Programs' },

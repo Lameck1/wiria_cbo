@@ -1,24 +1,22 @@
 import { useState } from 'react';
 
 import {
-  getAdminCareers as getCareers,
-  deleteCareer,
   Career,
+  deleteCareer,
+  getAdminCareers as getCareers,
 } from '@/features/admin/api/careers.api';
 import {
-  getAdminOpportunities as getOpportunities,
-  deleteOpportunity,
-  Opportunity,
-  getApplications,
   Application,
+  deleteOpportunity,
+  getApplications,
+  getAdminOpportunities as getOpportunities,
+  Opportunity,
 } from '@/features/admin/api/opportunities.api';
-import { ApplicationReviewModal } from '@/features/admin/components/applications/ApplicationReviewModal';
-import { CareersTab, OpportunitiesTab, ApplicationsList } from '@/features/admin/components/hr';
-import { CareerModal } from '@/features/admin/components/hr/modals/CareerModal';
-import { OpportunityModal } from '@/features/admin/components/hr/modals/OpportunityModal';
-import { useAdminData, useAdminAction } from '@/shared/hooks/useAdminData';
-
-type HRTab = 'CAREERS' | 'OPPORTUNITIES' | 'APPLICATIONS';
+import { ApplicationsList, CareersTab, OpportunitiesTab } from '@/features/admin/components/hr';
+import { HRModals } from '@/features/admin/components/hr/HrModals';
+import { HRTab, HRTabs } from '@/features/admin/components/hr/HrTabs';
+import { AdminPageHeader } from '@/features/admin/components/layout/AdminPageHeader';
+import { useAdminAction, useAdminData } from '@/shared/hooks/useAdminData';
 
 export default function HRManagementPage() {
   const [activeTab, setActiveTab] = useState<HRTab>('CAREERS');
@@ -72,32 +70,19 @@ export default function HRManagementPage() {
     setShowApplicationModal(true);
   };
 
+  const isLoading = isLoadingCareers || isLoadingOpps || isLoadingApps;
+
   return (
     <div className="space-y-8">
-      <header className="flex items-center justify-between rounded-2xl border border-gray-100 bg-gray-50/50 p-6">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight text-gray-900">
-            HR & Talent Management
-          </h1>
-          <p className="mt-1 font-medium text-gray-500">
-            Manage job postings, volunteer opportunities, and applications
-          </p>
-        </div>
-        <div className="flex gap-1 rounded-xl border border-gray-100 bg-white p-1 shadow-sm">
-          {(['CAREERS', 'OPPORTUNITIES', 'APPLICATIONS'] as HRTab[]).map((tab) => (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`rounded-lg px-6 py-2 text-sm font-bold transition-all ${activeTab === tab ? 'bg-wiria-blue-dark text-white shadow-md' : 'text-gray-500 hover:bg-gray-50 hover:text-wiria-blue-dark'}`}
-            >
-              {tab.charAt(0) + tab.slice(1).toLowerCase()}
-            </button>
-          ))}
-        </div>
-      </header>
+      <AdminPageHeader
+        title="HR & Talent Management"
+        description="Manage job postings, volunteer opportunities, and applications"
+      >
+        <HRTabs activeTab={activeTab} setActiveTab={setActiveTab} />
+      </AdminPageHeader>
 
       <main className="min-h-[400px]">
-        {isLoadingCareers || isLoadingOpps || isLoadingApps ? (
+        {isLoading ? (
           <div className="flex items-center justify-center p-20">
             <div className="h-12 w-12 animate-spin rounded-full border-b-2 border-wiria-blue-dark"></div>
           </div>
@@ -140,47 +125,26 @@ export default function HRManagementPage() {
         )}
       </main>
 
-      {showCareerModal && (
-        <CareerModal
-          career={selectedCareer}
-          onClose={() => {
-            setShowCareerModal(false);
-            setSelectedCareer(null);
-          }}
-          onSuccess={() => {
-            setShowCareerModal(false);
-            setSelectedCareer(null);
-          }}
-        />
-      )}
-
-      {showOpportunityModal && (
-        <OpportunityModal
-          opportunity={selectedOpportunity}
-          onClose={() => {
-            setShowOpportunityModal(false);
-            setSelectedOpportunity(null);
-          }}
-          onSuccess={() => {
-            setShowOpportunityModal(false);
-            setSelectedOpportunity(null);
-          }}
-        />
-      )}
-
-      {showApplicationModal && selectedApplication && (
-        <ApplicationReviewModal
-          application={selectedApplication}
-          onClose={() => {
-            setShowApplicationModal(false);
-            setSelectedApplication(null);
-          }}
-          onSuccess={() => {
-            setShowApplicationModal(false);
-            setSelectedApplication(null);
-          }}
-        />
-      )}
+      <HRModals
+        showCareerModal={showCareerModal}
+        selectedCareer={selectedCareer}
+        onCloseCareerModal={() => {
+          setShowCareerModal(false);
+          setSelectedCareer(null);
+        }}
+        showOpportunityModal={showOpportunityModal}
+        selectedOpportunity={selectedOpportunity}
+        onCloseOpportunityModal={() => {
+          setShowOpportunityModal(false);
+          setSelectedOpportunity(null);
+        }}
+        showApplicationModal={showApplicationModal}
+        selectedApplication={selectedApplication}
+        onCloseApplicationModal={() => {
+          setShowApplicationModal(false);
+          setSelectedApplication(null);
+        }}
+      />
     </div>
   );
 }

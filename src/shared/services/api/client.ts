@@ -50,6 +50,31 @@ class ApiClient {
     return headers;
   }
 
+  private handleError(response: Response, data: unknown, endpoint: string): never {
+    // Handle 401 Unauthorized
+    if (response.status === 401) {
+      console.warn('[ApiClient] Unauthorized access detected');
+
+      // Only trigger callback if we're not currently attempting to login
+      // to avoid redirecting while the user is typing credentials
+      const isLoginEndpoint = endpoint.includes('/login');
+      if (!isLoginEndpoint && this.onUnauthorizedCallback) {
+        this.onUnauthorizedCallback();
+      }
+    }
+
+    const dataObject = data as Record<string, unknown>;
+    const errorMessage =
+      (dataObject['message'] as string) ??
+      ((dataObject['error'] as Record<string, unknown>)?.['message'] as string) ??
+      (typeof dataObject['error'] === 'string' ? dataObject['error'] : null) ??
+      (response.status === 401
+        ? 'Session expired or unauthorized'
+        : 'An unexpected error occurred');
+
+    throw new ApiError(errorMessage, response.status, data);
+  }
+
   async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
     const url = `${this.baseURL}${endpoint}`;
     const config: RequestInit = {
@@ -68,28 +93,7 @@ class ApiClient {
       const data: unknown = text ? JSON.parse(text) : {};
 
       if (!response.ok) {
-        // Handle 401 Unauthorized
-        if (response.status === 401) {
-          console.warn('[ApiClient] Unauthorized access detected');
-
-          // Only trigger callback if we're not currently attempting to login
-          // to avoid redirecting while the user is typing credentials
-          const isLoginEndpoint = endpoint.includes('/login');
-          if (!isLoginEndpoint && this.onUnauthorizedCallback) {
-            this.onUnauthorizedCallback();
-          }
-        }
-
-        const dataObject = data as Record<string, unknown>;
-        const errorMessage =
-          (dataObject['message'] as string) ??
-          ((dataObject['error'] as Record<string, unknown>)?.['message'] as string) ??
-          (typeof dataObject['error'] === 'string' ? dataObject['error'] : null) ??
-          (response.status === 401
-            ? 'Session expired or unauthorized'
-            : 'An unexpected error occurred');
-
-        throw new ApiError(errorMessage, response.status, data);
+        this.handleError(response, data, endpoint);
       }
 
       return data as T;

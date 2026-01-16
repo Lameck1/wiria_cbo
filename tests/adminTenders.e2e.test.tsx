@@ -6,10 +6,12 @@ import type { ReactElement } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, it, beforeEach, vi, expect } from 'vitest';
-
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import type { Tender } from '@/features/admin/api/tenders.api';
+import { createTender, getTenders } from '@/features/admin/api/tenders.api';
+import TenderManagementPage from '@/pages/admin/TenderManagementPage';
+import { notificationService } from '@/shared/services/notification/notificationService';
 
 vi.mock('@/features/admin/api/tenders.api', () => ({
   getTenders: vi.fn(),
@@ -32,9 +34,26 @@ vi.mock('@/shared/services/notification/notificationService', () => ({
   },
 }));
 
-import { getTenders, createTender } from '@/features/admin/api/tenders.api';
-import TenderManagementPage from '@/pages/admin/TenderManagementPage';
-import { notificationService } from '@/shared/services/notification/notificationService';
+vi.mock('@/features/admin/api/tenders.api', () => ({
+  getTenders: vi.fn(),
+  createTender: vi.fn(),
+  updateTender: vi.fn(),
+  deleteTender: vi.fn(),
+}));
+
+vi.mock('@/features/admin/api/resources.api', () => ({
+  uploadFile: vi.fn(),
+}));
+
+vi.mock('@/shared/services/notification/notificationService', () => ({
+  notificationService: {
+    success: vi.fn(),
+    error: vi.fn(),
+    info: vi.fn(),
+    warning: vi.fn(),
+    handleError: vi.fn(),
+  },
+}));
 
 function renderWithQueryClient(ui: ReactElement) {
   const qc = new QueryClient({

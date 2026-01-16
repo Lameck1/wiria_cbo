@@ -83,7 +83,7 @@ export function UpdateModal({ update, isOpen, onClose }: UpdateModalProps) {
             exit={{ scale: 0.9, opacity: 0 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
             className="relative flex max-h-[90vh] w-full max-w-3xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
+            onClick={(event) => event.stopPropagation()}
           >
             {/* Close button - Fixed at top-right */}
             <button

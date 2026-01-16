@@ -5,7 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import { StatCardSkeleton, DashboardTrendSkeleton } from '@/features/admin/components/DashboardSkeletons';
 import { StatCard } from '@/features/admin/components/StatCard';
 import { DashboardTrendCharts } from '@/features/admin/components/TrendChart';
-import { DashboardProvider, useDashboard } from '@/features/admin/context/DashboardContext';
+import { DashboardProvider } from '@/features/admin/context/DashboardContext';
+import { useDashboard } from '@/features/admin/context/useDashboard';
 import { ErrorBoundary } from '@/shared/components/ErrorBoundary';
 import { ROUTES } from '@/shared/constants/routes';
 

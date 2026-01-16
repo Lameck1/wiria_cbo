@@ -99,6 +99,7 @@ describe('export utils', () => {
         let mockLink: {
             setAttribute: ReturnType<typeof vi.fn>;
             click: ReturnType<typeof vi.fn>;
+            remove: ReturnType<typeof vi.fn>;
             style: { visibility: string };
         };
 
@@ -106,6 +107,7 @@ describe('export utils', () => {
             mockLink = {
                 setAttribute: vi.fn(),
                 click: vi.fn(),
+                remove: vi.fn(),
                 style: { visibility: '' },
             };
 
@@ -144,6 +146,7 @@ describe('export utils', () => {
             vi.spyOn(document, 'createElement').mockReturnValue({
                 setAttribute: vi.fn(),
                 click: vi.fn(),
+                remove: vi.fn(),
                 style: { visibility: '' },
             } as unknown as HTMLElement);
             vi.spyOn(document.body, 'appendChild').mockImplementation(() => null as unknown as Node);

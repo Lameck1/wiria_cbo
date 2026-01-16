@@ -13,6 +13,152 @@ import { ImageCarousel } from '@/shared/components/ImageCarousel';
 import { UpdateModal } from './UpdateModal';
 import { useUpdates, Update } from '../hooks/useUpdates';
 
+interface RecentUpdatesListProps {
+  updates: Update[];
+  onReadMore: (update: Update) => void;
+}
+
+function RecentUpdatesList({ updates, onReadMore }: RecentUpdatesListProps) {
+  return (
+    <div id="updates-container" className="mb-10 grid gap-8 md:grid-cols-2">
+      {updates.map((update, index) => {
+        const dateString = update.publishedAt ?? update.date;
+        const formattedDate = dateString
+          ? new Date(dateString).toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'short',
+              day: 'numeric',
+            })
+          : '';
+
+        return (
+          <motion.div
+            key={update.id}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: index * 0.1 }}
+            className="group overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+          >
+            <ImageCarousel images={update.images ?? [update.imageUrl]} title={update.title} />
+            <div className="p-6">
+              <p className="mb-2 text-sm text-gray-500">
+                {update.category}
+                {formattedDate && ` - ${formattedDate}`}
+              </p>
+              <h4 className="mb-2 text-lg font-bold text-wiria-blue-dark">{update.title}</h4>
+              <p className="mb-4 text-gray-600">{update.excerpt}</p>
+              <button
+                onClick={() => onReadMore(update)}
+                className="flex items-center gap-2 font-semibold text-wiria-yellow transition-colors duration-200 hover:text-wiria-blue-dark"
+              >
+                <span>Read More</span>
+                <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </button>
+            </div>
+          </motion.div>
+        );
+      })}
+    </div>
+  );
+}
+
+function RecentUpdatesLoading() {
+  return (
+    <div className="py-12 text-center">
+      <div className="inline-block h-12 w-12 animate-spin rounded-full border-b-2 border-wiria-blue-dark" />
+      <p className="mt-4 text-gray-600">Loading updates...</p>
+    </div>
+  );
+}
+
+function RecentUpdatesError() {
+  return (
+    <div className="py-12 text-center">
+      <p className="text-red-600">Failed to load updates.</p>
+    </div>
+  );
+}
+
+interface RecentUpdatesPaginationProps {
+  currentPage: number;
+  totalPages: number;
+  onPrevious: () => void;
+  onNext: () => void;
+}
+
+function RecentUpdatesPagination({
+  currentPage,
+  totalPages,
+  onPrevious,
+  onNext,
+}: RecentUpdatesPaginationProps) {
+  if (totalPages <= 1) {
+    return null;
+  }
+
+  return (
+    <div id="pagination-controls" className="flex items-center justify-center gap-4">
+      <button
+        id="prev-page"
+        onClick={onPrevious}
+        disabled={currentPage === 1}
+        className="flex items-center gap-2 rounded-full bg-wiria-blue-dark px-5 py-2.5 text-white transition-all hover:bg-opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+        aria-label="Previous page"
+      >
+        <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M15 19l-7-7 7-7"
+          />
+        </svg>
+        <span className="hidden sm:inline">Previous</span>
+      </button>
+
+      <div
+        id="page-info"
+        className="rounded-full bg-white px-4 py-2 font-semibold text-gray-700 shadow-sm"
+      >
+        Page{' '}
+        <span id="current-page" className="text-wiria-blue-dark">
+          {currentPage}
+        </span>{' '}
+        of{' '}
+        <span id="total-pages" className="text-wiria-blue-dark">
+          {totalPages}
+        </span>
+      </div>
+
+      <button
+        id="next-page"
+        onClick={onNext}
+        disabled={currentPage === totalPages}
+        className="flex items-center gap-2 rounded-full bg-wiria-blue-dark px-5 py-2.5 text-white transition-all hover:bg-opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+        aria-label="Next page"
+      >
+        <span className="hidden sm:inline">Next</span>
+        <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M9 5l7 7-7 7"
+          />
+        </svg>
+      </button>
+    </div>
+  );
+}
+
 
 export function RecentUpdatesSection() {
   const { data: allUpdates = [], isLoading, isError } = useUpdates(20);
@@ -84,128 +230,18 @@ export function RecentUpdatesSection() {
           </div>
 
           {isLoading ? (
-            <div className="py-12 text-center">
-              <div className="inline-block h-12 w-12 animate-spin rounded-full border-b-2 border-wiria-blue-dark" />
-              <p className="mt-4 text-gray-600">Loading updates...</p>
-            </div>
+            <RecentUpdatesLoading />
           ) : isError ? (
-            <div className="py-12 text-center">
-              <p className="text-red-600">Failed to load updates.</p>
-            </div>
+            <RecentUpdatesError />
           ) : (
             <>
-              <div id="updates-container" className="mb-10 grid gap-8 md:grid-cols-2">
-                {pageUpdates.map((update: Update, index: number) => {
-                  const dateString = update.publishedAt ?? update.date;
-                  const formattedDate = dateString
-                    ? new Date(dateString).toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'short',
-                        day: 'numeric',
-                      })
-                    : '';
-
-                  return (
-                    <motion.div
-                      key={update.id}
-                      initial={{ opacity: 0, y: 30 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.5, delay: index * 0.1 }}
-                      className="group overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
-                    >
-                      <ImageCarousel
-                        images={update.images ?? [update.imageUrl]}
-                        title={update.title}
-                      />
-                      <div className="p-6">
-                        <p className="mb-2 text-sm text-gray-500">
-                          {update.category}
-                          {formattedDate && ` - ${formattedDate}`}
-                        </p>
-                        <h4 className="mb-2 text-lg font-bold text-wiria-blue-dark">
-                          {update.title}
-                        </h4>
-                        <p className="mb-4 text-gray-600">{update.excerpt}</p>
-                        <button
-                          onClick={() => handleReadMore(update)}
-                          className="flex items-center gap-2 font-semibold text-wiria-yellow transition-colors duration-200 hover:text-wiria-blue-dark"
-                        >
-                          <span>Read More</span>
-                          <svg
-                            className="h-4 w-4"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M9 5l7 7-7 7"
-                            />
-                          </svg>
-                        </button>
-                      </div>
-                    </motion.div>
-                  );
-                })}
-              </div>
-
-              {/* Pagination Controls - Exact from original */}
-              {totalPages > 1 && (
-                <div id="pagination-controls" className="flex items-center justify-center gap-4">
-                  <button
-                    id="prev-page"
-                    onClick={handlePreviousPage}
-                    disabled={currentPage === 1}
-                    className="flex items-center gap-2 rounded-full bg-wiria-blue-dark px-5 py-2.5 text-white transition-all hover:bg-opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
-                    aria-label="Previous page"
-                  >
-                    <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M15 19l-7-7 7-7"
-                      />
-                    </svg>
-                    <span className="hidden sm:inline">Previous</span>
-                  </button>
-
-                  <div
-                    id="page-info"
-                    className="rounded-full bg-white px-4 py-2 font-semibold text-gray-700 shadow-sm"
-                  >
-                    Page{' '}
-                    <span id="current-page" className="text-wiria-blue-dark">
-                      {currentPage}
-                    </span>{' '}
-                    of{' '}
-                    <span id="total-pages" className="text-wiria-blue-dark">
-                      {totalPages}
-                    </span>
-                  </div>
-
-                  <button
-                    id="next-page"
-                    onClick={handleNextPage}
-                    disabled={currentPage === totalPages}
-                    className="flex items-center gap-2 rounded-full bg-wiria-blue-dark px-5 py-2.5 text-white transition-all hover:bg-opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
-                    aria-label="Next page"
-                  >
-                    <span className="hidden sm:inline">Next</span>
-                    <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 5l7 7-7 7"
-                      />
-                    </svg>
-                  </button>
-                </div>
-              )}
+              <RecentUpdatesList updates={pageUpdates} onReadMore={handleReadMore} />
+              <RecentUpdatesPagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPrevious={handlePreviousPage}
+                onNext={handleNextPage}
+              />
             </>
           )}
         </div>

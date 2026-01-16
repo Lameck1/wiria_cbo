@@ -22,77 +22,10 @@ const CATEGORIES = [
     'OTHER',
 ];
 
-interface ResourceModalProps {
-    resource: Resource | null;
-    onClose: () => void;
-    onSuccess: () => void;
-}
+function buildResourceFields(options: { selectedFile: File | null; resource: Resource | null }): FieldConfig[] {
+    const { selectedFile, resource } = options;
 
-export function ResourceModal({
-    resource,
-    onClose,
-    onSuccess,
-}: ResourceModalProps) {
-    const queryClient = useQueryClient();
-    const [selectedFile, setSelectedFile] = useState<File | null>(null);
-
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        setSelectedFile(file ?? null);
-    };
-
-    const handleSubmit = async (formData: Record<string, unknown>) => {
-        let downloadUrl = (formData['downloadUrl'] as string) || '';
-
-        // Handle file upload if file is selected
-        if (selectedFile) {
-            notificationService.info('Uploading file...');
-            const uploadRes = await uploadFile(selectedFile, 'resources');
-            downloadUrl = uploadRes.data.url;
-
-            formData['fileSize'] ??= `${(selectedFile.size / (1024 * 1024)).toFixed(2)} MB`;
-            formData['fileType'] ??= selectedFile.name.split('.').pop()?.toUpperCase() ?? 'FILE';
-        }
-
-        const data = {
-            title: formData['title'] as string || '',
-            category: formData['category'] as string || '',
-            fileType: formData['fileType'] as string || '',
-            fileSize: formData['fileSize'] as string || '',
-            description: formData['description'] as string || '',
-            summary: formData['summary'] as string,
-            downloadUrl,
-            isPublic: formData['isPublic'] === 'true',
-            keyPoints: formData['keyPoints']
-                ? (formData['keyPoints'] as string)
-                    .split(',')
-                    .map((p: string) => p.trim())
-                    .filter((p: string) => p !== '')
-                : [],
-        };
-
-        if (resource) {
-            await updateResource(resource.id, data);
-            notificationService.success('Resource updated successfully');
-        } else {
-            await createResource(data);
-            notificationService.success('Resource added successfully');
-        }
-
-        void queryClient.invalidateQueries({ queryKey: ['admin', 'resources'] });
-        onSuccess();
-    };
-
-    const handleFormSubmit = async (formData: Record<string, unknown>) => {
-        try {
-            await handleSubmit(formData);
-        } catch (error: unknown) {
-            notificationService.error(getErrorMessage(error, 'Operation failed'));
-            throw error;
-        }
-    };
-
-    const fields: FieldConfig[] = [
+    return [
         {
             name: 'title',
             label: 'Title',
@@ -105,7 +38,7 @@ export function ResourceModal({
             label: 'Category',
             type: 'select',
             required: true,
-            options: CATEGORIES.map(cat => ({ value: cat, label: cat })),
+            options: CATEGORIES.map((category) => ({ value: category, label: category })),
         },
         {
             name: 'fileType',
@@ -162,6 +95,79 @@ export function ResourceModal({
             placeholder: 'e.g. Governance, Transparency, Impact',
         },
     ];
+}
+
+interface ResourceModalProps {
+    resource: Resource | null;
+    onClose: () => void;
+    onSuccess: () => void;
+}
+
+export function ResourceModal({
+    resource,
+    onClose,
+    onSuccess,
+}: ResourceModalProps) {
+    const queryClient = useQueryClient();
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        setSelectedFile(file ?? null);
+    };
+
+    const handleSubmit = async (formData: Record<string, unknown>) => {
+        let downloadUrl = (formData['downloadUrl'] as string) || '';
+
+        // Handle file upload if file is selected
+        if (selectedFile) {
+            notificationService.info('Uploading file...');
+            const uploadResult = await uploadFile(selectedFile, 'resources');
+            downloadUrl = uploadResult.data.url;
+
+            formData['fileSize'] ??= `${(selectedFile.size / (1024 * 1024)).toFixed(2)} MB`;
+            formData['fileType'] ??= selectedFile.name.split('.').pop()?.toUpperCase() ?? 'FILE';
+        }
+
+        const data = {
+            title: formData['title'] as string || '',
+            category: formData['category'] as string || '',
+            fileType: formData['fileType'] as string || '',
+            fileSize: formData['fileSize'] as string || '',
+            description: formData['description'] as string || '',
+            summary: formData['summary'] as string,
+            downloadUrl,
+            isPublic: formData['isPublic'] === 'true',
+            keyPoints: formData['keyPoints']
+                ? (formData['keyPoints'] as string)
+                    .split(',')
+                    .map((p: string) => p.trim())
+                    .filter((p: string) => p !== '')
+                : [],
+        };
+
+        if (resource) {
+            await updateResource(resource.id, data);
+            notificationService.success('Resource updated successfully');
+        } else {
+            await createResource(data);
+            notificationService.success('Resource added successfully');
+        }
+
+        void queryClient.invalidateQueries({ queryKey: ['admin', 'resources'] });
+        onSuccess();
+    };
+
+    const handleFormSubmit = async (formData: Record<string, unknown>) => {
+        try {
+            await handleSubmit(formData);
+        } catch (error: unknown) {
+            notificationService.error(getErrorMessage(error, 'Operation failed'));
+            throw error;
+        }
+    };
+
+    const fields: FieldConfig[] = buildResourceFields({ selectedFile, resource });
 
     return (
         <FormModal

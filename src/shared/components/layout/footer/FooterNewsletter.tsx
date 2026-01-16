@@ -1,5 +1,5 @@
-function handleSubmit(e: React.FormEvent) {
-  e.preventDefault();
+function handleSubmit(event: React.FormEvent) {
+  event.preventDefault();
   // TODO: Implement newsletter subscription
 }
 

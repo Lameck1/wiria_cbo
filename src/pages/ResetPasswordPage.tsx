@@ -16,6 +16,223 @@ import { notificationService } from '@/shared/services/notification/notification
 
 type Step = 'request' | 'confirm' | 'success';
 
+interface ResetPasswordRequestStepProps {
+  email: string;
+  isLoading: boolean;
+  onEmailChange: (value: string) => void;
+  onSubmit: (event: React.FormEvent) => void;
+  onGoToConfirm: () => void;
+}
+
+function ResetPasswordRequestStep({
+  email,
+  isLoading,
+  onEmailChange,
+  onSubmit,
+  onGoToConfirm,
+}: ResetPasswordRequestStepProps) {
+  return (
+    <>
+      <div className="mb-8 text-center">
+        <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-wiria-yellow/10">
+          <svg
+            className="h-8 w-8 text-wiria-yellow"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"
+            />
+          </svg>
+        </div>
+        <h1 className="text-2xl font-bold text-wiria-blue-dark">Reset Password</h1>
+        <p className="mt-2 text-gray-500">
+          Enter your email to receive a password reset link
+        </p>
+      </div>
+
+      <form onSubmit={onSubmit} className="space-y-6">
+        <Input
+          type="email"
+          label="Email Address"
+          value={email}
+          onChange={(event) => onEmailChange(event.target.value)}
+          placeholder="you@example.com"
+          required
+        />
+
+        <Button type="submit" fullWidth size="lg" isLoading={isLoading}>
+          Send Reset Link
+        </Button>
+      </form>
+
+      <div className="mt-6 text-center">
+        <p className="text-sm text-gray-600">
+          Already have a reset token?{' '}
+          <button
+            onClick={onGoToConfirm}
+            className="font-semibold text-wiria-blue-dark hover:text-wiria-yellow"
+          >
+            Enter token
+          </button>
+        </p>
+      </div>
+    </>
+  );
+}
+
+interface ResetPasswordConfirmStepProps {
+  token: string;
+  newPassword: string;
+  confirmPassword: string;
+  isLoading: boolean;
+  onTokenChange: (value: string) => void;
+  onNewPasswordChange: (value: string) => void;
+  onConfirmPasswordChange: (value: string) => void;
+  onSubmit: (event: React.FormEvent) => void;
+  onBackToRequest: () => void;
+}
+
+function ResetPasswordConfirmStep({
+  token,
+  newPassword,
+  confirmPassword,
+  isLoading,
+  onTokenChange,
+  onNewPasswordChange,
+  onConfirmPasswordChange,
+  onSubmit,
+  onBackToRequest,
+}: ResetPasswordConfirmStepProps) {
+  return (
+    <>
+      <div className="mb-8 text-center">
+        <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
+          <svg
+            className="h-8 w-8 text-green-600"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+        </div>
+        <h1 className="text-2xl font-bold text-wiria-blue-dark">Check Your Email</h1>
+        <p className="mt-2 text-gray-500">
+          Enter the token from your email and set a new password
+        </p>
+      </div>
+
+      <form onSubmit={onSubmit} className="space-y-6">
+        <Input
+          label="Reset Token"
+          value={token}
+          onChange={(event) => onTokenChange(event.target.value)}
+          placeholder="Enter token from email"
+          required
+        />
+
+        <Input
+          type="password"
+          label="New Password"
+          value={newPassword}
+          onChange={(event) => onNewPasswordChange(event.target.value)}
+          placeholder="••••••••"
+          helperText="Minimum 8 characters"
+          required
+        />
+
+        <Input
+          type="password"
+          label="Confirm Password"
+          value={confirmPassword}
+          onChange={(event) => onConfirmPasswordChange(event.target.value)}
+          placeholder="••••••••"
+          required
+        />
+
+        <Button type="submit" fullWidth size="lg" isLoading={isLoading}>
+          Reset Password
+        </Button>
+      </form>
+
+      <div className="mt-6 text-center">
+        <button
+          onClick={onBackToRequest}
+          className="text-sm text-gray-500 hover:text-wiria-blue-dark"
+        >
+          ← Request new reset link
+        </button>
+      </div>
+    </>
+  );
+}
+
+function ResetPasswordSuccessStep() {
+  return (
+    <div className="py-6 text-center">
+      <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-green-100">
+        <svg
+          className="h-10 w-10 text-green-600"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M5 13l4 4L19 7"
+          />
+        </svg>
+      </div>
+      <h1 className="mb-2 text-2xl font-bold text-green-800">Password Reset!</h1>
+      <p className="mb-6 text-gray-600">
+        Your password has been successfully reset. You can now login with your new password.
+      </p>
+      <Link to="/member-login">
+        <Button fullWidth size="lg">
+          Login to Member Portal
+        </Button>
+      </Link>
+    </div>
+  );
+}
+
+function ResetPasswordBackToLogin({ hidden }: { hidden: boolean }) {
+  if (hidden) {
+    return null;
+  }
+
+  return (
+    <div className="mt-8 border-t border-gray-100 pt-6 text-center">
+      <Link
+        to="/member-login"
+        className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-wiria-blue-dark"
+      >
+        <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M10 19l-7-7m0 0l7-7m-7 7h18"
+          />
+        </svg>
+        Back to Login
+      </Link>
+    </div>
+  );
+}
+
 function ResetPasswordPage() {
   const [step, setStep] = useState<Step>('request');
   const [email, setEmail] = useState('');
@@ -24,8 +241,8 @@ function ResetPasswordPage() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleRequestReset = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleRequestReset = async (event: React.FormEvent) => {
+    event.preventDefault();
     setIsLoading(true);
 
     try {
@@ -34,7 +251,7 @@ function ResetPasswordPage() {
       setStep('confirm');
     } catch (error) {
       notificationService.error(
-        'Failed to send reset link. Please check your email and try again.'
+        'Failed to send reset link. Please check your email and try again.',
       );
       console.error('Reset request error:', error);
     } finally {
@@ -42,8 +259,8 @@ function ResetPasswordPage() {
     }
   };
 
-  const handleConfirmReset = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleConfirmReset = async (event: React.FormEvent) => {
+    event.preventDefault();
 
     if (newPassword !== confirmPassword) {
       notificationService.error('Passwords do not match');
@@ -77,174 +294,37 @@ function ResetPasswordPage() {
       <div className="w-full max-w-md">
         <Card>
           <CardBody className="p-8">
-            {/* Request Step */}
             {step === 'request' && (
-              <>
-                <div className="mb-8 text-center">
-                  <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-wiria-yellow/10">
-                    <svg
-                      className="h-8 w-8 text-wiria-yellow"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"
-                      />
-                    </svg>
-                  </div>
-                  <h1 className="text-2xl font-bold text-wiria-blue-dark">Reset Password</h1>
-                  <p className="mt-2 text-gray-500">Enter your email to receive a password reset link</p>
-                </div>
-
-                <form onSubmit={(e) => void handleRequestReset(e)} className="space-y-6">
-                  <Input
-                    type="email"
-                    label="Email Address"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="you@example.com"
-                    required
-                  />
-
-                  <Button type="submit" fullWidth size="lg" isLoading={isLoading}>
-                    Send Reset Link
-                  </Button>
-                </form>
-
-                <div className="mt-6 text-center">
-                  <p className="text-sm text-gray-600">
-                    Already have a reset token?{' '}
-                    <button
-                      onClick={() => setStep('confirm')}
-                      className="font-semibold text-wiria-blue-dark hover:text-wiria-yellow"
-                    >
-                      Enter token
-                    </button>
-                  </p>
-                </div>
-              </>
+              <ResetPasswordRequestStep
+                email={email}
+                isLoading={isLoading}
+                onEmailChange={setEmail}
+                onSubmit={(event) => {
+                  void handleRequestReset(event);
+                }}
+                onGoToConfirm={() => setStep('confirm')}
+              />
             )}
 
-            {/* Confirm Step */}
             {step === 'confirm' && (
-              <>
-                <div className="mb-8 text-center">
-                  <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
-                    <svg
-                      className="h-8 w-8 text-green-600"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
-                  </div>
-                  <h1 className="text-2xl font-bold text-wiria-blue-dark">Check Your Email</h1>
-                  <p className="mt-2 text-gray-500">Enter the token from your email and set a new password</p>
-                </div>
-
-                <form onSubmit={(e) => void handleConfirmReset(e)} className="space-y-6">
-                  <Input
-                    label="Reset Token"
-                    value={token}
-                    onChange={(e) => setToken(e.target.value)}
-                    placeholder="Enter token from email"
-                    required
-                  />
-
-                  <Input
-                    type="password"
-                    label="New Password"
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                    placeholder="••••••••"
-                    helperText="Minimum 8 characters"
-                    required
-                  />
-
-                  <Input
-                    type="password"
-                    label="Confirm Password"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    placeholder="••••••••"
-                    required
-                  />
-
-                  <Button type="submit" fullWidth size="lg" isLoading={isLoading}>
-                    Reset Password
-                  </Button>
-                </form>
-
-                <div className="mt-6 text-center">
-                  <button
-                    onClick={() => setStep('request')}
-                    className="text-sm text-gray-500 hover:text-wiria-blue-dark"
-                  >
-                    ← Request new reset link
-                  </button>
-                </div>
-              </>
+              <ResetPasswordConfirmStep
+                token={token}
+                newPassword={newPassword}
+                confirmPassword={confirmPassword}
+                isLoading={isLoading}
+                onTokenChange={setToken}
+                onNewPasswordChange={setNewPassword}
+                onConfirmPasswordChange={setConfirmPassword}
+                onSubmit={(event) => {
+                  void handleConfirmReset(event);
+                }}
+                onBackToRequest={() => setStep('request')}
+              />
             )}
 
-            {/* Success Step */}
-            {step === 'success' && (
-              <div className="py-6 text-center">
-                <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-green-100">
-                  <svg
-                    className="h-10 w-10 text-green-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M5 13l4 4L19 7"
-                    />
-                  </svg>
-                </div>
-                <h1 className="mb-2 text-2xl font-bold text-green-800">Password Reset!</h1>
-                <p className="mb-6 text-gray-600">
-                  Your password has been successfully reset. You can now login with your new password.
-                </p>
-                <Link to="/member-login">
-                  <Button fullWidth size="lg">
-                    Login to Member Portal
-                  </Button>
-                </Link>
-              </div>
-            )}
+            {step === 'success' && <ResetPasswordSuccessStep />}
 
-            {/* Back to Login */}
-            {step !== 'success' && (
-              <div className="mt-8 border-t border-gray-100 pt-6 text-center">
-                <Link
-                  to="/member-login"
-                  className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-wiria-blue-dark"
-                >
-                  <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M10 19l-7-7m0 0l7-7m-7 7h18"
-                    />
-                  </svg>
-                  Back to Login
-                </Link>
-              </div>
-            )}
+            <ResetPasswordBackToLogin hidden={step === 'success'} />
           </CardBody>
         </Card>
       </div>

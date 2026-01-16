@@ -1,4 +1,4 @@
-export type BadgeType = 'success' | 'warning' | 'danger' | 'info';
+type BadgeType = 'success' | 'warning' | 'danger' | 'info';
 
 interface StatusBadgeProps {
   status: string;
@@ -47,7 +47,7 @@ const statusTypeMap: Record<string, BadgeType> = {
   ADMIN: 'info',
 };
 
-export function getStatusType(status: string): BadgeType {
+function getStatusType(status: string): BadgeType {
   return statusTypeMap[status.toUpperCase()] ?? 'info';
 }
 

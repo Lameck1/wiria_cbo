@@ -1,4 +1,4 @@
-import { useMember } from '@/features/admin/context/MemberContext';
+import { useMember } from '@/features/admin/context/useMember';
 import { AdminMember } from '@/features/membership/api/members.api';
 
 import { MemberDetailsModal } from './MemberDetailsModal';

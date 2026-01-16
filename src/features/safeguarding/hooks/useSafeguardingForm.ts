@@ -50,9 +50,9 @@ export function useSafeguardingForm() {
     }
   };
 
-  const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files?.[0]) {
-      setEvidenceFile(e.target.files[0]);
+  const handleFileChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files?.[0]) {
+      setEvidenceFile(event.target.files[0]);
     }
   }, []);
 

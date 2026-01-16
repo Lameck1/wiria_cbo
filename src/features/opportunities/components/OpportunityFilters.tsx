@@ -57,7 +57,7 @@ export function OpportunityFilters({
       {categories.length > 0 && (
         <select
           value={selectedCategory}
-          onChange={(e) => onCategoryChange(e.target.value)}
+          onChange={(event) => onCategoryChange(event.target.value)}
           className="rounded-full border border-gray-300 bg-white px-4 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-wiria-yellow"
         >
           <option value="">All Categories</option>

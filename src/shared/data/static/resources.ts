@@ -5,6 +5,8 @@
 
 import type { Resource } from '@/features/resources/hooks/useResources';
 
+const DEFAULT_TIMESTAMP = '2024-01-01T00:00:00Z';
+
 export const staticResources: Resource[] = [
   {
     id: 'static-resource-1',
@@ -19,9 +21,9 @@ export const staticResources: Resource[] = [
     keyPoints: ['Organizational structure', 'Membership eligibility', 'Financial management'],
     isPublic: true,
     downloads: 0,
-    uploadedAt: '2024-01-01T00:00:00Z',
-    createdAt: '2024-01-01T00:00:00Z',
-    updatedAt: '2024-01-01T00:00:00Z',
+    uploadedAt: DEFAULT_TIMESTAMP,
+    createdAt: DEFAULT_TIMESTAMP,
+    updatedAt: DEFAULT_TIMESTAMP,
   },
   {
     id: 'static-resource-2',
@@ -39,9 +41,9 @@ export const staticResources: Resource[] = [
     ],
     isPublic: true,
     downloads: 0,
-    uploadedAt: '2024-01-01T00:00:00Z',
-    createdAt: '2024-01-01T00:00:00Z',
-    updatedAt: '2024-01-01T00:00:00Z',
+    uploadedAt: DEFAULT_TIMESTAMP,
+    createdAt: DEFAULT_TIMESTAMP,
+    updatedAt: DEFAULT_TIMESTAMP,
   },
   {
     id: 'static-resource-3',
@@ -59,9 +61,9 @@ export const staticResources: Resource[] = [
     ],
     isPublic: true,
     downloads: 0,
-    uploadedAt: '2024-01-01T00:00:00Z',
-    createdAt: '2024-01-01T00:00:00Z',
-    updatedAt: '2024-01-01T00:00:00Z',
+    uploadedAt: DEFAULT_TIMESTAMP,
+    createdAt: DEFAULT_TIMESTAMP,
+    updatedAt: DEFAULT_TIMESTAMP,
   },
   {
     id: 'static-resource-4',
@@ -79,9 +81,9 @@ export const staticResources: Resource[] = [
     ],
     isPublic: true,
     downloads: 0,
-    uploadedAt: '2024-01-01T00:00:00Z',
-    createdAt: '2024-01-01T00:00:00Z',
-    updatedAt: '2024-01-01T00:00:00Z',
+    uploadedAt: DEFAULT_TIMESTAMP,
+    createdAt: DEFAULT_TIMESTAMP,
+    updatedAt: DEFAULT_TIMESTAMP,
   },
   {
     id: 'static-resource-5',
@@ -95,9 +97,9 @@ export const staticResources: Resource[] = [
     keyPoints: ['Gender-responsive design', 'Equal opportunities', 'Gender-disaggregated data'],
     isPublic: true,
     downloads: 0,
-    uploadedAt: '2024-01-01T00:00:00Z',
-    createdAt: '2024-01-01T00:00:00Z',
-    updatedAt: '2024-01-01T00:00:00Z',
+    uploadedAt: DEFAULT_TIMESTAMP,
+    createdAt: DEFAULT_TIMESTAMP,
+    updatedAt: DEFAULT_TIMESTAMP,
   },
   {
     id: 'static-resource-6',
@@ -111,8 +113,8 @@ export const staticResources: Resource[] = [
     keyPoints: ['Program-specific indicators', 'Data collection protocols', 'Reporting schedules'],
     isPublic: true,
     downloads: 0,
-    uploadedAt: '2024-01-01T00:00:00Z',
-    createdAt: '2024-01-01T00:00:00Z',
-    updatedAt: '2024-01-01T00:00:00Z',
+    uploadedAt: DEFAULT_TIMESTAMP,
+    createdAt: DEFAULT_TIMESTAMP,
+    updatedAt: DEFAULT_TIMESTAMP,
   },
 ];

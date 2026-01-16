@@ -8,10 +8,7 @@ import { ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter, MemoryRouter } from 'react-router-dom';
 
-/**
- * Creates a fresh QueryClient for each test to prevent state leakage
- */
-export function createTestQueryClient() {
+function createTestQueryClient() {
   return new QueryClient({
     defaultOptions: {
       queries: {
@@ -58,16 +55,4 @@ export function TestWrapperWithMemoryRouter({
   );
 }
 
-/**
- * Creates a wrapper function for renderHook
- */
-export function createWrapper() {
-  const queryClient = createTestQueryClient();
-  return function Wrapper({ children }: { children: ReactNode }) {
-    return (
-      <QueryClientProvider client={queryClient}>
-        <BrowserRouter>{children}</BrowserRouter>
-      </QueryClientProvider>
-    );
-  };
-}
+// Removed createWrapper to avoid exporting non-component utilities from this file.

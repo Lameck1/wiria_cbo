@@ -8,14 +8,13 @@ import {
   Donation,
   DonationStatistics,
 } from '@/features/admin/api/donations.api';
+import { DonationDetailsModal } from '@/features/admin/components/donations/DonationDetailsModal';
+import { DonationStatsGrid } from '@/features/admin/components/donations/DonationStatsGrid';
+import { getDonationColumns } from '@/features/admin/components/donations/DonationTableColumns';
 import { AdminPageHeader } from '@/features/admin/components/layout/AdminPageHeader';
 import { Card, CardBody } from '@/shared/components/ui/Card';
-import { DataTable, Column } from '@/shared/components/ui/DataTable';
-import { Spinner } from '@/shared/components/ui/Spinner';
-import { StatusBadge } from '@/shared/components/ui/StatusBadge';
+import { DataTable } from '@/shared/components/ui/DataTable';
 import { useAdminData } from '@/shared/hooks/useAdminData';
-import { formatDateTime } from '@/shared/utils/dateUtils';
-import { formatCurrency } from '@/shared/utils/helpers';
 
 export default function DonationManagementPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -38,12 +37,10 @@ export default function DonationManagementPage() {
 
   const statistics = statsList[0] ?? null;
 
-  // Memoized callback for viewing donation details
   const handleViewDetails = useCallback((donation: Donation) => {
     setSelectedDonation(donation);
   }, []);
 
-  // Memoized callback for closing modal
   const handleCloseModal = useCallback(() => {
     setSelectedDonation(null);
   }, []);
@@ -61,56 +58,8 @@ export default function DonationManagementPage() {
     setSearchParams(next, { replace: true });
   }, [donations, highlightId, searchParams, setSearchParams]);
 
-  const columns = useMemo<Column<Donation>[]>(
-    () => [
-      {
-        header: 'Donor',
-        key: 'donorName',
-        render: (d) => (
-          <div>
-            <div className="font-semibold">{d.isAnonymous ? 'Anonymous' : d.donorName}</div>
-            {!d.isAnonymous && <div className="text-xs text-gray-500">{d.donorEmail}</div>}
-          </div>
-        ),
-      },
-      {
-        header: 'Amount',
-        key: 'amount',
-        render: (d) => (
-          <span className="font-bold text-green-600">{formatCurrency(d.amount)}</span>
-        ),
-      },
-      {
-        header: 'Method',
-        key: 'paymentMethod',
-        render: (d) => (
-          <span className="text-sm capitalize">{d.paymentMethod.replace('_', ' ').toLowerCase()}</span>
-        ),
-      },
-      {
-        header: 'Date',
-        key: 'createdAt',
-        render: (d) => <span className="text-sm">{formatDateTime(d.createdAt)}</span>,
-      },
-      {
-        header: 'Status',
-        key: 'status',
-        render: (d) => <StatusBadge status={d.status} />,
-      },
-      {
-        header: 'Actions',
-        key: 'actions',
-        align: 'right',
-        render: (d) => (
-          <button
-            onClick={() => handleViewDetails(d)}
-            className="text-sm font-bold text-wiria-blue-dark hover:underline"
-          >
-            View Details
-          </button>
-        ),
-      },
-    ],
+  const columns = useMemo(
+    () => getDonationColumns(handleViewDetails),
     [handleViewDetails]
   );
 
@@ -121,49 +70,8 @@ export default function DonationManagementPage() {
         description="View and manage all donations received by WIRIA CBO."
       />
 
-      {/* Statistics Cards */}
-      {isLoadingStats ? (
-        <div className="flex justify-center p-8">
-          <Spinner />
-        </div>
-      ) : (
-        statistics && (
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-            <Card className="border-l-4 border-l-green-500 shadow-sm">
-              <CardBody className="p-6">
-                <p className="text-xs font-bold uppercase text-gray-500">Total Raised</p>
-                <p className="text-2xl font-bold text-gray-900">
-                  {formatCurrency(statistics.totalAmount)}
-                </p>
-                <p className="text-xs text-gray-400">{statistics.total} donations</p>
-              </CardBody>
-            </Card>
-            <Card className="border-l-4 border-l-blue-500 shadow-sm">
-              <CardBody className="p-6">
-                <p className="text-xs font-bold uppercase text-gray-500">This Month</p>
-                <p className="text-2xl font-bold text-gray-900">
-                  {formatCurrency(statistics.thisMonthAmount || 0)}
-                </p>
-                <p className="text-xs text-gray-400">{statistics.thisMonth || 0} donations</p>
-              </CardBody>
-            </Card>
-            <Card className="border-l-4 border-l-yellow-500 shadow-sm">
-              <CardBody className="p-6">
-                <p className="text-xs font-bold uppercase text-gray-500">Pending</p>
-                <p className="text-2xl font-bold text-gray-900">{statistics.pending}</p>
-              </CardBody>
-            </Card>
-            <Card className="border-l-4 border-l-red-500 shadow-sm">
-              <CardBody className="p-6">
-                <p className="text-xs font-bold uppercase text-gray-500">Failed</p>
-                <p className="text-2xl font-bold text-gray-900">{statistics.failed || 0}</p>
-              </CardBody>
-            </Card>
-          </div>
-        )
-      )}
+      <DonationStatsGrid statistics={statistics} isLoading={isLoadingStats} />
 
-      {/* Filters and Table */}
       <Card className="overflow-hidden border-none shadow-sm">
         <CardBody className="p-0">
           <div className="border-b p-4">
@@ -194,82 +102,7 @@ export default function DonationManagementPage() {
         </CardBody>
       </Card>
 
-      {/* Donation Details Modal */}
-      {selectedDonation && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
-          <div className="w-full max-w-lg rounded-2xl bg-white shadow-2xl">
-            <div className="flex items-center justify-between border-b p-6">
-              <h3 className="text-xl font-bold text-wiria-blue-dark">Donation Details</h3>
-              <button
-                onClick={handleCloseModal}
-                className="rounded-lg p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors"
-              >
-                ✕
-              </button>
-            </div>
-            <div className="space-y-6 p-6">
-              <div className="grid grid-cols-2 gap-6">
-                <div>
-                  <p className="text-xs font-bold uppercase text-gray-500">Donor Name</p>
-                  <p className="font-semibold">
-                    {selectedDonation.isAnonymous ? 'Anonymous' : selectedDonation.donorName}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-xs font-bold uppercase text-gray-500">Amount</p>
-                  <p className="text-xl font-bold text-green-600">
-                    {formatCurrency(selectedDonation.amount)}
-                  </p>
-                </div>
-                {!selectedDonation.isAnonymous && (
-                  <>
-                    <div className="col-span-2">
-                      <p className="text-xs font-bold uppercase text-gray-500">Email & Phone</p>
-                      <p className="text-sm">
-                        {selectedDonation.donorEmail} • {selectedDonation.donorPhone}
-                      </p>
-                    </div>
-                  </>
-                )}
-                <div>
-                  <p className="text-xs font-bold uppercase text-gray-500">Payment Method</p>
-                  <p className="text-sm capitalize">
-                    {selectedDonation.paymentMethod.replace('_', ' ').toLowerCase()}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-xs font-bold uppercase text-gray-500">Status</p>
-                  <StatusBadge status={selectedDonation.status} />
-                </div>
-                <div>
-                  <p className="text-xs font-bold uppercase text-gray-500">Date</p>
-                  <p className="text-sm">{formatDateTime(selectedDonation.createdAt)}</p>
-                </div>
-                {selectedDonation.mpesaReceiptNumber && (
-                  <div>
-                    <p className="text-xs font-bold uppercase text-gray-500">M-Pesa Receipt</p>
-                    <p className="font-mono text-xs">{selectedDonation.mpesaReceiptNumber}</p>
-                  </div>
-                )}
-              </div>
-              {selectedDonation.message && (
-                <div className="rounded-xl bg-gray-50 p-4">
-                  <p className="mb-2 text-xs font-bold uppercase text-gray-500">Message</p>
-                  <p className="text-sm italic text-gray-600">"{selectedDonation.message}"</p>
-                </div>
-              )}
-            </div>
-            <div className="border-t p-6">
-              <button
-                onClick={handleCloseModal}
-                className="w-full rounded-xl bg-gray-900 py-3 font-bold text-white shadow-lg transition-all hover:bg-black"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <DonationDetailsModal donation={selectedDonation} onClose={handleCloseModal} />
     </div>
   );
 }

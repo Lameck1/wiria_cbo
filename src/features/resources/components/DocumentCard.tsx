@@ -48,8 +48,8 @@ export function DocumentCard({ document, onClick, index = 0 }: DocumentCardProps
 
   const hasDocument = hasValidFileUrl(document.downloadUrl);
 
-  const handleQuickDownload = (e: React.MouseEvent) => {
-    e.stopPropagation();
+  const handleQuickDownload = (event: React.MouseEvent) => {
+    event.stopPropagation();
     if (!hasDocument) return;
     const fullUrl = getFullFileUrl(document.downloadUrl);
     window.open(fullUrl, '_blank');

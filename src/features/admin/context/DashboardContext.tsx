@@ -1,24 +1,9 @@
-import { createContext, useContext, ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 import { useAuth } from '@/features/auth/context/AuthContext';
 
-import {
-  useSuspenseDashboardStats,
-  useSuspenseDashboardTrends,
-  canAccessModule as checkModuleAccess,
-  type TrendData,
-} from '../hooks/useDashboardData';
-
-import type { DashboardStats } from '../api/dashboard.api';
-
-interface DashboardContextValue {
-  stats: DashboardStats;
-  trends: TrendData;
-  canAccessModule: (module: string) => boolean;
-  userFirstName: string;
-}
-
-const DashboardContext = createContext<DashboardContextValue | undefined>(undefined);
+import { DashboardContext, type DashboardContextValue } from './DashboardContextBase';
+import { canAccessModule as checkModuleAccess, useSuspenseDashboardStats, useSuspenseDashboardTrends } from '../hooks/useDashboardData';
 
 interface DashboardProviderProps {
   children: ReactNode;
@@ -72,10 +57,4 @@ export function DashboardProvider({ children }: DashboardProviderProps) {
  * }
  * ```
  */
-export function useDashboard(): DashboardContextValue {
-  const context = useContext(DashboardContext);
-  if (context === undefined) {
-    throw new Error('useDashboard must be used within a DashboardProvider');
-  }
-  return context;
-}
+export default DashboardProvider;

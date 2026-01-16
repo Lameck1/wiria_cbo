@@ -148,13 +148,13 @@ export function useMemberDocumentsQuery() {
         queryFn: async () => {
             const response = await apiClient.get<ApiDocumentsResponse>(API_ENDPOINTS.MEMBERS_DOCUMENTS);
             // Backend returns { data: { documents: [] } }
-            const docs = response.data?.documents ?? [];
-            return docs.map((d): Document => ({
-                id: d.id ?? '',
-                name: d.name ?? '',
-                type: d.type ?? '',
-                url: d.url ?? '',
-                createdAt: d.createdAt ?? '',
+            const documents = response.data?.documents ?? [];
+            return documents.map((document): Document => ({
+                id: document.id ?? '',
+                name: document.name ?? '',
+                type: document.type ?? '',
+                url: document.url ?? '',
+                createdAt: document.createdAt ?? '',
             }));
         },
         staleTime: 1000 * 60 * 10,

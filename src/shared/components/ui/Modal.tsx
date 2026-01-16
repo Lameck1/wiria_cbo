@@ -5,7 +5,7 @@
 
 import { ReactNode, useEffect, useId } from 'react';
 
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 
 import { cn } from '@/shared/utils/helpers';
 
@@ -33,8 +33,8 @@ export function Modal({
   const titleId = useId();
   // Close on Escape key
   useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isOpen) {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && isOpen) {
         onClose();
       }
     };
@@ -86,7 +86,7 @@ export function Modal({
               sizeStyles[size],
               className
             )}
-            onClick={(e) => e.stopPropagation()}
+            onClick={(event) => event.stopPropagation()}
           >
             {/* Header */}
             {title && (

@@ -32,7 +32,7 @@ export function useNotificationCountsQuery(enabled = false) {
                 high?: number;
             }
 
-            const [contactRes, appRes, safeRes] = await Promise.allSettled([
+            const [contactResult, applicationResult, safeguardingResult] = await Promise.allSettled([
                 apiClient.get<StatisticsResponse>('/contact/statistics'),
                 apiClient.get<StatisticsResponse>('/admin/applications/statistics'),
                 apiClient.get<StatisticsResponse>('/safeguarding/statistics'),
@@ -44,18 +44,18 @@ export function useNotificationCountsQuery(enabled = false) {
                 criticalCases: 0,
             };
 
-            if (contactRes.status === 'fulfilled') {
-                const data = contactRes.value.data ?? contactRes.value;
+            if (contactResult.status === 'fulfilled') {
+                const data = contactResult.value.data ?? contactResult.value;
                 counts.unreadMessages = data.new ?? data.unread ?? data.pending ?? 0;
             }
 
-            if (appRes.status === 'fulfilled') {
-                const data = appRes.value.data ?? appRes.value;
+            if (applicationResult.status === 'fulfilled') {
+                const data = applicationResult.value.data ?? applicationResult.value;
                 counts.pendingApplications = data.pending ?? 0;
             }
 
-            if (safeRes.status === 'fulfilled') {
-                const data = safeRes.value.data ?? safeRes.value;
+            if (safeguardingResult.status === 'fulfilled') {
+                const data = safeguardingResult.value.data ?? safeguardingResult.value;
                 counts.criticalCases = data.critical ?? data.high ?? 0;
             }
 

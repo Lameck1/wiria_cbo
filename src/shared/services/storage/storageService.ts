@@ -50,21 +50,7 @@ export class StorageService {
   }
 
   clear(): void {
-    // Create array of keys to delete before removing them
-    // This avoids issues with iterator invalidation in jsdom
-    const keysToRemove: string[] = [];
-
-    for (let index = 0; index < window.localStorage.length; index++) {
-      const key = window.localStorage.key(index);
-      if (key?.startsWith(this.prefix)) {
-        keysToRemove.push(key);
-      }
-    }
-
-    // Remove all collected keys
-    keysToRemove.forEach((key) => {
-      window.localStorage.removeItem(key);
-    });
+    window.localStorage.clear();
   }
 
   has(key: string): boolean {

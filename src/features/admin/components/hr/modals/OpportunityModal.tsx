@@ -26,6 +26,133 @@ function handleArrayChange(
   });
 }
 
+interface OpportunityFormFieldsProps {
+  opportunity: Opportunity | null;
+  responsibilities: string[];
+  setResponsibilities: React.Dispatch<React.SetStateAction<string[]>>;
+  requirements: string[];
+  setRequirements: React.Dispatch<React.SetStateAction<string[]>>;
+  benefits: string[];
+  setBenefits: React.Dispatch<React.SetStateAction<string[]>>;
+}
+
+function OpportunityFormFields({
+  opportunity,
+  responsibilities,
+  setResponsibilities,
+  requirements,
+  setRequirements,
+  benefits,
+  setBenefits,
+}: OpportunityFormFieldsProps) {
+  return (
+    <>
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div className="space-y-2">
+          <label className="text-sm font-bold text-gray-700" htmlFor="opportunity-title">
+            Title *
+          </label>
+          <input
+            id="opportunity-title"
+            name="title"
+            defaultValue={opportunity?.title}
+            className="w-full rounded-xl border-gray-200 p-3"
+            required
+          />
+        </div>
+        <div className="space-y-2">
+          <label className="text-sm font-bold text-gray-700" htmlFor="opportunity-type">
+            Type *
+          </label>
+          <select
+            id="opportunity-type"
+            name="type"
+            defaultValue={opportunity?.type}
+            className="w-full rounded-xl border-gray-200 p-3"
+            required
+          >
+            <option value="INTERNSHIP">Internship</option>
+            <option value="VOLUNTEER">Volunteer</option>
+            <option value="FELLOWSHIP">Fellowship</option>
+            <option value="ATTACHMENT">Industrial Attachment</option>
+          </select>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div className="space-y-2">
+          <label className="text-sm font-bold text-gray-700" htmlFor="opportunity-category">
+            Category *
+          </label>
+          <input
+            id="opportunity-category"
+            name="category"
+            defaultValue={opportunity?.category}
+            className="w-full rounded-xl border-gray-200 p-3"
+            required
+          />
+        </div>
+        <div className="space-y-2">
+          <label className="text-sm font-bold text-gray-700" htmlFor="opportunity-location">
+            Location *
+          </label>
+          <input
+            id="opportunity-location"
+            name="location"
+            defaultValue={opportunity?.location}
+            className="w-full rounded-xl border-gray-200 p-3"
+            required
+          />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+        <div className="space-y-4">
+          <h4 className="text-sm font-bold text-gray-700">
+            Responsibilities (One per line) *
+          </h4>
+          {responsibilities.map((r, index) => (
+            <input
+              key={index}
+              aria-label={`Opportunity responsibility ${index + 1}`}
+              value={r}
+              onChange={(event) => handleArrayChange(setResponsibilities, index, event.target.value)}
+              className="mb-2 w-full rounded-xl border-gray-200 p-3"
+            />
+          ))}
+        </div>
+        <div className="space-y-4">
+          <h4 className="text-sm font-bold text-gray-700">
+            Requirements (One per line) *
+          </h4>
+          {requirements.map((r, index) => (
+            <input
+              key={index}
+              aria-label={`Opportunity requirement ${index + 1}`}
+              value={r}
+              onChange={(event) => handleArrayChange(setRequirements, index, event.target.value)}
+              className="mb-2 w-full rounded-xl border-gray-200 p-3"
+            />
+          ))}
+        </div>
+      </div>
+
+      <div className="space-y-4">
+        <h4 className="text-sm font-bold text-gray-700">Benefits (One per line)</h4>
+        {benefits.map((b, index) => (
+          <input
+            key={index}
+            aria-label={`Benefit ${index + 1}`}
+            value={b}
+            onChange={(event) => handleArrayChange(setBenefits, index, event.target.value)}
+            className="mb-2 w-full rounded-xl border-gray-200 p-3"
+          />
+        ))}
+      </div>
+    </>
+  );
+}
+
 export function OpportunityModal({ opportunity, onClose, onSuccess }: OpportunityModalProps) {
   const [responsibilities, setResponsibilities] = useState<string[]>(
     opportunity?.responsibilities ?? ['', '', '']
@@ -75,109 +202,16 @@ export function OpportunityModal({ opportunity, onClose, onSuccess }: Opportunit
           </button>
         </div>
         <div className="flex-1 overflow-y-auto bg-gray-50/30 p-8">
-          <form onSubmit={(e) => void handleSubmit(e)} className="space-y-8">
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              <div className="space-y-2">
-                <label className="text-sm font-bold text-gray-700" htmlFor="opportunity-title">
-                  Title *
-                </label>
-                <input
-                  id="opportunity-title"
-                  name="title"
-                  defaultValue={opportunity?.title}
-                  className="w-full rounded-xl border-gray-200 p-3"
-                  required
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-bold text-gray-700" htmlFor="opportunity-type">
-                  Type *
-                </label>
-                <select
-                  id="opportunity-type"
-                  name="type"
-                  defaultValue={opportunity?.type}
-                  className="w-full rounded-xl border-gray-200 p-3"
-                  required
-                >
-                  <option value="INTERNSHIP">Internship</option>
-                  <option value="VOLUNTEER">Volunteer</option>
-                  <option value="FELLOWSHIP">Fellowship</option>
-                  <option value="ATTACHMENT">Industrial Attachment</option>
-                </select>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              <div className="space-y-2">
-                <label className="text-sm font-bold text-gray-700" htmlFor="opportunity-category">
-                  Category *
-                </label>
-                <input
-                  id="opportunity-category"
-                  name="category"
-                  defaultValue={opportunity?.category}
-                  className="w-full rounded-xl border-gray-200 p-3"
-                  required
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-bold text-gray-700" htmlFor="opportunity-location">
-                  Location *
-                </label>
-                <input
-                  id="opportunity-location"
-                  name="location"
-                  defaultValue={opportunity?.location}
-                  className="w-full rounded-xl border-gray-200 p-3"
-                  required
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-              <div className="space-y-4">
-                <h4 className="text-sm font-bold text-gray-700">
-                  Responsibilities (One per line) *
-                </h4>
-                {responsibilities.map((r, index) => (
-                  <input
-                    key={index}
-                    aria-label={`Opportunity responsibility ${index + 1}`}
-                    value={r}
-                    onChange={(event) => handleArrayChange(setResponsibilities, index, event.target.value)}
-                    className="mb-2 w-full rounded-xl border-gray-200 p-3"
-                  />
-                ))}
-              </div>
-              <div className="space-y-4">
-                <h4 className="text-sm font-bold text-gray-700">
-                  Requirements (One per line) *
-                </h4>
-                {requirements.map((r, index) => (
-                  <input
-                    key={index}
-                    aria-label={`Opportunity requirement ${index + 1}`}
-                    value={r}
-                    onChange={(event) => handleArrayChange(setRequirements, index, event.target.value)}
-                    className="mb-2 w-full rounded-xl border-gray-200 p-3"
-                  />
-                ))}
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <h4 className="text-sm font-bold text-gray-700">Benefits (One per line)</h4>
-              {benefits.map((b, index) => (
-                <input
-                  key={index}
-                  aria-label={`Benefit ${index + 1}`}
-                  value={b}
-                  onChange={(event) => handleArrayChange(setBenefits, index, event.target.value)}
-                  className="mb-2 w-full rounded-xl border-gray-200 p-3"
-                />
-              ))}
-            </div>
+          <form onSubmit={(event) => void handleSubmit(event)} className="space-y-8">
+            <OpportunityFormFields
+              opportunity={opportunity}
+              responsibilities={responsibilities}
+              setResponsibilities={setResponsibilities}
+              requirements={requirements}
+              setRequirements={setRequirements}
+              benefits={benefits}
+              setBenefits={setBenefits}
+            />
 
             <div className="flex justify-end gap-4 border-t pt-8">
               <Button type="button" variant="secondary" onClick={onClose} disabled={isSubmitting}>

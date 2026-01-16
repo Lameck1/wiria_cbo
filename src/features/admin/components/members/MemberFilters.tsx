@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { TIMING } from '@/shared/constants/config';
 import { useDebounce } from '@/shared/hooks/useDebounce';
@@ -12,11 +12,9 @@ interface MemberFiltersProps {
 export function MemberFilters({ currentFilter, onFilterChange, onSearch }: MemberFiltersProps) {
   const [searchValue, setSearchValue] = useState('');
 
-  // Debounce search value with configured delay
   const debouncedSearchValue = useDebounce(searchValue, TIMING.DEBOUNCE_DEFAULT);
 
-  // Call onSearch when debounced value changes
-  React.useEffect(() => {
+  useEffect(() => {
     onSearch(debouncedSearchValue);
   }, [debouncedSearchValue, onSearch]);
 

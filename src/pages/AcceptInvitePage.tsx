@@ -2,19 +2,148 @@
  * Accept Invitation Page
  */
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-import { motion, AnimatePresence } from 'framer-motion';
-import { useSearchParams, useNavigate, Link } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 
 import {
-  verifyInvitation,
   acceptInvitation,
+  verifyInvitation,
   VerifyInviteResponse,
 } from '@/features/auth/api/auth.api';
 import { Button } from '@/shared/components/ui/Button';
 import { ApiError } from '@/shared/services/api/client';
 import { notificationService } from '@/shared/services/notification/notificationService';
+
+const InviteLoading = () => (
+  <motion.div
+    key="loading"
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    exit={{ opacity: 0 }}
+    className="flex flex-col items-center justify-center py-12"
+  >
+    <div className="border-primary-200 border-t-primary-600 mb-4 h-12 w-12 animate-spin rounded-full border-4" />
+    <p className="font-medium text-gray-500">Verifying invitation...</p>
+  </motion.div>
+);
+
+const InviteError = ({ error }: { error: string }) => (
+  <motion.div
+    key="error"
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    className="py-8 text-center"
+  >
+    <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-red-50 text-red-500">
+      <svg className="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M6 18L18 6M6 6l12 12"
+        />
+      </svg>
+    </div>
+    <h2 className="mb-2 text-xl font-bold text-gray-900">Link Invalid</h2>
+    <p className="mb-8 text-gray-500">{error}</p>
+    <Link to="/">
+      <Button variant="secondary" fullWidth>
+        Return to Home
+      </Button>
+    </Link>
+  </motion.div>
+);
+
+interface InviteFormProps {
+  inviteData: VerifyInviteResponse | null;
+  password: string;
+  setPassword: (value: string) => void;
+  confirmPassword: string;
+  setConfirmPassword: (value: string) => void;
+  isSubmitting: boolean;
+  onSubmit: (event: React.FormEvent) => void | Promise<void>;
+}
+
+const InviteForm = ({
+  inviteData,
+  password,
+  setPassword,
+  confirmPassword,
+  setConfirmPassword,
+  isSubmitting,
+  onSubmit,
+}: InviteFormProps) => (
+  <motion.form
+    key="form"
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    onSubmit={(event) => void onSubmit(event)}
+    className="space-y-6"
+  >
+    {/* Invitation Details Summary */}
+    <div className="mb-6 rounded-2xl border border-gray-100 bg-gray-50 p-4">
+      <div className="flex items-center gap-3">
+        <div className="bg-primary-100 text-primary-600 flex h-10 w-10 items-center justify-center rounded-full font-bold">
+          {(inviteData?.firstName?.[0] ?? inviteData?.email?.[0] ?? 'U').toUpperCase()}
+        </div>
+        <div>
+          <p className="text-sm font-bold text-gray-900">
+            {inviteData?.firstName} {inviteData?.lastName}
+          </p>
+          <p className="text-xs text-gray-500">{inviteData?.email}</p>
+        </div>
+      </div>
+      <div className="text-primary-600 bg-primary-50 mt-2 inline-block rounded px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider">
+        Role: {inviteData?.role}
+      </div>
+    </div>
+
+    <div className="space-y-4">
+      <div>
+        <label htmlFor="password" title="New Password" className="mb-1.5 block text-sm font-bold text-gray-700">
+          New Password
+        </label>
+        <input
+          id="password"
+          type="password"
+          required
+          value={password}
+          onChange={(event) => setPassword(event.target.value)}
+          className="focus:ring-primary-500/20 focus:border-primary-500 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-gray-900 outline-none transition-all placeholder:text-gray-400 focus:ring-2"
+          placeholder="Minimum 8 characters"
+          disabled={isSubmitting}
+        />
+      </div>
+
+      <div>
+        <label htmlFor="confirmPassword" title="Confirm Password" className="mb-1.5 block text-sm font-bold text-gray-700">
+          Confirm Password
+        </label>
+        <input
+          id="confirmPassword"
+          type="password"
+          required
+          value={confirmPassword}
+          onChange={(event) => setConfirmPassword(event.target.value)}
+          className="focus:ring-primary-500/20 focus:border-primary-500 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-gray-900 outline-none transition-all placeholder:text-gray-400 focus:ring-2"
+          placeholder="Re-enter password"
+          disabled={isSubmitting}
+        />
+      </div>
+    </div>
+
+    <Button
+      type="submit"
+      fullWidth
+      disabled={isSubmitting}
+      className="shadow-primary-500/25 h-12 text-base shadow-lg"
+    >
+      {isSubmitting ? 'Setting up Account...' : 'Complete Invitation'}
+    </Button>
+  </motion.form>
+);
 
 export default function AcceptInvitePage() {
   const [searchParams] = useSearchParams();
@@ -52,8 +181,8 @@ export default function AcceptInvitePage() {
     void verify();
   }, [token]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
 
     if (password !== confirmPassword) {
       notificationService.error('Passwords do not match');
@@ -98,106 +227,19 @@ export default function AcceptInvitePage() {
           <div className="p-8">
             <AnimatePresence mode="wait">
               {isLoading ? (
-                <motion.div
-                  key="loading"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="flex flex-col items-center justify-center py-12"
-                >
-                  <div className="border-primary-200 border-t-primary-600 mb-4 h-12 w-12 animate-spin rounded-full border-4" />
-                  <p className="font-medium text-gray-500">Verifying invitation...</p>
-                </motion.div>
+                <InviteLoading />
               ) : error ? (
-                <motion.div
-                  key="error"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="py-8 text-center"
-                >
-                  <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-red-50 text-red-500">
-                    <svg className="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M6 18L18 6M6 6l12 12"
-                      />
-                    </svg>
-                  </div>
-                  <h2 className="mb-2 text-xl font-bold text-gray-900">Link Invalid</h2>
-                  <p className="mb-8 text-gray-500">{error}</p>
-                  <Link to="/">
-                    <Button variant="secondary" fullWidth>
-                      Return to Home
-                    </Button>
-                  </Link>
-                </motion.div>
+                <InviteError error={error} />
               ) : (
-                <motion.form
-                  key="form"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  onSubmit={(e) => void handleSubmit(e)}
-                  className="space-y-6"
-                >
-                  {/* Invitation Details Summary */}
-                  <div className="mb-6 rounded-2xl border border-gray-100 bg-gray-50 p-4">
-                    <div className="flex items-center gap-3">
-                      <div className="bg-primary-100 text-primary-600 flex h-10 w-10 items-center justify-center rounded-full font-bold">
-                        {(inviteData?.firstName?.[0] ?? inviteData?.email?.[0] ?? 'U').toUpperCase()}
-                      </div>
-                      <div>
-                        <p className="text-sm font-bold text-gray-900">
-                          {inviteData?.firstName} {inviteData?.lastName}
-                        </p>
-                        <p className="text-xs text-gray-500">{inviteData?.email}</p>
-                      </div>
-                    </div>
-                    <div className="text-primary-600 bg-primary-50 mt-2 inline-block rounded px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider">
-                      Role: {inviteData?.role}
-                    </div>
-                  </div>
-
-                  <div className="space-y-4">
-                    <div>
-                      <label htmlFor="password" title="New Password" className="mb-1.5 block text-sm font-bold text-gray-700">New Password</label>
-                      <input
-                        id="password"
-                        type="password"
-                        required
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className="focus:ring-primary-500/20 focus:border-primary-500 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-gray-900 outline-none transition-all placeholder:text-gray-400 focus:ring-2"
-                        placeholder="Minimum 8 characters"
-                        disabled={isSubmitting}
-                      />
-                    </div>
-
-                    <div>
-                      <label htmlFor="confirmPassword" title="Confirm Password" className="mb-1.5 block text-sm font-bold text-gray-700">Confirm Password</label>
-                      <input
-                        id="confirmPassword"
-                        type="password"
-                        required
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        className="focus:ring-primary-500/20 focus:border-primary-500 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-gray-900 outline-none transition-all placeholder:text-gray-400 focus:ring-2"
-                        placeholder="Re-enter password"
-                        disabled={isSubmitting}
-                      />
-                    </div>
-                  </div>
-
-                  <Button
-                    type="submit"
-                    fullWidth
-                    disabled={isSubmitting}
-                    className="shadow-primary-500/25 h-12 text-base shadow-lg"
-                  >
-                    {isSubmitting ? 'Setting up Account...' : 'Complete Invitation'}
-                  </Button>
-                </motion.form>
+                <InviteForm
+                  inviteData={inviteData}
+                  password={password}
+                  setPassword={setPassword}
+                  confirmPassword={confirmPassword}
+                  setConfirmPassword={setConfirmPassword}
+                  isSubmitting={isSubmitting}
+                  onSubmit={handleSubmit}
+                />
               )}
             </AnimatePresence>
           </div>

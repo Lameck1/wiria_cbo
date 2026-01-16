@@ -2,7 +2,7 @@
  * Utility functions
  */
 
-import clsx, { ClassValue } from 'clsx';
+import { clsx, type ClassValue } from 'clsx';
 
 /**
  * Merge class names conditionally

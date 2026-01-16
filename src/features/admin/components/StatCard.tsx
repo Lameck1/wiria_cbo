@@ -37,9 +37,9 @@ export function StatCard({
             onClick={onClick}
             role={isClickable ? 'button' : undefined}
             tabIndex={isClickable ? 0 : undefined}
-            onKeyDown={(e) => {
-                if (isClickable && (e.key === 'Enter' || e.key === ' ')) {
-                    e.preventDefault();
+            onKeyDown={(event) => {
+                if (isClickable && (event.key === 'Enter' || event.key === ' ')) {
+                    event.preventDefault();
                     onClick();
                 }
             }}

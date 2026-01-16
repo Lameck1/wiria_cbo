@@ -164,8 +164,8 @@ export function OpportunityCard({ opportunity, onViewDetails }: OpportunityCardP
 
         {/* View Details Button */}
         <button
-          onClick={(e) => {
-            e.stopPropagation();
+          onClick={(event) => {
+            event.stopPropagation();
             onViewDetails();
           }}
           className="flex items-center gap-2 whitespace-nowrap rounded-full bg-wiria-blue-dark px-6 py-2.5 font-semibold text-white transition-all hover:bg-wiria-yellow hover:text-wiria-blue-dark hover:shadow-lg group-hover:bg-wiria-yellow group-hover:text-wiria-blue-dark"

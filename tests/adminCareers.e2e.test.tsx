@@ -4,8 +4,11 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
-import { describe, it, beforeEach, vi, expect } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
+import { getAdminCareers } from '@/features/admin/api/careers.api';
+import { getAdminOpportunities, getApplications } from '@/features/admin/api/opportunities.api';
+import HRManagementPage from '@/pages/admin/hrManagementPage';
 
 // Create a fresh QueryClient for tests
 function createTestQueryClient() {
@@ -51,10 +54,6 @@ vi.mock('@/shared/services/notification/notificationService', () => ({
     handleError: vi.fn(),
   },
 }));
-
-import { getAdminCareers } from '@/features/admin/api/careers.api';
-import { getAdminOpportunities, getApplications } from '@/features/admin/api/opportunities.api';
-import HRManagementPage from '@/pages/admin/hrManagementPage';
 
 describe('HRManagementPage (careers + applications)', () => {
   beforeEach(() => {

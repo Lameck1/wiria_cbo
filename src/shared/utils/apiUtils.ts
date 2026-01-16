@@ -20,30 +20,34 @@ export function extractArray<T>(response: unknown, arrayKey?: string): T[] {
     return response as T[];
   }
 
-  // Handle object responses
-  if (response && typeof response === 'object') {
-    const object = response as Record<string, unknown>;
+  if (!response || typeof response !== 'object') {
+    return [];
+  }
 
-    // Check for specific key if provided (e.g., 'members', 'items')
-    if (arrayKey && Array.isArray(object[arrayKey])) {
-      return object[arrayKey] as T[];
+  const object = response as Record<string, unknown>;
+
+  // Check for specific key if provided (e.g., 'members', 'items')
+  if (arrayKey && Array.isArray(object[arrayKey])) {
+    return object[arrayKey] as T[];
+  }
+
+  // Standard { data: T[] } wrapper
+  if (Array.isArray(object['data'])) {
+    return object['data'] as T[];
+  }
+
+  // Nested { data: { data: T[] } } wrapper
+  const nestedData = object['data'];
+  if (nestedData && typeof nestedData === 'object') {
+    const nested = nestedData as Record<string, unknown>;
+    
+    if (Array.isArray(nested['data'])) {
+      return nested['data'] as T[];
     }
-
-    // Standard { data: T[] } wrapper
-    if (Array.isArray(object['data'])) {
-      return object['data'] as T[];
-    }
-
-    // Nested { data: { data: T[] } } wrapper
-    if (object['data'] && typeof object['data'] === 'object') {
-      const nested = object['data'] as Record<string, unknown>;
-      if (Array.isArray(nested['data'])) {
-        return nested['data'] as T[];
-      }
-      // Check for named arrays in nested data
-      if (arrayKey && Array.isArray(nested[arrayKey])) {
-        return nested[arrayKey] as T[];
-      }
+    
+    // Check for named arrays in nested data
+    if (arrayKey && Array.isArray(nested[arrayKey])) {
+      return nested[arrayKey] as T[];
     }
   }
 

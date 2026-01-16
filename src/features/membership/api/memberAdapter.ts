@@ -1,4 +1,4 @@
-import type { MemberProfile, Payment, Meeting, Activity } from '../hooks/useMemberData';
+import type { Activity, Meeting, MemberProfile, Payment } from '../hooks/useMemberData';
 
 /**
  * API Response Types
@@ -86,32 +86,13 @@ export const memberAdapter = {
         if (!apiData) {
             throw new Error('Member adapter error: No profile data provided');
         }
-
         const source = apiData.props ?? apiData;
-
         return {
-            id: apiData.id ?? source.id ?? '',
-            memberNumber: apiData.memberNumber ?? source.memberNumber ?? '',
-            firstName: source.firstName ?? '',
-            lastName: source.lastName ?? '',
-            email: source.email ?? '',
-            phone: source.phone ?? '',
-            nationalId: source.nationalId,
-            occupation: source.occupation,
-            address: source.address,
-            county: source.county,
-            subcounty: source.subcounty,
-            ward: source.ward,
-            interests: source.interests ?? [],
-            skills: source.skills ?? [],
-            status: (apiData.status ?? source.status ?? 'PENDING') as MemberProfile['status'],
-            membershipType: (apiData.membershipType ?? source.membershipType) as MemberProfile['membershipType'],
-            groupName: apiData.groupName ?? source.groupName,
-            currentMemberCount: apiData.currentMemberCount ?? source.currentMemberCount,
-            maxMemberCountReached: apiData.maxMemberCountReached ?? source.maxMemberCountReached,
-            joinedAt: apiData.joinDate ?? apiData.joinedAt ?? source.joinDate ?? source.joinedAt ?? '',
-            membershipExpiresAt: apiData.expiryDate ?? apiData.membershipExpiresAt ?? source.expiryDate ?? source.membershipExpiresAt,
-            createdAt: apiData.createdAt ?? source.createdAt ?? '',
+            ...mapIdentityFields(apiData, source),
+            ...mapContactAndLocation(source),
+            ...mapAttributes(source),
+            ...mapMembershipFields(apiData, source),
+            ...mapDates(apiData, source),
         };
     },
 
@@ -172,3 +153,54 @@ export const memberAdapter = {
         }));
     }
 };
+
+function mapIdentityFields(apiData: ApiMemberProfileData, source: ApiMemberProfileData) {
+    return {
+        id: apiData.id ?? source.id ?? '',
+        memberNumber: apiData.memberNumber ?? source.memberNumber ?? '',
+        firstName: source.firstName ?? '',
+        lastName: source.lastName ?? '',
+    };
+}
+
+function mapContactAndLocation(source: ApiMemberProfileData) {
+    return {
+        email: source.email ?? '',
+        phone: source.phone ?? '',
+        nationalId: source.nationalId,
+        occupation: source.occupation,
+        address: source.address,
+        county: source.county,
+        subcounty: source.subcounty,
+        ward: source.ward,
+    };
+}
+
+function mapAttributes(source: ApiMemberProfileData) {
+    return {
+        interests: source.interests ?? [],
+        skills: source.skills ?? [],
+    };
+}
+
+function mapMembershipFields(apiData: ApiMemberProfileData, source: ApiMemberProfileData) {
+    return {
+        status: (apiData.status ?? source.status ?? 'PENDING') as MemberProfile['status'],
+        membershipType: (apiData.membershipType ?? source.membershipType) as MemberProfile['membershipType'],
+        groupName: apiData.groupName ?? source.groupName,
+        currentMemberCount: apiData.currentMemberCount ?? source.currentMemberCount,
+        maxMemberCountReached: apiData.maxMemberCountReached ?? source.maxMemberCountReached,
+    };
+}
+
+function mapDates(apiData: ApiMemberProfileData, source: ApiMemberProfileData) {
+    return {
+        joinedAt: apiData.joinDate ?? apiData.joinedAt ?? source.joinDate ?? source.joinedAt ?? '',
+        membershipExpiresAt:
+            apiData.expiryDate ??
+            apiData.membershipExpiresAt ??
+            source.expiryDate ??
+            source.membershipExpiresAt,
+        createdAt: apiData.createdAt ?? source.createdAt ?? '',
+    };
+}

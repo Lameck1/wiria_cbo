@@ -5,6 +5,9 @@
 
 import type { Opportunity } from '@/features/opportunities/hooks/useOpportunities';
 
+const DEFAULT_CREATED_AT = '2024-11-01T00:00:00Z';
+const DEFAULT_UPDATED_AT = '2024-11-01T00:00:00Z';
+
 export const staticOpportunities: Opportunity[] = [
   {
     id: 'static-opportunity-1',
@@ -30,8 +33,8 @@ export const staticOpportunities: Opportunity[] = [
     ],
     benefits: ['Monthly stipend provided', 'Certificate of completion', 'Practical experience'],
     status: 'ACTIVE',
-    createdAt: '2024-11-01T00:00:00Z',
-    updatedAt: '2024-11-01T00:00:00Z',
+    createdAt: DEFAULT_CREATED_AT,
+    updatedAt: DEFAULT_UPDATED_AT,
   },
   {
     id: 'static-opportunity-2',
@@ -56,8 +59,8 @@ export const staticOpportunities: Opportunity[] = [
     ],
     benefits: ['Gain practical M&E experience', 'Certificate and reference letter'],
     status: 'ACTIVE',
-    createdAt: '2024-11-01T00:00:00Z',
-    updatedAt: '2024-11-01T00:00:00Z',
+    createdAt: DEFAULT_CREATED_AT,
+    updatedAt: DEFAULT_UPDATED_AT,
   },
   {
     id: 'static-opportunity-3',
@@ -87,7 +90,7 @@ export const staticOpportunities: Opportunity[] = [
       'Certificate of participation',
     ],
     status: 'ACTIVE',
-    createdAt: '2024-11-01T00:00:00Z',
-    updatedAt: '2024-11-01T00:00:00Z',
+    createdAt: DEFAULT_CREATED_AT,
+    updatedAt: DEFAULT_UPDATED_AT,
   },
 ];

@@ -48,8 +48,8 @@ export function Header() {
 
   // Handle keyboard navigation
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
         if (mobileMenuOpen) setMobileMenuOpen(false);
         if (loginDropdownOpen) setLoginDropdownOpen(false);
       }
@@ -66,8 +66,8 @@ export function Header() {
 
   // Close dropdown when clicking outside
   useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (!(e.target as HTMLElement).closest('.login-dropdown-container')) {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (!(event.target as HTMLElement).closest('.login-dropdown-container')) {
         setLoginDropdownOpen(false);
       }
     };

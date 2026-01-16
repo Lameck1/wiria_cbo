@@ -83,6 +83,57 @@ export interface Activity {
   timestamp?: string;
 }
 
+function useMemberComputedValues(
+  profileQuery: ReturnType<typeof useMemberProfileQuery>,
+  paymentsQuery: ReturnType<typeof useMemberPaymentsQuery>,
+  meetingsQuery: ReturnType<typeof useMemberMeetingsQuery>
+) {
+  const totalPayments = useMemo(
+    () =>
+      (paymentsQuery.data ?? [])
+        .filter((payment: Payment) => payment.status === 'COMPLETED')
+        .reduce((sum: number, payment: Payment) => sum + payment.amount, 0),
+    [paymentsQuery.data]
+  );
+
+  const pendingPayments = useMemo(
+    () =>
+      (paymentsQuery.data ?? []).filter(
+        (payment: Payment) => payment.status === 'PENDING'
+      ).length,
+    [paymentsQuery.data]
+  );
+
+  const upcomingMeetings = useMemo(
+    () =>
+      (meetingsQuery.data ?? []).filter(
+        (meeting: Meeting) => meeting.status === 'UPCOMING'
+      ).length,
+    [meetingsQuery.data]
+  );
+
+  const daysUntilExpiry = useMemo(() => {
+    const expiry = profileQuery.data?.membershipExpiresAt;
+    if (!expiry) return null;
+    return Math.ceil(
+      (new Date(expiry).getTime() - Date.now()) / (1000 * 60 * 60 * 24)
+    );
+  }, [profileQuery.data?.membershipExpiresAt]);
+
+  const isExpired = daysUntilExpiry !== null && daysUntilExpiry <= 0;
+  const isExpiringSoon =
+    daysUntilExpiry !== null && daysUntilExpiry > 0 && daysUntilExpiry <= 30;
+
+  return {
+    totalPayments,
+    pendingPayments,
+    upcomingMeetings,
+    daysUntilExpiry,
+    isExpired,
+    isExpiringSoon,
+  };
+}
+
 /**
  * useMemberData Hook (Refactored)
  * Recommended: Use the granular hooks directly in components for better performance.
@@ -98,7 +149,15 @@ export function useMemberData() {
   const rsvpMutation = useRsvpMutation();
   const cancelRsvpMutation = useCancelRsvpMutation();
 
-  // Aggregate loading and error states
+  const {
+    totalPayments,
+    pendingPayments,
+    upcomingMeetings,
+    daysUntilExpiry,
+    isExpired,
+    isExpiringSoon,
+  } = useMemberComputedValues(profileQuery, paymentsQuery, meetingsQuery);
+
   const isLoading =
     profileQuery.isLoading ||
     paymentsQuery.isLoading ||
@@ -107,36 +166,9 @@ export function useMemberData() {
     activityQuery.isLoading;
 
   const error =
-    (profileQuery.error)?.message ??
-    (paymentsQuery.error)?.message ??
+    profileQuery.error?.message ??
+    paymentsQuery.error?.message ??
     null;
-
-  // Computed values
-  const totalPayments = useMemo(() =>
-    (paymentsQuery.data ?? [])
-      .filter((p: Payment) => p.status === 'COMPLETED')
-      .reduce((sum: number, p: Payment) => sum + p.amount, 0),
-    [paymentsQuery.data]
-  );
-
-  const pendingPayments = useMemo(() =>
-    (paymentsQuery.data ?? []).filter((p: Payment) => p.status === 'PENDING').length,
-    [paymentsQuery.data]
-  );
-
-  const upcomingMeetings = useMemo(() =>
-    (meetingsQuery.data ?? []).filter((m: Meeting) => m.status === 'UPCOMING').length,
-    [meetingsQuery.data]
-  );
-
-  const daysUntilExpiry = useMemo(() => {
-    const expiry = profileQuery.data?.membershipExpiresAt;
-    if (!expiry) return null;
-    return Math.ceil((new Date(expiry).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
-  }, [profileQuery.data?.membershipExpiresAt]);
-
-  const isExpired = daysUntilExpiry !== null && daysUntilExpiry <= 0;
-  const isExpiringSoon = daysUntilExpiry !== null && daysUntilExpiry > 0 && daysUntilExpiry <= 30;
 
   return {
     profile: profileQuery.data ?? null,

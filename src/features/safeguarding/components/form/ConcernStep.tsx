@@ -21,7 +21,7 @@ const staggerItem = {
 interface ConcernStepProps {
   isSubmitting: boolean;
   evidenceFile: File | null;
-  onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onFileChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onClearFile: () => void;
   onBack: () => void;
 }

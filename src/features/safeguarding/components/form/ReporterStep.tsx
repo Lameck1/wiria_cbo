@@ -45,7 +45,7 @@ export function ReporterStep({
             {...register('isAnonymous')}
             id="isAnonymous"
             type="checkbox"
-            onChange={(e) => setIsAnonymous(e.target.checked)}
+            onChange={(event) => setIsAnonymous(event.target.checked)}
             className="mt-0.5 h-5 w-5 rounded border-gray-300 text-slate-600 focus:ring-slate-500"
           />
           <span className="ml-3 flex-1">

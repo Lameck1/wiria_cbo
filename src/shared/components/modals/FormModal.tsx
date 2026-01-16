@@ -56,9 +56,9 @@ export function FormModal<T extends Record<string, unknown>>({
   cancelLabel = 'Cancel',
   children,
 }: FormModalProps<T>) {
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
     const data: Record<string, unknown> = {};
 
     fields.forEach((field) => {
@@ -144,7 +144,7 @@ export function FormModal<T extends Record<string, unknown>>({
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={title}>
-      <form onSubmit={(e) => void handleSubmit(e)} className="space-y-4">
+      <form onSubmit={(event) => void handleSubmit(event)} className="space-y-4">
         {fields.map((field) => (
           <div key={field.name as string}>
             <label
