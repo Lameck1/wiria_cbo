@@ -23,19 +23,19 @@ Phase 1 focused on eliminating critical code quality issues that posed risks to 
 
 **Solution Implemented:**
 - Created `src/shared/types/payment.ts` with standardized `PaymentStatus` enum
-- Created `src/shared/hooks/usePaymentFlow.ts` (210 lines) - unified payment logic
+- Created `src/shared/hooks/usePaymentFlow.ts` (230 lines) - unified payment logic
 - Refactored all 3 payment hooks to use shared implementation
 
 **Code Metrics:**
 - **Before:** 362 lines across 3 hooks
 - **After:** 274 lines + 210 shared = 484 total
 - **Eliminated:** 88 duplicate lines (24% reduction in payment hooks)
-- **Net impact:** Consolidated 362 lines of duplicated logic into 210 lines of reusable code
+- **Net impact:** Consolidated 362 lines of duplicated logic into 230 lines of reusable code
 
 **Files Modified:**
 ```
-src/shared/types/payment.ts                          [NEW] 45 lines
-src/shared/hooks/usePaymentFlow.ts                   [NEW] 210 lines
+src/shared/types/payment.ts                          [NEW] 48 lines
+src/shared/hooks/usePaymentFlow.ts                   [NEW] 230 lines
 src/features/donations/hooks/useDonation.ts          129→87 lines (-42)
 src/features/membership/hooks/useRegistration.ts     96→88 lines (-8)
 src/features/membership/hooks/useRenewal.ts          137→99 lines (-38)
@@ -171,7 +171,7 @@ All payment hooks - standardized response access patterns
 ### Lines of Code Changes
 
 ```
-Files Created:        2 files    (+255 lines)
+Files Created:        2 files    (+278 lines)
 Files Modified:       5 files    (-90 lines)
 Net Change:                      (+165 lines infrastructure, -88 duplicate code)
 Duplicate Code Eliminated:       88 lines (24% reduction in payment hooks)
@@ -180,8 +180,8 @@ Duplicate Code Eliminated:       88 lines (24% reduction in payment hooks)
 ### File-by-File Breakdown
 
 **Created Files:**
-- `src/shared/types/payment.ts` - 45 lines (types & enums)
-- `src/shared/hooks/usePaymentFlow.ts` - 210 lines (shared logic)
+- `src/shared/types/payment.ts` - 48 lines (types & enums)
+- `src/shared/hooks/usePaymentFlow.ts` - 230 lines (shared logic)
 
 **Modified Files:**
 - `src/shared/services/logger.ts` - 1 line changed
