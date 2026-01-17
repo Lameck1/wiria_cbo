@@ -1,11 +1,11 @@
-import { FieldErrors, UseFormRegister, UseFormSetValue } from 'react-hook-form';
-
 import { PaymentInstructions } from '@/features/donations/components/PaymentInstructions';
 import { PaymentMethodToggle } from '@/features/donations/components/PaymentMethodToggle';
-import { RenewalFormSchema } from '@/features/membership/validation';
+import type { RenewalFormSchema } from '@/features/membership/validation';
 import { Button } from '@/shared/components/ui/Button';
 import { Card, CardBody } from '@/shared/components/ui/Card';
 import { FormField } from '@/shared/components/ui/form';
+
+import type { FieldErrors, UseFormRegister, UseFormSetValue } from 'react-hook-form';
 
 interface PaymentSectionCardProps {
   paymentMethod: 'STK_PUSH' | 'MANUAL';
@@ -33,15 +33,11 @@ export function PaymentSectionCard({
   return (
     <Card className="border-none shadow-lg">
       <CardBody className="p-8">
-        <h2 className="mb-8 text-2xl font-bold text-wiria-blue-dark">
-          Payment Details
-        </h2>
+        <h2 className="mb-8 text-2xl font-bold text-wiria-blue-dark">Payment Details</h2>
 
         <div className="mb-8 grid grid-cols-1 gap-8 md:grid-cols-2">
           <div>
-            <p className="mb-3 block text-sm font-bold text-gray-700">
-              Payment Method
-            </p>
+            <p className="mb-3 block text-sm font-bold text-gray-700">Payment Method</p>
             <PaymentMethodToggle
               selected={paymentMethod}
               onChange={(value) => setValue('paymentMethod', value)}
@@ -94,9 +90,7 @@ export function PaymentSectionCard({
             </label>
           </div>
           {errors.agreedToDataProtection && (
-            <p className="ml-8 text-xs text-red-500">
-              {errors.agreedToDataProtection.message}
-            </p>
+            <p className="ml-8 text-xs text-red-500">{errors.agreedToDataProtection.message}</p>
           )}
 
           <div className="flex items-start gap-3">
@@ -112,9 +106,7 @@ export function PaymentSectionCard({
             </label>
           </div>
           {errors.agreedToCodeOfEthics && (
-            <p className="ml-8 text-xs text-red-500">
-              {errors.agreedToCodeOfEthics.message}
-            </p>
+            <p className="ml-8 text-xs text-red-500">{errors.agreedToCodeOfEthics.message}</p>
           )}
         </div>
 
@@ -132,4 +124,3 @@ export function PaymentSectionCard({
     </Card>
   );
 }
-

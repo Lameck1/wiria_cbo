@@ -3,9 +3,8 @@
  * Shared interfaces for HR-related components
  */
 
-import { Career } from '@/features/admin/api/careers.api';
-import { Application, Opportunity } from '@/features/admin/api/opportunities.api';
-
+import type { Career } from '@/features/admin/api/careers.api';
+import type { Application, Opportunity } from '@/features/admin/api/opportunities.api';
 
 export interface CareersTabProps {
   careers: Career[];
@@ -40,5 +39,5 @@ export interface OpportunityModalProps {
   onSuccess: () => void;
 }
 
-export {type Career} from '@/features/admin/api/careers.api';
-export {type Application, type Opportunity} from '@/features/admin/api/opportunities.api';
+export { type Career } from '@/features/admin/api/careers.api';
+export { type Application, type Opportunity } from '@/features/admin/api/opportunities.api';

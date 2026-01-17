@@ -12,22 +12,23 @@ import type { MemberProfile, Document } from '../useMemberData';
  * These match the structure returned by the backend.
  */
 interface ApiProfileResponse {
-    data: {
-        id?: string;
-        memberNumber?: string;
-        firstName?: string;
-        lastName?: string;
-        email?: string;
-        phone?: string;
-        status?: string;
-        membershipType?: string;
-        props?: Record<string, unknown>;
-        [key: string]: unknown;
-    };
+  data: {
+    id?: string;
+    memberNumber?: string;
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+    phone?: string;
+    status?: string;
+    membershipType?: string;
+    props?: Record<string, unknown>;
+    [key: string]: unknown;
+  };
 }
 
 interface ApiPaymentsResponse {
-    data: {
+  data:
+    | {
         id?: string;
         amount?: number | string;
         type?: string;
@@ -35,11 +36,13 @@ interface ApiPaymentsResponse {
         method?: string;
         mpesaReceiptNumber?: string;
         createdAt?: string;
-    }[] | { payments: Record<string, unknown>[] };
+      }[]
+    | { payments: Record<string, unknown>[] };
 }
 
 interface ApiMeetingsResponse {
-    data: {
+  data:
+    | {
         id?: string;
         title?: string;
         description?: string;
@@ -50,154 +53,161 @@ interface ApiMeetingsResponse {
         status?: string;
         isRsvpd?: boolean;
         attendeesCount?: number;
-    }[] | { data: Record<string, unknown>[] };
+      }[]
+    | { data: Record<string, unknown>[] };
 }
 
 interface ApiDocumentsResponse {
-    data: {
-        documents?: {
-            id?: string;
-            name?: string;
-            type?: string;
-            url?: string;
-            createdAt?: string;
-        }[];
-    };
+  data: {
+    documents?: {
+      id?: string;
+      name?: string;
+      type?: string;
+      url?: string;
+      createdAt?: string;
+    }[];
+  };
 }
 
 interface ApiActivityResponse {
-    data: {
+  data:
+    | {
         id?: string;
         type?: string;
         description?: string;
         timestamp?: string;
         createdAt?: string;
-    }[] | { data: Record<string, unknown>[] };
+      }[]
+    | { data: Record<string, unknown>[] };
 }
 
 export const MEMBER_KEYS = {
-    all: ['member'] as const,
-    profile: () => [...MEMBER_KEYS.all, 'profile'] as const,
-    payments: () => [...MEMBER_KEYS.all, 'payments'] as const,
-    meetings: (type: 'joined' | 'available') => [...MEMBER_KEYS.all, 'meetings', type] as const,
-    documents: () => [...MEMBER_KEYS.all, 'documents'] as const,
-    activity: () => [...MEMBER_KEYS.all, 'activity'] as const,
+  all: ['member'] as const,
+  profile: () => [...MEMBER_KEYS.all, 'profile'] as const,
+  payments: () => [...MEMBER_KEYS.all, 'payments'] as const,
+  meetings: (type: 'joined' | 'available') => [...MEMBER_KEYS.all, 'meetings', type] as const,
+  documents: () => [...MEMBER_KEYS.all, 'documents'] as const,
+  activity: () => [...MEMBER_KEYS.all, 'activity'] as const,
 };
 
 export function useMemberProfileQuery() {
-    return useQuery({
-        queryKey: MEMBER_KEYS.profile(),
-        queryFn: async () => {
-            const response = await apiClient.get<ApiProfileResponse>(API_ENDPOINTS.MEMBERS_ME);
-            return memberAdapter.profile(response.data);
-        },
-        staleTime: 1000 * 60 * 5, // 5 minutes
-    });
+  return useQuery({
+    queryKey: MEMBER_KEYS.profile(),
+    queryFn: async () => {
+      const response = await apiClient.get<ApiProfileResponse>(API_ENDPOINTS.MEMBERS_ME);
+      return memberAdapter.profile(response.data);
+    },
+    staleTime: 1000 * 60 * 5, // 5 minutes
+  });
 }
 
 export function useUpdateMemberProfileMutation() {
-    const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
-    return useMutation({
-        mutationFn: async (data: Partial<MemberProfile>) => {
-            const response = await apiClient.put<ApiProfileResponse>(API_ENDPOINTS.MEMBERS_ME, data);
-            return memberAdapter.profile(response.data);
-        },
-        onSuccess: (updatedProfile) => {
-            queryClient.setQueryData(MEMBER_KEYS.profile(), updatedProfile);
-        },
-    });
+  return useMutation({
+    mutationFn: async (data: Partial<MemberProfile>) => {
+      const response = await apiClient.put<ApiProfileResponse>(API_ENDPOINTS.MEMBERS_ME, data);
+      return memberAdapter.profile(response.data);
+    },
+    onSuccess: (updatedProfile) => {
+      queryClient.setQueryData(MEMBER_KEYS.profile(), updatedProfile);
+    },
+  });
 }
 
 export function useMemberPaymentsQuery() {
-    return useQuery({
-        queryKey: MEMBER_KEYS.payments(),
-        queryFn: async () => {
-            const response = await apiClient.get<ApiPaymentsResponse>(API_ENDPOINTS.MEMBERS_PAYMENTS);
-            return memberAdapter.payments(response.data);
-        },
-        staleTime: 1000 * 60 * 5,
-    });
+  return useQuery({
+    queryKey: MEMBER_KEYS.payments(),
+    queryFn: async () => {
+      const response = await apiClient.get<ApiPaymentsResponse>(API_ENDPOINTS.MEMBERS_PAYMENTS);
+      return memberAdapter.payments(response.data);
+    },
+    staleTime: 1000 * 60 * 5,
+  });
 }
 
 export function useMemberMeetingsQuery() {
-    return useQuery({
-        queryKey: MEMBER_KEYS.meetings('joined'),
-        queryFn: async () => {
-            const response = await apiClient.get<ApiMeetingsResponse>(API_ENDPOINTS.MEMBERS_MEETINGS);
-            return memberAdapter.meetings(response.data);
-        },
-        staleTime: 1000 * 60 * 5,
-    });
+  return useQuery({
+    queryKey: MEMBER_KEYS.meetings('joined'),
+    queryFn: async () => {
+      const response = await apiClient.get<ApiMeetingsResponse>(API_ENDPOINTS.MEMBERS_MEETINGS);
+      return memberAdapter.meetings(response.data);
+    },
+    staleTime: 1000 * 60 * 5,
+  });
 }
 
 export function useAvailableMeetingsQuery() {
-    return useQuery({
-        queryKey: MEMBER_KEYS.meetings('available'),
-        queryFn: async () => {
-            const response = await apiClient.get<ApiMeetingsResponse>(API_ENDPOINTS.MEMBERS_MEETINGS_AVAILABLE);
-            return memberAdapter.meetings(response.data);
-        },
-        staleTime: 1000 * 60 * 5,
-    });
+  return useQuery({
+    queryKey: MEMBER_KEYS.meetings('available'),
+    queryFn: async () => {
+      const response = await apiClient.get<ApiMeetingsResponse>(
+        API_ENDPOINTS.MEMBERS_MEETINGS_AVAILABLE
+      );
+      return memberAdapter.meetings(response.data);
+    },
+    staleTime: 1000 * 60 * 5,
+  });
 }
 
 export function useMemberDocumentsQuery() {
-    return useQuery({
-        queryKey: MEMBER_KEYS.documents(),
-        queryFn: async () => {
-            const response = await apiClient.get<ApiDocumentsResponse>(API_ENDPOINTS.MEMBERS_DOCUMENTS);
-            // Backend returns { data: { documents: [] } }
-            const documents = response.data?.documents ?? [];
-            return documents.map((document): Document => ({
-                id: document.id ?? '',
-                name: document.name ?? '',
-                type: document.type ?? '',
-                url: document.url ?? '',
-                createdAt: document.createdAt ?? '',
-            }));
-        },
-        staleTime: 1000 * 60 * 10,
-    });
+  return useQuery({
+    queryKey: MEMBER_KEYS.documents(),
+    queryFn: async () => {
+      const response = await apiClient.get<ApiDocumentsResponse>(API_ENDPOINTS.MEMBERS_DOCUMENTS);
+      // Backend returns { data: { documents: [] } }
+      const documents = response.data?.documents ?? [];
+      return documents.map(
+        (document): Document => ({
+          id: document.id ?? '',
+          name: document.name ?? '',
+          type: document.type ?? '',
+          url: document.url ?? '',
+          createdAt: document.createdAt ?? '',
+        })
+      );
+    },
+    staleTime: 1000 * 60 * 10,
+  });
 }
 
 export function useMemberActivityQuery() {
-    return useQuery({
-        queryKey: MEMBER_KEYS.activity(),
-        queryFn: async () => {
-            const response = await apiClient.get<ApiActivityResponse>(API_ENDPOINTS.MEMBERS_ACTIVITY);
-            return memberAdapter.activity(response.data);
-        },
-        staleTime: 1000 * 60 * 2,
-    });
+  return useQuery({
+    queryKey: MEMBER_KEYS.activity(),
+    queryFn: async () => {
+      const response = await apiClient.get<ApiActivityResponse>(API_ENDPOINTS.MEMBERS_ACTIVITY);
+      return memberAdapter.activity(response.data);
+    },
+    staleTime: 1000 * 60 * 2,
+  });
 }
 
 export function useRsvpMutation() {
-    const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
-    return useMutation({
-        mutationFn: async (meetingId: string) => {
-            const endpoint = API_ENDPOINTS.MEMBERS_MEETINGS_RSVP.replace(':id', meetingId);
-            return apiClient.post(endpoint, {});
-        },
-        onSuccess: () => {
-            void queryClient.invalidateQueries({ queryKey: MEMBER_KEYS.meetings('joined') });
-            void queryClient.invalidateQueries({ queryKey: MEMBER_KEYS.meetings('available') });
-        },
-    });
+  return useMutation({
+    mutationFn: async (meetingId: string) => {
+      const endpoint = API_ENDPOINTS.MEMBERS_MEETINGS_RSVP.replace(':id', meetingId);
+      return apiClient.post(endpoint, {});
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: MEMBER_KEYS.meetings('joined') });
+      void queryClient.invalidateQueries({ queryKey: MEMBER_KEYS.meetings('available') });
+    },
+  });
 }
 
 export function useCancelRsvpMutation() {
-    const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
-    return useMutation({
-        mutationFn: async (meetingId: string) => {
-            const endpoint = API_ENDPOINTS.MEMBERS_MEETINGS_RSVP.replace(':id', meetingId);
-            return apiClient.delete(endpoint);
-        },
-        onSuccess: () => {
-            void queryClient.invalidateQueries({ queryKey: MEMBER_KEYS.meetings('joined') });
-            void queryClient.invalidateQueries({ queryKey: MEMBER_KEYS.meetings('available') });
-        },
-    });
+  return useMutation({
+    mutationFn: async (meetingId: string) => {
+      const endpoint = API_ENDPOINTS.MEMBERS_MEETINGS_RSVP.replace(':id', meetingId);
+      return apiClient.delete(endpoint);
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: MEMBER_KEYS.meetings('joined') });
+      void queryClient.invalidateQueries({ queryKey: MEMBER_KEYS.meetings('available') });
+    },
+  });
 }

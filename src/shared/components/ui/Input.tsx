@@ -3,7 +3,8 @@
  * Form input with label, error display, and validation
  */
 
-import { InputHTMLAttributes, ReactNode, useId } from 'react';
+import type { InputHTMLAttributes, ReactNode } from 'react';
+import { useId } from 'react';
 
 import { cn } from '@/shared/utils/helpers';
 
@@ -30,15 +31,16 @@ export function Input({
   const inputId = props.id ?? generatedId;
   const errorId = `${inputId}-error`;
   const helperId = `${inputId}-helper`;
-  
-  const hasError = !!error;
-  const describedBy = [
-    hasError ? errorId : undefined,
-    helperText ? helperId : undefined
-  ].filter(Boolean).join(' ') || undefined;
 
-  const baseInputStyles = 'block w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 transition-colors duration-200';
-  const focusStyles = 'focus:border-wiria-yellow focus:ring-2 focus:ring-wiria-yellow focus:ring-opacity-50';
+  const hasError = !!error;
+  const describedBy =
+    [hasError ? errorId : undefined, helperText ? helperId : undefined].filter(Boolean).join(' ') ||
+    undefined;
+
+  const baseInputStyles =
+    'block w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 transition-colors duration-200';
+  const focusStyles =
+    'focus:border-wiria-yellow focus:ring-2 focus:ring-wiria-yellow focus:ring-opacity-50';
   const disabledStyles = 'disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500';
   const errorStyles = error ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : '';
   const paddingStyles = cn(leftIcon && 'pl-10', rightIcon && 'pr-10');
@@ -59,7 +61,14 @@ export function Input({
 
         <input
           ref={ref}
-          className={cn(baseInputStyles, focusStyles, disabledStyles, errorStyles, paddingStyles, className)}
+          className={cn(
+            baseInputStyles,
+            focusStyles,
+            disabledStyles,
+            errorStyles,
+            paddingStyles,
+            className
+          )}
           {...props}
           id={inputId}
           aria-invalid={hasError}
@@ -67,9 +76,7 @@ export function Input({
         />
 
         {rightIcon && (
-          <div className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
-            {rightIcon}
-          </div>
+          <div className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">{rightIcon}</div>
         )}
       </div>
 

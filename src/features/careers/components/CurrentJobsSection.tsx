@@ -12,7 +12,9 @@ import { SectionHeader } from '@/shared/components/sections/SectionHeader';
 import { JobCard } from './JobCard';
 import { JobModal } from './JobModal';
 import { NoOpeningsView } from './NoOpeningsView';
-import { useCareers, Job } from '../hooks/useCareers';
+import { useCareers } from '../hooks/useCareers';
+
+import type { Job } from '../hooks/useCareers';
 
 type ModalView = 'none' | 'details' | 'apply';
 

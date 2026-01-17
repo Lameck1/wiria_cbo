@@ -3,7 +3,7 @@
  * Provides wrappers with all required providers for component/hook testing
  */
 
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter, MemoryRouter } from 'react-router-dom';

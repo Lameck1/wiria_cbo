@@ -1,6 +1,7 @@
-import { AdminMember } from '@/features/membership/api/members.api';
+import type { AdminMember } from '@/features/membership/api/members.api';
 import { Button } from '@/shared/components/ui/Button';
-import { DataTable, Column } from '@/shared/components/ui/DataTable';
+import type { Column } from '@/shared/components/ui/DataTable';
+import { DataTable } from '@/shared/components/ui/DataTable';
 import { StatusBadge } from '@/shared/components/ui/StatusBadge';
 
 interface MemberTableProps {
@@ -27,8 +28,11 @@ export function MemberTable({ members = [], isLoading, onViewDetails }: MemberTa
       render: (member) => (
         <>
           <span
-            className={`rounded-md px-2 py-1 text-[10px] font-bold uppercase ${member.membershipType === 'GROUP' ? 'bg-purple-100 text-purple-700' : 'bg-blue-100 text-blue-700'
-              }`}
+            className={`rounded-md px-2 py-1 text-[10px] font-bold uppercase ${
+              member.membershipType === 'GROUP'
+                ? 'bg-purple-100 text-purple-700'
+                : 'bg-blue-100 text-blue-700'
+            }`}
           >
             {member.membershipType}
           </span>

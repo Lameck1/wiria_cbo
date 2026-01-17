@@ -242,9 +242,7 @@ describe('FormModal', () => {
   });
 
   it('should disable inputs during submission', async () => {
-    mockOnSubmit.mockImplementation(
-      () => new Promise(resolve => setTimeout(resolve, 1000))
-    );
+    mockOnSubmit.mockImplementation(() => new Promise((resolve) => setTimeout(resolve, 1000)));
 
     render(
       <FormModal

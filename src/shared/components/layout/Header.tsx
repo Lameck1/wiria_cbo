@@ -96,7 +96,9 @@ export function Header() {
       <div className="to-wiria-blue-light absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-wiria-yellow via-wiria-green-light" />
 
       {/* Desktop Layout */}
-      <div className={`hidden transition-all duration-300 xl:block ${isScrolled ? 'py-2' : 'py-3'}`}>
+      <div
+        className={`hidden transition-all duration-300 xl:block ${isScrolled ? 'py-2' : 'py-3'}`}
+      >
         <div className="container mx-auto px-4 lg:px-6">
           <div className="flex flex-col items-center justify-center space-y-3">
             <div className="flex items-center gap-6">
@@ -121,7 +123,9 @@ export function Header() {
       </div>
 
       {/* Mobile/Tablet Layout */}
-      <div className={`flex items-center justify-between transition-all duration-300 xl:hidden ${isScrolled ? 'py-2' : 'py-3'}`}>
+      <div
+        className={`flex items-center justify-between transition-all duration-300 xl:hidden ${isScrolled ? 'py-2' : 'py-3'}`}
+      >
         <div className="container mx-auto flex items-center justify-between px-4">
           <HeaderLogo isScrolled={isScrolled} mobile />
 

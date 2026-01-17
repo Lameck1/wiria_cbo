@@ -3,7 +3,7 @@
  * Shared layout for all member portal pages
  */
 
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -60,7 +60,9 @@ export function PortalLayout({
               </span>
             )}
             <button
-              onClick={() => { void handleLogout(); }}
+              onClick={() => {
+                void handleLogout();
+              }}
               className="rounded-lg bg-gray-200 px-4 py-2 text-sm font-bold text-gray-700 transition-all hover:bg-gray-300"
             >
               Logout

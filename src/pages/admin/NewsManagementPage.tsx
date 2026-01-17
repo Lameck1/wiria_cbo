@@ -1,7 +1,7 @@
 import { memo, useCallback, useState } from 'react';
 
+import type { NewsUpdate } from '@/features/admin/api/news.api';
 import {
-  NewsUpdate,
   createUpdate,
   deleteUpdate,
   getAdminUpdates,
@@ -191,10 +191,16 @@ const NewsCard = memo(function NewsCard({
         </div>
       </div>
       <div className="mt-auto flex justify-end gap-3 border-t bg-gray-50 p-4">
-        <button onClick={() => onEdit(update)} className="text-sm font-bold text-wiria-blue-dark hover:underline">
+        <button
+          onClick={() => onEdit(update)}
+          className="text-sm font-bold text-wiria-blue-dark hover:underline"
+        >
           Edit
         </button>
-        <button onClick={() => onDelete(update.id)} className="text-sm font-bold text-red-600 hover:underline">
+        <button
+          onClick={() => onDelete(update.id)}
+          className="text-sm font-bold text-red-600 hover:underline"
+        >
           Delete
         </button>
       </div>
@@ -241,13 +247,13 @@ function NewsModal({
       label: 'Title',
       type: 'text',
       required: true,
-      placeholder: 'e.g. New Community Program Launch'
+      placeholder: 'e.g. New Community Program Launch',
     },
     {
       name: 'imageUrl',
       label: 'Image URL (Optional)',
       type: 'text',
-      placeholder: 'https://...'
+      placeholder: 'https://...',
     },
     {
       name: 'category',
@@ -259,7 +265,7 @@ function NewsModal({
         { value: 'EVENT', label: 'Event' },
         { value: 'ANNOUNCEMENT', label: 'Announcement' },
         { value: 'STORY', label: 'Success Story' },
-      ]
+      ],
     },
     {
       name: 'status',
@@ -269,7 +275,7 @@ function NewsModal({
       options: [
         { value: 'PUBLISHED', label: 'Published' },
         { value: 'DRAFT', label: 'Draft' },
-      ]
+      ],
     },
     {
       name: 'fullContent',
@@ -277,14 +283,14 @@ function NewsModal({
       type: 'textarea',
       required: true,
       placeholder: 'Describe the update in detail...',
-      rows: 8
+      rows: 8,
     },
     {
       name: 'excerpt',
       label: 'Excerpt (Optional)',
       type: 'textarea',
       placeholder: 'Short summary...',
-      rows: 3
+      rows: 3,
     },
   ];
 

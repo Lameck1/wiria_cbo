@@ -39,10 +39,11 @@ export function MemberFilters({ currentFilter, onFilterChange, onSearch }: Membe
           <button
             key={tab.id}
             onClick={() => onFilterChange(tab.id)}
-            className={`whitespace-nowrap border-b-2 px-6 py-3 font-semibold transition-all ${currentFilter === tab.id
+            className={`whitespace-nowrap border-b-2 px-6 py-3 font-semibold transition-all ${
+              currentFilter === tab.id
                 ? 'border-wiria-blue-dark text-wiria-blue-dark'
                 : 'border-transparent text-gray-600 hover:text-wiria-blue-dark'
-              }`}
+            }`}
           >
             {tab.label}
           </button>

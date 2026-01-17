@@ -48,7 +48,9 @@ function validateFileSize(file: File) {
   const maxSize = 10 * 1024 * 1024;
   if (file.size > maxSize) {
     const sizeMb = (file.size / (1024 * 1024)).toFixed(2);
-    throw new Error(`File size exceeds 10MB limit. Your file is ${sizeMb}MB. Please choose a smaller file.`);
+    throw new Error(
+      `File size exceeds 10MB limit. Your file is ${sizeMb}MB. Please choose a smaller file.`
+    );
   }
 }
 
@@ -91,7 +93,10 @@ function isNetworkFetchError(error: { message?: string; name?: string }): boolea
   return error.name === 'TypeError' && (error.message?.includes('fetch') ?? false);
 }
 
-export const uploadFile = async (file: File, folder = 'resources'): Promise<{ data: { url: string } }> => {
+export const uploadFile = async (
+  file: File,
+  folder = 'resources'
+): Promise<{ data: { url: string } }> => {
   validateFileSize(file);
   const token = getAuthTokenOrThrow();
   const formData = buildFormData(file, folder);

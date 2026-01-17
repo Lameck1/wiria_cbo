@@ -9,8 +9,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 import { ImageCarousel } from '@/shared/components/ImageCarousel';
 
-import { Update } from '../hooks/useUpdates';
-
+import type { Update } from '../hooks/useUpdates';
 
 interface UpdateModalProps {
   update: Update | null;

@@ -1,10 +1,9 @@
 import { useMember } from '@/features/admin/context/useMember';
-import { AdminMember } from '@/features/membership/api/members.api';
+import type { AdminMember } from '@/features/membership/api/members.api';
 
 import { MemberDetailsModal } from './MemberDetailsModal';
 import { MemberFilters } from './MemberFilters';
 import { MemberTable } from './MemberTable';
-
 
 interface MemberContentProps {
   filter: string;
@@ -27,22 +26,16 @@ export function MemberContent({
 
   return (
     <>
-      <MemberFilters
-        currentFilter={filter}
-        onFilterChange={onFilterChange}
-        onSearch={onSearch}
-      />
+      <MemberFilters currentFilter={filter} onFilterChange={onFilterChange} onSearch={onSearch} />
 
-      <MemberTable
-        members={members}
-        isLoading={isLoading}
-        onViewDetails={onSelectMember}
-      />
+      <MemberTable members={members} isLoading={isLoading} onViewDetails={onSelectMember} />
 
       <MemberDetailsModal
         member={selectedMember}
         onClose={() => onSelectMember(null)}
-        onStatusChange={() => { void refetch(); }}
+        onStatusChange={() => {
+          void refetch();
+        }}
       />
     </>
   );

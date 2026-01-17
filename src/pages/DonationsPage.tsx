@@ -9,7 +9,6 @@ import { AlternatePaymentMethods } from '@/features/donations/components/Alterna
 import { DonationImpactSection } from '@/features/donations/components/DonationImpactSection';
 import { Card, CardBody } from '@/shared/components/ui/Card';
 
-
 function DonationsPage() {
   return (
     <>

@@ -1,4 +1,5 @@
-import { Component, ReactNode, ErrorInfo } from 'react';
+import type { ReactNode, ErrorInfo } from 'react';
+import { Component } from 'react';
 
 import { logger } from '@/shared/services/logger';
 
@@ -39,7 +40,7 @@ export class ErrorBoundary extends Component<Props, State> {
       }
 
       return (
-        <div className="rounded-lg border border-red-200 bg-red-50 p-6 shadow-sm text-left">
+        <div className="rounded-lg border border-red-200 bg-red-50 p-6 text-left shadow-sm">
           <div className="flex items-start">
             <div className="flex-shrink-0">
               <svg
@@ -59,10 +60,15 @@ export class ErrorBoundary extends Component<Props, State> {
             <div className="ml-3 flex-1">
               <h3 className="text-sm font-bold text-red-800">Something went wrong</h3>
               <div className="mt-2 text-sm text-red-700">
-                <p>We encountered an error while rendering this component. Please try again or contact support if the issue persists.</p>
+                <p>
+                  We encountered an error while rendering this component. Please try again or
+                  contact support if the issue persists.
+                </p>
                 {this.state.error && import.meta.env.DEV && (
                   <details className="mt-2 text-left">
-                    <summary className="cursor-pointer font-semibold underline">Error details (Development Mode)</summary>
+                    <summary className="cursor-pointer font-semibold underline">
+                      Error details (Development Mode)
+                    </summary>
                     <pre className="mt-2 overflow-auto rounded bg-red-100 p-2 text-xs">
                       {this.state.error.stack ?? this.state.error.toString()}
                     </pre>

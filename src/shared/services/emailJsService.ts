@@ -9,7 +9,9 @@ import { logger } from '@/shared/services/logger';
 
 const SERVICE_ID = String(import.meta.env['VITE_EMAILJS_SERVICE_ID'] ?? '');
 const TEMPLATE_ID = String(import.meta.env['VITE_EMAILJS_TEMPLATE_ID'] ?? '');
-const SAFEGUARDING_TEMPLATE_ID = String(import.meta.env['VITE_EMAILJS_SAFEGUARDING_TEMPLATE_ID'] ?? '');
+const SAFEGUARDING_TEMPLATE_ID = String(
+  import.meta.env['VITE_EMAILJS_SAFEGUARDING_TEMPLATE_ID'] ?? ''
+);
 const PUBLIC_KEY = String(import.meta.env['VITE_EMAILJS_PUBLIC_KEY'] ?? '');
 
 // Initialize EmailJS

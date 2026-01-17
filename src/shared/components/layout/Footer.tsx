@@ -48,7 +48,8 @@ export function Footer() {
     {
       to: ROUTES.MEMBER_MEETINGS,
       label: 'Meetings',
-      onClick: (event: React.MouseEvent) => handleProtectedLink(event, ROUTES.MEMBER_MEETINGS, 'Member Meetings'),
+      onClick: (event: React.MouseEvent) =>
+        handleProtectedLink(event, ROUTES.MEMBER_MEETINGS, 'Member Meetings'),
       badge: isBackendConnected ? undefined : soonBadge,
       className: `flex items-center gap-2 text-gray-300 transition-colors hover:text-white ${!isBackendConnected && 'cursor-not-allowed opacity-60'}`,
     },
@@ -72,7 +73,8 @@ export function Footer() {
     {
       to: ROUTES.STAFF_LOGIN,
       label: 'Staff Portal',
-      onClick: (event: React.MouseEvent) => handleProtectedLink(event, ROUTES.STAFF_LOGIN, 'Staff Portal'),
+      onClick: (event: React.MouseEvent) =>
+        handleProtectedLink(event, ROUTES.STAFF_LOGIN, 'Staff Portal'),
       badge: isBackendConnected ? undefined : soonBadge,
       className: `flex items-center gap-2 text-gray-300 transition-colors hover:text-white ${!isBackendConnected && 'cursor-not-allowed opacity-60'}`,
     },

@@ -76,7 +76,6 @@ interface DualTrendChartProps {
 const formatCurrency = (v: number) => (v >= 1000 ? `${(v / 1000).toFixed(0)}K` : v.toString());
 
 export function DashboardTrendCharts({ donationData = [], memberData = [] }: DualTrendChartProps) {
-
   return (
     <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-2">
       <TrendChart

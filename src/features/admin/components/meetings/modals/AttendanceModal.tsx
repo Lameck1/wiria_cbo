@@ -1,4 +1,4 @@
-import { Meeting, MeetingAttendance } from '@/features/admin/api/meetings.api';
+import type { Meeting, MeetingAttendance } from '@/features/admin/api/meetings.api';
 import { Button } from '@/shared/components/ui/Button';
 
 interface AttendanceModalProps {

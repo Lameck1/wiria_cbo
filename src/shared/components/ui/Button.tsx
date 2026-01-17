@@ -3,7 +3,7 @@
  * Reusable button with variants and loading state
  */
 
-import { ButtonHTMLAttributes, ReactNode } from 'react';
+import type { ButtonHTMLAttributes, ReactNode } from 'react';
 
 import { cn } from '@/shared/utils/helpers';
 

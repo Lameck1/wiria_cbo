@@ -1,4 +1,4 @@
-import { SafeguardingReport } from '@/features/admin/api/safeguarding.api';
+import type { SafeguardingReport } from '@/features/admin/api/safeguarding.api';
 import { Button } from '@/shared/components/ui/Button';
 
 interface ReportDetailsModalProps {
@@ -27,7 +27,6 @@ export function ReportDetailsModal({
   onResolve,
   onStatusChange,
 }: ReportDetailsModalProps) {
-
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black bg-opacity-50 p-4">
       <div className="flex max-h-[90vh] w-full max-w-3xl flex-col rounded-2xl bg-white shadow-2xl">

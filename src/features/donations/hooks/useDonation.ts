@@ -9,7 +9,7 @@ import { apiClient } from '@/shared/services/api/client';
 import { API_ENDPOINTS } from '@/shared/services/api/endpoints';
 import { notificationService } from '@/shared/services/notification/notificationService';
 
-import { DonationFormData, DonationResponse, PaymentStatusResponse } from '../types';
+import type { DonationFormData, DonationResponse, PaymentStatusResponse } from '../types';
 
 export function useDonation() {
   const [isSubmitting, setIsSubmitting] = useState(false);

@@ -3,23 +3,23 @@ const isDevelopment = import.meta.env.DEV;
 type LogMethod = (message: string, ...args: unknown[]) => void;
 
 const createLoggerMethod =
-    (consoleMethod: 'error' | 'warn' | 'log'): LogMethod =>
-        (message, ...args) => {
-            if (!isDevelopment) {
-                return;
-            }
+  (consoleMethod: 'error' | 'warn' | 'log'): LogMethod =>
+  (message, ...args) => {
+    if (!isDevelopment) {
+      return;
+    }
 
-            if (consoleMethod === 'error') {
-                console.error(`[ERROR] ${message}`, ...args);
-            } else if (consoleMethod === 'warn') {
-                console.warn(`[WARN] ${message}`, ...args);
-            } else {
-                console.warn(`[DEBUG] ${message}`, ...args);
-            }
-        };
+    if (consoleMethod === 'error') {
+      console.error(`[ERROR] ${message}`, ...args);
+    } else if (consoleMethod === 'warn') {
+      console.warn(`[WARN] ${message}`, ...args);
+    } else {
+      console.warn(`[DEBUG] ${message}`, ...args);
+    }
+  };
 
 export const logger = {
-    error: createLoggerMethod('error'),
-    warn: createLoggerMethod('warn'),
-    debug: createLoggerMethod('log'),
+  error: createLoggerMethod('error'),
+  warn: createLoggerMethod('warn'),
+  debug: createLoggerMethod('log'),
 };

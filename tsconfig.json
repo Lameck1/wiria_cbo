@@ -2,11 +2,7 @@
   "compilerOptions": {
     /* Language and Environment */
     "target": "ES2022",
-    "lib": [
-      "ES2022",
-      "DOM",
-      "DOM.Iterable"
-    ],
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "jsx": "react-jsx",
     "useDefineForClassFields": true,
     /* Modules */
@@ -14,10 +10,7 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "allowImportingTsExtensions": true,
-    "types": [
-      "vite/client",
-      "vitest/globals"
-    ],
+    "types": ["vite/client", "vitest/globals"],
     /* Emit */
     "noEmit": true,
     "sourceMap": true,
@@ -49,21 +42,11 @@
     /* Path Mapping */
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./src/*"
-      ],
-      "@/shared/*": [
-        "./src/shared/*"
-      ],
-      "@/features/*": [
-        "./src/features/*"
-      ],
-      "@/pages/*": [
-        "./src/pages/*"
-      ],
-      "@/app/*": [
-        "./src/app/*"
-      ]
+      "@/*": ["./src/*"],
+      "@/shared/*": ["./src/shared/*"],
+      "@/features/*": ["./src/features/*"],
+      "@/pages/*": ["./src/pages/*"],
+      "@/app/*": ["./src/app/*"]
     }
   },
   "include": [
@@ -74,9 +57,5 @@
     "e2e/**/*.ts",
     "playwright.config.ts"
   ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "backend"
-  ]
+  "exclude": ["node_modules", "dist", "backend"]
 }

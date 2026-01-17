@@ -3,7 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ImpactMetrics } from './ImpactMetrics';
 import { ProgramIcon, CheckIcon } from './ProgramIcons';
 import { ProgramOverviewCard } from './ProgramOverviewCard';
-import { ProgramData } from '../constants/programsData';
+
+import type { ProgramData } from '../constants/programsData';
 
 interface ProgramDetailProps {
   program: ProgramData;

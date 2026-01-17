@@ -1,11 +1,7 @@
 import { useState } from 'react';
 
-import {
-  CreateMeetingData,
-  Meeting,
-  createMeeting,
-  updateMeeting,
-} from '@/features/admin/api/meetings.api';
+import type { CreateMeetingData, Meeting } from '@/features/admin/api/meetings.api';
+import { createMeeting, updateMeeting } from '@/features/admin/api/meetings.api';
 import { Button } from '@/shared/components/ui/Button';
 import { Modal } from '@/shared/components/ui/Modal';
 import { notificationService } from '@/shared/services/notification/notificationService';
@@ -208,7 +204,9 @@ export function MeetingFormModal({ meeting, onClose, onSuccess }: MeetingFormMod
       isVirtual,
       virtualLink: isVirtual ? (formData.get('virtualLink') as string) : undefined,
       agenda: formData.get('agenda') as string,
-      capacity: formData.get('capacity') ? Number.parseInt(formData.get('capacity') as string) : undefined,
+      capacity: formData.get('capacity')
+        ? Number.parseInt(formData.get('capacity') as string)
+        : undefined,
     };
 
     try {

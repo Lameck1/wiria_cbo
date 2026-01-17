@@ -90,8 +90,20 @@ function HeroSection() {
     <section className="relative overflow-hidden bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900 py-24">
       <div className="absolute inset-0 opacity-10">
         <svg className="h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-          <pattern id="shield-pattern" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
-            <path d="M10 2 L18 6 L18 14 L10 20 L2 14 L2 6 Z" fill="none" stroke="currentColor" strokeWidth="0.5" />
+          <pattern
+            id="shield-pattern"
+            x="0"
+            y="0"
+            width="20"
+            height="20"
+            patternUnits="userSpaceOnUse"
+          >
+            <path
+              d="M10 2 L18 6 L18 14 L10 20 L2 14 L2 6 Z"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="0.5"
+            />
           </pattern>
           <rect width="100%" height="100%" fill="url(#shield-pattern)" />
         </svg>
@@ -99,7 +111,11 @@ function HeroSection() {
       <div className="pointer-events-none absolute right-0 top-0 h-96 w-96 rounded-full bg-amber-500/10 blur-3xl" />
       <div className="pointer-events-none absolute bottom-0 left-0 h-64 w-64 rounded-full bg-blue-500/10 blur-3xl" />
       <div className="container relative z-10 mx-auto px-4 lg:px-6">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mx-auto max-w-4xl text-center text-white">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mx-auto max-w-4xl text-center text-white"
+        >
           <motion.span
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -116,10 +132,20 @@ function HeroSection() {
             </svg>
             Confidential Reporting
           </motion.span>
-          <motion.h1 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="mb-6 text-4xl font-bold md:text-5xl lg:text-6xl">
+          <motion.h1
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="mb-6 text-4xl font-bold md:text-5xl lg:text-6xl"
+          >
             Report a Safeguarding Concern
           </motion.h1>
-          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="mx-auto max-w-2xl text-lg text-slate-300 md:text-xl">
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+            className="mx-auto max-w-2xl text-lg text-slate-300 md:text-xl"
+          >
             Your safety matters. Report concerns confidentially and we will investigate promptly.
           </motion.p>
         </motion.div>
@@ -133,7 +159,12 @@ function ReportFormCard() {
   return (
     <div className="relative overflow-hidden rounded-2xl border border-gray-100/50 bg-white/80 p-6 shadow-xl backdrop-blur-sm md:p-8">
       <div className="pointer-events-none absolute -right-20 -top-20 h-40 w-40 rounded-full bg-gradient-to-br from-slate-200/30 to-blue-200/30 blur-3xl" />
-      <motion.h2 initial={{ opacity: 0, y: -10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="relative mb-2 text-2xl font-bold text-wiria-blue-dark md:text-3xl">
+      <motion.h2
+        initial={{ opacity: 0, y: -10 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="relative mb-2 text-2xl font-bold text-wiria-blue-dark md:text-3xl"
+      >
         Submit a Report
       </motion.h2>
       <motion.div
@@ -143,7 +174,9 @@ function ReportFormCard() {
         transition={{ delay: 0.2, duration: 0.5 }}
         className="mb-6 h-1 w-20 origin-left rounded-full bg-gradient-to-r from-slate-600 to-slate-400"
       />
-      <p className="mb-8 text-gray-600">Please provide as much detail as possible. All fields marked with * are required.</p>
+      <p className="mb-8 text-gray-600">
+        Please provide as much detail as possible. All fields marked with * are required.
+      </p>
       <SafeguardingReportForm />
     </div>
   );
@@ -172,7 +205,12 @@ function SidebarContent() {
         title="What Happens Next?"
         icon={
           <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
           </svg>
         }
         defaultOpen={false}

@@ -47,11 +47,16 @@ export function MobileMenu({
         <span className="text-xl font-bold text-wiria-blue-dark">Menu</span>
         <button
           onClick={onClose}
-          className="rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-wiria-blue-dark transition-colors"
+          className="rounded-lg p-2 text-gray-500 transition-colors hover:bg-gray-100 hover:text-wiria-blue-dark"
           aria-label="Close menu"
         >
           <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M6 18L18 6M6 6l12 12"
+            />
           </svg>
         </button>
       </div>
@@ -70,9 +75,10 @@ export function MobileMenu({
                 to={item.to}
                 onClick={onClose}
                 className={({ isActive: navIsActive }) =>
-                  `block rounded-lg px-4 py-3 text-base font-medium transition-all ${navIsActive || (isActive?.(item.to))
-                    ? 'bg-wiria-yellow/10 text-wiria-yellow font-bold'
-                    : 'text-gray-700 hover:bg-wiria-blue-dark/5 hover:text-wiria-blue-dark'
+                  `block rounded-lg px-4 py-3 text-base font-medium transition-all ${
+                    navIsActive || isActive?.(item.to)
+                      ? 'bg-wiria-yellow/10 font-bold text-wiria-yellow'
+                      : 'text-gray-700 hover:bg-wiria-blue-dark/5 hover:text-wiria-blue-dark'
                   }`
                 }
               >
@@ -146,7 +152,7 @@ export function MobileMenu({
           <Link
             to={ROUTES.DONATIONS}
             onClick={onClose}
-            className="block w-full rounded-full bg-wiria-yellow px-4 py-3 text-center font-bold text-white shadow-lg hover:shadow-xl transition-shadow"
+            className="block w-full rounded-full bg-wiria-yellow px-4 py-3 text-center font-bold text-white shadow-lg transition-shadow hover:shadow-xl"
           >
             Donate Now
           </Link>

@@ -6,7 +6,8 @@
 import { motion } from 'framer-motion';
 
 import { JOB_TYPE_LABELS } from '../constants/careersData';
-import { Job } from '../hooks/useCareers';
+
+import type { Job } from '../hooks/useCareers';
 
 interface JobCardProps {
   job: Job;
@@ -126,8 +127,9 @@ function JobCardHeader({
         </div>
 
         <div
-          className={`inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold ${isExpired ? 'bg-gray-100 text-gray-500' : getDeadlineColor(daysRemaining)
-            }`}
+          className={`inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold ${
+            isExpired ? 'bg-gray-100 text-gray-500' : getDeadlineColor(daysRemaining)
+          }`}
         >
           <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
@@ -148,10 +150,11 @@ function JobCardHeader({
       </div>
 
       <button
-        className={`flex items-center gap-2 whitespace-nowrap rounded-xl px-6 py-3 font-bold shadow-md transition-all ${isExpired
+        className={`flex items-center gap-2 whitespace-nowrap rounded-xl px-6 py-3 font-bold shadow-md transition-all ${
+          isExpired
             ? 'cursor-not-allowed bg-gray-200 text-gray-500'
             : 'bg-gradient-to-r from-wiria-blue-dark to-blue-700 text-white hover:shadow-lg group-hover:from-wiria-yellow group-hover:to-amber-500 group-hover:text-wiria-blue-dark'
-          }`}
+        }`}
       >
         View Details
         <svg

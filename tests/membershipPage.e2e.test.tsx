@@ -13,67 +13,65 @@ import { AuthProvider } from '@/features/auth/context/AuthContext';
 import MembershipPage from '@/pages/MembershipPage';
 
 vi.mock('@/shared/services/notification/notificationService', () => ({
-    notificationService: {
-        success: vi.fn(),
-        error: vi.fn(),
-        info: vi.fn(),
-        warning: vi.fn(),
-        handleError: vi.fn(),
-    },
+  notificationService: {
+    success: vi.fn(),
+    error: vi.fn(),
+    info: vi.fn(),
+    warning: vi.fn(),
+    handleError: vi.fn(),
+  },
 }));
 
 vi.mock('@/shared/services/useBackendStatus', () => ({
-    useBackendStatus: () => ({ isBackendConnected: false, isChecking: false }),
+  useBackendStatus: () => ({ isBackendConnected: false, isChecking: false }),
 }));
 
 const queryClient = new QueryClient({
-    defaultOptions: {
-        queries: { retry: false },
-    },
+  defaultOptions: {
+    queries: { retry: false },
+  },
 });
 
 function renderWithProviders(ui: React.ReactElement) {
-    return render(
-        <QueryClientProvider client={queryClient}>
-            <MemoryRouter>
-                <AuthProvider>
-                    {ui}
-                </AuthProvider>
-            </MemoryRouter>
-        </QueryClientProvider>
-    );
+  return render(
+    <QueryClientProvider client={queryClient}>
+      <MemoryRouter>
+        <AuthProvider>{ui}</AuthProvider>
+      </MemoryRouter>
+    </QueryClientProvider>
+  );
 }
 
 describe('Membership Registration Flow', () => {
-    beforeEach(() => {
-        vi.clearAllMocks();
-        queryClient.clear();
+  beforeEach(() => {
+    vi.clearAllMocks();
+    queryClient.clear();
+  });
+
+  it('renders membership page with registration option', async () => {
+    renderWithProviders(<MembershipPage />);
+
+    await waitFor(() => {
+      expect(screen.getByRole('heading', { name: /become a member/i })).toBeInTheDocument();
     });
+  });
 
-    it('renders membership page with registration option', async () => {
-        renderWithProviders(<MembershipPage />);
+  it('displays membership information', async () => {
+    renderWithProviders(<MembershipPage />);
 
-        await waitFor(() => {
-            expect(screen.getByRole('heading', { name: /become a member/i })).toBeInTheDocument();
-        });
+    // Check for membership content
+    await waitFor(() => {
+      expect(screen.getByRole('heading', { name: /membership information/i })).toBeInTheDocument();
     });
+  });
 
-    it('displays membership information', async () => {
-        renderWithProviders(<MembershipPage />);
+  it('shows membership types', async () => {
+    renderWithProviders(<MembershipPage />);
 
-        // Check for membership content
-        await waitFor(() => {
-            expect(screen.getByRole('heading', { name: /membership information/i })).toBeInTheDocument();
-        });
+    // Look for membership type options (Individual, Group) or general membership content
+    await waitFor(() => {
+      const pageContent = document.body.textContent;
+      expect(pageContent).toMatch(/individual|group|member|join/i);
     });
-
-    it('shows membership types', async () => {
-        renderWithProviders(<MembershipPage />);
-
-        // Look for membership type options (Individual, Group) or general membership content
-        await waitFor(() => {
-            const pageContent = document.body.textContent;
-            expect(pageContent).toMatch(/individual|group|member|join/i);
-        });
-    });
+  });
 });

@@ -1,5 +1,5 @@
-import { Donation } from '@/features/admin/api/donations.api';
-import { Column } from '@/shared/components/ui/DataTable';
+import type { Donation } from '@/features/admin/api/donations.api';
+import type { Column } from '@/shared/components/ui/DataTable';
 import { StatusBadge } from '@/shared/components/ui/StatusBadge';
 import { formatDateTime } from '@/shared/utils/dateUtils';
 import { formatCurrency } from '@/shared/utils/helpers';
@@ -20,9 +20,7 @@ export const getDonationColumns = (
   {
     header: 'Amount',
     key: 'amount',
-    render: (d) => (
-      <span className="font-bold text-green-600">{formatCurrency(d.amount)}</span>
-    ),
+    render: (d) => <span className="font-bold text-green-600">{formatCurrency(d.amount)}</span>,
   },
   {
     header: 'Method',

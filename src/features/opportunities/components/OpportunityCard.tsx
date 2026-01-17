@@ -5,8 +5,9 @@
 
 import { motion } from 'framer-motion';
 
-import { Opportunity } from '../hooks/useOpportunities';
 import { getDaysUntilDeadline, getUrgencyLevel, isNewOpportunity } from '../utils/deadlineUtils';
+
+import type { Opportunity } from '../hooks/useOpportunities';
 
 interface OpportunityCardProps {
   opportunity: Opportunity;

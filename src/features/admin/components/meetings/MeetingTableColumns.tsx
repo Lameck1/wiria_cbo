@@ -1,5 +1,5 @@
-import { Meeting } from '@/features/admin/api/meetings.api';
-import { Column } from '@/shared/components/ui/DataTable';
+import type { Meeting } from '@/features/admin/api/meetings.api';
+import type { Column } from '@/shared/components/ui/DataTable';
 
 import { STATUS_COLORS, TYPE_LABELS, formatDate } from './constants';
 

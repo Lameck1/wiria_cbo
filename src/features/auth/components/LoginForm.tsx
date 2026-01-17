@@ -9,7 +9,9 @@ import { Button } from '@/shared/components/ui/Button';
 import { Form, FormField } from '@/shared/components/ui/form';
 
 import { useLogin } from '../hooks/useLogin';
-import { loginSchema, LoginData } from '../schemas/auth.schema';
+import { loginSchema } from '../schemas/auth.schema';
+
+import type { LoginData } from '../schemas/auth.schema';
 
 interface LoginFormProps {
   isMember?: boolean;

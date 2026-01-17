@@ -49,7 +49,6 @@ vi.mock('@/shared/services/notification/notificationService', () => ({
   },
 }));
 
-
 describe('UserManagementPage (staff & admin management)', () => {
   beforeEach(() => {
     vi.clearAllMocks();

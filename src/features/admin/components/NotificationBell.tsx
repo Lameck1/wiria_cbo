@@ -32,35 +32,38 @@ export function NotificationBell() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const pendingCount = useMemo(() =>
-    counts ? counts.pendingApplications + counts.unreadMessages + counts.criticalCases : 0,
+  const pendingCount = useMemo(
+    () => (counts ? counts.pendingApplications + counts.unreadMessages + counts.criticalCases : 0),
     [counts]
   );
 
-  const notifications = useMemo(() =>
-    counts ? [
-      {
-        label: 'Pending Applications',
-        count: counts.pendingApplications,
-        icon: '📋',
-        path: `${ROUTES.ADMIN_HR}?tab=applications`,
-        color: 'text-blue-600',
-      },
-      {
-        label: 'Unread Messages',
-        count: counts.unreadMessages,
-        icon: '✉️',
-        path: '/admin/contacts',
-        color: 'text-yellow-600',
-      },
-      {
-        label: 'Critical Safeguarding',
-        count: counts.criticalCases,
-        icon: '🚨',
-        path: '/admin/safeguarding',
-        color: 'text-red-600',
-      },
-    ].filter((n) => n.count > 0) : [],
+  const notifications = useMemo(
+    () =>
+      counts
+        ? [
+            {
+              label: 'Pending Applications',
+              count: counts.pendingApplications,
+              icon: '📋',
+              path: `${ROUTES.ADMIN_HR}?tab=applications`,
+              color: 'text-blue-600',
+            },
+            {
+              label: 'Unread Messages',
+              count: counts.unreadMessages,
+              icon: '✉️',
+              path: '/admin/contacts',
+              color: 'text-yellow-600',
+            },
+            {
+              label: 'Critical Safeguarding',
+              count: counts.criticalCases,
+              icon: '🚨',
+              path: '/admin/safeguarding',
+              color: 'text-red-600',
+            },
+          ].filter((n) => n.count > 0)
+        : [],
     [counts]
   );
 

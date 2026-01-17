@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
-import { Career, createCareer, updateCareer } from '@/features/admin/api/careers.api';
+import type { Career } from '@/features/admin/api/careers.api';
+import { createCareer, updateCareer } from '@/features/admin/api/careers.api';
 import { Button } from '@/shared/components/ui/Button';
 import { Modal } from '@/shared/components/ui/Modal';
 import { notificationService } from '@/shared/services/notification/notificationService';
@@ -152,7 +153,9 @@ function CareerFormFields({
               key={index}
               aria-label={`Responsibility ${index + 1}`}
               value={r}
-              onChange={(event) => handleArrayChange(setResponsibilities, index, event.target.value)}
+              onChange={(event) =>
+                handleArrayChange(setResponsibilities, index, event.target.value)
+              }
               className="mb-2 w-full rounded-xl border-gray-200 p-3"
             />
           ))}

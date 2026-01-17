@@ -11,7 +11,9 @@ import { motion } from 'framer-motion';
 import { ImageCarousel } from '@/shared/components/ImageCarousel';
 
 import { UpdateModal } from './UpdateModal';
-import { useUpdates, Update } from '../hooks/useUpdates';
+import { useUpdates } from '../hooks/useUpdates';
+
+import type { Update } from '../hooks/useUpdates';
 
 interface RecentUpdatesListProps {
   updates: Update[];
@@ -114,12 +116,7 @@ function RecentUpdatesPagination({
         aria-label="Previous page"
       >
         <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M15 19l-7-7 7-7"
-          />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
         </svg>
         <span className="hidden sm:inline">Previous</span>
       </button>
@@ -147,18 +144,12 @@ function RecentUpdatesPagination({
       >
         <span className="hidden sm:inline">Next</span>
         <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M9 5l7 7-7 7"
-          />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
         </svg>
       </button>
     </div>
   );
 }
-
 
 export function RecentUpdatesSection() {
   const { data: allUpdates = [], isLoading, isError } = useUpdates(20);

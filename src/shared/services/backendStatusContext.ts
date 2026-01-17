@@ -9,4 +9,3 @@ export const BackendStatusContext = createContext<BackendStatusContextType>({
   isBackendConnected: false,
   isChecking: true,
 });
-

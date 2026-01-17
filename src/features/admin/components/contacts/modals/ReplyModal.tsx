@@ -1,4 +1,4 @@
-import { Contact } from '@/features/admin/api/contacts.api';
+import type { Contact } from '@/features/admin/api/contacts.api';
 import { Button } from '@/shared/components/ui/Button';
 
 interface ReplyModalProps {
@@ -31,15 +31,18 @@ export function ReplyModal({
           <p className="mt-1 truncate text-sm text-gray-500">Re: {contact.subject}</p>
         </div>
         <div className="p-6">
-          <label htmlFor="reply-text" className="mb-2 block text-sm font-bold text-gray-700">Your Response *</label>
+          <label htmlFor="reply-text" className="mb-2 block text-sm font-bold text-gray-700">
+            Your Response *
+          </label>
           <textarea
             id="reply-text"
             value={replyText}
             onChange={(event) => setReplyText(event.target.value)}
-            className={`h-40 w-full rounded-xl border p-4 outline-none transition-all focus:ring-2 ${replyText.trim().length > 0 && !isReplyValid
+            className={`h-40 w-full rounded-xl border p-4 outline-none transition-all focus:ring-2 ${
+              replyText.trim().length > 0 && !isReplyValid
                 ? 'border-red-300 focus:ring-red-100'
                 : 'border-gray-200 focus:ring-wiria-blue-dark/10'
-              }`}
+            }`}
             placeholder="Type your reply here... This will be sent as an email response."
             maxLength={MAX_REPLY_LENGTH}
             required

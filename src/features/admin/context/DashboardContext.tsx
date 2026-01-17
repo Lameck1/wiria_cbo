@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 import { useAuth } from '@/features/auth/context/useAuth';
 
@@ -15,10 +15,10 @@ interface DashboardProviderProps {
 
 /**
  * Dashboard Context Provider
- * 
+ *
  * Centralizes dashboard data and utilities to eliminate prop drilling.
  * Uses Suspense queries for automatic loading states.
- * 
+ *
  * @example
  * ```tsx
  * <DashboardProvider>
@@ -41,18 +41,14 @@ export function DashboardProvider({ children }: DashboardProviderProps) {
     userFirstName: user?.firstName ?? 'Admin',
   };
 
-  return (
-    <DashboardContext.Provider value={value}>
-      {children}
-    </DashboardContext.Provider>
-  );
+  return <DashboardContext.Provider value={value}>{children}</DashboardContext.Provider>;
 }
 
 /**
  * Hook to access Dashboard context
- * 
+ *
  * @throws Error if used outside DashboardProvider
- * 
+ *
  * @example
  * ```tsx
  * function MyComponent() {

@@ -1,4 +1,5 @@
-import { AdminMember, approveMember, rejectMember } from '@/features/membership/api/members.api';
+import type { AdminMember } from '@/features/membership/api/members.api';
+import { approveMember, rejectMember } from '@/features/membership/api/members.api';
 import { Button } from '@/shared/components/ui/Button';
 import { Modal } from '@/shared/components/ui/Modal';
 import { notificationService } from '@/shared/services/notification/notificationService';
@@ -80,9 +81,7 @@ function MemberProfessionalInfo({ member }: { member: AdminMember }) {
       </section>
 
       <section>
-        <h4 className="mb-3 text-xs font-bold uppercase tracking-wider text-gray-400">
-          Interests
-        </h4>
+        <h4 className="mb-3 text-xs font-bold uppercase tracking-wider text-gray-400">Interests</h4>
         <div className="flex flex-wrap gap-2">
           {member.interests?.length ? (
             member.interests.map((interest: string) => (
@@ -186,10 +185,16 @@ export function MemberDetailsModal({ member, onClose, onStatusChange }: MemberDe
         <div className="mt-8 flex flex-wrap items-center gap-4 border-t pt-6">
           {member.status === MembershipStatus.PENDING ? (
             <>
-              <Button onClick={() => void handleApprove()} className="flex-1 bg-green-600 hover:bg-green-700">
+              <Button
+                onClick={() => void handleApprove()}
+                className="flex-1 bg-green-600 hover:bg-green-700"
+              >
                 ✓ Approve Membership
               </Button>
-              <Button onClick={() => void handleReject()} className="flex-1 bg-red-600 hover:bg-red-700">
+              <Button
+                onClick={() => void handleReject()}
+                className="flex-1 bg-red-600 hover:bg-red-700"
+              >
                 ✗ Reject Application
               </Button>
             </>

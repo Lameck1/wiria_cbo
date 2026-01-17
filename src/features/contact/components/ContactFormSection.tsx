@@ -7,7 +7,9 @@ import { TIMING } from '@/shared/constants/config';
 import { cn } from '@/shared/utils/helpers';
 
 import { useContactForm } from '../hooks/useContactForm';
-import { ContactFormSchema, contactSchema } from '../validation';
+import { contactSchema } from '../validation';
+
+import type { ContactFormSchema } from '../validation';
 
 const MESSAGE_MIN_LENGTH = 20;
 const MESSAGE_MAX_LENGTH = 2000;

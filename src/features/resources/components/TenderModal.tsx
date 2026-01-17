@@ -145,10 +145,9 @@ const TenderInfoGrid = ({ tender, deadlineDate }: TenderInfoGridProps) => (
     <div>
       <p className="text-xs uppercase text-gray-500">Status</p>
       <span
-        className={`inline-block rounded px-2 py-1 text-xs font-semibold ${tender.status === 'OPEN'
-          ? 'bg-green-100 text-green-700'
-          : 'bg-gray-100 text-gray-700'
-          }`}
+        className={`inline-block rounded px-2 py-1 text-xs font-semibold ${
+          tender.status === 'OPEN' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'
+        }`}
       >
         {tender.status}
       </span>
@@ -176,8 +175,7 @@ const TenderSubmissionInfo = ({ tender }: { tender: Tender }) => (
         </a>
       </p>
       <p>
-        <span className="font-medium">Contact:</span> {tender.contactPerson} (
-        {tender.contactPhone})
+        <span className="font-medium">Contact:</span> {tender.contactPerson} ({tender.contactPhone})
       </p>
     </div>
   </div>

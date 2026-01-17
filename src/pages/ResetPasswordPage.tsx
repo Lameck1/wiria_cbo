@@ -51,9 +51,7 @@ function ResetPasswordRequestStep({
           </svg>
         </div>
         <h1 className="text-2xl font-bold text-wiria-blue-dark">Reset Password</h1>
-        <p className="mt-2 text-gray-500">
-          Enter your email to receive a password reset link
-        </p>
+        <p className="mt-2 text-gray-500">Enter your email to receive a password reset link</p>
       </div>
 
       <form onSubmit={onSubmit} className="space-y-6">
@@ -128,9 +126,7 @@ function ResetPasswordConfirmStep({
           </svg>
         </div>
         <h1 className="text-2xl font-bold text-wiria-blue-dark">Check Your Email</h1>
-        <p className="mt-2 text-gray-500">
-          Enter the token from your email and set a new password
-        </p>
+        <p className="mt-2 text-gray-500">Enter the token from your email and set a new password</p>
       </div>
 
       <form onSubmit={onSubmit} className="space-y-6">
@@ -188,12 +184,7 @@ function ResetPasswordSuccessStep() {
           stroke="currentColor"
           viewBox="0 0 24 24"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M5 13l4 4L19 7"
-          />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
         </svg>
       </div>
       <h1 className="mb-2 text-2xl font-bold text-green-800">Password Reset!</h1>
@@ -252,7 +243,7 @@ function ResetPasswordPage() {
       setStep('confirm');
     } catch (error) {
       notificationService.error(
-        'Failed to send reset link. Please check your email and try again.',
+        'Failed to send reset link. Please check your email and try again.'
       );
       logger.error('Reset request error:', error);
     } finally {

@@ -4,12 +4,12 @@
 
 import { useState } from 'react';
 
-import { PaymentStatusResponse } from '@/features/donations/types';
+import type { PaymentStatusResponse } from '@/features/donations/types';
 import { apiClient } from '@/shared/services/api/client';
 import { API_ENDPOINTS } from '@/shared/services/api/endpoints';
 import { notificationService } from '@/shared/services/notification/notificationService';
 
-import { RegistrationFormData, RegistrationResponse } from '../types';
+import type { RegistrationFormData, RegistrationResponse } from '../types';
 
 export function useRegistration() {
   const [isSubmitting, setIsSubmitting] = useState(false);

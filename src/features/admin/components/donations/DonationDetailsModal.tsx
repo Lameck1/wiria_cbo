@@ -1,4 +1,4 @@
-import { Donation } from '@/features/admin/api/donations.api';
+import type { Donation } from '@/features/admin/api/donations.api';
 import { StatusBadge } from '@/shared/components/ui/StatusBadge';
 import { formatDateTime } from '@/shared/utils/dateUtils';
 import { formatCurrency } from '@/shared/utils/helpers';
@@ -18,7 +18,7 @@ export function DonationDetailsModal({ donation, onClose }: DonationDetailsModal
           <h3 className="text-xl font-bold text-wiria-blue-dark">Donation Details</h3>
           <button
             onClick={onClose}
-            className="rounded-lg p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors"
+            className="rounded-lg p-2 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600"
           >
             ✕
           </button>
@@ -33,9 +33,7 @@ export function DonationDetailsModal({ donation, onClose }: DonationDetailsModal
             </div>
             <div>
               <p className="text-xs font-bold uppercase text-gray-500">Amount</p>
-              <p className="text-xl font-bold text-green-600">
-                {formatCurrency(donation.amount)}
-              </p>
+              <p className="text-xl font-bold text-green-600">{formatCurrency(donation.amount)}</p>
             </div>
             {!donation.isAnonymous && (
               <>

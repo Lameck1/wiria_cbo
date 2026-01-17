@@ -219,8 +219,9 @@ export function ImageCarousel({
                   event.stopPropagation();
                   setCurrentIndex(index);
                 }}
-                className={`h-1.5 w-1.5 rounded-full transition-all duration-300 ${index === currentIndex ? 'w-5 bg-white' : 'bg-white/40'
-                  }`}
+                className={`h-1.5 w-1.5 rounded-full transition-all duration-300 ${
+                  index === currentIndex ? 'w-5 bg-white' : 'bg-white/40'
+                }`}
                 aria-label={`Go to image ${index + 1}`}
               />
             ))}

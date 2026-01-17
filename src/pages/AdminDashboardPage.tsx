@@ -2,7 +2,10 @@ import { Suspense } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 
-import { StatCardSkeleton, DashboardTrendSkeleton } from '@/features/admin/components/DashboardSkeletons';
+import {
+  StatCardSkeleton,
+  DashboardTrendSkeleton,
+} from '@/features/admin/components/DashboardSkeletons';
 import { StatCard } from '@/features/admin/components/StatCard';
 import { DashboardTrendCharts } from '@/features/admin/components/TrendChart';
 import { DashboardProvider } from '@/features/admin/context/DashboardContext';
@@ -129,21 +132,28 @@ function AdminDashboardPage() {
     <>
       {/* React 19 Native Metadata */}
       <title>Admin Dashboard | WIRIA CBO</title>
-      <meta name="description" content="Overview of WIRIA CBO administrative activities, statistics, and trends." />
+      <meta
+        name="description"
+        content="Overview of WIRIA CBO administrative activities, statistics, and trends."
+      />
 
       <ErrorBoundary>
-        <Suspense fallback={
-          <>
-            <div className="mb-8">
-              <h1 className="text-3xl font-bold text-wiria-blue-dark">Dashboard Overview</h1>
-              <p className="text-gray-600">Loading dashboard...</p>
-            </div>
-            <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-              {Array.from({ length: 6 }).map((_, index) => <StatCardSkeleton key={index} />)}
-            </div>
-            <DashboardTrendSkeleton />
-          </>
-        }>
+        <Suspense
+          fallback={
+            <>
+              <div className="mb-8">
+                <h1 className="text-3xl font-bold text-wiria-blue-dark">Dashboard Overview</h1>
+                <p className="text-gray-600">Loading dashboard...</p>
+              </div>
+              <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+                {Array.from({ length: 6 }).map((_, index) => (
+                  <StatCardSkeleton key={index} />
+                ))}
+              </div>
+              <DashboardTrendSkeleton />
+            </>
+          }
+        >
           <DashboardProvider>
             <DashboardContent />
           </DashboardProvider>

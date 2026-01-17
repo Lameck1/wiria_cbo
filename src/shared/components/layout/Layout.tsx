@@ -3,7 +3,7 @@
  * Provides consistent layout with Header, Footer, and Back to Top button
  */
 
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 import { Footer } from './Footer';
 import { Header } from './Header';

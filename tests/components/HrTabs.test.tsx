@@ -1,8 +1,7 @@
+import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 
-import { render, screen, fireEvent } from '@testing-library/react';
-
-import { HRTabs, type HRTab } from '@/features/admin/components/hr/HrTabs';
+import { HRTabs } from '@/features/admin/components/hr/HrTabs';
 
 describe('HRTabs', () => {
   it('renders all HR tabs', () => {
@@ -20,7 +19,7 @@ describe('HRTabs', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Opportunities' }));
 
-    expect(setActiveTab).toHaveBeenCalledWith<'OPPORTUNITIES'>('OPPORTUNITIES');
+    expect(setActiveTab).toHaveBeenCalledWith('OPPORTUNITIES');
   });
 
   it('applies active styles to the selected tab', () => {
@@ -35,4 +34,3 @@ describe('HRTabs', () => {
     expect(applicationsTab.className).toContain('bg-wiria-blue-dark');
   });
 });
-

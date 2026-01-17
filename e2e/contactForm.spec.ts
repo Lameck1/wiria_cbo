@@ -35,17 +35,15 @@ test.describe('Contact Form', () => {
     await page.getByLabel(/name/i).fill('Test User');
     await page.getByLabel(/email/i).fill('invalid-email');
     await page.getByLabel(/subject/i).fill('Testing email validation');
-    await page.getByLabel(/message/i).fill(
-      'This is a longer test message to trigger only email validation.'
-    );
+    await page
+      .getByLabel(/message/i)
+      .fill('This is a longer test message to trigger only email validation.');
 
     // Try to submit
     await page.getByRole('button', { name: /send|submit/i }).click();
 
     // Should show email validation error
-    await expect(
-      page.getByText(/please enter a valid email address/i)
-    ).toBeVisible();
+    await expect(page.getByText(/please enter a valid email address/i)).toBeVisible();
   });
 
   test('should submit form with valid data', async ({ page }) => {

@@ -53,4 +53,3 @@ export async function recheckBackendStatus(): Promise<boolean> {
 export async function getBackendStatus(): Promise<boolean> {
   return checkBackendHealth();
 }
-

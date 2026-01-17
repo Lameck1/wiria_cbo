@@ -3,7 +3,8 @@
  * Accessible modal dialog with backdrop
  */
 
-import { ReactNode, useEffect, useId } from 'react';
+import type { ReactNode } from 'react';
+import { useEffect, useId } from 'react';
 
 import { AnimatePresence, motion } from 'framer-motion';
 
@@ -91,7 +92,9 @@ export function Modal({
             {/* Header */}
             {title && (
               <div className="flex flex-shrink-0 items-center justify-between border-b border-gray-200 p-6">
-                <h2 id={titleId} className="text-2xl font-bold text-wiria-blue-dark">{title}</h2>
+                <h2 id={titleId} className="text-2xl font-bold text-wiria-blue-dark">
+                  {title}
+                </h2>
                 <button
                   onClick={onClose}
                   className="text-gray-400 transition-colors hover:text-gray-600"

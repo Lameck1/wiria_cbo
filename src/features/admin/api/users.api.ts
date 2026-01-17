@@ -1,5 +1,5 @@
 import { apiClient as client } from '@/shared/services/api/client';
-import { UserRole } from '@/shared/types';
+import type { UserRole } from '@/shared/types';
 
 export interface AdminUser {
   id: string;

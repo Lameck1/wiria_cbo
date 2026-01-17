@@ -36,10 +36,11 @@ export function AmountSelector({ selectedAmount, onAmountChange, disabled }: Amo
             whileTap={{ scale: 0.98 }}
             onClick={() => onAmountChange(amount.value)}
             disabled={disabled}
-            className={`relative flex min-h-[100px] flex-col items-center justify-center rounded-2xl border-2 p-2 px-3 transition-all duration-300 ${selectedAmount === amount.value
+            className={`relative flex min-h-[100px] flex-col items-center justify-center rounded-2xl border-2 p-2 px-3 transition-all duration-300 ${
+              selectedAmount === amount.value
                 ? 'border-wiria-yellow bg-wiria-yellow/10 shadow-lg shadow-wiria-yellow/5'
                 : 'border-gray-100 bg-white hover:border-gray-300 hover:bg-gray-50'
-              } disabled:cursor-not-allowed disabled:opacity-50`}
+            } disabled:cursor-not-allowed disabled:opacity-50`}
           >
             <span
               className={`text-xl font-extrabold tracking-tight ${selectedAmount === amount.value ? 'text-wiria-blue-dark' : 'text-gray-800'}`}

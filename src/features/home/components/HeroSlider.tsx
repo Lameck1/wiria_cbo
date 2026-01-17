@@ -253,9 +253,7 @@ function HeroIndicators({ slides, currentIndex, onSelect }: HeroIndicatorsProps)
           onClick={() => onSelect(index)}
           aria-label={`Go to slide ${index + 1}`}
           className={`h-1.5 rounded-full transition-all duration-300 ${
-            index === currentIndex
-              ? 'w-8 bg-white'
-              : 'w-1.5 bg-white/50 hover:bg-white/75'
+            index === currentIndex ? 'w-8 bg-white' : 'w-1.5 bg-white/50 hover:bg-white/75'
           }`}
         />
       ))}
@@ -330,11 +328,7 @@ export function HeroSlider({ slides, autoRotateInterval = 6000 }: HeroSliderProp
 
       <HeroNavigationArrows onPrevious={previousSlide} onNext={nextSlide} />
 
-      <HeroIndicators
-        slides={slides}
-        currentIndex={currentIndex}
-        onSelect={goToSlide}
-      />
+      <HeroIndicators slides={slides} currentIndex={currentIndex} onSelect={goToSlide} />
     </section>
   );
 }

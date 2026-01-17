@@ -12,16 +12,19 @@ This directory contains end-to-end (E2E) tests for the WIRIA CBO application usi
 ## Running Tests
 
 ### Run all E2E tests
+
 ```bash
 npm run test:e2e
 ```
 
 ### Run tests in UI mode (interactive)
+
 ```bash
 npm run test:e2e:ui
 ```
 
 ### Run tests in specific browser
+
 ```bash
 npx playwright test --project=chromium
 npx playwright test --project=firefox
@@ -29,16 +32,19 @@ npx playwright test --project=webkit
 ```
 
 ### Run specific test file
+
 ```bash
 npx playwright test e2e/homepage.spec.ts
 ```
 
 ### Run tests in headed mode (see browser)
+
 ```bash
 npx playwright test --headed
 ```
 
 ### Debug tests
+
 ```bash
 npx playwright test --debug
 ```
@@ -48,6 +54,7 @@ npx playwright test --debug
 Tests are configured in `playwright.config.ts` at the project root.
 
 **Key settings:**
+
 - Base URL: `http://localhost:5173`
 - Browsers: Chromium, Firefox, WebKit, Mobile Chrome, Mobile Safari
 - Automatic dev server start before tests
@@ -57,6 +64,7 @@ Tests are configured in `playwright.config.ts` at the project root.
 ## Writing Tests
 
 ### Test Structure
+
 ```typescript
 import { test, expect } from '@playwright/test';
 
@@ -78,6 +86,7 @@ test.describe('Feature Name', () => {
 6. **Use descriptive test names** that explain what is being tested
 
 ### Selectors Priority
+
 1. `page.getByRole()` - Best for accessibility
 2. `page.getByLabel()` - For form fields
 3. `page.getByTestId()` - For stable custom attributes
@@ -86,6 +95,7 @@ test.describe('Feature Name', () => {
 ## CI Integration
 
 E2E tests run automatically in GitHub Actions on:
+
 - Push to main branch
 - Pull requests
 - Manual workflow dispatch
@@ -100,6 +110,7 @@ E2E tests run automatically in GitHub Actions on:
 ## Coverage
 
 Current E2E test coverage:
+
 - ✅ Homepage loading and responsiveness
 - ✅ Authentication flows
 - ✅ Navigation between pages

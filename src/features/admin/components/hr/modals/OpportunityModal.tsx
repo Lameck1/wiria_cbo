@@ -1,10 +1,7 @@
 import { useState } from 'react';
 
-import {
-  Opportunity,
-  createOpportunity,
-  updateOpportunity,
-} from '@/features/admin/api/opportunities.api';
+import type { Opportunity } from '@/features/admin/api/opportunities.api';
+import { createOpportunity, updateOpportunity } from '@/features/admin/api/opportunities.api';
 import { Button } from '@/shared/components/ui/Button';
 import { notificationService } from '@/shared/services/notification/notificationService';
 
@@ -108,23 +105,21 @@ function OpportunityFormFields({
 
       <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
         <div className="space-y-4">
-          <h4 className="text-sm font-bold text-gray-700">
-            Responsibilities (One per line) *
-          </h4>
+          <h4 className="text-sm font-bold text-gray-700">Responsibilities (One per line) *</h4>
           {responsibilities.map((r, index) => (
             <input
               key={index}
               aria-label={`Opportunity responsibility ${index + 1}`}
               value={r}
-              onChange={(event) => handleArrayChange(setResponsibilities, index, event.target.value)}
+              onChange={(event) =>
+                handleArrayChange(setResponsibilities, index, event.target.value)
+              }
               className="mb-2 w-full rounded-xl border-gray-200 p-3"
             />
           ))}
         </div>
         <div className="space-y-4">
-          <h4 className="text-sm font-bold text-gray-700">
-            Requirements (One per line) *
-          </h4>
+          <h4 className="text-sm font-bold text-gray-700">Requirements (One per line) *</h4>
           {requirements.map((r, index) => (
             <input
               key={index}

@@ -1,6 +1,7 @@
 import { logger } from '@/shared/services/logger';
 
-const API_BASE_URL: string = (import.meta.env['VITE_API_BASE_URL'] as string | undefined) ?? 'http://localhost:5001/api';
+const API_BASE_URL: string =
+  (import.meta.env['VITE_API_BASE_URL'] as string | undefined) ?? 'http://localhost:5001/api';
 
 type TokenResolver = () => string | null;
 

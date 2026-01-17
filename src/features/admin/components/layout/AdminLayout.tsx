@@ -94,7 +94,9 @@ export function AdminLayout({ children }: AdminLayoutProps) {
         {/* Footer - Fixed at bottom */}
         <div className="flex-shrink-0 border-t border-white border-opacity-10 p-6">
           <button
-            onClick={() => { void logout(); }}
+            onClick={() => {
+              void logout();
+            }}
             className="flex w-full items-center p-3 text-left font-bold text-red-300 transition-colors hover:text-red-100"
           >
             <span className="mr-3">🚪</span> Logout

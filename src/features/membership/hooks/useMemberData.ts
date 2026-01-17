@@ -14,7 +14,7 @@ import {
   useMemberDocumentsQuery,
   useMemberActivityQuery,
   useRsvpMutation,
-  useCancelRsvpMutation
+  useCancelRsvpMutation,
 } from './queries/useMemberQueries';
 
 // Types
@@ -98,31 +98,24 @@ function useMemberComputedValues(
 
   const pendingPayments = useMemo(
     () =>
-      (paymentsQuery.data ?? []).filter(
-        (payment: Payment) => payment.status === 'PENDING'
-      ).length,
+      (paymentsQuery.data ?? []).filter((payment: Payment) => payment.status === 'PENDING').length,
     [paymentsQuery.data]
   );
 
   const upcomingMeetings = useMemo(
     () =>
-      (meetingsQuery.data ?? []).filter(
-        (meeting: Meeting) => meeting.status === 'UPCOMING'
-      ).length,
+      (meetingsQuery.data ?? []).filter((meeting: Meeting) => meeting.status === 'UPCOMING').length,
     [meetingsQuery.data]
   );
 
   const daysUntilExpiry = useMemo(() => {
     const expiry = profileQuery.data?.membershipExpiresAt;
     if (!expiry) return null;
-    return Math.ceil(
-      (new Date(expiry).getTime() - Date.now()) / (1000 * 60 * 60 * 24)
-    );
+    return Math.ceil((new Date(expiry).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
   }, [profileQuery.data?.membershipExpiresAt]);
 
   const isExpired = daysUntilExpiry !== null && daysUntilExpiry <= 0;
-  const isExpiringSoon =
-    daysUntilExpiry !== null && daysUntilExpiry > 0 && daysUntilExpiry <= 30;
+  const isExpiringSoon = daysUntilExpiry !== null && daysUntilExpiry > 0 && daysUntilExpiry <= 30;
 
   return {
     totalPayments,
@@ -165,10 +158,7 @@ export function useMemberData() {
     documentsQuery.isLoading ||
     activityQuery.isLoading;
 
-  const error =
-    profileQuery.error?.message ??
-    paymentsQuery.error?.message ??
-    null;
+  const error = profileQuery.error?.message ?? paymentsQuery.error?.message ?? null;
 
   return {
     profile: profileQuery.data ?? null,

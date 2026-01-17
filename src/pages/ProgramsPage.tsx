@@ -160,7 +160,7 @@ function ProgramsPillarsSection() {
         <div className="mx-auto max-w-4xl">
           {PROGRAMS_DATA.map(
             (program) =>
-              activeTab === program.id && <ProgramDetail key={program.id} program={program} />,
+              activeTab === program.id && <ProgramDetail key={program.id} program={program} />
           )}
         </div>
       </div>
