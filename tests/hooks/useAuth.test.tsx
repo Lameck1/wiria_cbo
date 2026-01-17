@@ -17,11 +17,14 @@ import { UserRole } from '@/shared/types';
 // Mock dependencies
 vi.mock('@/shared/services/api/client');
 vi.mock('@/shared/services/storage/storageService');
+
+// Create a stable navigate mock
+const mockNavigate = vi.fn();
 vi.mock('react-router-dom', async () => {
   const actual = await vi.importActual('react-router-dom');
   return {
     ...actual,
-    useNavigate: () => vi.fn(),
+    useNavigate: () => mockNavigate,
   };
 });
 
@@ -42,8 +45,13 @@ describe('useAuth and AuthContext', () => {
 
   describe('useAuth hook', () => {
     it('should throw error when used outside AuthProvider', () => {
-      // Suppress console.error for this test
-      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+      // Suppress console.error for this specific test only
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation((message) => {
+        // Only suppress React error boundary errors
+        if (!message?.toString().includes('Error')) {
+          console.warn(message);
+        }
+      });
       
       expect(() => {
         renderHook(() => useAuth());
