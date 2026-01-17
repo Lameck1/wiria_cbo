@@ -26,7 +26,6 @@ export function Form<T extends FieldValues>({
   resetOnSuccess = false,
 }: FormProps<T>) {
   const methods = useForm<T>({
-    // @ts-expect-error - Zod version mismatch between react-hook-form and zod
     resolver: zodResolver(schema),
     defaultValues,
     mode: 'onBlur', // Validate on blur for better UX
