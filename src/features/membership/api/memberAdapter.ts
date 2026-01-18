@@ -85,7 +85,7 @@ type ApiActivityResponse = ApiActivityData[] | { data: ApiActivityData[] };
  * - Wrapped in property: { payments: [...] } or { data: [...] }
  */
 function extractArray<T>(
-  apiData: T[] | { [key: string]: T[] },
+  apiData: T[] | Record<string, T[]>,
   propertyNames: string[]
 ): T[] {
   if (Array.isArray(apiData)) {
@@ -93,8 +93,8 @@ function extractArray<T>(
   }
 
   // Try each property name until we find an array
-  for (const prop of propertyNames) {
-    const value = (apiData as Record<string, unknown>)[prop];
+  for (const property of propertyNames) {
+    const value = (apiData as Record<string, unknown>)[property];
     if (Array.isArray(value)) {
       return value as T[];
     }
@@ -172,7 +172,7 @@ export const memberAdapter = {
    */
   payments(apiData: ApiPaymentsResponse): Payment[] {
     const list = extractArray<ApiPaymentData>(apiData, ['payments']);
-    return list.map(transformPayment);
+    return list.map((payment) => transformPayment(payment));
   },
 
   /**
@@ -181,7 +181,7 @@ export const memberAdapter = {
    */
   meetings(apiData: ApiMeetingsResponse): Meeting[] {
     const list = extractArray<ApiMeetingData>(apiData, ['data']);
-    return list.map(transformMeeting);
+    return list.map((meeting) => transformMeeting(meeting));
   },
 
   /**
@@ -190,7 +190,7 @@ export const memberAdapter = {
    */
   activity(apiData: ApiActivityResponse): Activity[] {
     const list = extractArray<ApiActivityData>(apiData, ['data']);
-    return list.map(transformActivity);
+    return list.map((activity) => transformActivity(activity));
   },
 };
 

@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
+
+import { useQueryClient } from '@tanstack/react-query';
 
 import type { SafeguardingReport } from '@/features/admin/api/safeguarding.api';
 import {
   getSafeguardingReports,
-  updateSafeguardingReport as updateReport,
   resolveSafeguardingReport as resolveReport,
+  updateSafeguardingReport as updateReport,
 } from '@/features/admin/api/safeguarding.api';
 import { AdminPageHeader } from '@/features/admin/components/layout/AdminPageHeader';
 import {
@@ -16,10 +18,14 @@ import { ReportDetailsModal } from '@/features/admin/components/safeguarding/mod
 import { ResolveReportModal } from '@/features/admin/components/safeguarding/modals/ResolveReportModal';
 import { SafeguardingFilters } from '@/features/admin/components/safeguarding/SafeguardingFilters';
 import { getSafeguardingColumns } from '@/features/admin/components/safeguarding/SafeguardingTableColumns';
+import { ADMIN_KEYS } from '@/features/admin/hooks/useNotificationQueries';
 import { DataTable } from '@/shared/components/ui/DataTable';
-import { useAdminData, useAdminAction } from '@/shared/hooks/useAdminData';
+import { TIMING } from '@/shared/constants/config';
+import { useAdminAction, useAdminData } from '@/shared/hooks/useAdminData';
+import { notificationService } from '@/shared/services/notification/notificationService';
 
 export default function SafeguardingManagementPage() {
+  const queryClient = useQueryClient();
   const [statusFilter, setStatusFilter] = useState('');
   const [priorityFilter, setPriorityFilter] = useState('');
 
@@ -30,25 +36,47 @@ export default function SafeguardingManagementPage() {
 
   const { items: reports, isLoading } = useAdminData<SafeguardingReport>(
     ['safeguarding', queryParams],
-    () => getSafeguardingReports(Object.keys(queryParams).length > 0 ? queryParams : undefined)
+    () => getSafeguardingReports(Object.keys(queryParams).length > 0 ? queryParams : undefined),
+    { staleTime: TIMING.POLLING_INTERVAL }
   );
 
   const updateStatusAction = useAdminAction(
     ({ id, status }: { id: string; status: SafeguardingReport['status'] }) =>
       updateReport(id, { status }),
     [['safeguarding']],
-    { successMessage: 'Report status updated' }
+    {
+      onSuccess: () => {
+        notificationService.success('Report status updated');
+        void queryClient.invalidateQueries({ queryKey: ADMIN_KEYS.notifications });
+      },
+      onError: () => {
+        notificationService.error('Failed to update report status');
+      },
+    }
   );
 
   const resolveAction = useAdminAction(
     ({ id, resolution }: { id: string; resolution: string }) => resolveReport(id, resolution),
     [['safeguarding']],
-    { successMessage: 'Report resolved successfully' }
+    {
+      onSuccess: () => {
+        notificationService.success('Report resolved successfully');
+        void queryClient.invalidateQueries({ queryKey: ADMIN_KEYS.notifications });
+      },
+      onError: () => {
+        notificationService.error('Failed to resolve report');
+      },
+    }
   );
 
-  const [selectedReport, setSelectedReport] = useState<SafeguardingReport | null>(null);
+  const [selectedReportId, setSelectedReportId] = useState<string | null>(null);
   const [showResolveModal, setShowResolveModal] = useState(false);
   const [resolution, setResolution] = useState('');
+
+  const selectedReport: SafeguardingReport | null = useMemo(
+    () => reports.find((report) => report.id === selectedReportId) ?? null,
+    [reports, selectedReportId]
+  );
 
   const handleResolve = () => {
     if (!selectedReport || !resolution.trim()) return;
@@ -58,16 +86,16 @@ export default function SafeguardingManagementPage() {
         onSuccess: () => {
           setShowResolveModal(false);
           setResolution('');
-          setSelectedReport(null);
+          setSelectedReportId(null);
         },
       }
     );
   };
 
   const columns = getSafeguardingColumns(
-    (r) => setSelectedReport(r),
+    (r) => setSelectedReportId(r.id),
     (r) => {
-      setSelectedReport(r);
+      setSelectedReportId(r.id);
       setShowResolveModal(true);
     }
   );
@@ -123,9 +151,19 @@ export default function SafeguardingManagementPage() {
           statusColors={STATUS_COLORS}
           priorityColors={PRIORITY_COLORS}
           incidentTypes={INCIDENT_TYPES}
-          onClose={() => setSelectedReport(null)}
+          onClose={() => setSelectedReportId(null)}
           onResolve={() => setShowResolveModal(true)}
-          onStatusChange={(status) => updateStatusAction.mutate({ id: selectedReport.id, status })}
+          onStatusChange={(status) => {
+            if (!selectedReport) return;
+            queryClient.setQueriesData<SafeguardingReport[]>(
+              { queryKey: ['safeguarding'] },
+              (old) =>
+                (old ?? []).map((report) =>
+                  report.id === selectedReport.id ? { ...report, status } : report
+                )
+            );
+            updateStatusAction.mutate({ id: selectedReport.id, status });
+          }}
         />
       )}
 

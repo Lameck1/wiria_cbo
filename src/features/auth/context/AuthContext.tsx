@@ -23,7 +23,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     if (TokenManager.hasValidTokens() && userData) {
       // Register token resolver with ApiClient
-      apiClient.setTokenResolver(TokenManager.tokenResolver);
+      apiClient.setTokenResolver(() => TokenManager.tokenResolver());
       setUser(userData);
     } else {
       setUser(null);

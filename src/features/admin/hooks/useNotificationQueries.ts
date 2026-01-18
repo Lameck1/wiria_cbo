@@ -56,7 +56,10 @@ export function useNotificationCountsQuery(enabled = false) {
 
       if (safeguardingResult.status === 'fulfilled') {
         const data = safeguardingResult.value.data ?? safeguardingResult.value;
-        counts.criticalCases = data.critical ?? data.high ?? 0;
+        const critical = data.critical ?? 0;
+        const high = data.high ?? 0;
+        const pending = data.pending ?? 0;
+        counts.criticalCases = critical + high + pending;
       }
 
       return counts;

@@ -27,6 +27,10 @@ export function ReportDetailsModal({
   onResolve,
   onStatusChange,
 }: ReportDetailsModalProps) {
+  const incidentKey = report.incidentType ?? report.category;
+  const incidentLabel =
+    incidentKey === undefined ? undefined : incidentTypes[incidentKey] ?? incidentKey;
+
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black bg-opacity-50 p-4">
       <div className="flex max-h-[90vh] w-full max-w-3xl flex-col rounded-2xl bg-white shadow-2xl">
@@ -52,12 +56,12 @@ export function ReportDetailsModal({
         </div>
         <div className="flex-1 space-y-6 overflow-y-auto p-6">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            <InfoItem
-              label="Incident Type"
-              value={incidentTypes[report.incidentType] ?? report.incidentType}
-            />
+            <InfoItem label="Incident Type" value={incidentLabel} />
             <InfoItem label="Incident Date" value={formatDate(report.incidentDate)} />
-            <InfoItem label="Location" value={report.incidentLocation} />
+            <InfoItem
+              label="Location"
+              value={report.incidentLocation ?? report.location}
+            />
             <InfoItem label="Reported On" value={formatDate(report.createdAt)} />
             {!report.isAnonymous && (
               <>

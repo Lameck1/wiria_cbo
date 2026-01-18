@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import type { Meeting, MeetingAttendance } from '@/features/admin/api/meetings.api';
 import {
@@ -18,16 +18,30 @@ import { notificationService } from '@/shared/services/notification/notification
 
 export default function MeetingManagementPage() {
   const { items: meetings, isLoading } = useAdminData<Meeting>(['meetings'], getMeetings);
-  const cancelAction = useAdminAction((id: string) => cancelMeeting(id), [['meetings']], {
-    successMessage: 'Meeting cancelled',
-  });
+  const cancelAction = useAdminAction(
+    (id: string) => cancelMeeting(id),
+    [['meetings']],
+    {
+      onSuccess: () => {
+        notificationService.success('Meeting cancelled');
+      },
+      onError: () => {
+        notificationService.error('Failed to cancel meeting');
+      },
+    }
+  );
 
   const [showFormModal, setShowFormModal] = useState(false);
   const [editingMeeting, setEditingMeeting] = useState<Meeting | null>(null);
-  const [selectedMeeting, setSelectedMeeting] = useState<Meeting | null>(null);
+  const [selectedMeetingId, setSelectedMeetingId] = useState<string | null>(null);
   const [attendance, setAttendance] = useState<MeetingAttendance[]>([]);
   const [showAttendance, setShowAttendance] = useState(false);
   const [meetingIdToCancel, setMeetingIdToCancel] = useState<string | null>(null);
+
+  const selectedMeeting: Meeting | null = useMemo(
+    () => meetings.find((meeting) => meeting.id === selectedMeetingId) ?? null,
+    [meetings, selectedMeetingId]
+  );
 
   const handleCancel = (id: string) => {
     setMeetingIdToCancel(id);
@@ -40,7 +54,7 @@ export default function MeetingManagementPage() {
   };
 
   const handleViewAttendance = async (meeting: Meeting) => {
-    setSelectedMeeting(meeting);
+    setSelectedMeetingId(meeting.id);
     try {
       const data = await getMeetingAttendance(meeting.id);
       setAttendance(data);

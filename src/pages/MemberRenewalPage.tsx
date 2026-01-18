@@ -71,7 +71,7 @@ function MemberRenewalPage() {
 
   usePaymentPoller({
     donationId: transactionId,
-    isActive: !!transactionId && paymentStatus === 'PENDING',
+    isActive: !!transactionId && paymentStatus === PaymentStatus.PENDING,
     onStatusCheck: checkPaymentStatus,
   });
 
@@ -111,7 +111,7 @@ function MemberRenewalPage() {
       <FormProvider {...methods}>
         <div className="mx-auto max-w-4xl px-4 py-8">
           <AnimatePresence mode="wait">
-            {paymentStatus === 'PENDING' ? (
+            {paymentStatus === PaymentStatus.PENDING ? (
               <RenewalPending
                 paymentMethod={paymentMethod}
                 isSubmitting={isSubmitting}

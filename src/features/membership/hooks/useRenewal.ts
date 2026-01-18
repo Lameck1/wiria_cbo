@@ -3,12 +3,11 @@
  * Refactored to use shared usePaymentFlow hook
  */
 
-import { useState, useCallback } from 'react';
+import { useCallback, useState } from 'react';
 
-import { apiClient } from '@/shared/services/api/client';
-import { API_ENDPOINTS } from '@/shared/services/api/endpoints';
 import { usePaymentFlow } from '@/shared/hooks/usePaymentFlow';
-import { PaymentStatus } from '@/shared/types/payment';
+import { API_ENDPOINTS } from '@/shared/services/api/endpoints';
+import { useServices } from '@/shared/services/di';
 
 export interface RenewalData {
   paymentMethod: 'STK_PUSH' | 'MANUAL';
@@ -26,6 +25,7 @@ export interface RenewalResponse {
 }
 
 export function useRenewal() {
+  const { apiClient } = useServices();
   const [renewalId, setRenewalId] = useState<string | null>(null);
 
   const paymentFlow = usePaymentFlow({
@@ -50,8 +50,8 @@ export function useRenewal() {
         );
 
         const { checkoutRequestId, transactionId, message } = response;
-        const renewalTransactionId = checkoutRequestId || transactionId;
-        
+        const renewalTransactionId = checkoutRequestId ?? transactionId;
+
         if (renewalTransactionId) {
           setRenewalId(renewalTransactionId);
         }
@@ -67,11 +67,11 @@ export function useRenewal() {
           transactionId: renewalTransactionId,
           message,
         };
-      } catch (error) {
+      } catch {
         return { success: false };
       }
     },
-    [paymentFlow]
+    [apiClient, paymentFlow]
   );
 
   const resetRenewal = useCallback(() => {
@@ -82,12 +82,12 @@ export function useRenewal() {
   return {
     // Renewal-specific state
     renewalId,
-    
+
     // Payment flow state and actions (delegated to shared hook)
     isSubmitting: paymentFlow.isSubmitting,
     paymentStatus: paymentFlow.paymentStatus,
     transactionId: paymentFlow.transactionId,
-    
+
     // Actions
     submitRenewal,
     checkPaymentStatus: paymentFlow.checkPaymentStatus,
@@ -96,4 +96,4 @@ export function useRenewal() {
 }
 
 // Re-export PaymentStatus for convenience
-export { PaymentStatus };
+export { PaymentStatus } from '@/shared/types/payment';

@@ -4,7 +4,7 @@
 
 import { z } from 'zod';
 
-import { phoneSchema } from '@/shared/utils/validators';
+import { emailSchema, phoneSchema } from '@/shared/utils/validators';
 
 export const registrationSchema = z
   .object({
@@ -20,7 +20,7 @@ export const registrationSchema = z
       })
       .optional(),
     nationalId: z.string().max(20, 'National ID must be at most 20 characters').optional(),
-    email: z.string().email('Please enter a valid email address'),
+    email: emailSchema,
     phoneNumber: phoneSchema, // Use shared phone schema for consistency
     county: z.string().min(1, 'County is required'),
     subCounty: z.string().min(1, 'Sub-county is required'),

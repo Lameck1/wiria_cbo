@@ -7,7 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import { useAuth } from '@/features/auth/context/useAuth';
 import { usePaymentPoller } from '@/features/donations/hooks/usePaymentPoller';
-import { useRegistration } from '@/features/membership/hooks/useRegistration';
+import { useRegistration, PaymentStatus } from '@/features/membership/hooks/useRegistration';
 import type { RegistrationFormSchema } from '@/features/membership/validation';
 import { registrationSchema } from '@/features/membership/validation';
 import { Button } from '@/shared/components/ui/Button';
@@ -32,7 +32,7 @@ import {
 
 interface MembershipRegistrationLayoutProps {
   isBackendConnected: boolean;
-  paymentStatus: 'PENDING' | 'COMPLETED' | 'FAILED' | 'CANCELLED' | null;
+  paymentStatus: PaymentStatus | null;
   paymentMethod: RegistrationFormSchema['paymentMethod'];
   membershipType: RegistrationFormSchema['membershipType'];
   membershipNumber: string | null;
@@ -69,18 +69,18 @@ function MembershipRegistrationLayout({
 
           {isBackendConnected && (
             <>
-              {paymentStatus === 'COMPLETED' && (
+              {paymentStatus === PaymentStatus.COMPLETED && (
                 <RegistrationSuccess
                   membershipNumber={membershipNumber}
                   onStartOver={handleStartOver}
                 />
               )}
 
-              {paymentStatus === 'PENDING' && paymentMethod === 'STK_PUSH' && (
+              {paymentStatus === PaymentStatus.PENDING && paymentMethod === 'STK_PUSH' && (
                 <PendingPaymentCard />
               )}
 
-              {paymentStatus !== 'COMPLETED' && (
+              {paymentStatus !== PaymentStatus.COMPLETED && (
                 <Card className="border-none shadow-2xl">
                   <CardBody className="p-8">
                     <div className="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-center">
@@ -124,12 +124,12 @@ function MembershipRegistrationLayout({
                         fullWidth
                         size="lg"
                         isLoading={isSubmitting}
-                        disabled={paymentStatus === 'PENDING'}
+                        disabled={paymentStatus === PaymentStatus.PENDING}
                         className="h-14 text-lg shadow-lg transition-all hover:shadow-xl"
                       >
                         {isSubmitting
                           ? 'Processing...'
-                          : paymentStatus === 'PENDING'
+                          : paymentStatus === PaymentStatus.PENDING
                             ? 'Payment Pending...'
                             : 'Complete Registration'}
                       </Button>
@@ -218,7 +218,7 @@ function MembershipPage() {
   // Poll payment status for STK Push
   usePaymentPoller({
     donationId: memberId,
-    isActive: paymentStatus === 'PENDING' && paymentMethod === 'STK_PUSH',
+    isActive: paymentStatus === PaymentStatus.PENDING && paymentMethod === 'STK_PUSH',
     onStatusCheck: checkPaymentStatus,
   });
 
@@ -235,7 +235,7 @@ function MembershipPage() {
     window.location.reload();
   };
 
-  const isFormDisabled = isSubmitting || paymentStatus === 'PENDING';
+  const isFormDisabled = isSubmitting || paymentStatus === PaymentStatus.PENDING;
 
   return (
     <FormProvider {...methods}>

@@ -4,17 +4,17 @@
  * Refactored to use shared usePaymentFlow hook
  */
 
-import { useState, useCallback } from 'react';
+import { useCallback, useState } from 'react';
 
-import { apiClient } from '@/shared/services/api/client';
-import { API_ENDPOINTS } from '@/shared/services/api/endpoints';
 import { usePaymentFlow } from '@/shared/hooks/usePaymentFlow';
-import { PaymentStatus } from '@/shared/types/payment';
+import { API_ENDPOINTS } from '@/shared/services/api/endpoints';
+import { useServices } from '@/shared/services/di';
 
 import type { DonationFormData, DonationResponse } from '../types';
 
 export function useDonation() {
   const [donationId, setDonationId] = useState<string | null>(null);
+  const { apiClient, notificationService } = useServices();
 
   const paymentFlow = usePaymentFlow({
     flowType: 'donation',
@@ -49,14 +49,15 @@ export function useDonation() {
         return {
           success: result.success,
           donationId: donation.id,
-          checkoutRequestId: checkoutRequestId || result.checkoutRequestId,
+          checkoutRequestId: checkoutRequestId ?? result.checkoutRequestId,
           message,
         };
-      } catch (error) {
+      } catch {
+        notificationService.error('Failed to initiate donation. Please try again.');
         return { success: false };
       }
     },
-    [paymentFlow]
+    [apiClient, notificationService, paymentFlow]
   );
 
   const resetDonation = useCallback(() => {
@@ -67,14 +68,14 @@ export function useDonation() {
   return {
     // Donation-specific state
     donationId,
-    
+
     // Payment flow state and actions (delegated to shared hook)
     isSubmitting: paymentFlow.isSubmitting,
     isVerifying: paymentFlow.isVerifying,
     isManualPaymentVerified: paymentFlow.isManualPaymentVerified,
     checkoutRequestId: paymentFlow.checkoutRequestId,
     paymentStatus: paymentFlow.paymentStatus,
-    
+
     // Actions
     initiateDonation,
     checkPaymentStatus: paymentFlow.checkPaymentStatus,
@@ -84,4 +85,4 @@ export function useDonation() {
 }
 
 // Re-export PaymentStatus for convenience
-export { PaymentStatus };
+export { PaymentStatus } from '@/shared/types/payment';

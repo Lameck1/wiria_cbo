@@ -11,4 +11,4 @@ export { GovernanceSection } from './components/GovernanceSection';
 export { AboutPartnersSection } from './components/AboutPartnersSection';
 
 // Data
-export * from './constants/aboutData';
+// export * from './constants/aboutData';

@@ -24,4 +24,4 @@ export { JobCard } from './components/JobCard';
 export { NoOpeningsView } from './components/NoOpeningsView';
 
 // Constants
-export * from './constants/careersData';
+// export * from './constants/careersData';

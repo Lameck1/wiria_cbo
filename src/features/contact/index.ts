@@ -4,7 +4,7 @@
  */
 
 // Components
-export { ContactInfoCard } from './components/ContactInfoCard';
+// export { ContactInfoCard } from './components/ContactInfoCard';
 export { ContactFormSection } from './components/ContactFormSection';
 export { SafeguardingCallout } from './components/SafeguardingCallout';
 export { LocationMap } from './components/LocationMap';

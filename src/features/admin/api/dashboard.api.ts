@@ -5,7 +5,7 @@
 
 import { apiClient } from '@/shared/services/api/client';
 import { logger } from '@/shared/services/logger';
-import { extractArray, extractData } from '@/shared/utils/apiUtils';
+import { extractData } from '@/shared/utils/apiUtils';
 
 // Types for dashboard statistics
 export interface MemberStats {
@@ -98,115 +98,19 @@ export interface RecentMessage {
   status: string;
 }
 
-interface ApplicationResponse {
-  id: string;
-  firstName: string;
-  lastName: string;
-  type: string;
-  career?: { title: string };
-  opportunity?: { title: string };
-  createdAt: string;
-  status: string;
-}
-
-interface DonationResponse {
-  id: string;
-  donorName: string;
-  amount: number;
-  createdAt: string;
-  status: string;
-}
-
-interface MessageResponse {
-  id: string;
-  name: string;
-  subject: string;
-  createdAt: string;
-  status: string;
-}
-
-/**
- * Fetches recent applications for dashboard activity feed
- */
-export const getRecentApplications = async (limit = 5): Promise<RecentApplication[]> => {
-  try {
-    const response = await apiClient.get('/admin/applications');
-    const applications = extractArray<ApplicationResponse>(response);
-    return applications.slice(0, limit).map((app) => ({
-      id: app.id,
-      name: `${app.firstName} ${app.lastName}`,
-      type: app.type,
-      position: app.career?.title ?? app.opportunity?.title ?? 'N/A',
-      date: app.createdAt,
-      status: app.status,
-    }));
-  } catch (error) {
-    logger.error('Failed to fetch recent applications:', error);
-    throw new Error('Failed to load recent applications. Please try again.');
-  }
-};
-
-/**
- * Fetches recent donations for dashboard activity feed
- */
-export const getRecentDonations = async (limit = 5): Promise<RecentDonation[]> => {
-  try {
-    const response = await apiClient.get('/donations');
-    const donations = extractArray<DonationResponse>(response);
-    return donations.slice(0, limit).map((d) => ({
-      id: d.id,
-      donor: d.donorName ?? 'Anonymous',
-      amount: Number(d.amount),
-      date: d.createdAt,
-      status: d.status,
-    }));
-  } catch (error) {
-    logger.error('Failed to fetch recent donations:', error);
-    throw new Error('Failed to load recent donations. Please try again.');
-  }
-};
-
-/**
- * Fetches recent messages for dashboard activity feed
- */
-export const getRecentMessages = async (limit = 5): Promise<RecentMessage[]> => {
-  try {
-    const response = await apiClient.get('/contact');
-    const messages = extractArray<MessageResponse>(response);
-    return messages.slice(0, limit).map((m) => ({
-      id: m.id,
-      name: m.name,
-      subject: m.subject,
-      date: m.createdAt,
-      status: m.status,
-    }));
-  } catch (error) {
-    logger.error('Failed to fetch recent messages:', error);
-    throw new Error('Failed to load recent messages. Please try again.');
-  }
-};
-
 /**
  * Aggregates all dashboard statistics into a single response
- * Now uses the optimized consolidated endpoint /admin/statistics
+ * Uses the optimized consolidated endpoint /admin/statistics
  */
 export const getDashboardStats = async (): Promise<DashboardStats> => {
   try {
-    const [statsResponse, recentApps, recentDonations, recentMessages] = await Promise.allSettled([
-      apiClient.get('/admin/statistics'),
-      getRecentApplications(),
-      getRecentDonations(),
-      getRecentMessages(),
-    ]);
+    const statsResponse = await apiClient.get('/admin/statistics');
+    const statsData = extractData<DashboardStats>(statsResponse);
 
-    // Extract stats data
-    const statsData =
-      statsResponse.status === 'fulfilled'
-        ? extractData<DashboardStats>(statsResponse.value)
-        : null;
-    if (!statsData) throw new Error('Missing dashboard statistics data');
+    if (!statsData) {
+      throw new Error('Missing dashboard statistics data');
+    }
 
-    // Use fallback empty arrays for failed requests
     return {
       members: statsData.members,
       donations: statsData.donations,
@@ -215,9 +119,9 @@ export const getDashboardStats = async (): Promise<DashboardStats> => {
       applications: statsData.applications,
       tenders: statsData.tenders,
       news: statsData.news,
-      recentApplications: recentApps.status === 'fulfilled' ? recentApps.value : [],
-      recentDonations: recentDonations.status === 'fulfilled' ? recentDonations.value : [],
-      recentMessages: recentMessages.status === 'fulfilled' ? recentMessages.value : [],
+      recentApplications: statsData.recentApplications ?? [],
+      recentDonations: statsData.recentDonations ?? [],
+      recentMessages: statsData.recentMessages ?? [],
     };
   } catch (error) {
     logger.error('Failed to fetch consolidated dashboard stats:', error);

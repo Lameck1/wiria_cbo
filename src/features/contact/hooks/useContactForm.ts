@@ -1,11 +1,11 @@
 import { useState } from 'react';
 
-import { contactSubmissionService } from '@/features/contact/services';
 import type { ContactFormData } from '@/features/contact/services';
+import { contactSubmissionService } from '@/features/contact/services';
 import { notificationService } from '@/shared/services/notification/notificationService';
 import { useBackendStatus } from '@/shared/services/useBackendStatus';
 
-export type { ContactFormData };
+export type { ContactFormData } from '@/features/contact/services';
 
 /**
  * Hook for managing contact form submission state and logic
@@ -44,7 +44,7 @@ export function useContactForm() {
         'Failed to send message. Please try again or contact us directly.'
       );
       return false;
-    } catch (error) {
+    } catch {
       // Unexpected error
       notificationService.error(
         'An unexpected error occurred. Please try again or contact us directly.'

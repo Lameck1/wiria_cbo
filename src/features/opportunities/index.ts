@@ -30,4 +30,4 @@ export { EmptyStateView } from './components/EmptyStateView';
 export * from './utils/deadlineUtils';
 
 // Constants
-export * from './constants/opportunitiesData';
+// export * from './constants/opportunitiesData';

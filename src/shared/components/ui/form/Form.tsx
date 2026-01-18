@@ -1,22 +1,22 @@
 import type { ReactNode } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm, FormProvider } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 
-import type { UseFormReturn, DefaultValues, FieldValues } from 'react-hook-form';
+import type { DefaultValues, UseFormReturn } from 'react-hook-form';
 import type { z } from 'zod';
 
-interface FormProps<T extends FieldValues> {
-  schema: z.ZodType<T>;
-  defaultValues?: DefaultValues<T>;
-  children: (methods: UseFormReturn<T>) => ReactNode;
-  onSubmit: (data: T) => void | Promise<void>;
+interface FormProps<TSchema extends z.ZodTypeAny> {
+  schema: TSchema;
+  defaultValues?: DefaultValues<z.infer<TSchema>>;
+  children: (methods: UseFormReturn<z.infer<TSchema>>) => ReactNode;
+  onSubmit: (data: z.infer<TSchema>) => void | Promise<void>;
   className?: string;
   id?: string;
   resetOnSuccess?: boolean;
 }
 
-export function Form<T extends FieldValues>({
+export function Form<TSchema extends z.ZodTypeAny>({
   schema,
   defaultValues,
   children,
@@ -24,8 +24,8 @@ export function Form<T extends FieldValues>({
   className = '',
   id,
   resetOnSuccess = false,
-}: FormProps<T>) {
-  const methods = useForm<T>({
+}: FormProps<TSchema>) {
+  const methods = useForm<z.infer<TSchema>>({
     resolver: zodResolver(schema),
     defaultValues,
     mode: 'onBlur', // Validate on blur for better UX

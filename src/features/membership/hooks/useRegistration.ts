@@ -3,16 +3,16 @@
  * Refactored to use shared usePaymentFlow hook
  */
 
-import { useState, useCallback } from 'react';
+import { useCallback, useState } from 'react';
 
-import { apiClient } from '@/shared/services/api/client';
-import { API_ENDPOINTS } from '@/shared/services/api/endpoints';
 import { usePaymentFlow } from '@/shared/hooks/usePaymentFlow';
-import { PaymentStatus } from '@/shared/types/payment';
+import { API_ENDPOINTS } from '@/shared/services/api/endpoints';
+import { useServices } from '@/shared/services/di';
 
 import type { RegistrationFormData, RegistrationResponse } from '../types';
 
 export function useRegistration() {
+  const { apiClient, notificationService } = useServices();
   const [memberId, setMemberId] = useState<string | null>(null);
   const [membershipNumber, setMembershipNumber] = useState<string | null>(null);
 
@@ -37,7 +37,7 @@ export function useRegistration() {
         );
 
         const { member, checkoutRequestId, message } = response.data;
-        
+
         setMemberId(member.id);
         setMembershipNumber(member.membershipNumber);
 
@@ -51,14 +51,15 @@ export function useRegistration() {
           success: result.success,
           memberId: member.id,
           membershipNumber: member.membershipNumber,
-          checkoutRequestId: checkoutRequestId || result.checkoutRequestId,
+          checkoutRequestId: checkoutRequestId ?? result.checkoutRequestId,
           message,
         };
-      } catch (error) {
+      } catch {
+        notificationService.error('Registration failed. Please try again.');
         return { success: false };
       }
     },
-    [paymentFlow]
+    [apiClient, notificationService, paymentFlow]
   );
 
   const resetRegistration = useCallback(() => {
@@ -71,12 +72,12 @@ export function useRegistration() {
     // Registration-specific state
     memberId,
     membershipNumber,
-    
+
     // Payment flow state and actions (delegated to shared hook)
     isSubmitting: paymentFlow.isSubmitting,
     checkoutRequestId: paymentFlow.checkoutRequestId,
     paymentStatus: paymentFlow.paymentStatus,
-    
+
     // Actions
     submitRegistration,
     checkPaymentStatus: paymentFlow.checkPaymentStatus,
@@ -85,4 +86,4 @@ export function useRegistration() {
 }
 
 // Re-export PaymentStatus for convenience
-export { PaymentStatus };
+export { PaymentStatus } from '@/shared/types/payment';

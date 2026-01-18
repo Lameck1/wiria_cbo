@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { useSearchParams } from 'react-router-dom';
 
@@ -11,7 +11,9 @@ import { ConfirmDialog } from '@/shared/components/modals/ConfirmDialog';
 import type { Column } from '@/shared/components/ui/DataTable';
 import { DataTable } from '@/shared/components/ui/DataTable';
 import { StatusBadge } from '@/shared/components/ui/StatusBadge';
+import { TIMING } from '@/shared/constants/config';
 import { useAdminAction, useAdminData } from '@/shared/hooks/useAdminData';
+import { notificationService } from '@/shared/services/notification/notificationService';
 
 function formatDate(date: string): string {
   return new Date(date).toLocaleDateString('en-KE', {
@@ -52,11 +54,10 @@ function StatusFilterBar({
         <button
           key={filter.value}
           onClick={() => setStatusFilter(filter.value)}
-          className={`rounded-xl px-6 py-2 text-sm font-bold transition-all ${
-            statusFilter === filter.value
+          className={`rounded-xl px-6 py-2 text-sm font-bold transition-all ${statusFilter === filter.value
               ? 'bg-wiria-blue-dark text-white shadow-md'
               : 'text-gray-500 hover:bg-gray-50 hover:text-wiria-blue-dark'
-          }`}
+            }`}
         >
           {filter.label}
         </button>
@@ -66,7 +67,7 @@ function StatusFilterBar({
 }
 
 function getColumns(
-  setSelectedContact: (c: Contact) => void,
+  setSelectedContactId: (id: string) => void,
   setShowReplyModal: (open: boolean) => void,
   handleArchive: (id: string) => void
 ): Column<Contact>[] {
@@ -99,7 +100,7 @@ function getColumns(
       render: (c) => (
         <div className="flex justify-end gap-3">
           <button
-            onClick={() => setSelectedContact(c)}
+            onClick={() => setSelectedContactId(c.id)}
             className="text-xs font-bold text-wiria-blue-dark hover:underline"
           >
             Details
@@ -107,7 +108,7 @@ function getColumns(
           {c.status === 'NEW' && (
             <button
               onClick={() => {
-                setSelectedContact(c);
+                setSelectedContactId(c.id);
                 setShowReplyModal(true);
               }}
               className="text-xs font-bold text-green-600 hover:underline"
@@ -134,36 +135,58 @@ export default function ContactManagementPage() {
   const [statusFilter, setStatusFilter] = useState('');
   const highlightId = searchParams.get('highlight');
 
-  const { items: contacts, isLoading } = useAdminData<Contact>(['contacts', statusFilter], () =>
-    getContacts(statusFilter ? { status: statusFilter } : undefined)
+  const { items: contacts, isLoading } = useAdminData<Contact>(
+    ['contacts', statusFilter],
+    () => getContacts(statusFilter ? { status: statusFilter } : undefined),
+    { staleTime: TIMING.POLLING_INTERVAL }
   );
 
   const respondAction = useAdminAction(
     ({ id, text }: { id: string; text: string }) => respondToContact(id, text),
     [['contacts']],
-    { successMessage: 'Reply sent successfully' }
+    {
+      onSuccess: () => {
+        notificationService.success('Reply sent successfully');
+      },
+      onError: () => {
+        notificationService.error('Failed to send reply');
+      },
+    }
   );
 
-  const archiveAction = useAdminAction((id: string) => archiveContact(id), [['contacts']], {
-    successMessage: 'Message archived',
-  });
+  const archiveAction = useAdminAction(
+    (id: string) => archiveContact(id),
+    [['contacts']],
+    {
+      onSuccess: () => {
+        notificationService.success('Message archived');
+      },
+      onError: () => {
+        notificationService.error('Failed to archive message');
+      },
+    }
+  );
 
-  const [selectedContact, setSelectedContact] = useState<Contact | null>(null);
+  const [selectedContactId, setSelectedContactId] = useState<string | null>(null);
   const [showReplyModal, setShowReplyModal] = useState(false);
   const [replyText, setReplyText] = useState('');
   const [contactIdToArchive, setContactIdToArchive] = useState<string | null>(null);
 
+  const selectedContact: Contact | null = useMemo(
+    () => contacts.find((contact) => contact.id === selectedContactId) ?? null,
+    [contacts, selectedContactId]
+  );
+
   // Auto-open highlighted contact
   useEffect(() => {
     if (!isLoading && highlightId) {
-      const target = contacts.find((c) => c.id === highlightId);
-      if (target) {
-        setSelectedContact(target);
-        // Clear the param
-        const nextParams = new URLSearchParams(searchParams);
-        nextParams.delete('highlight');
-        setSearchParams(nextParams, { replace: true });
-      }
+      const exists = contacts.some((c) => c.id === highlightId);
+      if (!exists) return;
+
+      setSelectedContactId(highlightId);
+      const nextParams = new URLSearchParams(searchParams);
+      nextParams.delete('highlight');
+      setSearchParams(nextParams, { replace: true });
     }
   }, [highlightId, contacts, isLoading, searchParams, setSearchParams]);
 
@@ -175,7 +198,7 @@ export default function ContactManagementPage() {
         onSuccess: () => {
           setShowReplyModal(false);
           setReplyText('');
-          setSelectedContact(null);
+          setSelectedContactId(null);
         },
       }
     );
@@ -192,7 +215,7 @@ export default function ContactManagementPage() {
   };
 
   const columns = getColumns(
-    (c: Contact) => setSelectedContact(c),
+    (id: string) => setSelectedContactId(id),
     (open: boolean) => setShowReplyModal(open),
     (id: string) => handleArchive(id)
   );
@@ -222,7 +245,7 @@ export default function ContactManagementPage() {
       {selectedContact && !showReplyModal && (
         <MessageDetailsModal
           contact={selectedContact}
-          onClose={() => setSelectedContact(null)}
+          onClose={() => setSelectedContactId(null)}
           onReply={() => setShowReplyModal(true)}
         />
       )}

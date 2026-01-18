@@ -1,8 +1,6 @@
 import {
-  useQuery,
   useSuspenseQuery,
-  type UseQueryResult,
-  type UseSuspenseQueryResult,
+  type UseSuspenseQueryResult
 } from '@tanstack/react-query';
 
 import { TIMING } from '@/shared/constants/config';
@@ -40,28 +38,11 @@ const DASHBOARD_KEYS = {
   trends: () => [...DASHBOARD_KEYS.all, 'trends'] as const,
 };
 
-export function useDashboardStats(): UseQueryResult<DashboardStats> {
-  return useQuery<DashboardStats>({
-    queryKey: DASHBOARD_KEYS.stats(),
-    queryFn: getDashboardStats,
-    staleTime: TIMING.QUERY_DEFAULT_STALE_TIME,
-  });
-}
 
 export function useSuspenseDashboardStats(): UseSuspenseQueryResult<DashboardStats> {
   return useSuspenseQuery<DashboardStats>({
     queryKey: DASHBOARD_KEYS.stats(),
     queryFn: getDashboardStats,
-    staleTime: TIMING.QUERY_DEFAULT_STALE_TIME,
-  });
-}
-
-export function useDashboardTrends(): UseQueryResult<TrendData> {
-  return useQuery<TrendData>({
-    queryKey: DASHBOARD_KEYS.trends(),
-    queryFn: async () => {
-      return apiClient.get<TrendsResponse>('/admin/trends');
-    },
     staleTime: TIMING.QUERY_DEFAULT_STALE_TIME,
   });
 }
@@ -75,23 +56,6 @@ export function useSuspenseDashboardTrends(): UseSuspenseQueryResult<TrendData> 
     },
     staleTime: TIMING.QUERY_DEFAULT_STALE_TIME,
   });
-}
-
-/**
- * Combined hook for dashboard page data and utilities
- */
-export function useDashboardData() {
-  const statsQuery = useDashboardStats();
-  const trendsQuery = useDashboardTrends();
-
-  return {
-    stats: statsQuery.data ?? null,
-    trends: trendsQuery.data ?? null,
-    isLoading: statsQuery.isLoading,
-    isTrendsLoading: trendsQuery.isLoading,
-    error: statsQuery.error ? 'Failed to load dashboard data. Please try again.' : null,
-    refetch: statsQuery.refetch,
-  };
 }
 
 /**

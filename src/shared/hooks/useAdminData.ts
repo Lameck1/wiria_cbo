@@ -1,18 +1,15 @@
 import { useMutation, useQuery, useQueryClient, type QueryKey } from '@tanstack/react-query';
 
-import { logger } from '@/shared/services/logger';
-import { notificationService } from '@/shared/services/notification/notificationService';
 import { extractArray } from '@/shared/utils/apiUtils';
 
 /**
- * Generic hook for fetching admin data with standardized extraction and error handling
+ * Generic hook for fetching admin data with standardized extraction
  */
 export function useAdminData<T>(
   queryKey: QueryKey,
   fetchFunction: () => Promise<unknown>,
   options: {
     arrayKey?: string;
-    onError?: (error: unknown) => void;
     staleTime?: number;
     enabled?: boolean;
   } = {}
@@ -20,18 +17,8 @@ export function useAdminData<T>(
   const { data, ...rest } = useQuery({
     queryKey,
     queryFn: async () => {
-      try {
-        const response = await fetchFunction();
-        return extractArray<T>(response, options.arrayKey);
-      } catch (error) {
-        if (options.onError) {
-          options.onError(error);
-        } else {
-          logger.error(`Error fetching ${queryKey.join('/')}:`, error);
-          notificationService.error('Failed to load data. Please try again.');
-        }
-        throw error;
-      }
+      const response = await fetchFunction();
+      return extractArray<T>(response, options.arrayKey);
     },
     staleTime: options.staleTime ?? 1000 * 60 * 5, // 5 minutes default
     enabled: options.enabled,
@@ -50,9 +37,8 @@ export function useAdminAction<TInput, TResponse>(
   actionFunction: (input: TInput) => Promise<TResponse>,
   queriesToInvalidate: string[][],
   options: {
-    successMessage?: string;
-    errorMessage?: string;
     onSuccess?: (data: TResponse) => void;
+    onError?: (error: unknown) => void;
   } = {}
 ) {
   const queryClient = useQueryClient();
@@ -64,15 +50,10 @@ export function useAdminAction<TInput, TResponse>(
         void queryClient.invalidateQueries({ queryKey: key });
       });
 
-      if (options.successMessage) {
-        notificationService.success(options.successMessage);
-      }
-
       options.onSuccess?.(data);
     },
     onError: (error) => {
-      logger.error('Action failed:', error);
-      notificationService.error(options.errorMessage ?? 'Operation failed');
+      options.onError?.(error);
     },
   });
 }

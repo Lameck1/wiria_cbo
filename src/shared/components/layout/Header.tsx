@@ -10,18 +10,21 @@
  * OPTIMIZED VERSION: Consolidated useEffect hooks for better performance
  */
 
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
-import { motion, AnimatePresence } from 'framer-motion';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { useAuth } from '@/features/auth/context/useAuth';
 import { ROUTES } from '@/shared/constants/routes';
+import { usePerformanceMonitor } from '@/shared/utils/performance';
 
-import { HeaderLogo, DesktopNav, AuthActions } from './header';
+import { AuthActions, DesktopNav, HeaderLogo } from './header';
 import { MobileMenu } from './MobileMenu';
 
 export function Header() {
+  usePerformanceMonitor('Header');
+
   const { user, isAuthenticated, logout } = useAuth();
   const userRole = user?.role;
 
@@ -72,7 +75,7 @@ export function Header() {
   useEffect(() => {
     // Lock body scroll when mobile menu is open
     document.body.style.overflow = mobileMenuOpen ? 'hidden' : '';
-    
+
     // Cleanup
     return () => {
       document.body.style.overflow = '';

@@ -24,24 +24,25 @@ export const WHY_JOIN_REASONS = [
   },
 ] as const;
 
-export const APPLICATION_PROCESS_STEPS = [
-  {
-    title: 'Review',
-    description: 'Read the job description and requirements carefully',
-  },
-  {
-    title: 'Apply',
-    description: 'Submit your CV, cover letter, and required documents',
-  },
-  {
-    title: 'Interview',
-    description: 'Selected candidates will be invited for interviews',
-  },
-  {
-    title: 'Onboard',
-    description: 'Successful candidates join our team',
-  },
-] as const;
+// APPLICATION_PROCESS_STEPS removed - not currently used in the application
+// export const APPLICATION_PROCESS_STEPS = [
+//   {
+//     title: 'Review',
+//     description: 'Read the job description and requirements carefully',
+//   },
+//   {
+//     title: 'Apply',
+//     description: 'Submit your CV, cover letter, and required documents',
+//   },
+//   {
+//     title: 'Interview',
+//     description: 'Selected candidates will be invited for interviews',
+//   },
+//   {
+//     title: 'Onboard',
+//     description: 'Successful candidates join our team',
+//   },
+// ] as const;
 
 export const JOB_TYPE_LABELS: Record<string, string> = {
   FULL_TIME: 'Full-time',
@@ -50,9 +51,10 @@ export const JOB_TYPE_LABELS: Record<string, string> = {
   CONSULTANCY: 'Consultancy',
 };
 
-export const JOB_STATUS_LABELS: Record<string, string> = {
-  DRAFT: 'Draft',
-  ACTIVE: 'Active',
-  CLOSED: 'Closed',
-  ARCHIVED: 'Archived',
-};
+// JOB_STATUS_LABELS removed - not currently used in the application
+// export const JOB_STATUS_LABELS: Record<string, string> = {
+//   DRAFT: 'Draft',
+//   ACTIVE: 'Active',
+//   CLOSED: 'Closed',
+//   ARCHIVED: 'Archived',
+// };

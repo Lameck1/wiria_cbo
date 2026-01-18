@@ -49,6 +49,7 @@ export const updateUserStatus = async (email: string, status: string) => {
   return client.patch(`/admin/users/${email}/status`, { status });
 };
 
-export const updateUser = async (email: string, data: Partial<AdminUser>) => {
-  return client.patch(`/admin/users/${email}`, data);
-};
+// updateUser function removed - not currently used in the application
+// export const updateUser = async (email: string, data: Partial<AdminUser>) => {
+//   return client.patch(`/admin/users/${email}`, data);
+// };

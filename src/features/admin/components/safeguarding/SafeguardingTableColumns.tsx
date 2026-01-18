@@ -13,9 +13,11 @@ export const getSafeguardingColumns = (
   {
     header: 'Type',
     key: 'incidentType',
-    render: (r) => (
-      <span className="text-sm">{INCIDENT_TYPES[r.incidentType] ?? r.incidentType}</span>
-    ),
+    render: (r) => {
+      const typeKey = r.incidentType ?? r.category;
+      const label = typeKey ? INCIDENT_TYPES[typeKey] ?? typeKey : 'N/A';
+      return <span className="text-sm">{label}</span>;
+    },
   },
   {
     header: 'Priority',
