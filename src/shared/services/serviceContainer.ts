@@ -29,50 +29,85 @@ export const createServiceContainer = (): IServiceContainer => {
 
 /**
  * Creates a service container with mock implementations for testing
- * 
- * @example
- * const mockServices = createMockServiceContainer({
- *   apiClient: {
- *     post: jest.fn().mockResolvedValue({ success: true })
- *   }
- * });
- * 
- * render(
- *   <ServiceProvider services={mockServices}>
- *     <MyComponent />
- *   </ServiceProvider>
- * );
  */
 export const createMockServiceContainer = (
   overrides: Partial<IServiceContainer> = {}
 ): IServiceContainer => {
   const defaultMocks: IServiceContainer = {
     apiClient: {
-      get: jest.fn(),
-      post: jest.fn(),
-      put: jest.fn(),
-      patch: jest.fn(),
-      delete: jest.fn(),
-      setTokenResolver: jest.fn(),
-      setUnauthorizedCallback: jest.fn(),
+      get() {
+        return new Promise<never>((resolve) => {
+          resolve(null as never);
+        });
+      },
+      post() {
+        return new Promise<never>((resolve) => {
+          resolve(null as never);
+        });
+      },
+      put() {
+        return new Promise<never>((resolve) => {
+          resolve(null as never);
+        });
+      },
+      patch() {
+        return new Promise<never>((resolve) => {
+          resolve(null as never);
+        });
+      },
+      delete() {
+        return new Promise<never>((resolve) => {
+          resolve(null as never);
+        });
+      },
+      setTokenResolver() {
+        return;
+      },
+      setUnauthorizedCallback() {
+        return;
+      },
     },
     notificationService: {
-      success: jest.fn(),
-      error: jest.fn(),
-      warning: jest.fn(),
-      info: jest.fn(),
-      clearAll: jest.fn(),
+      success() {
+        return;
+      },
+      error() {
+        return;
+      },
+      warning() {
+        return;
+      },
+      info() {
+        return;
+      },
+      clearAll() {
+        return;
+      },
     },
     logger: {
-      error: jest.fn(),
-      warn: jest.fn(),
-      debug: jest.fn(),
+      error() {
+        return;
+      },
+      warn() {
+        return;
+      },
+      debug() {
+        return;
+      },
     },
     storageService: {
-      getItem: jest.fn(),
-      setItem: jest.fn(),
-      removeItem: jest.fn(),
-      clear: jest.fn(),
+      getItem() {
+        return null;
+      },
+      setItem() {
+        return;
+      },
+      removeItem() {
+        return;
+      },
+      clear() {
+        return;
+      },
     },
   };
 

@@ -7,9 +7,10 @@
  * @see Phase 2 - Task 1: Extract TokenManager from AuthContext
  */
 
-import { STORAGE_KEYS, storageService } from '../storage/storageService';
-import { logger } from '../logger';
 import type { UserRole } from '@/shared/types';
+
+import { logger } from '../logger';
+import { STORAGE_KEYS, storageService } from '../storage/storageService';
 
 export interface TokenData {
   accessToken: string;
@@ -17,11 +18,11 @@ export interface TokenData {
   role: UserRole;
 }
 
-export class TokenManager {
+export const TokenManager = {
   /**
    * Store authentication tokens and related data
    */
-  static setTokens(tokens: TokenData): void {
+  setTokens(tokens: TokenData): void {
     try {
       storageService.set(STORAGE_KEYS.AUTH_TOKEN, tokens.accessToken);
       storageService.set(STORAGE_KEYS.REFRESH_TOKEN, tokens.refreshToken);
@@ -31,42 +32,42 @@ export class TokenManager {
       logger.error('Failed to store tokens:', error);
       throw error;
     }
-  }
+  },
 
   /**
    * Get the current access token
    */
-  static getAccessToken(): string | null {
+  getAccessToken(): string | null {
     return storageService.get<string>(STORAGE_KEYS.AUTH_TOKEN);
-  }
+  },
 
   /**
    * Get the current refresh token
    */
-  static getRefreshToken(): string | null {
+  getRefreshToken(): string | null {
     return storageService.get<string>(STORAGE_KEYS.REFRESH_TOKEN);
-  }
+  },
 
   /**
    * Get the current user role
    */
-  static getUserRole(): UserRole | null {
+  getUserRole(): UserRole | null {
     return storageService.get<UserRole>(STORAGE_KEYS.USER_ROLE);
-  }
+  },
 
   /**
    * Check if user has valid tokens
    */
-  static hasValidTokens(): boolean {
-    const accessToken = this.getAccessToken();
-    const refreshToken = this.getRefreshToken();
+  hasValidTokens(): boolean {
+    const accessToken = storageService.get<string>(STORAGE_KEYS.AUTH_TOKEN);
+    const refreshToken = storageService.get<string>(STORAGE_KEYS.REFRESH_TOKEN);
     return !!(accessToken && refreshToken);
-  }
+  },
 
   /**
    * Clear all tokens from storage
    */
-  static clearTokens(): void {
+  clearTokens(): void {
     try {
       storageService.remove(STORAGE_KEYS.AUTH_TOKEN);
       storageService.remove(STORAGE_KEYS.REFRESH_TOKEN);
@@ -76,12 +77,12 @@ export class TokenManager {
       logger.error('Failed to clear tokens:', error);
       throw error;
     }
-  }
+  },
 
   /**
    * Clear all authentication data including user data
    */
-  static clearAll(): void {
+  clearAll(): void {
     try {
       storageService.clear();
       logger.debug('All authentication data cleared');
@@ -89,12 +90,12 @@ export class TokenManager {
       logger.error('Failed to clear authentication data:', error);
       throw error;
     }
-  }
+  },
 
   /**
    * Token resolver function for ApiClient integration
    */
-  static tokenResolver = (): string | null => {
-    return TokenManager.getAccessToken();
-  };
-}
+  tokenResolver(): string | null {
+    return storageService.get<string>(STORAGE_KEYS.AUTH_TOKEN);
+  },
+};

@@ -5,7 +5,7 @@ const API_BASE_URL: string =
 
 type TokenResolver = () => string | null;
 
-class ApiClient {
+export class ApiClient {
   private baseURL: string;
   private tokenResolver?: TokenResolver;
 

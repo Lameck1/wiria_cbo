@@ -2,6 +2,8 @@ const isDevelopment = import.meta.env.DEV;
 
 type LogMethod = (message: string, ...args: unknown[]) => void;
 
+const { error, warn, log } = console;
+
 const createLoggerMethod =
   (consoleMethod: 'error' | 'warn' | 'log'): LogMethod =>
   (message, ...args) => {
@@ -10,11 +12,11 @@ const createLoggerMethod =
     }
 
     if (consoleMethod === 'error') {
-      console.error(`[ERROR] ${message}`, ...args);
+      error(`[ERROR] ${message}`, ...args);
     } else if (consoleMethod === 'warn') {
-      console.warn(`[WARN] ${message}`, ...args);
+      warn(`[WARN] ${message}`, ...args);
     } else {
-      console.log(`[DEBUG] ${message}`, ...args);
+      log(`[DEBUG] ${message}`, ...args);
     }
   };
 

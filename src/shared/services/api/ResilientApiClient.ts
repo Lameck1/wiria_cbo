@@ -1,5 +1,6 @@
-import { ApiClient, ApiResponse } from './apiClient';
 import { logger } from '../logger';
+
+import type { ApiClient } from './client';
 
 /**
  * Configuration for resilient API behavior
@@ -34,7 +35,7 @@ const DEFAULT_CONFIG: ResilienceConfig = {
 /**
  * Cache entry for fallback responses
  */
-interface CacheEntry<T = any> {
+interface CacheEntry<T = unknown> {
   data: T;
   timestamp: number;
   maxAge: number;
@@ -53,12 +54,12 @@ interface CacheEntry<T = any> {
  */
 export class ResilientApiClient {
   private cache = new Map<string, CacheEntry>();
-  private pendingRequests = new Map<string, Promise<any>>();
-  
+  private pendingRequests = new Map<string, Promise<unknown>>();
+
   constructor(
     private apiClient: ApiClient,
     private config: ResilienceConfig = DEFAULT_CONFIG
-  ) {}
+  ) { }
 
   /**
    * Calculate delay for retry attempt using exponential backoff
@@ -75,20 +76,22 @@ export class ResilientApiClient {
   /**
    * Check if error is retryable
    */
-  private isRetryableError(error: any): boolean {
-    if (!error || typeof error !== 'object') return false;
-    
-    // Network errors are retryable
-    if (error.name === 'NetworkError' || error.message?.includes('network')) {
-      return true;
+  private isRetryableError(error: unknown): boolean {
+    if (!error || typeof error !== 'object') {
+      return false;
     }
-    
-    // Check status codes
-    if (error.status && this.config.retryableStatusCodes.includes(error.status)) {
-      return true;
-    }
-    
-    return false;
+
+    const candidate = error as { name?: string; message?: string; status?: number };
+
+    const isNetworkError =
+      candidate.name === 'NetworkError' ||
+      candidate.message?.toLowerCase().includes('network') === true;
+
+    const hasRetryableStatus =
+      typeof candidate.status === 'number' &&
+      this.config.retryableStatusCodes.includes(candidate.status);
+
+    return isNetworkError || hasRetryableStatus;
   }
 
   /**
@@ -101,8 +104,12 @@ export class ResilientApiClient {
   /**
    * Generate cache key from request parameters
    */
-  private getCacheKey(method: string, url: string, params?: any): string {
-    return `${method}:${url}:${JSON.stringify(params || {})}`;
+  private getCacheKey(
+    method: string,
+    url: string,
+    params?: Record<string, unknown>
+  ): string {
+    return `${method}:${url}:${JSON.stringify(params ?? {})}`;
   }
 
   /**
@@ -111,20 +118,20 @@ export class ResilientApiClient {
   private getCachedResponse<T>(cacheKey: string): T | null {
     const entry = this.cache.get(cacheKey);
     if (!entry) return null;
-    
+
     const age = Date.now() - entry.timestamp;
     if (age > entry.maxAge) {
       this.cache.delete(cacheKey);
       return null;
     }
-    
+
     return entry.data as T;
   }
 
   /**
    * Store response in cache
    */
-  private setCachedResponse<T>(cacheKey: string, data: T, maxAge: number = 300000): void {
+  private setCachedResponse<T>(cacheKey: string, data: T, maxAge = 300000): void {
     this.cache.set(cacheKey, {
       data,
       timestamp: Date.now(),
@@ -136,44 +143,47 @@ export class ResilientApiClient {
    * Execute request with retry logic
    */
   private async executeWithRetry<T>(
-    requestFn: () => Promise<ApiResponse<T>>,
+    requestFunction: () => Promise<T>,
     cacheKey?: string
-  ): Promise<ApiResponse<T>> {
-    let lastError: any;
-    
+  ): Promise<T> {
+    let lastError: unknown;
+
     for (let attempt = 0; attempt <= this.config.maxRetries; attempt++) {
       try {
-        const response = await requestFn();
-        
+        const response = await requestFunction();
+
         // Cache successful GET responses
         if (cacheKey && this.config.enableFallback) {
           this.setCachedResponse(cacheKey, response);
         }
-        
+
         return response;
-      } catch (error) {
+      } catch (error: unknown) {
         lastError = error;
-        
+
         // Don't retry if not retryable or on last attempt
         if (!this.isRetryableError(error) || attempt === this.config.maxRetries) {
           break;
         }
-        
+
         const delay = this.calculateRetryDelay(attempt);
-        logger.warn(`Request failed (attempt ${attempt + 1}/${this.config.maxRetries + 1}), retrying in ${delay}ms`, error);
+        logger.warn(
+          `Request failed (attempt ${attempt + 1}/${this.config.maxRetries + 1}), retrying in ${delay}ms`,
+          error
+        );
         await this.wait(delay);
       }
     }
-    
+
     // Try fallback to cached response
     if (cacheKey && this.config.enableFallback) {
-      const cached = this.getCachedResponse<ApiResponse<T>>(cacheKey);
+      const cached = this.getCachedResponse<T>(cacheKey);
       if (cached) {
         logger.warn('Using cached fallback response after all retries failed');
         return cached;
       }
     }
-    
+
     // All retries failed and no fallback available
     throw lastError;
   }
@@ -181,24 +191,23 @@ export class ResilientApiClient {
   /**
    * GET request with resilience
    */
-  async get<T = any>(url: string, config?: any): Promise<ApiResponse<T>> {
-    const cacheKey = this.getCacheKey('GET', url, config?.params);
-    
+  async get<T = unknown>(url: string, params?: Record<string, string>): Promise<T> {
+    const cacheKey = this.getCacheKey('GET', url, params);
+
     // Request deduplication: return existing pending request if any
     if (this.pendingRequests.has(cacheKey)) {
-      return this.pendingRequests.get(cacheKey)!;
+      return this.pendingRequests.get(cacheKey)! as Promise<T>;
     }
-    
+
     const requestPromise = this.executeWithRetry<T>(
-      () => this.apiClient.get<T>(url, config),
+      () => this.apiClient.get<T>(url, params),
       cacheKey
     );
-    
+
     this.pendingRequests.set(cacheKey, requestPromise);
-    
+
     try {
-      const response = await requestPromise;
-      return response;
+      return await requestPromise;
     } finally {
       this.pendingRequests.delete(cacheKey);
     }
@@ -207,29 +216,29 @@ export class ResilientApiClient {
   /**
    * POST request with resilience (no caching)
    */
-  async post<T = any>(url: string, data?: any, config?: any): Promise<ApiResponse<T>> {
-    return this.executeWithRetry<T>(() => this.apiClient.post<T>(url, data, config));
+  async post<T = unknown>(url: string, data?: unknown): Promise<T> {
+    return this.executeWithRetry<T>(() => this.apiClient.post<T>(url, data));
   }
 
   /**
    * PUT request with resilience (no caching)
    */
-  async put<T = any>(url: string, data?: any, config?: any): Promise<ApiResponse<T>> {
-    return this.executeWithRetry<T>(() => this.apiClient.put<T>(url, data, config));
+  async put<T = unknown>(url: string, data?: unknown): Promise<T> {
+    return this.executeWithRetry<T>(() => this.apiClient.put<T>(url, data));
   }
 
   /**
    * PATCH request with resilience (no caching)
    */
-  async patch<T = any>(url: string, data?: any, config?: any): Promise<ApiResponse<T>> {
-    return this.executeWithRetry<T>(() => this.apiClient.patch<T>(url, data, config));
+  async patch<T = unknown>(url: string, data?: unknown): Promise<T> {
+    return this.executeWithRetry<T>(() => this.apiClient.patch<T>(url, data));
   }
 
   /**
    * DELETE request with resilience (no caching)
    */
-  async delete<T = any>(url: string, config?: any): Promise<ApiResponse<T>> {
-    return this.executeWithRetry<T>(() => this.apiClient.delete<T>(url, config));
+  async delete<T = unknown>(url: string): Promise<T> {
+    return this.executeWithRetry<T>(() => this.apiClient.delete<T>(url));
   }
 
   /**
@@ -243,7 +252,7 @@ export class ResilientApiClient {
   /**
    * Clear cached response for specific request
    */
-  clearCacheFor(method: string, url: string, params?: any): void {
+  clearCacheFor(method: string, url: string, params?: Record<string, unknown>): void {
     const cacheKey = this.getCacheKey(method, url, params);
     this.cache.delete(cacheKey);
   }

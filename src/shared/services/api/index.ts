@@ -1,2 +1,3 @@
-export { ApiClient, type ApiResponse } from './apiClient';
+export { ApiClient } from './client';
+export type { ApiResponse } from '@/shared/types';
 export { ResilientApiClient, createResilientApiClient, type ResilienceConfig } from './ResilientApiClient';

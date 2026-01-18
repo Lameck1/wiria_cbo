@@ -8,7 +8,7 @@
 import { apiClient } from '@/shared/services/api/client';
 import { logger } from '@/shared/services/logger';
 import { useNotificationStore } from '@/shared/services/notification/notificationService';
-import { storage } from '@/shared/services/storage/storageService';
+import { storageService } from '@/shared/services/storage/storageService';
 import type {
   IApiClient,
   ILogger,
@@ -25,9 +25,9 @@ import type {
  */
 export const apiClientAdapter: IApiClient = {
   get: <T,>(url: string) => apiClient.get<T>(url),
-  post: <T, D = unknown>(url: string, data?: D) => apiClient.post<T, D>(url, data),
-  put: <T, D = unknown>(url: string, data?: D) => apiClient.put<T, D>(url, data),
-  patch: <T, D = unknown>(url: string, data?: D) => apiClient.patch<T, D>(url, data),
+  post: <T, D = unknown>(url: string, data?: D) => apiClient.post<T>(url, data),
+  put: <T, D = unknown>(url: string, data?: D) => apiClient.put<T>(url, data),
+  patch: <T, D = unknown>(url: string, data?: D) => apiClient.patch<T>(url, data),
   delete: <T,>(url: string) => apiClient.delete<T>(url),
   setTokenResolver: (resolver: () => string | null) => apiClient.setTokenResolver(resolver),
   setUnauthorizedCallback: (callback: () => void) => apiClient.setUnauthorizedCallback(callback),
@@ -95,8 +95,8 @@ export const loggerAdapter: ILogger = {
  * Adapts the existing storage service to implement IStorageService interface
  */
 export const storageServiceAdapter: IStorageService = {
-  getItem: <T,>(key: string) => storage.getItem<T>(key),
-  setItem: <T,>(key: string, value: T) => storage.setItem<T>(key, value),
-  removeItem: (key: string) => storage.removeItem(key),
-  clear: () => storage.clear(),
+  getItem: <T,>(key: string) => storageService.get<T>(key),
+  setItem: <T,>(key: string, value: T) => storageService.set<T>(key, value),
+  removeItem: (key: string) => storageService.remove(key),
+  clear: () => storageService.clear(),
 };

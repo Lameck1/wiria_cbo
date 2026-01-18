@@ -216,7 +216,8 @@ module.exports = {
     'unicorn/numeric-separators-style': 'off', // Too opinionated
     'react/no-unescaped-entities': 'off', // Too strict for quotes
     'react-refresh/only-export-components': ['warn', { 
-      allowConstantExport: true 
+      allowConstantExport: true,
+      allowExportNames: ['useServices']
     }]
   },
   

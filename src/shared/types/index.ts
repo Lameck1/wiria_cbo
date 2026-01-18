@@ -41,10 +41,11 @@ export enum MembershipStatus {
 }
 
 // Auth Types
-export interface LoginCredentials {
-  identifier: string; // email or username
-  password: string;
-}
+// LoginCredentials interface removed - not currently used in the application
+// export interface LoginCredentials {
+//   identifier: string; // email or username
+//   password: string;
+// }
 
 export interface AuthTokens {
   accessToken: string;
@@ -66,15 +67,16 @@ export interface ApiResponse<T = unknown> {
   success: boolean;
 }
 
-export interface PaginatedResponse<T> {
-  data: T[];
-  meta: {
-    total: number;
-    page: number;
-    limit: number;
-    totalPages: number;
-  };
-}
+// PaginatedResponse interface removed - not currently used in the application
+// export interface PaginatedResponse<T> {
+//   data: T[];
+//   meta: {
+//     total: number;
+//     page: number;
+//     limit: number;
+//     totalPages: number;
+//   };
+// }
 
 // Payment Types
 export enum PaymentMethod {
@@ -100,7 +102,8 @@ export interface Payment {
 }
 
 // Form validation types
-export interface ValidationError {
-  field: string;
-  message: string;
-}
+// ValidationError interface removed - not currently used in the application
+// export interface ValidationError {
+//   field: string;
+//   message: string;
+// }
