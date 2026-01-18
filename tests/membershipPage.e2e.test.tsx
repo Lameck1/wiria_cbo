@@ -11,6 +11,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { AuthProvider } from '@/features/auth/context/AuthContext';
 import MembershipPage from '@/pages/MembershipPage';
+import { ServiceProvider, createMockServiceContainer } from '@/shared/services/di';
 
 vi.mock('@/shared/services/notification/notificationService', () => ({
   notificationService: {
@@ -32,13 +33,17 @@ const queryClient = new QueryClient({
   },
 });
 
+const services = createMockServiceContainer();
+
 function renderWithProviders(ui: React.ReactElement) {
   return render(
-    <QueryClientProvider client={queryClient}>
-      <MemoryRouter>
-        <AuthProvider>{ui}</AuthProvider>
-      </MemoryRouter>
-    </QueryClientProvider>
+    <ServiceProvider services={services}>
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter>
+          <AuthProvider>{ui}</AuthProvider>
+        </MemoryRouter>
+      </QueryClientProvider>
+    </ServiceProvider>
   );
 }
 

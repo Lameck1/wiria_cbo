@@ -3,15 +3,16 @@
  * Critical authentication tests for secure user login/logout
  */
 
+import type { ReactNode } from 'react';
+
 import { renderHook, waitFor } from '@testing-library/react';
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { ReactNode } from 'react';
 import { BrowserRouter } from 'react-router-dom';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { AuthProvider } from '@/features/auth/context/AuthContext';
 import { useAuth } from '@/features/auth/context/useAuth';
 import { apiClient } from '@/shared/services/api/client';
-import { storageService, STORAGE_KEYS } from '@/shared/services/storage/storageService';
+import { STORAGE_KEYS, storageService } from '@/shared/services/storage/storageService';
 import { UserRole } from '@/shared/types';
 
 // Mock dependencies
@@ -39,8 +40,8 @@ describe('useAuth and AuthContext', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.mocked(storageService.get).mockReturnValue(null);
-    vi.mocked(storageService.set).mockReturnValue(undefined);
-    vi.mocked(storageService.clear).mockReturnValue(undefined);
+    vi.mocked(storageService.set).mockImplementation(() => { });
+    vi.mocked(storageService.clear).mockImplementation(() => { });
   });
 
   describe('useAuth hook', () => {
@@ -52,7 +53,7 @@ describe('useAuth and AuthContext', () => {
           console.warn(message);
         }
       });
-      
+
       expect(() => {
         renderHook(() => useAuth());
       }).toThrow('useAuth must be used within an AuthProvider');
@@ -92,6 +93,7 @@ describe('useAuth and AuthContext', () => {
 
       vi.mocked(storageService.get).mockImplementation((key) => {
         if (key === STORAGE_KEYS.AUTH_TOKEN) return mockToken;
+        if (key === STORAGE_KEYS.REFRESH_TOKEN) return 'refresh-token-123';
         if (key === STORAGE_KEYS.USER_DATA) return mockUser;
         return null;
       });
@@ -159,14 +161,29 @@ describe('useAuth and AuthContext', () => {
       const loggedInUser = await result.current.login(mockCredentials, false);
 
       expect(apiClient.post).toHaveBeenCalledWith('/auth/login', mockCredentials);
-      expect(storageService.set).toHaveBeenCalledWith(STORAGE_KEYS.AUTH_TOKEN, mockTokens.accessToken);
-      expect(storageService.set).toHaveBeenCalledWith(STORAGE_KEYS.REFRESH_TOKEN, mockTokens.refreshToken);
-      expect(storageService.set).toHaveBeenCalledWith(STORAGE_KEYS.USER_ROLE, mockUser.role);
-      expect(storageService.set).toHaveBeenCalledWith(STORAGE_KEYS.USER_DATA, mockUser);
+      expect(storageService.set).toHaveBeenCalledWith(
+        STORAGE_KEYS.AUTH_TOKEN,
+        mockTokens.accessToken
+      );
+      expect(storageService.set).toHaveBeenCalledWith(
+        STORAGE_KEYS.REFRESH_TOKEN,
+        mockTokens.refreshToken
+      );
+      expect(storageService.set).toHaveBeenCalledWith(
+        STORAGE_KEYS.USER_ROLE,
+        mockUser.role
+      );
+      expect(storageService.set).toHaveBeenCalledWith(
+        STORAGE_KEYS.USER_DATA,
+        mockUser
+      );
       expect(apiClient.setAuthToken).toHaveBeenCalledWith(mockTokens.accessToken);
       expect(loggedInUser).toEqual(mockUser);
-      expect(result.current.user).toEqual(mockUser);
-      expect(result.current.isAuthenticated).toBe(true);
+
+      await waitFor(() => {
+        expect(result.current.user).toEqual(mockUser);
+        expect(result.current.isAuthenticated).toBe(true);
+      });
     });
 
     it('should successfully login member user', async () => {
@@ -206,7 +223,10 @@ describe('useAuth and AuthContext', () => {
       await result.current.login(mockCredentials, true);
 
       expect(apiClient.post).toHaveBeenCalledWith('/members/login', mockCredentials);
-      expect(result.current.user).toEqual(mockUser);
+
+      await waitFor(() => {
+        expect(result.current.user).toEqual(mockUser);
+      });
     });
 
     it('should handle login failure', async () => {
@@ -239,13 +259,6 @@ describe('useAuth and AuthContext', () => {
 
   describe('logout', () => {
     it('should successfully logout staff user', async () => {
-      // Setup: logged in user
-      const mockUser = {
-        id: 'staff-123',
-        email: 'staff@example.com',
-        role: UserRole.STAFF,
-      };
-
       vi.mocked(storageService.get).mockImplementation((key) => {
         if (key === STORAGE_KEYS.USER_ROLE) return UserRole.STAFF;
         if (key === STORAGE_KEYS.REFRESH_TOKEN) return 'refresh-token-123';
@@ -307,7 +320,7 @@ describe('useAuth and AuthContext', () => {
 
       // Should not throw - logout should complete locally even if API fails
       await expect(result.current.logout()).resolves.toBeUndefined();
-      
+
       expect(storageService.clear).toHaveBeenCalled();
       expect(result.current.user).toBeNull();
     });
@@ -375,6 +388,7 @@ describe('useAuth and AuthContext', () => {
 
       vi.mocked(storageService.get).mockImplementation((key) => {
         if (key === STORAGE_KEYS.AUTH_TOKEN) return 'token-123';
+        if (key === STORAGE_KEYS.REFRESH_TOKEN) return 'refresh-token-456';
         if (key === STORAGE_KEYS.USER_DATA) return mockUser;
         return null;
       });

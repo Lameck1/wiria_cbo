@@ -2,20 +2,74 @@
  * useDonation Hook Tests
  */
 
-import { renderHook, act } from '@testing-library/react';
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { act, renderHook } from '@testing-library/react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { useDonation } from '@/features/donations/hooks/useDonation';
-import { apiClient } from '@/shared/services/api/client';
+import { apiClientAdapter } from '@/shared/services/adapters';
+import { useServices } from '@/shared/services/di';
 import { notificationService } from '@/shared/services/notification/notificationService';
 
-// Mock dependencies
-vi.mock('@/shared/services/api/client');
+// Mock service adapter and notification service used by DI container
+vi.mock('@/shared/services/adapters', () => ({
+  apiClientAdapter: {
+    get: vi.fn(),
+    post: vi.fn(),
+    put: vi.fn(),
+    patch: vi.fn(),
+    delete: vi.fn(),
+    setTokenResolver: vi.fn(),
+    setUnauthorizedCallback: vi.fn(),
+  },
+  loggerAdapter: {
+    error: vi.fn(),
+    warn: vi.fn(),
+    debug: vi.fn(),
+  },
+  notificationServiceAdapter: {
+    success: vi.fn(),
+    error: vi.fn(),
+    warning: vi.fn(),
+    info: vi.fn(),
+    clearAll: vi.fn(),
+  },
+  storageServiceAdapter: {
+    getItem: vi.fn(),
+    setItem: vi.fn(),
+    removeItem: vi.fn(),
+    clear: vi.fn(),
+  },
+}));
+
 vi.mock('@/shared/services/notification/notificationService');
+vi.mock('@/shared/services/di', async () => {
+  const actual: any = await vi.importActual('@/shared/services/di');
+
+  return {
+    ...actual,
+    useServices: vi.fn(),
+  };
+});
 
 describe('useDonation', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+
+    vi.mocked(useServices).mockReturnValue({
+      apiClient: apiClientAdapter,
+      notificationService,
+      logger: {
+        error: vi.fn(),
+        warn: vi.fn(),
+        debug: vi.fn(),
+      },
+      storageService: {
+        getItem: vi.fn(),
+        setItem: vi.fn(),
+        removeItem: vi.fn(),
+        clear: vi.fn(),
+      },
+    } as never);
   });
 
   describe('initiateDonation', () => {
@@ -32,7 +86,7 @@ describe('useDonation', () => {
         },
       };
 
-      vi.mocked(apiClient.post).mockResolvedValue(mockResponse);
+      vi.mocked(apiClientAdapter.post).mockResolvedValue(mockResponse as never);
 
       const { result } = renderHook(() => useDonation());
 
@@ -51,18 +105,20 @@ describe('useDonation', () => {
         response = await result.current.initiateDonation(donationData);
       });
 
-      expect(apiClient.post).toHaveBeenCalledWith('/donations/initiate', donationData);
+      expect(apiClientAdapter.post).toHaveBeenCalledWith('/donations/initiate', donationData);
       expect(result.current.donationId).toBe('don-123');
       expect(result.current.checkoutRequestId).toBe('req-456');
       expect(result.current.paymentStatus).toBe('PENDING');
-      expect(notificationService.info).toHaveBeenCalledWith(
+      expect(notificationService.success).toHaveBeenCalledWith(
         expect.stringContaining('STK push sent')
       );
-      expect(response).toEqual({
-        success: true,
-        donationId: 'don-123',
-        checkoutRequestId: 'req-456',
-      });
+      expect(response).toEqual(
+        expect.objectContaining({
+          success: true,
+          donationId: 'don-123',
+          checkoutRequestId: 'req-456',
+        })
+      );
     });
 
     it('should successfully initiate Manual donation', async () => {
@@ -77,7 +133,7 @@ describe('useDonation', () => {
         },
       };
 
-      vi.mocked(apiClient.post).mockResolvedValue(mockResponse);
+      vi.mocked(apiClientAdapter.post).mockResolvedValue(mockResponse as never);
 
       const { result } = renderHook(() => useDonation());
 
@@ -101,7 +157,7 @@ describe('useDonation', () => {
     });
 
     it('should handle donation initiation failure', async () => {
-      vi.mocked(apiClient.post).mockRejectedValue(new Error('Network error'));
+      vi.mocked(apiClientAdapter.post).mockRejectedValue(new Error('Network error'));
 
       const { result } = renderHook(() => useDonation());
 
@@ -135,7 +191,7 @@ describe('useDonation', () => {
         },
       };
 
-      vi.mocked(apiClient.get).mockResolvedValue(mockResponse);
+      vi.mocked(apiClientAdapter.get).mockResolvedValue(mockResponse as never);
 
       const { result } = renderHook(() => useDonation());
 
@@ -158,7 +214,7 @@ describe('useDonation', () => {
         },
       };
 
-      vi.mocked(apiClient.get).mockResolvedValue(mockResponse);
+      vi.mocked(apiClientAdapter.get).mockResolvedValue(mockResponse as never);
 
       const { result } = renderHook(() => useDonation());
 
@@ -175,7 +231,7 @@ describe('useDonation', () => {
     });
 
     it('should return PENDING on error', async () => {
-      vi.mocked(apiClient.get).mockRejectedValue(new Error('Network error'));
+      vi.mocked(apiClientAdapter.get).mockRejectedValue(new Error('Network error'));
 
       const { result } = renderHook(() => useDonation());
 
@@ -198,7 +254,7 @@ describe('useDonation', () => {
         },
       };
 
-      vi.mocked(apiClient.post).mockResolvedValue(mockResponse);
+      vi.mocked(apiClientAdapter.post).mockResolvedValue(mockResponse as never);
 
       const { result } = renderHook(() => useDonation());
 

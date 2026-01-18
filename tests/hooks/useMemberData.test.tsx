@@ -1,31 +1,27 @@
-/**
- * useMemberData Hook Tests
- * Tests for member data aggregation hook that uses TanStack Query
- */
+import type { ReactElement, ReactNode } from 'react';
 
-import { renderHook, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactNode } from 'react';
-import { useMemberData } from '../../src/features/membership/hooks/useMemberData';
-
-// Mock the granular query hooks
-jest.mock('../../src/features/membership/hooks/queries/useMemberQueries', () => ({
-  useMemberProfileQuery: jest.fn(),
-  useUpdateMemberProfileMutation: jest.fn(),
-  useMemberPaymentsQuery: jest.fn(),
-  useMemberMeetingsQuery: jest.fn(),
-  useAvailableMeetingsQuery: jest.fn(),
-  useMemberDocumentsQuery: jest.fn(),
-  useMemberActivityQuery: jest.fn(),
-  useRsvpMutation: jest.fn(),
-  useCancelRsvpMutation: jest.fn(),
-}));
+import { renderHook, waitFor } from '@testing-library/react';
+import { vi } from 'vitest';
 
 import * as memberQueries from '../../src/features/membership/hooks/queries/useMemberQueries';
+import { useMemberData } from '../../src/features/membership/hooks/useMemberData';
+
+vi.mock('../../src/features/membership/hooks/queries/useMemberQueries', () => ({
+  useMemberProfileQuery: vi.fn(),
+  useUpdateMemberProfileMutation: vi.fn(),
+  useMemberPaymentsQuery: vi.fn(),
+  useMemberMeetingsQuery: vi.fn(),
+  useAvailableMeetingsQuery: vi.fn(),
+  useMemberDocumentsQuery: vi.fn(),
+  useMemberActivityQuery: vi.fn(),
+  useRsvpMutation: vi.fn(),
+  useCancelRsvpMutation: vi.fn(),
+}));
 
 describe('useMemberData', () => {
   let queryClient: QueryClient;
-  let wrapper: ({ children }: { children: ReactNode }) => JSX.Element;
+  let wrapper: ({ children }: { children: ReactNode }) => ReactElement;
 
   const mockProfile = {
     id: '1',
@@ -139,8 +135,7 @@ describe('useMemberData', () => {
       <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     );
 
-    // Reset all mocks
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   afterEach(() => {
@@ -149,59 +144,58 @@ describe('useMemberData', () => {
 
   describe('Data Aggregation', () => {
     test('should aggregate all member data successfully', async () => {
-      // Mock all query hooks
-      (memberQueries.useMemberProfileQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useMemberProfileQuery as any).mockReturnValue({
         data: mockProfile,
         isLoading: false,
         error: null,
-        refetch: jest.fn(),
+        refetch: vi.fn(),
       });
 
-      (memberQueries.useMemberPaymentsQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useMemberPaymentsQuery as any).mockReturnValue({
         data: mockPayments,
         isLoading: false,
         error: null,
-        refetch: jest.fn(),
+        refetch: vi.fn(),
       });
 
-      (memberQueries.useMemberMeetingsQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useMemberMeetingsQuery as any).mockReturnValue({
         data: mockMeetings,
         isLoading: false,
         error: null,
-        refetch: jest.fn(),
+        refetch: vi.fn(),
       });
 
-      (memberQueries.useAvailableMeetingsQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useAvailableMeetingsQuery as any).mockReturnValue({
         data: [],
         isLoading: false,
         error: null,
-        refetch: jest.fn(),
+        refetch: vi.fn(),
       });
 
-      (memberQueries.useMemberDocumentsQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useMemberDocumentsQuery as any).mockReturnValue({
         data: mockDocuments,
         isLoading: false,
         error: null,
-        refetch: jest.fn(),
+        refetch: vi.fn(),
       });
 
-      (memberQueries.useMemberActivityQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useMemberActivityQuery as any).mockReturnValue({
         data: mockActivity,
         isLoading: false,
         error: null,
-        refetch: jest.fn(),
+        refetch: vi.fn(),
       });
 
-      (memberQueries.useUpdateMemberProfileMutation as jest.Mock).mockReturnValue({
-        mutateAsync: jest.fn(),
+      (memberQueries.useUpdateMemberProfileMutation as any).mockReturnValue({
+        mutateAsync: vi.fn(),
       });
 
-      (memberQueries.useRsvpMutation as jest.Mock).mockReturnValue({
-        mutateAsync: jest.fn(),
+      (memberQueries.useRsvpMutation as any).mockReturnValue({
+        mutateAsync: vi.fn(),
       });
 
-      (memberQueries.useCancelRsvpMutation as jest.Mock).mockReturnValue({
-        mutateAsync: jest.fn(),
+      (memberQueries.useCancelRsvpMutation as any).mockReturnValue({
+        mutateAsync: vi.fn(),
       });
 
       const { result } = renderHook(() => useMemberData(), { wrapper });
@@ -218,58 +212,58 @@ describe('useMemberData', () => {
     });
 
     test('should handle loading state', () => {
-      (memberQueries.useMemberProfileQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useMemberProfileQuery as any).mockReturnValue({
         data: null,
         isLoading: true,
         error: null,
-        refetch: jest.fn(),
+        refetch: vi.fn(),
       });
 
-      (memberQueries.useMemberPaymentsQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useMemberPaymentsQuery as any).mockReturnValue({
         data: [],
         isLoading: false,
         error: null,
-        refetch: jest.fn(),
+        refetch: vi.fn(),
       });
 
-      (memberQueries.useMemberMeetingsQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useMemberMeetingsQuery as any).mockReturnValue({
         data: [],
         isLoading: false,
         error: null,
-        refetch: jest.fn(),
+        refetch: vi.fn(),
       });
 
-      (memberQueries.useAvailableMeetingsQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useAvailableMeetingsQuery as any).mockReturnValue({
         data: [],
         isLoading: false,
         error: null,
-        refetch: jest.fn(),
+        refetch: vi.fn(),
       });
 
-      (memberQueries.useMemberDocumentsQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useMemberDocumentsQuery as any).mockReturnValue({
         data: [],
         isLoading: false,
         error: null,
-        refetch: jest.fn(),
+        refetch: vi.fn(),
       });
 
-      (memberQueries.useMemberActivityQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useMemberActivityQuery as any).mockReturnValue({
         data: [],
         isLoading: false,
         error: null,
-        refetch: jest.fn(),
+        refetch: vi.fn(),
       });
 
-      (memberQueries.useUpdateMemberProfileMutation as jest.Mock).mockReturnValue({
-        mutateAsync: jest.fn(),
+      (memberQueries.useUpdateMemberProfileMutation as any).mockReturnValue({
+        mutateAsync: vi.fn(),
       });
 
-      (memberQueries.useRsvpMutation as jest.Mock).mockReturnValue({
-        mutateAsync: jest.fn(),
+      (memberQueries.useRsvpMutation as any).mockReturnValue({
+        mutateAsync: vi.fn(),
       });
 
-      (memberQueries.useCancelRsvpMutation as jest.Mock).mockReturnValue({
-        mutateAsync: jest.fn(),
+      (memberQueries.useCancelRsvpMutation as any).mockReturnValue({
+        mutateAsync: vi.fn(),
       });
 
       const { result } = renderHook(() => useMemberData(), { wrapper });
@@ -278,58 +272,58 @@ describe('useMemberData', () => {
     });
 
     test('should handle error state', () => {
-      (memberQueries.useMemberProfileQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useMemberProfileQuery as any).mockReturnValue({
         data: null,
         isLoading: false,
         error: { message: 'Failed to load profile' },
-        refetch: jest.fn(),
+        refetch: vi.fn(),
       });
 
-      (memberQueries.useMemberPaymentsQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useMemberPaymentsQuery as any).mockReturnValue({
         data: [],
         isLoading: false,
         error: null,
-        refetch: jest.fn(),
+        refetch: vi.fn(),
       });
 
-      (memberQueries.useMemberMeetingsQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useMemberMeetingsQuery as any).mockReturnValue({
         data: [],
         isLoading: false,
         error: null,
-        refetch: jest.fn(),
+        refetch: vi.fn(),
       });
 
-      (memberQueries.useAvailableMeetingsQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useAvailableMeetingsQuery as any).mockReturnValue({
         data: [],
         isLoading: false,
         error: null,
-        refetch: jest.fn(),
+        refetch: vi.fn(),
       });
 
-      (memberQueries.useMemberDocumentsQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useMemberDocumentsQuery as any).mockReturnValue({
         data: [],
         isLoading: false,
         error: null,
-        refetch: jest.fn(),
+        refetch: vi.fn(),
       });
 
-      (memberQueries.useMemberActivityQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useMemberActivityQuery as any).mockReturnValue({
         data: [],
         isLoading: false,
         error: null,
-        refetch: jest.fn(),
+        refetch: vi.fn(),
       });
 
-      (memberQueries.useUpdateMemberProfileMutation as jest.Mock).mockReturnValue({
-        mutateAsync: jest.fn(),
+      (memberQueries.useUpdateMemberProfileMutation as any).mockReturnValue({
+        mutateAsync: vi.fn(),
       });
 
-      (memberQueries.useRsvpMutation as jest.Mock).mockReturnValue({
-        mutateAsync: jest.fn(),
+      (memberQueries.useRsvpMutation as any).mockReturnValue({
+        mutateAsync: vi.fn(),
       });
 
-      (memberQueries.useCancelRsvpMutation as jest.Mock).mockReturnValue({
-        mutateAsync: jest.fn(),
+      (memberQueries.useCancelRsvpMutation as any).mockReturnValue({
+        mutateAsync: vi.fn(),
       });
 
       const { result } = renderHook(() => useMemberData(), { wrapper });
@@ -340,60 +334,60 @@ describe('useMemberData', () => {
 
   describe('Computed Values', () => {
     beforeEach(() => {
-      (memberQueries.useAvailableMeetingsQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useAvailableMeetingsQuery as any).mockReturnValue({
         data: [],
         isLoading: false,
         error: null,
-        refetch: jest.fn(),
+        refetch: vi.fn(),
       });
 
-      (memberQueries.useMemberDocumentsQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useMemberDocumentsQuery as any).mockReturnValue({
         data: [],
         isLoading: false,
         error: null,
-        refetch: jest.fn(),
+        refetch: vi.fn(),
       });
 
-      (memberQueries.useMemberActivityQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useMemberActivityQuery as any).mockReturnValue({
         data: [],
         isLoading: false,
         error: null,
-        refetch: jest.fn(),
+        refetch: vi.fn(),
       });
 
-      (memberQueries.useUpdateMemberProfileMutation as jest.Mock).mockReturnValue({
-        mutateAsync: jest.fn(),
+      (memberQueries.useUpdateMemberProfileMutation as any).mockReturnValue({
+        mutateAsync: vi.fn(),
       });
 
-      (memberQueries.useRsvpMutation as jest.Mock).mockReturnValue({
-        mutateAsync: jest.fn(),
+      (memberQueries.useRsvpMutation as any).mockReturnValue({
+        mutateAsync: vi.fn(),
       });
 
-      (memberQueries.useCancelRsvpMutation as jest.Mock).mockReturnValue({
-        mutateAsync: jest.fn(),
+      (memberQueries.useCancelRsvpMutation as any).mockReturnValue({
+        mutateAsync: vi.fn(),
       });
     });
 
     test('should calculate total payments correctly', async () => {
-      (memberQueries.useMemberProfileQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useMemberProfileQuery as any).mockReturnValue({
         data: mockProfile,
         isLoading: false,
         error: null,
-        refetch: jest.fn(),
+        refetch: vi.fn(),
       });
 
-      (memberQueries.useMemberPaymentsQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useMemberPaymentsQuery as any).mockReturnValue({
         data: mockPayments,
         isLoading: false,
         error: null,
-        refetch: jest.fn(),
+        refetch: vi.fn(),
       });
 
-      (memberQueries.useMemberMeetingsQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useMemberMeetingsQuery as any).mockReturnValue({
         data: [],
         isLoading: false,
         error: null,
-        refetch: jest.fn(),
+        refetch: vi.fn(),
       });
 
       const { result } = renderHook(() => useMemberData(), { wrapper });
@@ -407,25 +401,25 @@ describe('useMemberData', () => {
     });
 
     test('should count pending payments correctly', async () => {
-      (memberQueries.useMemberProfileQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useMemberProfileQuery as any).mockReturnValue({
         data: mockProfile,
         isLoading: false,
         error: null,
-        refetch: jest.fn(),
+        refetch: vi.fn(),
       });
 
-      (memberQueries.useMemberPaymentsQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useMemberPaymentsQuery as any).mockReturnValue({
         data: mockPayments,
         isLoading: false,
         error: null,
-        refetch: jest.fn(),
+        refetch: vi.fn(),
       });
 
-      (memberQueries.useMemberMeetingsQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useMemberMeetingsQuery as any).mockReturnValue({
         data: [],
         isLoading: false,
         error: null,
-        refetch: jest.fn(),
+        refetch: vi.fn(),
       });
 
       const { result } = renderHook(() => useMemberData(), { wrapper });
@@ -439,25 +433,25 @@ describe('useMemberData', () => {
     });
 
     test('should count upcoming meetings correctly', async () => {
-      (memberQueries.useMemberProfileQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useMemberProfileQuery as any).mockReturnValue({
         data: mockProfile,
         isLoading: false,
         error: null,
-        refetch: jest.fn(),
+        refetch: vi.fn(),
       });
 
-      (memberQueries.useMemberPaymentsQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useMemberPaymentsQuery as any).mockReturnValue({
         data: [],
         isLoading: false,
         error: null,
-        refetch: jest.fn(),
+        refetch: vi.fn(),
       });
 
-      (memberQueries.useMemberMeetingsQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useMemberMeetingsQuery as any).mockReturnValue({
         data: mockMeetings,
         isLoading: false,
         error: null,
-        refetch: jest.fn(),
+        refetch: vi.fn(),
       });
 
       const { result } = renderHook(() => useMemberData(), { wrapper });
@@ -472,26 +466,26 @@ describe('useMemberData', () => {
 
     test('should calculate days until expiry correctly', async () => {
       const expiryDate = new Date(Date.now() + 15 * 24 * 60 * 60 * 1000); // 15 days from now
-      
-      (memberQueries.useMemberProfileQuery as jest.Mock).mockReturnValue({
+
+      (memberQueries.useMemberProfileQuery as any).mockReturnValue({
         data: { ...mockProfile, membershipExpiresAt: expiryDate.toISOString() },
         isLoading: false,
         error: null,
-        refetch: jest.fn(),
+        refetch: vi.fn(),
       });
 
-      (memberQueries.useMemberPaymentsQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useMemberPaymentsQuery as any).mockReturnValue({
         data: [],
         isLoading: false,
         error: null,
-        refetch: jest.fn(),
+        refetch: vi.fn(),
       });
 
-      (memberQueries.useMemberMeetingsQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useMemberMeetingsQuery as any).mockReturnValue({
         data: [],
         isLoading: false,
         error: null,
-        refetch: jest.fn(),
+        refetch: vi.fn(),
       });
 
       const { result } = renderHook(() => useMemberData(), { wrapper });
@@ -506,26 +500,26 @@ describe('useMemberData', () => {
 
     test('should detect expired membership', async () => {
       const expiredDate = new Date(Date.now() - 10 * 24 * 60 * 60 * 1000); // 10 days ago
-      
-      (memberQueries.useMemberProfileQuery as jest.Mock).mockReturnValue({
+
+      (memberQueries.useMemberProfileQuery as any).mockReturnValue({
         data: { ...mockProfile, membershipExpiresAt: expiredDate.toISOString() },
         isLoading: false,
         error: null,
-        refetch: jest.fn(),
+        refetch: vi.fn(),
       });
 
-      (memberQueries.useMemberPaymentsQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useMemberPaymentsQuery as any).mockReturnValue({
         data: [],
         isLoading: false,
         error: null,
-        refetch: jest.fn(),
+        refetch: vi.fn(),
       });
 
-      (memberQueries.useMemberMeetingsQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useMemberMeetingsQuery as any).mockReturnValue({
         data: [],
         isLoading: false,
         error: null,
-        refetch: jest.fn(),
+        refetch: vi.fn(),
       });
 
       const { result } = renderHook(() => useMemberData(), { wrapper });
@@ -540,26 +534,26 @@ describe('useMemberData', () => {
 
     test('should detect membership expiring soon', async () => {
       const expiringSoonDate = new Date(Date.now() + 15 * 24 * 60 * 60 * 1000); // 15 days from now
-      
-      (memberQueries.useMemberProfileQuery as jest.Mock).mockReturnValue({
+
+      (memberQueries.useMemberProfileQuery as any).mockReturnValue({
         data: { ...mockProfile, membershipExpiresAt: expiringSoonDate.toISOString() },
         isLoading: false,
         error: null,
-        refetch: jest.fn(),
+        refetch: vi.fn(),
       });
 
-      (memberQueries.useMemberPaymentsQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useMemberPaymentsQuery as any).mockReturnValue({
         data: [],
         isLoading: false,
         error: null,
-        refetch: jest.fn(),
+        refetch: vi.fn(),
       });
 
-      (memberQueries.useMemberMeetingsQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useMemberMeetingsQuery as any).mockReturnValue({
         data: [],
         isLoading: false,
         error: null,
-        refetch: jest.fn(),
+        refetch: vi.fn(),
       });
 
       const { result } = renderHook(() => useMemberData(), { wrapper });
@@ -575,65 +569,65 @@ describe('useMemberData', () => {
 
   describe('Refetch Functions', () => {
     test('should provide refetch functions for all queries', async () => {
-      const mockRefetchProfile = jest.fn();
-      const mockRefetchPayments = jest.fn();
-      const mockRefetchMeetings = jest.fn();
-      const mockRefetchAvailable = jest.fn();
-      const mockRefetchDocuments = jest.fn();
-      const mockRefetchActivity = jest.fn();
+      const mockRefetchProfile = vi.fn();
+      const mockRefetchPayments = vi.fn();
+      const mockRefetchMeetings = vi.fn();
+      const mockRefetchAvailable = vi.fn();
+      const mockRefetchDocuments = vi.fn();
+      const mockRefetchActivity = vi.fn();
 
-      (memberQueries.useMemberProfileQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useMemberProfileQuery as any).mockReturnValue({
         data: mockProfile,
         isLoading: false,
         error: null,
         refetch: mockRefetchProfile,
       });
 
-      (memberQueries.useMemberPaymentsQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useMemberPaymentsQuery as any).mockReturnValue({
         data: [],
         isLoading: false,
         error: null,
         refetch: mockRefetchPayments,
       });
 
-      (memberQueries.useMemberMeetingsQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useMemberMeetingsQuery as any).mockReturnValue({
         data: [],
         isLoading: false,
         error: null,
         refetch: mockRefetchMeetings,
       });
 
-      (memberQueries.useAvailableMeetingsQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useAvailableMeetingsQuery as any).mockReturnValue({
         data: [],
         isLoading: false,
         error: null,
         refetch: mockRefetchAvailable,
       });
 
-      (memberQueries.useMemberDocumentsQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useMemberDocumentsQuery as any).mockReturnValue({
         data: [],
         isLoading: false,
         error: null,
         refetch: mockRefetchDocuments,
       });
 
-      (memberQueries.useMemberActivityQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useMemberActivityQuery as any).mockReturnValue({
         data: [],
         isLoading: false,
         error: null,
         refetch: mockRefetchActivity,
       });
 
-      (memberQueries.useUpdateMemberProfileMutation as jest.Mock).mockReturnValue({
-        mutateAsync: jest.fn(),
+      (memberQueries.useUpdateMemberProfileMutation as any).mockReturnValue({
+        mutateAsync: vi.fn(),
       });
 
-      (memberQueries.useRsvpMutation as jest.Mock).mockReturnValue({
-        mutateAsync: jest.fn(),
+      (memberQueries.useRsvpMutation as any).mockReturnValue({
+        mutateAsync: vi.fn(),
       });
 
-      (memberQueries.useCancelRsvpMutation as jest.Mock).mockReturnValue({
-        mutateAsync: jest.fn(),
+      (memberQueries.useCancelRsvpMutation as any).mockReturnValue({
+        mutateAsync: vi.fn(),
       });
 
       const { result } = renderHook(() => useMemberData(), { wrapper });
@@ -654,60 +648,60 @@ describe('useMemberData', () => {
 
   describe('Mutations', () => {
     test('should provide updateProfile mutation', async () => {
-      const mockUpdateProfile = jest.fn();
+      const mockUpdateProfile = vi.fn();
 
-      (memberQueries.useMemberProfileQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useMemberProfileQuery as any).mockReturnValue({
         data: mockProfile,
         isLoading: false,
         error: null,
-        refetch: jest.fn(),
+        refetch: vi.fn(),
       });
 
-      (memberQueries.useMemberPaymentsQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useMemberPaymentsQuery as any).mockReturnValue({
         data: [],
         isLoading: false,
         error: null,
-        refetch: jest.fn(),
+        refetch: vi.fn(),
       });
 
-      (memberQueries.useMemberMeetingsQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useMemberMeetingsQuery as any).mockReturnValue({
         data: [],
         isLoading: false,
         error: null,
-        refetch: jest.fn(),
+        refetch: vi.fn(),
       });
 
-      (memberQueries.useAvailableMeetingsQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useAvailableMeetingsQuery as any).mockReturnValue({
         data: [],
         isLoading: false,
         error: null,
-        refetch: jest.fn(),
+        refetch: vi.fn(),
       });
 
-      (memberQueries.useMemberDocumentsQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useMemberDocumentsQuery as any).mockReturnValue({
         data: [],
         isLoading: false,
         error: null,
-        refetch: jest.fn(),
+        refetch: vi.fn(),
       });
 
-      (memberQueries.useMemberActivityQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useMemberActivityQuery as any).mockReturnValue({
         data: [],
         isLoading: false,
         error: null,
-        refetch: jest.fn(),
+        refetch: vi.fn(),
       });
 
-      (memberQueries.useUpdateMemberProfileMutation as jest.Mock).mockReturnValue({
+      (memberQueries.useUpdateMemberProfileMutation as any).mockReturnValue({
         mutateAsync: mockUpdateProfile,
       });
 
-      (memberQueries.useRsvpMutation as jest.Mock).mockReturnValue({
-        mutateAsync: jest.fn(),
+      (memberQueries.useRsvpMutation as any).mockReturnValue({
+        mutateAsync: vi.fn(),
       });
 
-      (memberQueries.useCancelRsvpMutation as jest.Mock).mockReturnValue({
-        mutateAsync: jest.fn(),
+      (memberQueries.useCancelRsvpMutation as any).mockReturnValue({
+        mutateAsync: vi.fn(),
       });
 
       const { result } = renderHook(() => useMemberData(), { wrapper });
@@ -720,60 +714,60 @@ describe('useMemberData', () => {
     });
 
     test('should provide RSVP mutations', async () => {
-      const mockRsvp = jest.fn();
-      const mockCancelRsvp = jest.fn();
+      const mockRsvp = vi.fn();
+      const mockCancelRsvp = vi.fn();
 
-      (memberQueries.useMemberProfileQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useMemberProfileQuery as any).mockReturnValue({
         data: mockProfile,
         isLoading: false,
         error: null,
-        refetch: jest.fn(),
+        refetch: vi.fn(),
       });
 
-      (memberQueries.useMemberPaymentsQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useMemberPaymentsQuery as any).mockReturnValue({
         data: [],
         isLoading: false,
         error: null,
-        refetch: jest.fn(),
+        refetch: vi.fn(),
       });
 
-      (memberQueries.useMemberMeetingsQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useMemberMeetingsQuery as any).mockReturnValue({
         data: [],
         isLoading: false,
         error: null,
-        refetch: jest.fn(),
+        refetch: vi.fn(),
       });
 
-      (memberQueries.useAvailableMeetingsQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useAvailableMeetingsQuery as any).mockReturnValue({
         data: [],
         isLoading: false,
         error: null,
-        refetch: jest.fn(),
+        refetch: vi.fn(),
       });
 
-      (memberQueries.useMemberDocumentsQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useMemberDocumentsQuery as any).mockReturnValue({
         data: [],
         isLoading: false,
         error: null,
-        refetch: jest.fn(),
+        refetch: vi.fn(),
       });
 
-      (memberQueries.useMemberActivityQuery as jest.Mock).mockReturnValue({
+      (memberQueries.useMemberActivityQuery as any).mockReturnValue({
         data: [],
         isLoading: false,
         error: null,
-        refetch: jest.fn(),
+        refetch: vi.fn(),
       });
 
-      (memberQueries.useUpdateMemberProfileMutation as jest.Mock).mockReturnValue({
-        mutateAsync: jest.fn(),
+      (memberQueries.useUpdateMemberProfileMutation as any).mockReturnValue({
+        mutateAsync: vi.fn(),
       });
 
-      (memberQueries.useRsvpMutation as jest.Mock).mockReturnValue({
+      (memberQueries.useRsvpMutation as any).mockReturnValue({
         mutateAsync: mockRsvp,
       });
 
-      (memberQueries.useCancelRsvpMutation as jest.Mock).mockReturnValue({
+      (memberQueries.useCancelRsvpMutation as any).mockReturnValue({
         mutateAsync: mockCancelRsvp,
       });
 
