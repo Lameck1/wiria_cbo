@@ -14,7 +14,7 @@ const createLoggerMethod =
     } else if (consoleMethod === 'warn') {
       console.warn(`[WARN] ${message}`, ...args);
     } else {
-      console.warn(`[DEBUG] ${message}`, ...args);
+      console.log(`[DEBUG] ${message}`, ...args);
     }
   };
 
