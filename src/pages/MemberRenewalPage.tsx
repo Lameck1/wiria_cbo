@@ -8,7 +8,7 @@ import { useAuth } from '@/features/auth/context/useAuth';
 import { usePaymentPoller } from '@/features/donations/hooks/usePaymentPoller';
 import { PortalLayout } from '@/features/membership/components/PortalLayout';
 import { useMemberData } from '@/features/membership/hooks/useMemberData';
-import { useRenewal } from '@/features/membership/hooks/useRenewal';
+import { useRenewal, PaymentStatus } from '@/features/membership/hooks/useRenewal';
 import type { RenewalFormSchema } from '@/features/membership/validation';
 import { renewalSchema } from '@/features/membership/validation';
 import { useRenewalFeeCalculation } from '@/shared/hooks/useFeeCalculation';
@@ -98,7 +98,7 @@ function MemberRenewalPage() {
     !agreedToCodeOfEthics ||
     (paymentMethod === 'MANUAL' && !transactionCode);
 
-  if (paymentStatus === 'SUCCESS') {
+  if (paymentStatus === PaymentStatus.COMPLETED) {
     return (
       <PortalLayout title="Renewal Successful">
         <RenewalSuccess />

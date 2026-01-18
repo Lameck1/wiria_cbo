@@ -10,7 +10,7 @@
  * OPTIMIZED VERSION: Consolidated useEffect hooks for better performance
  */
 
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -30,7 +30,6 @@ export function Header() {
   const [loginDropdownOpen, setLoginDropdownOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const loginDropdownRef = useRef<HTMLDivElement>(null);
 
   // CONSOLIDATED EFFECT 1: Handle all window-level events (scroll, keyboard, click outside)
   useEffect(() => {

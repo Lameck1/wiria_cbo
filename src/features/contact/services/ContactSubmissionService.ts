@@ -67,12 +67,12 @@ export class ContactSubmissionService {
         return apiResult;
       }
 
-      logger.info('[ContactSubmissionService] Falling back to EmailJS');
+      logger.debug('[ContactSubmissionService] Falling back to EmailJS');
       return await this.submitViaEmailJs(data);
     }
 
     // If backend is not connected, use EmailJS directly
-    logger.info('[ContactSubmissionService] Backend not connected, using EmailJS');
+    logger.debug('[ContactSubmissionService] Backend not connected, using EmailJS');
     return await this.submitViaEmailJs(data);
   }
 }

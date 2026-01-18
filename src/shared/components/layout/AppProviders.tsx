@@ -6,7 +6,7 @@ import { ToastContainer } from 'react-toastify';
 import { AuthProvider } from '@/features/auth/context/AuthContext';
 import { BackendStatusProvider } from '@/shared/services/backendStatus';
 import { ServiceProvider } from '@/shared/services/di';
-import { defaultServiceContainer } from '@/shared/services/serviceContainer';
+import { createServiceContainer } from '@/shared/services/serviceContainer';
 
 import { ScrollToTop } from './ScrollToTop';
 
@@ -27,7 +27,7 @@ import { ScrollToTop } from './ScrollToTop';
  */
 export function AppProviders() {
   return (
-    <ServiceProvider services={defaultServiceContainer()}>
+    <ServiceProvider services={createServiceContainer()}>
       <BackendStatusProvider>
         <AuthProvider>
           <ScrollToTop />
