@@ -75,6 +75,76 @@ type ApiMeetingsResponse = ApiMeetingData[] | { data: ApiMeetingData[] };
 type ApiActivityResponse = ApiActivityData[] | { data: ApiActivityData[] };
 
 /**
+ * Generic Array Extraction Utilities
+ * Handles different array wrapping patterns from the backend.
+ */
+
+/**
+ * Extracts array from API response that may be:
+ * - Direct array: [item1, item2]
+ * - Wrapped in property: { payments: [...] } or { data: [...] }
+ */
+function extractArray<T>(
+  apiData: T[] | { [key: string]: T[] },
+  propertyNames: string[]
+): T[] {
+  if (Array.isArray(apiData)) {
+    return apiData;
+  }
+
+  // Try each property name until we find an array
+  for (const prop of propertyNames) {
+    const value = (apiData as Record<string, unknown>)[prop];
+    if (Array.isArray(value)) {
+      return value as T[];
+    }
+  }
+
+  return [];
+}
+
+/**
+ * Individual Item Transformation Functions
+ * Each function transforms a single API item to frontend format.
+ */
+
+function transformPayment(p: ApiPaymentData): Payment {
+  return {
+    id: p.id ?? '',
+    amount: Number(p.amount) ?? 0,
+    type: (p.type ?? 'DONATION') as Payment['type'],
+    status: (p.status ?? 'PENDING') as Payment['status'],
+    method: (p.method ?? 'MANUAL') as Payment['method'],
+    mpesaReceiptNumber: p.mpesaReceiptNumber,
+    createdAt: p.createdAt ?? '',
+  };
+}
+
+function transformMeeting(m: ApiMeetingData): Meeting {
+  return {
+    id: m.id ?? '',
+    title: m.title ?? '',
+    description: m.description,
+    date: m.date ?? '',
+    time: m.time ?? '',
+    location: m.location ?? '',
+    type: (m.type ?? 'AGM') as Meeting['type'],
+    status: (m.status ?? 'UPCOMING') as Meeting['status'],
+    isRsvpd: m.isRsvpd,
+    attendeesCount: m.attendeesCount,
+  };
+}
+
+function transformActivity(item: ApiActivityData): Activity {
+  return {
+    id: item.id ?? '',
+    type: item.type ?? '',
+    description: item.description ?? '',
+    createdAt: item.timestamp ?? item.createdAt ?? '',
+  };
+}
+
+/**
  * Member Adapter
  * Normalizes inconsistent backend responses into standard frontend structures.
  */
@@ -98,59 +168,29 @@ export const memberAdapter = {
 
   /**
    * Normalizes payment data.
+   * Handles both direct arrays and { payments: [] } wrappers.
    */
   payments(apiData: ApiPaymentsResponse): Payment[] {
-    const list: ApiPaymentData[] = Array.isArray(apiData)
-      ? apiData
-      : ((apiData as { payments: ApiPaymentData[] })?.payments ?? []);
-
-    return list.map((p) => ({
-      id: p.id ?? '',
-      amount: Number(p.amount) ?? 0,
-      type: (p.type ?? 'DONATION') as Payment['type'],
-      status: (p.status ?? 'PENDING') as Payment['status'],
-      method: (p.method ?? 'MANUAL') as Payment['method'],
-      mpesaReceiptNumber: p.mpesaReceiptNumber,
-      createdAt: p.createdAt ?? '',
-    }));
+    const list = extractArray<ApiPaymentData>(apiData, ['payments']);
+    return list.map(transformPayment);
   },
 
   /**
    * Normalizes meeting data.
+   * Handles both direct arrays and { data: [] } wrappers.
    */
   meetings(apiData: ApiMeetingsResponse): Meeting[] {
-    const list: ApiMeetingData[] = Array.isArray(apiData)
-      ? apiData
-      : ((apiData as { data: ApiMeetingData[] })?.data ?? []);
-
-    return list.map((m) => ({
-      id: m.id ?? '',
-      title: m.title ?? '',
-      description: m.description,
-      date: m.date ?? '',
-      time: m.time ?? '',
-      location: m.location ?? '',
-      type: (m.type ?? 'AGM') as Meeting['type'],
-      status: (m.status ?? 'UPCOMING') as Meeting['status'],
-      isRsvpd: m.isRsvpd,
-      attendeesCount: m.attendeesCount,
-    }));
+    const list = extractArray<ApiMeetingData>(apiData, ['data']);
+    return list.map(transformMeeting);
   },
 
   /**
    * Normalizes activity data.
+   * Handles both direct arrays and { data: [] } wrappers.
    */
   activity(apiData: ApiActivityResponse): Activity[] {
-    const list: ApiActivityData[] = Array.isArray(apiData)
-      ? apiData
-      : ((apiData as { data: ApiActivityData[] })?.data ?? []);
-
-    return list.map((item) => ({
-      id: item.id ?? '',
-      type: item.type ?? '',
-      description: item.description ?? '',
-      createdAt: item.timestamp ?? item.createdAt ?? '',
-    }));
+    const list = extractArray<ApiActivityData>(apiData, ['data']);
+    return list.map(transformActivity);
   },
 };
 
