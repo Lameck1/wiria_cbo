@@ -5,20 +5,39 @@ import { ToastContainer } from 'react-toastify';
 
 import { AuthProvider } from '@/features/auth/context/AuthContext';
 import { BackendStatusProvider } from '@/shared/services/backendStatus';
+import { ServiceProvider } from '@/shared/services/di';
+import { defaultServiceContainer } from '@/shared/services/serviceContainer';
 
 import { ScrollToTop } from './ScrollToTop';
 
+/**
+ * AppProviders Component
+ * Centralized provider composition following best practices.
+ * 
+ * Provider hierarchy (outer to inner):
+ * 1. ServiceProvider - Dependency injection container
+ * 2. BackendStatusProvider - Backend connectivity monitoring
+ * 3. AuthProvider - Authentication state management
+ * 
+ * Benefits:
+ * - Single source of truth for provider composition
+ * - Clear provider hierarchy and dependencies
+ * - Prevents "provider hell" with nested providers
+ * - Easy to maintain and extend
+ */
 export function AppProviders() {
   return (
-    <BackendStatusProvider>
-      <AuthProvider>
-        <ScrollToTop />
-        <Suspense fallback={<PageLoadingSkeleton />}>
-          <Outlet />
-        </Suspense>
-        <ToastContainer />
-      </AuthProvider>
-    </BackendStatusProvider>
+    <ServiceProvider services={defaultServiceContainer()}>
+      <BackendStatusProvider>
+        <AuthProvider>
+          <ScrollToTop />
+          <Suspense fallback={<PageLoadingSkeleton />}>
+            <Outlet />
+          </Suspense>
+          <ToastContainer />
+        </AuthProvider>
+      </BackendStatusProvider>
+    </ServiceProvider>
   );
 }
 
