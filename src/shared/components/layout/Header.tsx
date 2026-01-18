@@ -1,14 +1,16 @@
 /**
  * Header Component - Vibrant Centered Two-Tier Navigation
  * Design: Both menus centered to viewport (logo included in top menu)
-
+ * 
  * - Vibrant brand colors with subtle gradients
  * - visual depth and animations
  * - Colorful separator between menu rows
  * - hover effects and transitions
+ * 
+ * OPTIMIZED VERSION: Consolidated useEffect hooks for better performance
  */
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -28,54 +30,61 @@ export function Header() {
   const [loginDropdownOpen, setLoginDropdownOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const loginDropdownRef = useRef<HTMLDivElement>(null);
 
-  // Handle scroll detection
+  // CONSOLIDATED EFFECT 1: Handle all window-level events (scroll, keyboard, click outside)
   useEffect(() => {
+    // Scroll handler
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
     };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
-  // Lock body scroll when mobile menu is open
-  useEffect(() => {
-    document.body.style.overflow = mobileMenuOpen ? 'hidden' : '';
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [mobileMenuOpen]);
-
-  // Handle keyboard navigation
-  useEffect(() => {
+    // Keyboard handler
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         if (mobileMenuOpen) setMobileMenuOpen(false);
         if (loginDropdownOpen) setLoginDropdownOpen(false);
       }
     };
+
+    // Click outside handler
+    const handleClickOutside = (event: MouseEvent) => {
+      if (loginDropdownOpen && !(event.target as HTMLElement).closest('.login-dropdown-container')) {
+        setLoginDropdownOpen(false);
+      }
+    };
+
+    // Add all event listeners
+    window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    if (loginDropdownOpen) {
+      document.addEventListener('click', handleClickOutside);
+    }
+
+    // Cleanup all event listeners
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('click', handleClickOutside);
+    };
   }, [mobileMenuOpen, loginDropdownOpen]);
 
-  // Close menus on route change
+  // CONSOLIDATED EFFECT 2: Handle body scroll lock and menu state
+  useEffect(() => {
+    // Lock body scroll when mobile menu is open
+    document.body.style.overflow = mobileMenuOpen ? 'hidden' : '';
+    
+    // Cleanup
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [mobileMenuOpen]);
+
+  // CONSOLIDATED EFFECT 3: Close menus on route change
   useEffect(() => {
     setMobileMenuOpen(false);
     setLoginDropdownOpen(false);
   }, [location.pathname]);
-
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (!(event.target as HTMLElement).closest('.login-dropdown-container')) {
-        setLoginDropdownOpen(false);
-      }
-    };
-    if (loginDropdownOpen) {
-      document.addEventListener('click', handleClickOutside);
-    }
-    return () => document.removeEventListener('click', handleClickOutside);
-  }, [loginDropdownOpen]);
 
   const handleLogout = useCallback(async () => {
     await logout();
