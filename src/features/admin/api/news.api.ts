@@ -11,7 +11,7 @@ export interface NewsUpdate {
   createdAt: string;
 }
 
-export interface CreateNewsPayload {
+interface CreateNewsPayload {
   title: string;
   imageUrl?: string;
   category: string;

@@ -4,27 +4,27 @@
  */
 
 // Hooks
-export { useOpportunities, type Opportunity } from './hooks/useOpportunities';
+// export { useOpportunities, type Opportunity } from './hooks/useOpportunities';
 
 // Page-level Sections
-export { CurrentOpeningsSection } from './components/CurrentOpeningsSection';
-export { VolunteerInternshipSection } from './components/VolunteerInternshipSection';
-export { BenefitsSection } from './components/BenefitsSection';
 export { ApplicationTipsSection } from './components/ApplicationTipsSection';
+export { BenefitsSection } from './components/BenefitsSection';
+export { CurrentOpeningsSection } from './components/CurrentOpeningsSection';
 export { OpportunityHeroStats } from './components/OpportunityHeroStats';
+export { VolunteerInternshipSection } from './components/VolunteerInternshipSection';
 
 // Modal Components
-export { OpportunityModal } from './components/OpportunityModal';
-export { OpportunityModalContent } from './components/OpportunityModalContent';
+// export { OpportunityModal } from './components/OpportunityModal';
+// export { OpportunityModalContent } from './components/OpportunityModalContent';
 
 // Card Components
-export { OpportunityCard } from './components/OpportunityCard';
-export { OpportunityInfoCards } from './components/OpportunityInfoCards';
-export { OpportunityDetailSection } from './components/OpportunityDetailSection';
+// export { OpportunityCard } from './components/OpportunityCard';
+// export { OpportunityInfoCards } from './components/OpportunityInfoCards';
+// export { OpportunityDetailSection } from './components/OpportunityDetailSection';
 
 // Filter Components
-export { OpportunityFilters, type OpportunityTypeFilter } from './components/OpportunityFilters';
-export { EmptyStateView } from './components/EmptyStateView';
+// export { OpportunityFilters, type OpportunityTypeFilter } from './components/OpportunityFilters';
+// export { EmptyStateView } from './components/EmptyStateView';
 
 // Utils
 export * from './utils/deadlineUtils';

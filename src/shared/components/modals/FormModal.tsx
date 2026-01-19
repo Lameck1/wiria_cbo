@@ -6,7 +6,7 @@ import { Modal } from '@/shared/components/ui/Modal';
 import { Select } from '@/shared/components/ui/Select';
 import { Textarea } from '@/shared/components/ui/Textarea';
 
-export type FieldType =
+type FieldType =
   | 'text'
   | 'email'
   | 'password'
@@ -16,7 +16,7 @@ export type FieldType =
   | 'select'
   | 'file';
 
-export interface SelectOption {
+interface SelectOption {
   label: string;
   value: string;
 }

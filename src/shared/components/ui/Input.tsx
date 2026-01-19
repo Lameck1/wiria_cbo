@@ -73,6 +73,7 @@ export function Input({
           id={inputId}
           aria-invalid={hasError}
           aria-describedby={describedBy}
+          aria-required={props.required}
         />
 
         {rightIcon && (
@@ -81,7 +82,7 @@ export function Input({
       </div>
 
       {error && (
-        <p id={errorId} className="mt-1 text-sm text-red-600" role="alert">
+        <p id={errorId} className="mt-1 text-sm text-red-600" role="alert" aria-live="polite" aria-atomic="true">
           {error}
         </p>
       )}

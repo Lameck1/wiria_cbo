@@ -19,9 +19,9 @@ if (PUBLIC_KEY) {
   init(PUBLIC_KEY);
 }
 
-export type EmailSendStatus = 'SUCCESS' | 'CONFIG_MISSING' | 'PROVIDER_ERROR';
+type EmailSendStatus = 'SUCCESS' | 'CONFIG_MISSING' | 'PROVIDER_ERROR';
 
-export interface EmailSendResult {
+interface EmailSendResult {
   status: EmailSendStatus;
   message: string;
 }

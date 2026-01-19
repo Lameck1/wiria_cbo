@@ -19,7 +19,7 @@ export interface Tender {
   createdAt: string;
 }
 
-export interface CreateTenderPayload {
+interface CreateTenderPayload {
   refNo: string;
   title: string;
   category: string;

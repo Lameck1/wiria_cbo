@@ -44,11 +44,7 @@ async function checkBackendHealth(): Promise<boolean> {
   return checkPromise;
 }
 
-export async function recheckBackendStatus(): Promise<boolean> {
-  cachedStatus = null;
-  checkPromise = null;
-  return checkBackendHealth();
-}
+
 
 export async function getBackendStatus(): Promise<boolean> {
   return checkBackendHealth();

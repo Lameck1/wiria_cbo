@@ -162,4 +162,3 @@ export function GovernanceSection() {
   );
 }
 
-export default GovernanceSection;

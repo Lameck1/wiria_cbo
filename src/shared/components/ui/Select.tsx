@@ -59,6 +59,7 @@ export function Select({
         )}
         aria-invalid={hasError}
         aria-describedby={describedBy}
+        aria-required={props.required}
         {...props}
       >
         {children ??

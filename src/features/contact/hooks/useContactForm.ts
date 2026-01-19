@@ -5,7 +5,7 @@ import { contactSubmissionService } from '@/features/contact/services';
 import { notificationService } from '@/shared/services/notification/notificationService';
 import { useBackendStatus } from '@/shared/services/useBackendStatus';
 
-export type { ContactFormData } from '@/features/contact/services';
+
 
 /**
  * Hook for managing contact form submission state and logic

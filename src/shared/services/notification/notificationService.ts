@@ -7,9 +7,9 @@ import { create } from 'zustand';
 
 import { TIMING } from '@/shared/constants/config';
 
-export type NotificationType = 'success' | 'error' | 'warning' | 'info';
+type NotificationType = 'success' | 'error' | 'warning' | 'info';
 
-export interface Notification {
+interface Notification {
   id: string;
   type: NotificationType;
   message: string;

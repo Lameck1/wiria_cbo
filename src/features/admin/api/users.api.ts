@@ -22,7 +22,7 @@ export interface UserInvitation {
   createdAt: string;
 }
 
-export interface InviteUserPayload {
+interface InviteUserPayload {
   email: string;
   role: UserRole;
   firstName?: string;

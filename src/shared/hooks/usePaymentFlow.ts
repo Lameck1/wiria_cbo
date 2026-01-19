@@ -362,14 +362,7 @@ export interface UsePaymentFlowConfig {
   };
 }
 
-export interface PaymentFlowState {
-  isSubmitting: boolean;
-  isVerifying: boolean;
-  paymentStatus: PaymentStatus | null;
-  checkoutRequestId: string | null;
-  transactionId: string | null;
-  isManualPaymentVerified: boolean;
-}
+
 
 export function usePaymentFlow(config: UsePaymentFlowConfig) {
   const { apiClient, notificationService } = useServices();

@@ -9,17 +9,16 @@
  */
 
 // Types
-export type {
-  IApiClient,
-  ILogger,
-  INotificationService,
-  IServiceContainer,
-  IStorageService,
-  NotificationType,
-} from '@/shared/types/services';
+// export type {
+//   IApiClient,
+//   ILogger,
+//   INotificationService,
+//   IServiceContainer,
+//   IStorageService,
+// } from '@/shared/types/services';
 
 // Context and Provider
 export { ServiceProvider, useServices } from '@/shared/contexts/ServiceContext';
 
 // Service Container
-export { createMockServiceContainer, createServiceContainer } from '@/shared/services/serviceContainer';
+export { createMockServiceContainer } from '@/shared/services/serviceContainer';

@@ -297,24 +297,25 @@ export function HeroSlider({ slides, autoRotateInterval = 6000 }: HeroSliderProp
   }, [hasSlides, slides.length]);
 
   // Keyboard navigation
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'ArrowLeft') previousSlide();
-      if (event.key === 'ArrowRight') nextSlide();
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [previousSlide, nextSlide]);
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === 'ArrowLeft') previousSlide();
+    if (event.key === 'ArrowRight') nextSlide();
+  };
 
   if (!currentSlide) return null;
 
   return (
     <section
-      className="relative h-[75vh] min-h-[500px] overflow-hidden"
+      className="relative h-[75vh] min-h-[500px] overflow-hidden focus:outline-none focus:ring-2 focus:ring-wiria-yellow focus:ring-inset"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
+      onFocus={() => setIsPaused(true)}
+      onBlur={() => setIsPaused(false)}
+      onKeyDown={handleKeyDown}
+      tabIndex={0}
       aria-label="Hero slider"
+      role="region"
+      aria-roledescription="carousel"
     >
       <HeroBackground currentIndex={currentIndex} currentSlide={currentSlide} />
 

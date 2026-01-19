@@ -4,7 +4,7 @@
  */
 
 import type { ReactNode } from 'react';
-import { useEffect, useId } from 'react';
+import { useEffect, useId, useRef } from 'react';
 
 import { AnimatePresence, motion } from 'framer-motion';
 
@@ -32,16 +32,66 @@ export function Modal({
   className = '',
 }: ModalProps) {
   const titleId = useId();
-  // Close on Escape key
+  const modalRef = useRef<HTMLDivElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
+
+  // Store previous focus
   useEffect(() => {
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && isOpen) {
-        onClose();
+    if (isOpen) {
+      previousFocusRef.current = document.activeElement as HTMLElement;
+    } else if (previousFocusRef.current) {
+      previousFocusRef.current.focus();
+      previousFocusRef.current = null;
+    }
+  }, [isOpen]);
+
+  // Focus trap
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const modalElement = modalRef.current;
+    if (!modalElement) return;
+
+    // Find all focusable elements
+    const focusableElements = modalElement.querySelectorAll(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+
+    const firstElement = focusableElements[0] as HTMLElement;
+    const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
+
+    // Focus first element
+    if (firstElement) {
+      // Use requestAnimationFrame to ensure DOM is ready and animation started
+      requestAnimationFrame(() => firstElement.focus());
+    }
+
+    const handleTabKey = (e: KeyboardEvent) => {
+      if (e.key === 'Tab') {
+        if (e.shiftKey) {
+          if (document.activeElement === firstElement) {
+            e.preventDefault();
+            lastElement?.focus();
+          }
+        } else {
+          if (document.activeElement === lastElement) {
+            e.preventDefault();
+            firstElement?.focus();
+          }
+        }
       }
     };
 
-    document.addEventListener('keydown', handleEscape);
-    return () => document.removeEventListener('keydown', handleEscape);
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onClose();
+      } else {
+        handleTabKey(event);
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, onClose]);
 
   // Prevent body scroll when modal is open
@@ -72,10 +122,12 @@ export function Modal({
             exit={{ opacity: 0 }}
             onClick={closeOnBackdrop ? onClose : undefined}
             className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            aria-hidden="true"
           />
 
           {/* Modal */}
           <motion.div
+            ref={modalRef}
             role="dialog"
             aria-modal="true"
             aria-labelledby={title ? titleId : undefined}
@@ -97,7 +149,7 @@ export function Modal({
                 </h2>
                 <button
                   onClick={onClose}
-                  className="text-gray-400 transition-colors hover:text-gray-600"
+                  className="rounded-full p-1 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-wiria-blue-dark"
                   aria-label="Close modal"
                 >
                   <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 20 20">

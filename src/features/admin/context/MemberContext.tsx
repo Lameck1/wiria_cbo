@@ -40,4 +40,3 @@ export function MemberProvider({ children, filter, search }: MemberProviderProps
   );
 }
 
-export default MemberProvider;

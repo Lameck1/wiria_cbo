@@ -12,7 +12,7 @@ import type { UserRole } from '@/shared/types';
 import { logger } from '../logger';
 import { STORAGE_KEYS, storageService } from '../storage/storageService';
 
-export interface TokenData {
+interface TokenData {
   accessToken: string;
   refreshToken: string;
   role: UserRole;

@@ -35,6 +35,4 @@ export function CardBody({ children, className }: { children: ReactNode; classNa
   return <div className={cn('p-6', className)}>{children}</div>;
 }
 
-export function CardFooter({ children, className }: { children: ReactNode; className?: string }) {
-  return <div className={cn('border-t border-gray-100 p-6', className)}>{children}</div>;
-}
+

@@ -24,7 +24,7 @@ export interface Contact {
   updatedAt: string;
 }
 
-export interface ContactStatistics {
+interface ContactStatistics {
   total: number;
   pending: number;
   responded: number;

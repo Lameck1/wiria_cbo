@@ -25,10 +25,4 @@ export interface DonationResponse {
   };
 }
 
-export interface PaymentStatusResponse {
-  data: {
-    status: 'PENDING' | 'COMPLETED' | 'FAILED' | 'CANCELLED';
-    transactionId?: string;
-    message?: string;
-  };
-}
+

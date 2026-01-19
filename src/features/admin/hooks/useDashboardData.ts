@@ -12,7 +12,7 @@ import { getDashboardStats } from '../api/dashboard.api';
 
 import type { DashboardStats } from '../api/dashboard.api';
 
-export interface TrendPointBase {
+interface TrendPointBase {
   month: string;
 }
 

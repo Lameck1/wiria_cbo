@@ -5,7 +5,7 @@ const API_BASE_URL: string =
 
 type TokenResolver = () => string | null;
 
-export class ApiClient {
+class ApiClient {
   private baseURL: string;
   private tokenResolver?: TokenResolver;
 
@@ -177,4 +177,4 @@ export class ApiError extends Error {
 }
 
 export const apiClient = new ApiClient();
-export default apiClient;
+

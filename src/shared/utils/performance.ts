@@ -37,7 +37,7 @@ const envMode = import.meta.env.MODE;
 /**
  * Performance monitoring configuration
  */
-export const PERFORMANCE_CONFIG = {
+const PERFORMANCE_CONFIG = {
   // Thresholds for different metrics (in milliseconds)
   thresholds: {
     componentRender: 16, // 60fps = 16.67ms per frame
@@ -178,43 +178,7 @@ export function measureAsyncPerformance<T>(
   };
 }
 
-/**
- * Measures user interaction performance
- * 
- * @example
- * const handleClick = measureInteractionPerformance('button_click', async () => {
- *   await submitForm();
- * });
- */
-export function measureInteractionPerformance<T>(
-  interactionName: string,
-  handler: () => T | Promise<T>
-): () => T | Promise<T> {
-  return async () => {
-    const startTime = performance.now();
 
-    try {
-      const result = await handler();
-      const duration = performance.now() - startTime;
-
-      if (duration > PERFORMANCE_CONFIG.thresholds.userInteraction) {
-        logPerformance({
-          componentName: interactionName,
-          renderTime: duration,
-        });
-      }
-
-      return result;
-    } catch (error) {
-      const duration = performance.now() - startTime;
-      logPerformance({
-        componentName: `${interactionName}_error`,
-        renderTime: duration,
-      });
-      throw error;
-    }
-  };
-}
 
 /**
  * Measures Web Vitals (Core Web Vitals)
@@ -275,7 +239,7 @@ export function measureWebVitals() {
  * Performance budget tracker
  * Tracks if performance metrics stay within budget
  */
-export class PerformanceBudget {
+class PerformanceBudget {
   private budgets: Map<string, number> = new Map<string, number>();
   private violations: Map<string, number> = new Map<string, number>();
 
@@ -312,7 +276,7 @@ export class PerformanceBudget {
 }
 
 // Export a default performance budget instance
-export const defaultPerformanceBudget = new PerformanceBudget();
+const defaultPerformanceBudget = new PerformanceBudget();
 
 // Set default budgets
 if (PERFORMANCE_CONFIG.enabled) {

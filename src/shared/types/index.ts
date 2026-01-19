@@ -60,12 +60,7 @@ export interface AuthResponse {
   message: string;
 }
 
-// API Response Types
-export interface ApiResponse<T = unknown> {
-  data: T;
-  message?: string;
-  success: boolean;
-}
+
 
 // PaginatedResponse interface removed - not currently used in the application
 // export interface PaginatedResponse<T> {
@@ -78,28 +73,9 @@ export interface ApiResponse<T = unknown> {
 //   };
 // }
 
-// Payment Types
-export enum PaymentMethod {
-  STK_PUSH = 'STK_PUSH',
-  MANUAL = 'MANUAL',
-}
 
-export enum PaymentStatus {
-  PENDING = 'PENDING',
-  COMPLETED = 'COMPLETED',
-  FAILED = 'FAILED',
-  CANCELLED = 'CANCELLED',
-}
 
-export interface Payment {
-  id: string;
-  amount: number;
-  method: PaymentMethod;
-  status: PaymentStatus;
-  transactionId?: string;
-  phone?: string;
-  createdAt: string;
-}
+
 
 // Form validation types
 // ValidationError interface removed - not currently used in the application

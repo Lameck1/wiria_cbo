@@ -11,7 +11,7 @@ export interface ContactFormData {
   message: string;
 }
 
-export interface SubmissionResult {
+interface SubmissionResult {
   success: boolean;
   method: 'api' | 'emailjs' | 'none';
   error?: unknown;
@@ -20,7 +20,7 @@ export interface SubmissionResult {
 /**
  * Service responsible for submitting contact form data via API or EmailJS fallback
  */
-export class ContactSubmissionService {
+class ContactSubmissionService {
   /**
    * Attempt to submit via primary API
    */

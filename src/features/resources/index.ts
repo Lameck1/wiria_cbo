@@ -4,8 +4,8 @@
  */
 
 // Hooks
-export { useResources, type Resource } from './hooks/useResources';
-export { useTenders, type Tender } from './hooks/useTenders';
+// export { useResources, type Resource } from './hooks/useResources';
+// export { useTenders, type Tender } from './hooks/useTenders';
 
 // Page Sections
 export { DocumentRepositorySection } from './components/DocumentRepositorySection';

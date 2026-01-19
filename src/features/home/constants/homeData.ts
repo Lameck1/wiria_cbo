@@ -2,7 +2,7 @@
  * Home page data definitions
  */
 
-export interface HeroSlide {
+interface HeroSlide {
   id: number;
   title: string;
   subtitle: string;
@@ -20,22 +20,14 @@ export interface FocusArea {
   link: string;
 }
 
-export interface ImpactStat {
+interface ImpactStat {
   label: string;
   value: string;
   target: number;
   description: string;
 }
 
-export interface Update {
-  id: string;
-  title: string;
-  date: string;
-  category: string;
-  excerpt: string;
-  content: string;
-  image: string;
-}
+
 
 export const HERO_SLIDES: HeroSlide[] = [
   {

@@ -12,7 +12,8 @@ import {
 } from '@/features/home';
 import { FocusAreasSection } from '@/shared/components/sections/FocusAreasSection';
 
-export function HomePage() {
+function HomePage() {
+
   return (
     <>
       {/* Hero Slider */}

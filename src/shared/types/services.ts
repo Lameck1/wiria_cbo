@@ -53,7 +53,7 @@ export interface IApiClient {
 // Notification Service Interface
 // ============================================================================
 
-export type NotificationType = 'success' | 'error' | 'warning' | 'info';
+
 
 export interface INotificationService {
   /**

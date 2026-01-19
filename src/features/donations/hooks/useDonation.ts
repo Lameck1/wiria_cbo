@@ -85,4 +85,4 @@ export function useDonation() {
 }
 
 // Re-export PaymentStatus for convenience
-export { PaymentStatus } from '@/shared/types/payment';
+// export { PaymentStatus } from '@/shared/types/payment';

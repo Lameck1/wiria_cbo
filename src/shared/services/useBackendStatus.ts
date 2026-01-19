@@ -6,4 +6,4 @@ export function useBackendStatus(): BackendStatusContextType {
   return use(BackendStatusContext);
 }
 
-export { recheckBackendStatus } from './backendStatusService';
+

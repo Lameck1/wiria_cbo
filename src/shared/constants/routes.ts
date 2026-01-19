@@ -44,4 +44,4 @@ export const ROUTES = {
   ADMIN_HR: '/admin/hr',
 } as const;
 
-export type AppRoute = (typeof ROUTES)[keyof typeof ROUTES];
+

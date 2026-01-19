@@ -3,7 +3,7 @@
  * Centralized data for the About page sections
  */
 
-export interface CoreValue {
+interface CoreValue {
   title: string;
   description: string;
   iconBg: string;
@@ -11,25 +11,25 @@ export interface CoreValue {
   icon: React.ReactNode;
 }
 
-export interface GovernanceLevel {
+interface GovernanceLevel {
   level: number;
   title: string;
   description: string;
   gradient: string;
 }
 
-export interface SecretariatMember {
+interface SecretariatMember {
   name: string;
   roles: string[];
   image: string;
 }
 
-export interface SecretariatDepartment {
+interface SecretariatDepartment {
   title: string;
   members: SecretariatMember[];
 }
 
-export interface RegistrationDetail {
+interface RegistrationDetail {
   label: string;
   value: string;
 }

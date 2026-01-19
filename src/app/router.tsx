@@ -10,7 +10,7 @@ import { Layout } from '@/shared/components/layout/Layout';
 import { ROUTES } from '@/shared/constants/routes';
 import { UserRole } from '@/shared/types';
 
-import { AdminErrorFallback, MemberErrorFallback } from './RouteErrorFallbacks';
+import { AdminErrorFallback, MemberErrorFallback, PublicErrorFallback } from './RouteErrorFallbacks';
 import { createMemberRoute } from './routeProtection';
 
 // Lazy load all pages for optimal code splitting
@@ -71,7 +71,9 @@ export const router = createBrowserRouter(
         {
           element: (
             <Layout>
-              <Outlet />
+              <ErrorBoundary fallback={<PublicErrorFallback />}>
+                <Outlet />
+              </ErrorBoundary>
             </Layout>
           ),
           children: [
