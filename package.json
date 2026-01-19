@@ -44,6 +44,9 @@
     },
     "@storybook/react-vite": {
       "vite": "$vite"
+    },
+    "@storybook/builder-vite": {
+      "vite": "$vite"
     }
   },
   "dependencies": {
