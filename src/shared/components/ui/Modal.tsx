@@ -10,17 +10,31 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 import { cn } from '@/shared/utils/helpers';
 
+/**
+ * Props for the Modal component.
+ */
 export interface ModalProps {
+  /** If true, the modal is visible. */
   isOpen: boolean;
+  /** Callback function to close the modal. */
   onClose: () => void;
+  /** Title of the modal. */
   title?: string;
+  /** Content of the modal. */
   children: ReactNode;
+  /** Size of the modal. Defaults to 'md'. */
   size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl';
+  /** If true, clicking the backdrop closes the modal. Defaults to true. */
   closeOnBackdrop?: boolean;
+  /** If true, removes default padding from the content area. */
   noPadding?: boolean;
+  /** Optional class name for the modal container. */
   className?: string;
 }
 
+/**
+ * Accessible modal dialog with backdrop, focus trapping, and keyboard navigation.
+ */
 export function Modal({
   isOpen,
   onClose,

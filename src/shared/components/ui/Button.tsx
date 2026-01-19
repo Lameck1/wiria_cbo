@@ -7,15 +7,27 @@ import type { ButtonHTMLAttributes, ReactNode } from 'react';
 
 import { cn } from '@/shared/utils/helpers';
 
+/**
+ * Props for the Button component.
+ */
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  /** Visual variant of the button. Defaults to 'primary'. */
   variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger';
+  /** Size of the button. Defaults to 'md'. */
   size?: 'sm' | 'md' | 'lg';
+  /** If true, shows a loading spinner and disables the button. */
   isLoading?: boolean;
+  /** Button content. */
   children: ReactNode;
+  /** If true, the button takes up the full width of its container. */
   fullWidth?: boolean;
+  /** Ref for the button element. */
   ref?: React.Ref<HTMLButtonElement>;
 }
 
+/**
+ * Primary UI button component with support for variants, sizes, and loading states.
+ */
 export function Button({
   variant = 'primary',
   size = 'md',

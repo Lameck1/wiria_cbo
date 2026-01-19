@@ -96,6 +96,8 @@ export function AboutPartnersSection() {
                           src={partner.logoUrl}
                           alt={partner.name}
                           className="max-h-full max-w-full object-contain p-1"
+                          loading="lazy"
+                          decoding="async"
                         />
                       ) : (
                         <span className="text-2xl font-bold text-gray-400">

@@ -19,6 +19,7 @@ import {
   WhatHappensNext,
   DirectContactCard,
 } from '@/features/safeguarding';
+import { SEO } from '@/shared/components/Seo';
 
 // Stagger animation variants
 const containerVariants = {
@@ -240,6 +241,11 @@ function SidebarContent() {
 function SafeguardingPage() {
   return (
     <main>
+      <SEO
+        title="Safeguarding & Reporting"
+        description="Confidential reporting of safeguarding concerns. WIRIA CBO is committed to safety and integrity."
+        keywords="Safeguarding, Reporting, Integrity, Safety, Confidential, WIRIA"
+      />
       <HeroSection />
 
       {/* Important Notices */}

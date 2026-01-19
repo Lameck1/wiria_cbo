@@ -93,6 +93,8 @@ export function PartnersSection() {
                         src={partner.logoUrl}
                         alt={partner.name}
                         className="relative z-10 mb-2 max-h-12 max-w-[80%] object-contain opacity-60 grayscale transition-all duration-300 group-hover:scale-105 group-hover:opacity-100 group-hover:grayscale-0"
+                        loading="lazy"
+                        decoding="async"
                       />
                     )}
 

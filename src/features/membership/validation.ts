@@ -10,7 +10,7 @@ export const registrationSchema = z
   .object({
     membershipType: z.enum(['INDIVIDUAL', 'GROUP']),
     groupName: z.string().optional(),
-    memberCount: z.number().min(1).optional(),
+    memberCount: z.coerce.number().min(1).optional(),
     firstName: z.string().min(2, 'First name must be at least 2 characters'),
     lastName: z.string().min(2, 'Last name must be at least 2 characters'),
     dateOfBirth: z.string().optional(),

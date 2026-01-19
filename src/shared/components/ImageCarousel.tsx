@@ -4,6 +4,8 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 import { TIMING } from '@/shared/constants/config';
 
+import { CarouselControls } from './CarouselControls';
+
 interface CarouselRenderConfig {
   source: string;
   index: number;
@@ -105,6 +107,18 @@ export function ImageCarousel({
     setCurrentIndex((previous) => (previous - 1 + images.length) % images.length);
   }, [images.length]);
 
+  // Keyboard navigation
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === 'ArrowLeft') {
+      event.preventDefault();
+      previousSlide();
+    }
+    if (event.key === 'ArrowRight') {
+      event.preventDefault();
+      nextSlide();
+    }
+  };
+
   useEffect(() => {
     if (!autoSlide || isPaused || images.length <= 1) return;
 
@@ -158,10 +172,19 @@ export function ImageCarousel({
   }
 
   return (
+    // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
     <div
-      className={`relative w-full ${aspectRatio} group overflow-hidden bg-gray-50`}
+      className={`relative w-full ${aspectRatio} group overflow-hidden bg-gray-50 outline-none focus:ring-2 focus:ring-wiria-blue-dark focus:ring-offset-2`}
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
+      onFocus={() => setIsPaused(true)}
+      onBlur={() => setIsPaused(false)}
+      onKeyDown={handleKeyDown}
+      // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
+      tabIndex={0}
+      role="region"
+      aria-roledescription="carousel"
+      aria-label={title}
     >
       <AnimatePresence initial={false} mode="wait">
         {renderCarouselImage({
@@ -178,55 +201,22 @@ export function ImageCarousel({
       </AnimatePresence>
 
       {showControls && (
-        <>
-          {/* Navigation Arrows */}
-          <button
-            onClick={(event) => {
-              event.stopPropagation();
-              previousSlide();
-            }}
-            className="absolute left-3 top-1/2 z-10 -translate-y-1/2 rounded-full bg-black/20 p-2 text-white opacity-0 backdrop-blur-sm transition-all duration-300 hover:bg-black/50 group-hover:opacity-100"
-            aria-label="Previous image"
-          >
-            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 19l-7-7 7-7"
-              />
-            </svg>
-          </button>
-          <button
-            onClick={(event) => {
-              event.stopPropagation();
-              nextSlide();
-            }}
-            className="absolute right-3 top-1/2 z-10 -translate-y-1/2 rounded-full bg-black/20 p-2 text-white opacity-0 backdrop-blur-sm transition-all duration-300 hover:bg-black/50 group-hover:opacity-100"
-            aria-label="Next image"
-          >
-            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
-
-          {/* Indicators */}
-          <div className="absolute bottom-4 left-1/2 z-10 flex -translate-x-1/2 gap-2">
-            {images.map((_, index) => (
-              <button
-                key={index}
-                onClick={(event) => {
-                  event.stopPropagation();
-                  setCurrentIndex(index);
-                }}
-                className={`h-1.5 w-1.5 rounded-full transition-all duration-300 ${
-                  index === currentIndex ? 'w-5 bg-white' : 'bg-white/40'
-                }`}
-                aria-label={`Go to image ${index + 1}`}
-              />
-            ))}
-          </div>
-        </>
+        <CarouselControls
+          onPrevious={(event) => {
+            event.stopPropagation();
+            previousSlide();
+          }}
+          onNext={(event) => {
+            event.stopPropagation();
+            nextSlide();
+          }}
+          onSelect={(index, event) => {
+            event.stopPropagation();
+            setCurrentIndex(index);
+          }}
+          currentIndex={currentIndex}
+          totalImages={images.length}
+        />
       )}
     </div>
   );

@@ -160,7 +160,13 @@ const NewsCard = memo(function NewsCard({
   return (
     <div className="flex h-full flex-col overflow-hidden rounded-xl border-t-4 border-wiria-yellow bg-white shadow-lg">
       {update.imageUrl ? (
-        <img src={update.imageUrl} alt={update.title} className="h-32 w-full object-cover" />
+        <img
+          src={update.imageUrl}
+          alt={update.title}
+          className="h-32 w-full object-cover"
+          loading="lazy"
+          decoding="async"
+        />
       ) : (
         <div className="flex h-32 w-full items-center justify-center bg-gray-100 text-gray-400">
           No Image

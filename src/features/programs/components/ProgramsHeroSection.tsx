@@ -1,5 +1,7 @@
 import { motion } from 'framer-motion';
 
+import { Breadcrumbs } from '@/shared/components/ui/Breadcrumbs';
+
 import { PROGRAMS_DATA } from '../constants/programsData';
 
 export function ProgramsHeroSection() {
@@ -21,6 +23,13 @@ export function ProgramsHeroSection() {
         ></div>
       </motion.div>
       <div className="container relative z-10 mx-auto px-4 lg:px-6">
+        <Breadcrumbs
+          items={[
+            { label: 'Home', path: '/' },
+            { label: 'Programs', path: '/programs' },
+          ]}
+          className="mb-8 text-white/80"
+        />
         <div className="mx-auto max-w-4xl text-center text-white">
           <motion.span
             initial={{ opacity: 0, y: -20 }}

@@ -18,7 +18,7 @@ interface DesktopNavProps {
 
 export function DesktopNav({ isActive }: DesktopNavProps) {
   return (
-    <nav className="flex items-center justify-center gap-1">
+    <nav className="flex items-center justify-center gap-1" aria-label="Main Navigation">
       {NAV_ITEMS.map((item) => (
         <NavLink
           key={item.to}

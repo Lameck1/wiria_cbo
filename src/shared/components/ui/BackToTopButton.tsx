@@ -14,6 +14,10 @@ const scrollToTop = () => {
   });
 };
 
+/**
+ * Floating button that scrolls the page to the top when clicked.
+ * Appears only when the user has scrolled down.
+ */
 export function BackToTopButton() {
   const [isVisible, setIsVisible] = useState(false);
 

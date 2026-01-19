@@ -7,10 +7,16 @@ import { CrossCuttingThemesSection } from '@/features/programs/components/CrossC
 import { ProgramsCallToActionSection } from '@/features/programs/components/ProgramsCallToActionSection';
 import { ProgramsHeroSection } from '@/features/programs/components/ProgramsHeroSection';
 import { ProgramsPillarsSection } from '@/features/programs/components/ProgramsPillarsSection';
+import { SEO } from '@/shared/components/Seo';
 
 function ProgramsPage() {
   return (
     <main>
+      <SEO
+        title="Our Programs"
+        description="Explore our key program pillars: Health, Education, Economic Empowerment, and more."
+        keywords="Programs, Health, Education, Economic Empowerment, WIRIA Projects"
+      />
       <ProgramsHeroSection />
       <ProgramsPillarsSection />
       <CrossCuttingThemesSection />

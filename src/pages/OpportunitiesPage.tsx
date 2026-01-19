@@ -13,10 +13,16 @@ import {
 } from '@/features/opportunities';
 import { PageHero } from '@/shared/components/sections/PageHero';
 import { SectionHeader } from '@/shared/components/sections/SectionHeader';
+import { SEO } from '@/shared/components/Seo';
 
 function OpportunitiesPage() {
   return (
     <main>
+      <SEO
+        title="Opportunities"
+        description="Volunteer and internship opportunities at WIRIA CBO. Make a difference in Homa Bay County."
+        keywords="Opportunities, Volunteer, Internship, Community Service, Homa Bay"
+      />
       {/* Hero Section - Using shared PageHero */}
       <PageHero
         badge="Volunteer & Intern"

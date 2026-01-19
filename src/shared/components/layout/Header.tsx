@@ -104,12 +104,6 @@ export function Header() {
 
   return (
     <>
-      <a
-        href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:m-4 focus:rounded-md focus:bg-white focus:px-4 focus:py-2 focus:text-wiria-blue-dark focus:shadow-lg focus:ring-2 focus:ring-wiria-yellow"
-      >
-        Skip to main content
-      </a>
       <header className="border-b-gradient-to-r to-wiria-blue-light relative sticky top-0 z-50 overflow-visible border-b-4 bg-white from-wiria-yellow via-wiria-green-light shadow-md">
         <div className="to-wiria-blue-light absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-wiria-yellow via-wiria-green-light" />
 

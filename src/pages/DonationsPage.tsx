@@ -7,11 +7,17 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 import { AlternatePaymentMethods } from '@/features/donations/components/AlternatePaymentMethods';
 import { DonationImpactSection } from '@/features/donations/components/DonationImpactSection';
+import { SEO } from '@/shared/components/Seo';
 import { Card, CardBody } from '@/shared/components/ui/Card';
 
 function DonationsPage() {
   return (
     <>
+      <SEO
+        title="Donate & Support"
+        description="Support WIRIA CBO's mission to empower communities through your donation."
+        keywords="Donate, Support, Charity, Give, Help, Community"
+      />
       {/* Hero Section - Refined Blue Gradient with Pattern */}
       <section className="relative overflow-hidden bg-wiria-blue-dark py-28">
         <div className="absolute inset-0 opacity-20">

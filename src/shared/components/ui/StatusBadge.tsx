@@ -1,7 +1,15 @@
+/**
+ * Type of the badge, determining its color scheme.
+ */
 type BadgeType = 'success' | 'warning' | 'danger' | 'info';
 
+/**
+ * Props for the StatusBadge component.
+ */
 interface StatusBadgeProps {
+  /** The status text to display. */
   status: string;
+  /** Optional explicit type. If not provided, it's inferred from the status text. */
   type?: BadgeType;
 }
 

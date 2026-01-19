@@ -43,7 +43,11 @@ export function Checkbox({
           {props.required && <span className="ml-1 text-red-500">*</span>}
         </label>
       </div>
-      {error && <p className="text-xs text-red-600">{error}</p>}
+      {error && (
+        <p className="text-xs text-red-600" role="alert" aria-live="assertive">
+          {error}
+        </p>
+      )}
     </div>
   );
 }

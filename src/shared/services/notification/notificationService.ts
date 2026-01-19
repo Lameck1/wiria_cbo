@@ -3,6 +3,7 @@
  * Centralized toast/notification system using Zustand
  */
 
+import { toast } from 'react-toastify';
 import { create } from 'zustand';
 
 import { TIMING } from '@/shared/constants/config';
@@ -115,18 +116,23 @@ export const useNotificationStore = create<NotificationStore>((set, get) => ({
 export const notificationService = {
   success: (message: string, duration?: number) => {
     useNotificationStore.getState().addNotification({ type: 'success', message, duration });
+    toast.success(message, { autoClose: duration });
   },
   error: (message: string, duration?: number) => {
     useNotificationStore.getState().addNotification({ type: 'error', message, duration });
+    toast.error(message, { autoClose: duration });
   },
   warning: (message: string, duration?: number) => {
     useNotificationStore.getState().addNotification({ type: 'warning', message, duration });
+    toast.warning(message, { autoClose: duration });
   },
   info: (message: string, duration?: number) => {
     useNotificationStore.getState().addNotification({ type: 'info', message, duration });
+    toast.info(message, { autoClose: duration });
   },
   handleError: (error: unknown) => {
     const message = error instanceof Error ? error.message : 'An unexpected error occurred';
     useNotificationStore.getState().addNotification({ type: 'error', message });
+    toast.error(message);
   },
 };

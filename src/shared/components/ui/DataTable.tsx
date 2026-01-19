@@ -2,25 +2,47 @@ import type { ReactNode } from 'react';
 
 import { cn } from '@/shared/utils/helpers';
 
+/**
+ * Column definition for the DataTable component.
+ */
 export interface Column<T> {
+  /** The header text to display for the column. */
   header: string;
+  /** The key in the data object to access the value. */
   key: string;
+  /** Optional custom render function for the cell content. */
   render?: (item: T) => ReactNode;
+  /** Optional class name for the cell (th and td). */
   className?: string;
+  /** Text alignment for the column. Defaults to 'left'. */
   align?: 'left' | 'center' | 'right';
 }
 
+/**
+ * Props for the DataTable component.
+ */
 interface DataTableProps<T> {
+  /** Array of column definitions. */
   columns: Column<T>[];
+  /** Array of data items to display. */
   data: T[];
+  /** If true, shows a loading state. */
   isLoading?: boolean;
+  /** Callback function when a row is clicked. */
   onRowClick?: (item: T) => void;
+  /** Message to display when there is no data. Defaults to 'No data found.'. */
   emptyMessage?: string;
+  /** Optional class name for the table container. */
   className?: string;
+  /** Key to use as the unique identifier for each row. Can be a property name or a function. */
   rowKey: keyof T | ((item: T) => string);
+  /** Function to determine the class name for a specific row. */
   rowClassName?: (item: T) => string;
 }
 
+/**
+ * A reusable table component with support for custom rendering, loading states, and row interactions.
+ */
 export function DataTable<T>({
   columns,
   data,

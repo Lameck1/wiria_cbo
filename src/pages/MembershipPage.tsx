@@ -10,6 +10,7 @@ import { usePaymentPoller } from '@/features/donations/hooks/usePaymentPoller';
 import { useRegistration, PaymentStatus } from '@/features/membership/hooks/useRegistration';
 import type { RegistrationFormSchema } from '@/features/membership/validation';
 import { registrationSchema } from '@/features/membership/validation';
+import { SEO } from '@/shared/components/Seo';
 import { Button } from '@/shared/components/ui/Button';
 import { Card, CardBody } from '@/shared/components/ui/Card';
 import { useFeeCalculation } from '@/shared/hooks/useFeeCalculation';
@@ -190,7 +191,7 @@ function MembershipPage() {
   const { handleSubmit, watch, setValue } = methods;
 
   const membershipType = watch('membershipType');
-  const memberCount = watch('memberCount') ?? 1;
+  const memberCount = Number(watch('memberCount') ?? 1);
 
   const feeBreakdown = useFeeCalculation({
     membershipType,
@@ -239,6 +240,11 @@ function MembershipPage() {
 
   return (
     <FormProvider {...methods}>
+      <SEO
+        title="Become a Member"
+        description="Join WIRIA CBO and become part of our mission. Individual and Group memberships available."
+        keywords="Join WIRIA, Membership, Registration, Community, CBO"
+      />
       <MembershipHero />
       <MembershipRegistrationLayout
         isBackendConnected={isBackendConnected}

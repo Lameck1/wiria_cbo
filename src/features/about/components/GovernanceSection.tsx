@@ -77,6 +77,8 @@ export function GovernanceSection() {
                       src={leadership.image}
                       alt={leadership.name}
                       className="h-full w-full object-cover"
+                      loading="lazy"
+                      decoding="async"
                     />
                   </div>
                   <div className="text-center">
@@ -130,6 +132,8 @@ export function GovernanceSection() {
                                 src={member.image}
                                 alt={member.name}
                                 className="h-full w-full object-cover"
+                                loading="lazy"
+                                decoding="async"
                               />
                             </div>
                             <div className="text-center">

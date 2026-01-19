@@ -11,11 +11,13 @@ import {
   HERO_SLIDES,
 } from '@/features/home';
 import { FocusAreasSection } from '@/shared/components/sections/FocusAreasSection';
+import { SEO } from '@/shared/components/Seo';
 
 function HomePage() {
 
   return (
     <>
+      <SEO />
       {/* Hero Slider */}
       <HeroSlider slides={HERO_SLIDES} />
 

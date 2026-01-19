@@ -8,15 +8,28 @@ import { useId } from 'react';
 
 import { cn } from '@/shared/utils/helpers';
 
+/**
+ * Props for the Input component.
+ */
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+  /** Label text displayed above the input. */
   label?: string;
+  /** Error message displayed below the input. Triggers error styling and ARIA attributes. */
   error?: string;
+  /** Helper text displayed below the input (if no error). */
   helperText?: string;
+  /** Icon displayed on the left side of the input. */
   leftIcon?: ReactNode;
+  /** Icon displayed on the right side of the input. */
   rightIcon?: ReactNode;
+  /** Ref for the input element. */
   ref?: React.Ref<HTMLInputElement>;
 }
 
+/**
+ * Form input component with built-in label, error handling, and icon support.
+ * Automatically handles accessibility attributes like aria-invalid and aria-describedby.
+ */
 export function Input({
   label,
   error,
@@ -82,7 +95,7 @@ export function Input({
       </div>
 
       {error && (
-        <p id={errorId} className="mt-1 text-sm text-red-600" role="alert" aria-live="polite" aria-atomic="true">
+        <p id={errorId} className="mt-1 text-sm text-red-600" role="alert" aria-live="assertive" aria-atomic="true">
           {error}
         </p>
       )}

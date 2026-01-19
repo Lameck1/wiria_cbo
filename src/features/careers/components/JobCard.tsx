@@ -210,6 +210,13 @@ export function JobCard({ job, onClick }: JobCardProps) {
   const daysRemaining = getDaysRemaining(job.deadline);
   const department = getDepartment(job.title);
 
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      onClick();
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -217,7 +224,10 @@ export function JobCard({ job, onClick }: JobCardProps) {
       viewport={{ once: true }}
       whileHover={{ y: -4, boxShadow: '0 20px 40px rgba(0,0,0,0.1)' }}
       onClick={onClick}
-      className="group relative cursor-pointer overflow-hidden rounded-2xl border-2 border-gray-200 bg-white p-6 transition-all hover:border-wiria-blue-dark/30"
+      onKeyDown={handleKeyDown}
+      tabIndex={0}
+      role="button"
+      className="group relative cursor-pointer overflow-hidden rounded-2xl border-2 border-gray-200 bg-white p-6 transition-all hover:border-wiria-blue-dark/30 focus:outline-none focus:ring-2 focus:ring-wiria-blue-dark focus:ring-offset-2"
     >
       {/* Department Badge - Top Corner */}
       <div className="absolute right-0 top-0">

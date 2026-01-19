@@ -10,28 +10,9 @@ import { useNavigate } from 'react-router-dom';
 
 import { apiClient } from '@/shared/services/api/client';
 
-interface SearchResult {
-  id: string;
-  type: 'member' | 'donation' | 'contact';
-  // Member fields
-  firstName?: string;
-  lastName?: string;
-  memberNumber?: string;
-  // Donation fields
-  donorName?: string;
-  amount?: number;
-  status?: string;
-  // Contact fields
-  name?: string;
-  subject?: string;
-  email?: string;
-}
+import { SearchResultsList } from './SearchResultsList';
 
-interface SearchResults {
-  members: SearchResult[];
-  donations: SearchResult[];
-  contacts: SearchResult[];
-}
+import type { SearchResult, SearchResults } from '../types';
 
 export function GlobalSearch() {
   const [query, setQuery] = useState('');
@@ -105,10 +86,19 @@ export function GlobalSearch() {
           onFocus={() => results && setIsOpen(true)}
           placeholder="Search members, donations, messages..."
           className="w-full rounded-lg border bg-gray-50 py-2 pl-10 pr-4 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-wiria-blue-dark"
+          role="combobox"
+          aria-expanded={isOpen}
+          aria-haspopup="listbox"
+          aria-controls="search-results"
         />
         <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">🔍</span>
         {isLoading && (
-          <span className="absolute right-3 top-1/2 -translate-y-1/2 animate-spin text-gray-400">
+          <span
+            className="absolute right-3 top-1/2 -translate-y-1/2 animate-spin text-gray-400"
+            role="status"
+            aria-live="polite"
+          >
+            <span className="sr-only">Loading results...</span>
             ⏳
           </span>
         )}
@@ -116,77 +106,18 @@ export function GlobalSearch() {
 
       {/* Results Dropdown */}
       {isOpen && results && (
-        <div className="absolute left-0 right-0 top-full z-50 mt-1 max-h-96 overflow-y-auto rounded-lg border bg-white shadow-xl">
-          {totalResults === 0 ? (
-            <div className="p-4 text-center text-gray-500">No results found</div>
-          ) : (
-            <>
-              {results.members.length > 0 && (
-                <div>
-                  <div className="bg-gray-50 px-3 py-2 text-xs font-bold uppercase text-gray-500">
-                    Members ({results.members.length})
-                  </div>
-                  {results.members.map((m) => (
-                    <button
-                      key={m.id}
-                      onClick={() => handleResultClick(m)}
-                      className="flex w-full items-center gap-3 px-4 py-2 text-left hover:bg-gray-100"
-                    >
-                      <span className="text-lg">👤</span>
-                      <div>
-                        <div className="font-semibold">
-                          {m.firstName} {m.lastName}
-                        </div>
-                        <div className="text-xs text-gray-500">{m.memberNumber}</div>
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              )}
-              {results.donations.length > 0 && (
-                <div>
-                  <div className="bg-gray-50 px-3 py-2 text-xs font-bold uppercase text-gray-500">
-                    Donations ({results.donations.length})
-                  </div>
-                  {results.donations.map((d) => (
-                    <button
-                      key={d.id}
-                      onClick={() => handleResultClick(d)}
-                      className="flex w-full items-center gap-3 px-4 py-2 text-left hover:bg-gray-100"
-                    >
-                      <span className="text-lg">💰</span>
-                      <div>
-                        <div className="font-semibold">{d.donorName}</div>
-                        <div className="text-xs text-gray-500">
-                          KES {d.amount?.toLocaleString()}
-                        </div>
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              )}
-              {results.contacts.length > 0 && (
-                <div>
-                  <div className="bg-gray-50 px-3 py-2 text-xs font-bold uppercase text-gray-500">
-                    Messages ({results.contacts.length})
-                  </div>
-                  {results.contacts.map((c) => (
-                    <button
-                      key={c.id}
-                      onClick={() => handleResultClick(c)}
-                      className="flex w-full items-center gap-3 px-4 py-2 text-left hover:bg-gray-100"
-                    >
-                      <span className="text-lg">✉️</span>
-                      <div>
-                        <div className="font-semibold">{c.name}</div>
-                        <div className="truncate text-xs text-gray-500">{c.subject}</div>
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              )}
-            </>
-          )}
+        <div
+          id="search-results"
+          role="listbox"
+          aria-live="polite"
+          aria-atomic="true"
+          className="absolute left-0 right-0 top-full z-50 mt-1 max-h-96 overflow-y-auto rounded-lg border bg-white shadow-xl"
+        >
+          <SearchResultsList
+            results={results}
+            totalResults={totalResults}
+            onResultClick={handleResultClick}
+          />
         </div>
       )}
     </div>
