@@ -1,0 +1,2 @@
+import{u as a}from"./query-vendor-frBnvHSF.js";import{s as n}from"./partners-G2kxi8Bb.js";import{a as s}from"./index-ICA0O2oL.js";async function o(){var t;const e=await fetch("/api/partners");if(!e.ok)throw new Error("Failed to fetch partners");const r=await e.json();return((t=r.data)==null?void 0:t.data)||r.data||[]}function f(){const{isBackendConnected:e,isChecking:r}=s();return a({queryKey:["partners",e],queryFn:()=>e?o():Promise.resolve(n),staleTime:300*1e3,enabled:!r})}export{f as u};
+//# sourceMappingURL=usePartners-DKkcpe_H.js.map

@@ -1,0 +1,2 @@
+import{j as r}from"./query-vendor-frBnvHSF.js";import{u as j,C as u}from"./types-BwqQ6cFe.js";import{T as d}from"./Textarea-Bn66OGKX.js";function h({name:e,label:t,placeholder:s,className:a="",disabled:m=!1,required:n=!1,description:x,rows:i=4}){var o;const{control:l,formState:{errors:f}}=j(),p=(o=f[e])==null?void 0:o.message;return r.jsx("div",{className:a,children:r.jsx(u,{name:e,control:l,render:({field:c})=>r.jsx(d,{...c,label:t,placeholder:s,disabled:m,required:n,error:p,helperText:x,rows:i})})})}export{h as F};
+//# sourceMappingURL=FormTextareaField-DNkm6uru.js.map

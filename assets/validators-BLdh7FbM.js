@@ -1,0 +1,2 @@
+import{L as e}from"./index-ICA0O2oL.js";import{s as a}from"./types-BwqQ6cFe.js";const s=a().min(10,"Phone number must be at least 10 characters").max(13,"Phone number must be at most 13 characters").regex(/^(?:\+254|0)[17]\d{8}$/,"Invalid Kenyan phone number format"),t=a().email("Invalid email address").min(5,"Email is too short").max(e.MAX_EMAIL_LENGTH,"Email is too long");export{t as e,s as p};
+//# sourceMappingURL=validators-BLdh7FbM.js.map
