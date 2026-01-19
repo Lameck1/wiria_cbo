@@ -6,6 +6,7 @@
  */
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, screen, waitFor } from '@testing-library/react';
+import { HelmetProvider } from 'react-helmet-async';
 import { MemoryRouter } from 'react-router-dom';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -38,11 +39,13 @@ const services = createMockServiceContainer();
 function renderWithProviders(ui: React.ReactElement) {
   return render(
     <ServiceProvider services={services}>
-      <QueryClientProvider client={queryClient}>
-        <MemoryRouter>
-          <AuthProvider>{ui}</AuthProvider>
-        </MemoryRouter>
-      </QueryClientProvider>
+      <HelmetProvider>
+        <QueryClientProvider client={queryClient}>
+          <MemoryRouter>
+            <AuthProvider>{ui}</AuthProvider>
+          </MemoryRouter>
+        </QueryClientProvider>
+      </HelmetProvider>
     </ServiceProvider>
   );
 }

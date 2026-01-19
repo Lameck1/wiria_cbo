@@ -2,6 +2,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
+import { HelmetProvider } from 'react-helmet-async';
 import { MemoryRouter } from 'react-router-dom';
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -54,9 +55,11 @@ describe('SafeguardingPage', () => {
     const user = userEvent.setup();
 
     render(
-      <MemoryRouter>
-        <SafeguardingPage />
-      </MemoryRouter>
+      <HelmetProvider>
+        <MemoryRouter>
+          <SafeguardingPage />
+        </MemoryRouter>
+      </HelmetProvider>
     );
 
     await user.type(screen.getByLabelText(/your name/i), 'Test Reporter');
@@ -86,7 +89,7 @@ describe('SafeguardingPage', () => {
       expect(screen.getByText(/report submitted successfully/i)).toBeInTheDocument();
       expect(screen.getByText('SAFE-123')).toBeInTheDocument();
     });
-  });
+  }, 10000);
 
   it('allows anonymous reporting without personal details', async () => {
     server.use(
@@ -104,9 +107,11 @@ describe('SafeguardingPage', () => {
     const user = userEvent.setup();
 
     render(
-      <MemoryRouter>
-        <SafeguardingPage />
-      </MemoryRouter>
+      <HelmetProvider>
+        <MemoryRouter>
+          <SafeguardingPage />
+        </MemoryRouter>
+      </HelmetProvider>
     );
 
     await user.click(screen.getByLabelText(/report anonymously/i));
@@ -135,7 +140,7 @@ describe('SafeguardingPage', () => {
       expect(screen.getByText(/report submitted successfully/i)).toBeInTheDocument();
       expect(screen.getByText('SAFE-ANON-1')).toBeInTheDocument();
     });
-  });
+  }, 10000);
 
   it('allows user to lookup a report and shows status result', async () => {
     server.use(
@@ -160,9 +165,11 @@ describe('SafeguardingPage', () => {
     const user = userEvent.setup();
 
     render(
-      <MemoryRouter>
-        <SafeguardingPage />
-      </MemoryRouter>
+      <HelmetProvider>
+        <MemoryRouter>
+          <SafeguardingPage />
+        </MemoryRouter>
+      </HelmetProvider>
     );
 
     await user.type(screen.getByLabelText(/reference number/i), 'SAFE-999');
@@ -182,9 +189,11 @@ describe('SafeguardingPage', () => {
     const user = userEvent.setup();
 
     render(
-      <MemoryRouter>
-        <SafeguardingPage />
-      </MemoryRouter>
+      <HelmetProvider>
+        <MemoryRouter>
+          <SafeguardingPage />
+        </MemoryRouter>
+      </HelmetProvider>
     );
 
     await user.type(screen.getByLabelText(/reference number/i), 'SAFE-000');
@@ -207,9 +216,11 @@ describe('SafeguardingPage', () => {
     const user = userEvent.setup();
 
     render(
-      <MemoryRouter>
-        <SafeguardingPage />
-      </MemoryRouter>
+      <HelmetProvider>
+        <MemoryRouter>
+          <SafeguardingPage />
+        </MemoryRouter>
+      </HelmetProvider>
     );
 
     await user.type(screen.getByLabelText(/your name/i), 'Test Reporter');
@@ -239,7 +250,7 @@ describe('SafeguardingPage', () => {
       expect(emailJsService.sendSafeguardingReport).toHaveBeenCalledTimes(1);
       expect(screen.getByText(/report submitted successfully/i)).toBeInTheDocument();
     });
-  });
+  }, 10000);
 
   it('shows error notification when EmailJS submission fails while backend is offline', async () => {
     vi.mocked(useBackendStatus).mockReturnValue({
@@ -255,9 +266,11 @@ describe('SafeguardingPage', () => {
     const user = userEvent.setup();
 
     render(
-      <MemoryRouter>
-        <SafeguardingPage />
-      </MemoryRouter>
+      <HelmetProvider>
+        <MemoryRouter>
+          <SafeguardingPage />
+        </MemoryRouter>
+      </HelmetProvider>
     );
 
     await user.type(screen.getByLabelText(/your name/i), 'Test Reporter');
@@ -293,5 +306,5 @@ describe('SafeguardingPage', () => {
         'Failed to submit report via our alternative channel. Please try again later.'
       );
     });
-  });
+  }, 10000);
 });

@@ -1,5 +1,6 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, screen } from '@testing-library/react';
+import { HelmetProvider } from 'react-helmet-async';
 import { MemoryRouter } from 'react-router-dom';
 import { describe, it, expect } from 'vitest';
 
@@ -21,13 +22,15 @@ describe('HomePage', () => {
     const queryClient = createTestQueryClient();
 
     render(
-      <QueryClientProvider client={queryClient}>
-        <MemoryRouter>
-          <AuthProvider>
-            <HomePageComponent />
-          </AuthProvider>
-        </MemoryRouter>
-      </QueryClientProvider>
+      <HelmetProvider>
+        <QueryClientProvider client={queryClient}>
+          <MemoryRouter>
+            <AuthProvider>
+              <HomePageComponent />
+            </AuthProvider>
+          </MemoryRouter>
+        </QueryClientProvider>
+      </HelmetProvider>
     );
 
     expect(screen.getAllByText(/wiria cbo/i).length).toBeGreaterThan(0);
