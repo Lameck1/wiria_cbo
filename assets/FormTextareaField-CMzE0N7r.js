@@ -1,0 +1,2 @@
+import{j as r}from"./query-vendor-DeB3i2OK.js";import{u as c,C as j}from"./types-BhtRVJps.js";import{T as u}from"./Textarea-95PvVm9Z.js";function C({name:e,label:o,placeholder:t,className:s="",disabled:a=!1,required:m=!1,description:n,rows:x=4}){const{control:i,formState:{errors:l}}=c(),f=l[e]?.message;return r.jsx("div",{className:s,children:r.jsx(j,{name:e,control:i,render:({field:p})=>r.jsx(u,{...p,label:o,placeholder:t,disabled:a,required:m,error:f,helperText:n,rows:x})})})}export{C as F};
+//# sourceMappingURL=FormTextareaField-CMzE0N7r.js.map
