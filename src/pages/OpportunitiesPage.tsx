@@ -22,6 +22,10 @@ function OpportunitiesPage() {
         title="Opportunities"
         description="Volunteer and internship opportunities at WIRIA CBO. Make a difference in Homa Bay County."
         keywords="Opportunities, Volunteer, Internship, Community Service, Homa Bay"
+        breadcrumbs={[
+          { name: 'Home', item: '/' },
+          { name: 'Opportunities', item: '/opportunities' },
+        ]}
       />
       {/* Hero Section - Using shared PageHero */}
       <PageHero

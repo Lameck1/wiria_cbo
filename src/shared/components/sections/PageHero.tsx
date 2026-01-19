@@ -14,7 +14,6 @@ interface PageHeroProps {
   subtitle: string;
   backgroundImage?: string;
   backgroundOpacity?: number;
-  breadcrumbs?: ReactNode;
   children?: ReactNode;
 }
 
@@ -24,7 +23,6 @@ export function PageHero({
   subtitle,
   backgroundImage,
   backgroundOpacity = 20,
-  breadcrumbs,
   children,
 }: PageHeroProps) {
   return (
@@ -46,7 +44,6 @@ export function PageHero({
       )}
 
       <div className="container relative z-10 mx-auto px-4 lg:px-6">
-        {breadcrumbs && <div className="mb-6 flex justify-center">{breadcrumbs}</div>}
         <div className="mx-auto max-w-4xl text-center text-white">
           {/* Badge */}
           <motion.span

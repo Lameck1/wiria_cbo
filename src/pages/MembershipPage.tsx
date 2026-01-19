@@ -244,6 +244,10 @@ function MembershipPage() {
         title="Become a Member"
         description="Join WIRIA CBO and become part of our mission. Individual and Group memberships available."
         keywords="Join WIRIA, Membership, Registration, Community, CBO"
+        breadcrumbs={[
+          { name: 'Home', item: '/' },
+          { name: 'Membership', item: '/membership' },
+        ]}
       />
       <MembershipHero />
       <MembershipRegistrationLayout

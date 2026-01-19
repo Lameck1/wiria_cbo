@@ -16,6 +16,10 @@ function ProgramsPage() {
         title="Our Programs"
         description="Explore our key program pillars: Health, Education, Economic Empowerment, and more."
         keywords="Programs, Health, Education, Economic Empowerment, WIRIA Projects"
+        breadcrumbs={[
+          { name: 'Home', item: '/' },
+          { name: 'Programs', item: '/programs' },
+        ]}
       />
       <ProgramsHeroSection />
       <ProgramsPillarsSection />

@@ -21,6 +21,10 @@ function CareersPage() {
         title="Careers & Jobs"
         description="Join the WIRIA CBO team. View current job openings and career opportunities."
         keywords="Careers, Jobs, Employment, Hiring, Work with Us"
+        breadcrumbs={[
+          { name: 'Home', item: '/' },
+          { name: 'Careers', item: '/careers' },
+        ]}
       />
       {/* Hero Section - with stats */}
       <PageHero

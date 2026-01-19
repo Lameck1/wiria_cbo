@@ -14,7 +14,6 @@ import {
 } from '@/features/resources';
 import { PageHero } from '@/shared/components/sections/PageHero';
 import { SEO } from '@/shared/components/Seo';
-import { Breadcrumbs } from '@/shared/components/ui/Breadcrumbs';
 
 function ResourcesPage() {
   const location = useLocation();
@@ -39,6 +38,10 @@ function ResourcesPage() {
         title="Resources & Transparency"
         description="Access WIRIA CBO's key documents, reports, and procurement notices."
         keywords="Resources, Documents, Reports, Tenders, Transparency"
+        breadcrumbs={[
+          { name: 'Home', item: '/' },
+          { name: 'Resources', item: '/resources' },
+        ]}
       />
       {/* Hero Section */}
       <PageHero
@@ -46,15 +49,6 @@ function ResourcesPage() {
         title="Resources & Transparency"
         subtitle="Access our key documents and procurement notices"
         backgroundImage="/images/resources-hero.png"
-        breadcrumbs={
-          <Breadcrumbs
-            items={[
-              { label: 'Home', path: '/' },
-              { label: 'Resources', path: '/resources' },
-            ]}
-            className="text-white/80"
-          />
-        }
       >
         <ResourcesHeroStats />
       </PageHero>

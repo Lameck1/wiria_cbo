@@ -245,6 +245,10 @@ function SafeguardingPage() {
         title="Safeguarding & Reporting"
         description="Confidential reporting of safeguarding concerns. WIRIA CBO is committed to safety and integrity."
         keywords="Safeguarding, Reporting, Integrity, Safety, Confidential, WIRIA"
+        breadcrumbs={[
+          { name: 'Home', item: '/' },
+          { name: 'Safeguarding', item: '/safeguarding' },
+        ]}
       />
       <HeroSection />
 

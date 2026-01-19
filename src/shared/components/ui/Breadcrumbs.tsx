@@ -46,8 +46,8 @@ export function Breadcrumbs({ items, className = '' }: BreadcrumbsProps) {
         <script type="application/ld+json">{JSON.stringify(schema)}</script>
       </Helmet>
 
-      <nav aria-label="Breadcrumb" className={`text-sm ${className}`}>
-        <ol className="flex flex-wrap items-center gap-2">
+      <nav aria-label="Breadcrumb">
+        <ol className={`flex flex-wrap items-center gap-2 text-sm ${className}`}>
           {items.map((item, index) => {
             const isLast = index === items.length - 1;
 

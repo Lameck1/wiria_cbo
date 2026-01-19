@@ -15,6 +15,10 @@ function ContactPage() {
         title="Contact Us"
         description="Get in touch with WIRIA CBO. We'd love to hear from you."
         keywords="Contact WIRIA, Address, Email, Phone, Location"
+        breadcrumbs={[
+          { name: 'Home', item: '/' },
+          { name: 'Contact', item: '/contact' },
+        ]}
       />
       {/* Hero Section */}
       <PageHero
