@@ -18,8 +18,6 @@
     "generate:sitemap": "node scripts/generate-sitemap.js",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build",
     "audit:full": "npm run audit:deps && npm run audit:code && npm run audit:bundle && npm run audit:unused",
     "audit:deps": "npm audit --audit-level=moderate && depcheck",
     "audit:code": "npm run lint && npm run type-check",
@@ -42,12 +40,6 @@
     "react-helmet-async": {
       "react": "$react",
       "react-dom": "$react-dom"
-    },
-    "@storybook/react-vite": {
-      "vite": "$vite"
-    },
-    "@storybook/builder-vite": {
-      "vite": "$vite"
     }
   },
   "dependencies": {
@@ -67,12 +59,6 @@
   },
   "devDependencies": {
     "@size-limit/preset-app": "^12.0.0",
-    "@storybook/addon-essentials": "^8.6.14",
-    "@storybook/addon-interactions": "^8.6.14",
-    "@storybook/addon-links": "^8.6.15",
-    "@storybook/react": "^8.6.15",
-    "@storybook/react-vite": "^8.6.15",
-    "@storybook/test": "^8.6.15",
     "@tailwindcss/forms": "^0.5.9",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.6.3",
