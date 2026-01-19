@@ -1,0 +1,2 @@
+import{j as r}from"./query-vendor-DeB3i2OK.js";import{u as f,C as p}from"./types-BhtRVJps.js";import{S as j}from"./Select-ViCfK5u5.js";function S({name:e,label:o,options:t,className:s="",disabled:l=!1,required:m=!1,description:n}){const{control:a,formState:{errors:i}}=f(),x=i[e]?.message;return r.jsx("div",{className:s,children:r.jsx(p,{name:e,control:a,render:({field:c})=>r.jsx(j,{...c,label:o,options:t,disabled:l,required:m,error:x,helperText:n})})})}export{S as F};
+//# sourceMappingURL=FormSelectField-DuLNYIRB.js.map

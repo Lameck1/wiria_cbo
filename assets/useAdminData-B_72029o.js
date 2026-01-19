@@ -1,2 +1,0 @@
-import{u as c,b as m,c as y}from"./query-vendor-frBnvHSF.js";import{a as i}from"./apiUtils-CDDJc0SC.js";function f(u,n,e={}){const{data:t,...a}=c({queryKey:u,queryFn:async()=>{const r=await n();return i(r,e.arrayKey)},staleTime:e.staleTime??3e5,enabled:e.enabled});return{items:t??[],...a}}function A(u,n,e={}){const t=m();return y({mutationFn:u,onSuccess:a=>{var r;n.forEach(s=>{t.invalidateQueries({queryKey:s})}),(r=e.onSuccess)==null||r.call(e,a)},onError:a=>{var r;(r=e.onError)==null||r.call(e,a)}})}export{A as a,f as u};
-//# sourceMappingURL=useAdminData-B_72029o.js.map

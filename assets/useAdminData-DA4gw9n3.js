@@ -1,0 +1,2 @@
+import{u,d as i,e as o}from"./query-vendor-DeB3i2OK.js";import{a as c}from"./apiUtils-CDDJc0SC.js";function d(a,n,e={}){const{data:t,...r}=u({queryKey:a,queryFn:async()=>{const s=await n();return c(s,e.arrayKey)},staleTime:e.staleTime??3e5,enabled:e.enabled});return{items:t??[],...r}}function l(a,n,e={}){const t=i();return o({mutationFn:a,onSuccess:r=>{n.forEach(s=>{t.invalidateQueries({queryKey:s})}),e.onSuccess?.(r)},onError:r=>{e.onError?.(r)}})}export{l as a,d as u};
+//# sourceMappingURL=useAdminData-DA4gw9n3.js.map

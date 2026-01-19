@@ -1,0 +1,2 @@
+import{j as o}from"./query-vendor-DeB3i2OK.js";import{a as u,b as c,F as f}from"./types-BhtRVJps.js";function F({schema:e,defaultValues:s,children:a,onSubmit:t,className:m="",id:i,resetOnSuccess:n=!1}){const r=u({resolver:c(e),defaultValues:s,mode:"onBlur"});return o.jsx(f,{...r,children:o.jsx("form",{id:i,onSubmit:d=>{r.handleSubmit(async l=>{await t(l),n&&r.reset()})(d)},className:`space-y-6 ${m}`,noValidate:!0,children:a(r)})})}export{F};
+//# sourceMappingURL=Form-DBW_jRlA.js.map

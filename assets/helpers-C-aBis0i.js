@@ -1,0 +1,2 @@
+import{f as n}from"./index-YnLEVKPI.js";function c(...t){return n(t)}function i(t){return new Intl.NumberFormat("en-KE",{style:"currency",currency:"KES",minimumFractionDigits:0}).format(t)}function a(t){const r=t.replaceAll(/\D/g,"");return r.startsWith("0")&&r.length===10?`+254${r.slice(1)}`:r.startsWith("254")&&r.length===12?`+${r}`:r.startsWith("7")&&r.length===9?`+254${r}`:t}export{i as a,c,a as f};
+//# sourceMappingURL=helpers-C-aBis0i.js.map
