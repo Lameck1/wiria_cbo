@@ -41,6 +41,9 @@
     "react-helmet-async": {
       "react": "$react",
       "react-dom": "$react-dom"
+    },
+    "@storybook/react-vite": {
+      "vite": "$vite"
     }
   },
   "dependencies": {
