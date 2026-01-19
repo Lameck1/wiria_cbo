@@ -4,6 +4,7 @@
  * E2E Tests for Contact Page Flow
  * Tests the contact form submission process
  */
+import { send } from '@emailjs/browser';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { HelmetProvider } from 'react-helmet-async';
@@ -32,6 +33,15 @@ vi.mock('@/shared/services/notification/notificationService', () => ({
 
 vi.mock('@/shared/services/useBackendStatus', () => ({
   useBackendStatus: () => ({ isBackendConnected: true, isChecking: false }),
+}));
+
+vi.mock('@emailjs/browser', () => ({
+  default: {
+    send: vi.fn(),
+    init: vi.fn(),
+  },
+  send: vi.fn(),
+  init: vi.fn(),
 }));
 
 describe('Contact Page Flow', () => {
@@ -151,6 +161,7 @@ describe('Contact Page Flow', () => {
   it('handles API errors gracefully', async () => {
     const user = userEvent.setup();
     vi.mocked(apiClient.post).mockRejectedValue(new Error('Network error'));
+    vi.mocked(send).mockRejectedValue(new Error('EmailJS error'));
 
     render(
       <HelmetProvider>

@@ -116,8 +116,8 @@ describe('export utils', () => {
       vi.spyOn(document.body, 'removeChild').mockImplementation(() => mockLink as unknown as Node);
 
       // Mock URL methods that don't exist in jsdom
-      global.URL.createObjectURL = vi.fn().mockReturnValue('blob:test-url');
-      global.URL.revokeObjectURL = vi.fn();
+      globalThis.URL.createObjectURL = vi.fn().mockReturnValue('blob:test-url');
+      globalThis.URL.revokeObjectURL = vi.fn();
     });
 
     afterEach(() => {
@@ -137,7 +137,7 @@ describe('export utils', () => {
       const { downloadFile } = await import('@/shared/utils/export');
       downloadFile('content', 'file.csv');
 
-      expect(global.URL.revokeObjectURL).toHaveBeenCalled();
+      expect(globalThis.URL.revokeObjectURL).toHaveBeenCalled();
     });
   });
 
@@ -152,8 +152,8 @@ describe('export utils', () => {
       vi.spyOn(document.body, 'appendChild').mockImplementation(() => null as unknown as Node);
       vi.spyOn(document.body, 'removeChild').mockImplementation(() => null as unknown as Node);
 
-      global.URL.createObjectURL = vi.fn().mockReturnValue('blob:test');
-      global.URL.revokeObjectURL = vi.fn();
+      globalThis.URL.createObjectURL = vi.fn().mockReturnValue('blob:test');
+      globalThis.URL.revokeObjectURL = vi.fn();
     });
 
     afterEach(() => {
