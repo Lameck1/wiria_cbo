@@ -58,7 +58,7 @@ export function Modal({
     );
 
     const firstElement = focusableElements[0] as HTMLElement;
-    const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
+    const lastElement = focusableElements.item(focusableElements.length - 1) as HTMLElement;
 
     // Focus first element
     if (firstElement) {
@@ -66,16 +66,16 @@ export function Modal({
       requestAnimationFrame(() => firstElement.focus());
     }
 
-    const handleTabKey = (e: KeyboardEvent) => {
-      if (e.key === 'Tab') {
-        if (e.shiftKey) {
+    const handleTabKey = (event: KeyboardEvent) => {
+      if (event.key === 'Tab') {
+        if (event.shiftKey) {
           if (document.activeElement === firstElement) {
-            e.preventDefault();
+            event.preventDefault();
             lastElement?.focus();
           }
         } else {
           if (document.activeElement === lastElement) {
-            e.preventDefault();
+            event.preventDefault();
             firstElement?.focus();
           }
         }
