@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "npm run generate:sitemap && tsc && vite build",
     "build:analyze": "tsc && vite build --mode=analysis",
     "preview": "vite preview",
     "test": "vitest",
@@ -15,6 +15,7 @@
     "lint:fix": "eslint . --ext .ts,.tsx --fix",
     "format": "prettier --write \"**/*.{ts,tsx,html,css,json,md}\"",
     "type-check": "tsc --noEmit",
+    "generate:sitemap": "node scripts/generate-sitemap.js",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
     "storybook": "storybook dev -p 6006",
