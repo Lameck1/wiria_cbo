@@ -4,11 +4,13 @@
 
 import { z } from 'zod';
 
+import { emailSchema, phoneSchema } from '@/shared/utils/validators';
+
 export const registrationSchema = z
   .object({
     membershipType: z.enum(['INDIVIDUAL', 'GROUP']),
     groupName: z.string().optional(),
-    memberCount: z.number().min(1).optional(),
+    memberCount: z.coerce.number().min(1).optional(),
     firstName: z.string().min(2, 'First name must be at least 2 characters'),
     lastName: z.string().min(2, 'Last name must be at least 2 characters'),
     dateOfBirth: z.string().optional(),
@@ -18,10 +20,8 @@ export const registrationSchema = z
       })
       .optional(),
     nationalId: z.string().max(20, 'National ID must be at most 20 characters').optional(),
-    email: z.string().email('Please enter a valid email address'),
-    phoneNumber: z
-      .string()
-      .regex(/^(\+?254|0)[17]\d{8}$/, 'Please enter a valid Kenyan phone number'),
+    email: emailSchema,
+    phoneNumber: phoneSchema, // Use shared phone schema for consistency
     county: z.string().min(1, 'County is required'),
     subCounty: z.string().min(1, 'Sub-county is required'),
     ward: z.string().min(1, 'Ward is required'),
@@ -79,10 +79,7 @@ export const registrationSchema = z
 
 export const renewalSchema = z.object({
   paymentMethod: z.enum(['STK_PUSH', 'MANUAL']),
-  phoneNumber: z
-    .string()
-    .regex(/^(\+?254|0)[17]\d{8}$/, 'Please enter a valid Kenyan phone number')
-    .optional(),
+  phoneNumber: phoneSchema.optional(), // Use shared phone schema for consistency
   transactionCode: z.string().optional(),
   memberCount: z.number().min(1).optional(),
   agreedToDataProtection: z.boolean().refine((value) => value === true, {
@@ -96,7 +93,7 @@ export const renewalSchema = z.object({
 export const profileSchema = z.object({
   firstName: z.string().min(2, 'First name must be at least 2 characters'),
   lastName: z.string().min(2, 'Last name must be at least 2 characters'),
-  phone: z.string().regex(/^(\+?254|0)[17]\d{8}$/, 'Please enter a valid Kenyan phone number'),
+  phone: phoneSchema, // Use shared phone schema for consistency
   occupation: z.string().optional(),
   address: z.string().optional(),
   county: z.string().optional(),

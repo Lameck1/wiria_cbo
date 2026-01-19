@@ -3,13 +3,14 @@
  * Centralized toast/notification system using Zustand
  */
 
+import { toast } from 'react-toastify';
 import { create } from 'zustand';
 
 import { TIMING } from '@/shared/constants/config';
 
-export type NotificationType = 'success' | 'error' | 'warning' | 'info';
+type NotificationType = 'success' | 'error' | 'warning' | 'info';
 
-export interface Notification {
+interface Notification {
   id: string;
   type: NotificationType;
   message: string;
@@ -18,11 +19,14 @@ export interface Notification {
 
 interface NotificationStore {
   notifications: Notification[];
+  timers: Map<string, ReturnType<typeof setTimeout>>; // Track active timers
   addNotification: (
     notification: Omit<Notification, 'id' | 'duration'> & { duration?: number }
   ) => void;
   removeNotification: (id: string) => void;
   clearAll: () => void;
+  clearTimer: (id: string) => void; // Clear specific timer
+  clearAllTimers: () => void; // Clear all timers
 }
 
 /**
@@ -34,8 +38,10 @@ const createNotificationId = (): string => {
   return crypto.randomUUID();
 };
 
-export const useNotificationStore = create<NotificationStore>((set) => ({
+export const useNotificationStore = create<NotificationStore>((set, get) => ({
   notifications: [],
+  timers: new Map(),
+  
   addNotification: (notification) => {
     const id = createNotificationId();
     const duration = notification.duration ?? TIMING.TOAST_DURATION;
@@ -50,38 +56,83 @@ export const useNotificationStore = create<NotificationStore>((set) => ({
       notifications: [...state.notifications, newNotification],
     }));
 
-    // Auto-remove after duration
+    // Auto-remove after duration with timer tracking
     if (duration > 0) {
-      setTimeout(() => {
+      const timerId = setTimeout(() => {
         set((state) => ({
           notifications: state.notifications.filter((n) => n.id !== id),
+          timers: (() => {
+            const newTimers = new Map(state.timers);
+            newTimers.delete(id);
+            return newTimers;
+          })(),
         }));
       }, duration);
+      
+      // Track the timer
+      set((state) => ({
+        timers: new Map(state.timers).set(id, timerId),
+      }));
     }
   },
-  removeNotification: (id) =>
+  
+  removeNotification: (id) => {
+    // Clear timer if exists
+    get().clearTimer(id);
+    
     set((state) => ({
       notifications: state.notifications.filter((n) => n.id !== id),
-    })),
-  clearAll: () => set({ notifications: [] }),
+    }));
+  },
+  
+  clearAll: () => {
+    // Clear all timers before clearing notifications
+    get().clearAllTimers();
+    
+    set({ notifications: [] });
+  },
+  
+  clearTimer: (id) => {
+    const state = get();
+    const timer = state.timers.get(id);
+    if (timer) {
+      clearTimeout(timer);
+      set((state) => {
+        const newTimers = new Map(state.timers);
+        newTimers.delete(id);
+        return { timers: newTimers };
+      });
+    }
+  },
+  
+  clearAllTimers: () => {
+    const state = get();
+    state.timers.forEach((timer) => clearTimeout(timer));
+    set({ timers: new Map() });
+  },
 }));
 
 // Convenience functions
 export const notificationService = {
   success: (message: string, duration?: number) => {
     useNotificationStore.getState().addNotification({ type: 'success', message, duration });
+    toast.success(message, { autoClose: duration });
   },
   error: (message: string, duration?: number) => {
     useNotificationStore.getState().addNotification({ type: 'error', message, duration });
+    toast.error(message, { autoClose: duration });
   },
   warning: (message: string, duration?: number) => {
     useNotificationStore.getState().addNotification({ type: 'warning', message, duration });
+    toast.warning(message, { autoClose: duration });
   },
   info: (message: string, duration?: number) => {
     useNotificationStore.getState().addNotification({ type: 'info', message, duration });
+    toast.info(message, { autoClose: duration });
   },
   handleError: (error: unknown) => {
     const message = error instanceof Error ? error.message : 'An unexpected error occurred';
     useNotificationStore.getState().addNotification({ type: 'error', message });
+    toast.error(message);
   },
 };

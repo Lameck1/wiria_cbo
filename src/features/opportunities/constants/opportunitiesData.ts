@@ -3,12 +3,12 @@
  * Static data for benefits and application tips sections
  */
 
-export interface Benefit {
+interface Benefit {
   title: string;
   description: string;
 }
 
-export interface ApplicationTip {
+interface ApplicationTip {
   title: string;
   description: string;
 }

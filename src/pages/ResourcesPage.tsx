@@ -13,6 +13,7 @@ import {
   ResourcesHeroStats,
 } from '@/features/resources';
 import { PageHero } from '@/shared/components/sections/PageHero';
+import { SEO } from '@/shared/components/Seo';
 
 function ResourcesPage() {
   const location = useLocation();
@@ -33,6 +34,15 @@ function ResourcesPage() {
   }, [location.hash]);
   return (
     <main>
+      <SEO
+        title="Resources & Transparency"
+        description="Access WIRIA CBO's key documents, reports, and procurement notices."
+        keywords="Resources, Documents, Reports, Tenders, Transparency"
+        breadcrumbs={[
+          { name: 'Home', item: '/' },
+          { name: 'Resources', item: '/resources' },
+        ]}
+      />
       {/* Hero Section */}
       <PageHero
         badge="Documents & Reports"

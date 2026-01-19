@@ -1,7 +1,5 @@
 import { useState } from 'react';
 
-import { useQueryClient } from '@tanstack/react-query';
-
 import type { Tender } from '@/features/admin/api/tenders.api';
 import { getTenders, deleteTender } from '@/features/admin/api/tenders.api';
 import { TenderModal } from '@/features/admin/components/tenders/modals/TenderModal';
@@ -10,18 +8,24 @@ import { Button } from '@/shared/components/ui/Button';
 import type { Column } from '@/shared/components/ui/DataTable';
 import { DataTable } from '@/shared/components/ui/DataTable';
 import { useAdminData, useAdminAction } from '@/shared/hooks/useAdminData';
+import { notificationService } from '@/shared/services/notification/notificationService';
 
 export default function TenderManagementPage() {
-  const queryClient = useQueryClient();
   const { items: tenders, isLoading } = useAdminData<Tender>(['tenders', { all: true }], () =>
     getTenders({ all: true })
   );
-  const deleteAction = useAdminAction((id: string) => deleteTender(id), [['tenders']], {
-    successMessage: 'Tender deleted successfully',
-    onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: ['tenders'] });
-    },
-  });
+  const deleteAction = useAdminAction(
+    (id: string) => deleteTender(id),
+    [['tenders']],
+    {
+      onSuccess: () => {
+        notificationService.success('Tender deleted successfully');
+      },
+      onError: () => {
+        notificationService.error('Failed to delete tender');
+      },
+    }
+  );
 
   const [editingTender, setEditingTender] = useState<Tender | null>(null);
   const [showModal, setShowModal] = useState(false);

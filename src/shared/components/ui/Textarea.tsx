@@ -3,13 +3,23 @@ import { useId } from 'react';
 
 import { cn } from '@/shared/utils/helpers';
 
+/**
+ * Props for the Textarea component.
+ */
 export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
+  /** Label text displayed above the textarea. */
   label?: string;
+  /** Error message displayed below the textarea. */
   error?: string;
+  /** Helper text displayed below the textarea (if no error). */
   helperText?: string;
+  /** Ref for the textarea element. */
   ref?: React.Ref<HTMLTextAreaElement>;
 }
 
+/**
+ * Form textarea component with label and error handling.
+ */
 export function Textarea({
   label,
   error,
@@ -43,7 +53,11 @@ export function Textarea({
         )}
         {...props}
       />
-      {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
+      {error && (
+        <p className="mt-1 text-sm text-red-600" role="alert" aria-live="assertive">
+          {error}
+        </p>
+      )}
       {helperText && !error && <p className="mt-1 text-sm text-gray-500">{helperText}</p>}
     </div>
   );

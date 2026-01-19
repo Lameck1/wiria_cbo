@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
+import { emailSchema } from '@/shared/utils/validators';
 export const EDUCATION_OPTIONS = [
   { value: 'certificate', label: 'Certificate' },
   { value: 'diploma', label: 'Diploma' },
@@ -19,7 +20,7 @@ export const EXPERIENCE_OPTIONS = [
 
 export const applicationSchema = z.object({
   fullName: z.string().min(3, 'Full name must be at least 3 characters'),
-  email: z.string().email('Invalid email address'),
+  email: emailSchema,
   phone: z.string().min(10, 'Invalid phone number'),
   location: z.string().min(2, 'Location is required'),
   education: z.string().min(1, 'Please select your education level'),

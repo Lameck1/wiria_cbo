@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { ROUTES } from '@/shared/constants/routes';
 import { apiClient } from '@/shared/services/api/client';
+import { TokenManager } from '@/shared/services/auth';
 import { logger } from '@/shared/services/logger';
 import { STORAGE_KEYS, storageService } from '@/shared/services/storage/storageService';
 import type { AuthResponse, Member, User } from '@/shared/types';
@@ -18,12 +19,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
 
   const checkAuth = useCallback(() => {
-    const token = storageService.get<string>(STORAGE_KEYS.AUTH_TOKEN);
     const userData = storageService.get<User | Member>(STORAGE_KEYS.USER_DATA);
 
-    if (token && userData) {
+    if (TokenManager.hasValidTokens() && userData) {
       // Register token resolver with ApiClient
-      apiClient.setTokenResolver(() => storageService.get<string>(STORAGE_KEYS.AUTH_TOKEN));
+      apiClient.setTokenResolver(() => TokenManager.tokenResolver());
       setUser(userData);
     } else {
       setUser(null);
@@ -33,13 +33,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = useCallback(
     async (expired = false) => {
-      const role = storageService.get<UserRole>(STORAGE_KEYS.USER_ROLE);
+      const role = TokenManager.getUserRole();
 
       try {
         if (role === UserRole.MEMBER) {
           await apiClient.post('/members/logout', {});
         } else {
-          const refreshToken = storageService.get<string>(STORAGE_KEYS.REFRESH_TOKEN);
+          const refreshToken = TokenManager.getRefreshToken();
           if (refreshToken) {
             await apiClient.post('/auth/logout', { refreshToken });
           }
@@ -49,7 +49,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       } finally {
         // Clear local state
         apiClient.setTokenResolver(() => null);
-        storageService.clear();
+        TokenManager.clearAll();
         setUser(null);
 
         // Redirect if session expired or logout triggered
@@ -87,11 +87,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       const { user: userData, tokens } = response.data;
 
-      // Store auth data
+      // Store auth data using TokenManager
       apiClient.setAuthToken(tokens.accessToken);
-      storageService.set(STORAGE_KEYS.AUTH_TOKEN, tokens.accessToken);
-      storageService.set(STORAGE_KEYS.REFRESH_TOKEN, tokens.refreshToken);
-      storageService.set(STORAGE_KEYS.USER_ROLE, userData.role);
+      TokenManager.setTokens({
+        accessToken: tokens.accessToken,
+        refreshToken: tokens.refreshToken,
+        role: userData.role,
+      });
       storageService.set(STORAGE_KEYS.USER_DATA, userData);
 
       setUser(userData);

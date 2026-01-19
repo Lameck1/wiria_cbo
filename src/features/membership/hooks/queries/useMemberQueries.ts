@@ -81,7 +81,7 @@ interface ApiActivityResponse {
     | { data: Record<string, unknown>[] };
 }
 
-export const MEMBER_KEYS = {
+const MEMBER_KEYS = {
   all: ['member'] as const,
   profile: () => [...MEMBER_KEYS.all, 'profile'] as const,
   payments: () => [...MEMBER_KEYS.all, 'payments'] as const,

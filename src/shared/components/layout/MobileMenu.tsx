@@ -62,7 +62,7 @@ export function MobileMenu({
       </div>
 
       {/* Mobile Navigation Links */}
-      <nav className="flex-1 overflow-y-auto p-4">
+      <nav className="flex-1 overflow-y-auto p-4" aria-label="Mobile Navigation">
         <div className="space-y-1">
           {NAV_ITEMS.map((item, index) => (
             <motion.div

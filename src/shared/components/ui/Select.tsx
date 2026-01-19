@@ -3,20 +3,37 @@ import { useId } from 'react';
 
 import { cn } from '@/shared/utils/helpers';
 
+/**
+ * Option for the Select component.
+ */
 export interface SelectOption {
+  /** The value of the option. */
   value: string;
+  /** The label to display for the option. */
   label: string;
 }
 
+/**
+ * Props for the Select component.
+ */
 export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
+  /** Label text displayed above the select. */
   label?: string;
+  /** Error message displayed below the select. */
   error?: string;
+  /** Helper text displayed below the select (if no error). */
   helperText?: string;
+  /** Array of options to display. Alternatively, use children. */
   options?: readonly SelectOption[];
+  /** Custom option elements. */
   children?: React.ReactNode;
+  /** Ref for the select element. */
   ref?: React.Ref<HTMLSelectElement>;
 }
 
+/**
+ * Form select component with label, error handling, and option support.
+ */
 export function Select({
   label,
   error,
@@ -59,6 +76,7 @@ export function Select({
         )}
         aria-invalid={hasError}
         aria-describedby={describedBy}
+        aria-required={props.required}
         {...props}
       >
         {children ??
@@ -69,7 +87,7 @@ export function Select({
           ))}
       </select>
       {error && (
-        <p id={errorId} className="mt-1 text-sm text-red-600" role="alert">
+        <p id={errorId} className="mt-1 text-sm text-red-600" role="alert" aria-live="assertive">
           {error}
         </p>
       )}

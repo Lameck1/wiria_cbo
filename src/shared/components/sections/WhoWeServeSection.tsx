@@ -91,4 +91,3 @@ export function WhoWeServeSection() {
   );
 }
 
-export default WhoWeServeSection;

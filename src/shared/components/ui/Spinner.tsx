@@ -5,11 +5,19 @@
 
 import { cn } from '@/shared/utils/helpers';
 
+/**
+ * Props for the Spinner component.
+ */
 export interface SpinnerProps {
+  /** Size of the spinner. Defaults to 'md'. */
   size?: 'sm' | 'md' | 'lg' | 'xl';
+  /** Optional class name for custom styling. */
   className?: string;
 }
 
+/**
+ * Loading spinner component with configurable size.
+ */
 export function Spinner({ size = 'md', className }: SpinnerProps) {
   const sizeStyles = {
     sm: 'h-4 w-4',
@@ -40,7 +48,11 @@ export function Spinner({ size = 'md', className }: SpinnerProps) {
  */
 export function PageLoader() {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur-sm">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur-sm"
+      role="status"
+      aria-live="polite"
+    >
       <div className="text-center">
         <Spinner size="xl" />
         <p className="mt-4 text-gray-600">Loading...</p>

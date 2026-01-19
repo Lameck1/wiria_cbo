@@ -5,7 +5,7 @@
 
 import { apiClient } from '@/shared/services/api/client';
 import { logger } from '@/shared/services/logger';
-import { extractArray, extractData } from '@/shared/utils/apiUtils';
+import { extractArray } from '@/shared/utils/apiUtils';
 
 export interface SafeguardingReport {
   id: string;
@@ -14,15 +14,17 @@ export interface SafeguardingReport {
   reporterName?: string;
   reporterEmail?: string;
   reporterPhone?: string;
-  incidentType:
-    | 'CHILD_PROTECTION'
-    | 'SEXUAL_EXPLOITATION'
-    | 'HARASSMENT'
-    | 'DISCRIMINATION'
-    | 'FRAUD'
-    | 'OTHER';
+  incidentType?:
+  | 'CHILD_PROTECTION'
+  | 'SEXUAL_EXPLOITATION'
+  | 'HARASSMENT'
+  | 'DISCRIMINATION'
+  | 'FRAUD'
+  | 'OTHER';
+  category?: string;
   incidentDate: string;
-  incidentLocation: string;
+  incidentLocation?: string;
+  location?: string;
   description: string;
   personsInvolved?: string;
   witnessInfo?: string;
@@ -34,17 +36,6 @@ export interface SafeguardingReport {
   resolvedAt?: string;
   createdAt: string;
   updatedAt: string;
-}
-
-export interface SafeguardingStatistics {
-  total: number;
-  pending: number;
-  underReview: number;
-  investigating: number;
-  resolved: number;
-  closed: number;
-  critical: number;
-  high: number;
 }
 
 export const getSafeguardingReports = async (params?: {
@@ -64,16 +55,6 @@ export const getSafeguardingReports = async (params?: {
   }
 };
 
-export const getSafeguardingReportById = async (id: string): Promise<SafeguardingReport | null> => {
-  try {
-    const response = await apiClient.get(`/safeguarding/${id}`);
-    return extractData<SafeguardingReport>(response);
-  } catch (error) {
-    logger.error('Failed to fetch safeguarding report:', error);
-    return null;
-  }
-};
-
 export const updateSafeguardingReport = async (
   id: string,
   data: Partial<SafeguardingReport>
@@ -83,19 +64,6 @@ export const updateSafeguardingReport = async (
     return true;
   } catch (error) {
     logger.error('Failed to update safeguarding report:', error);
-    throw error;
-  }
-};
-
-export const assignSafeguardingReport = async (
-  id: string,
-  assignedTo: string
-): Promise<boolean> => {
-  try {
-    await apiClient.post(`/safeguarding/${id}/assign`, { assignedTo });
-    return true;
-  } catch (error) {
-    logger.error('Failed to assign safeguarding report:', error);
     throw error;
   }
 };
@@ -110,19 +78,5 @@ export const resolveSafeguardingReport = async (
   } catch (error) {
     logger.error('Failed to resolve safeguarding report:', error);
     throw error;
-  }
-};
-
-export const getSafeguardingStatistics = async (): Promise<SafeguardingStatistics> => {
-  try {
-    const response = await apiClient.get('/safeguarding/statistics');
-    const data = extractData<SafeguardingStatistics>(response);
-    if (!data) {
-      throw new Error('Invalid safeguarding statistics data received');
-    }
-    return data;
-  } catch (error) {
-    logger.error('Failed to fetch safeguarding statistics:', error);
-    throw new Error('Failed to load safeguarding statistics. Please try again.');
   }
 };

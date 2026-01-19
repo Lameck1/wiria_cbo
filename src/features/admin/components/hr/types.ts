@@ -27,17 +27,8 @@ export interface ApplicationsListProps {
   onReview: (app: Application) => void;
 }
 
-export interface CareerModalProps {
-  career: Career | null;
-  onClose: () => void;
-  onSuccess: () => void;
-}
 
-export interface OpportunityModalProps {
-  opportunity: Opportunity | null;
-  onClose: () => void;
-  onSuccess: () => void;
-}
 
 export { type Career } from '@/features/admin/api/careers.api';
 export { type Application, type Opportunity } from '@/features/admin/api/opportunities.api';
+

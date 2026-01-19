@@ -57,4 +57,4 @@ export function DashboardProvider({ children }: DashboardProviderProps) {
  * }
  * ```
  */
-export default DashboardProvider;
+

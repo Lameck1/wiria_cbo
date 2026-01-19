@@ -102,11 +102,23 @@ class ApiClient {
     }
   }
 
+  /**
+   * Performs a GET request.
+   * @param endpoint The API endpoint (relative to base URL).
+   * @param params Optional query parameters to append to the URL.
+   * @returns A promise resolving to the response data.
+   */
   async get<T>(endpoint: string, params?: Record<string, string>): Promise<T> {
     const queryString = params ? `?${new URLSearchParams(params)}` : '';
     return this.request<T>(`${endpoint}${queryString}`, { method: 'GET' });
   }
 
+  /**
+   * Performs a POST request.
+   * @param endpoint The API endpoint.
+   * @param data Optional data to send in the request body (serialized to JSON).
+   * @returns A promise resolving to the response data.
+   */
   async post<T>(endpoint: string, data?: unknown): Promise<T> {
     return this.request<T>(endpoint, {
       method: 'POST',
@@ -114,6 +126,12 @@ class ApiClient {
     });
   }
 
+  /**
+   * Performs a PUT request.
+   * @param endpoint The API endpoint.
+   * @param data Optional data to send in the request body.
+   * @returns A promise resolving to the response data.
+   */
   async put<T>(endpoint: string, data?: unknown): Promise<T> {
     return this.request<T>(endpoint, {
       method: 'PUT',
@@ -121,6 +139,12 @@ class ApiClient {
     });
   }
 
+  /**
+   * Performs a PATCH request.
+   * @param endpoint The API endpoint.
+   * @param data Optional data to send in the request body.
+   * @returns A promise resolving to the response data.
+   */
   async patch<T>(endpoint: string, data?: unknown): Promise<T> {
     return this.request<T>(endpoint, {
       method: 'PATCH',
@@ -128,6 +152,11 @@ class ApiClient {
     });
   }
 
+  /**
+   * Performs a DELETE request.
+   * @param endpoint The API endpoint.
+   * @returns A promise resolving to the response data.
+   */
   async delete<T>(endpoint: string): Promise<T> {
     return this.request<T>(endpoint, { method: 'DELETE' });
   }
@@ -177,4 +206,4 @@ export class ApiError extends Error {
 }
 
 export const apiClient = new ApiClient();
-export default apiClient;
+

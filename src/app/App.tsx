@@ -1,5 +1,9 @@
+import { useEffect } from 'react';
+
 import { QueryClientProvider } from '@tanstack/react-query';
 import { RouterProvider } from 'react-router-dom';
+
+import { measureWebVitals } from '@/shared/utils/performance';
 
 import { queryClient } from './config/queryClient';
 import { router } from './router';
@@ -9,6 +13,11 @@ import { router } from './router';
  * Sets up global providers and the router.
  */
 function App() {
+  useEffect(() => {
+    // Initialize Web Vitals monitoring
+    measureWebVitals();
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <RouterProvider

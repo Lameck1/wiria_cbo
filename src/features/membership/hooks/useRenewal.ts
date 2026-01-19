@@ -1,12 +1,13 @@
 /**
  * useRenewal Hook
+ * Refactored to use shared usePaymentFlow hook
  */
 
-import { useReducer } from 'react';
+import { useCallback, useState } from 'react';
 
-import { apiClient } from '@/shared/services/api/client';
+import { usePaymentFlow } from '@/shared/hooks/usePaymentFlow';
 import { API_ENDPOINTS } from '@/shared/services/api/endpoints';
-import { notificationService } from '@/shared/services/notification/notificationService';
+import { useServices } from '@/shared/services/di';
 
 export interface RenewalData {
   paymentMethod: 'STK_PUSH' | 'MANUAL';
@@ -23,115 +24,76 @@ export interface RenewalResponse {
   transactionId?: string;
 }
 
-type PaymentStatus = 'PENDING' | 'SUCCESS' | 'FAILED' | null;
-
-interface RenewalState {
-  isSubmitting: boolean;
-  paymentStatus: PaymentStatus;
-  transactionId: string | null;
-}
-
-type RenewalAction =
-  | { type: 'SUBMIT_START' }
-  | { type: 'SUBMIT_END' }
-  | { type: 'RESET_STATE' }
-  | { type: 'SET_PENDING_STK'; transactionId: string }
-  | { type: 'SET_PENDING_MANUAL' }
-  | { type: 'SET_SUCCESS' }
-  | { type: 'SET_FAILED' };
-
-const initialState: RenewalState = {
-  isSubmitting: false,
-  paymentStatus: null,
-  transactionId: null,
-};
-
-function renewalReducer(state: RenewalState, action: RenewalAction): RenewalState {
-  switch (action.type) {
-    case 'SUBMIT_START': {
-      return { ...state, isSubmitting: true };
-    }
-    case 'SUBMIT_END': {
-      return { ...state, isSubmitting: false };
-    }
-    case 'RESET_STATE': {
-      return { ...state, paymentStatus: null, transactionId: null };
-    }
-    case 'SET_PENDING_STK': {
-      return { ...state, paymentStatus: 'PENDING', transactionId: action.transactionId };
-    }
-    case 'SET_PENDING_MANUAL': {
-      return { ...state, paymentStatus: 'PENDING' };
-    }
-    case 'SET_SUCCESS': {
-      return { ...state, paymentStatus: 'SUCCESS' };
-    }
-    case 'SET_FAILED': {
-      return { ...state, paymentStatus: 'FAILED' };
-    }
-    default: {
-      return state;
-    }
-  }
-}
-
 export function useRenewal() {
-  const [state, dispatch] = useReducer(renewalReducer, initialState);
+  const { apiClient } = useServices();
+  const [renewalId, setRenewalId] = useState<string | null>(null);
 
-  const submitRenewal = async (data: RenewalData) => {
-    dispatch({ type: 'SUBMIT_START' });
-    dispatch({ type: 'RESET_STATE' });
+  const paymentFlow = usePaymentFlow({
+    flowType: 'renewal',
+    initiationEndpoint: API_ENDPOINTS.MEMBERS_RENEW,
+    statusEndpoint: API_ENDPOINTS.PAYMENTS_STATUS,
+    messages: {
+      initiationSuccess: 'Renewal successful!',
+      paymentCompleted: 'Payment completed! Your membership has been renewed.',
+      stkPushSent: 'STK push sent to your phone. Please complete the payment.',
+      manualPaymentSubmitted: 'Transaction submitted for verification.',
+    },
+  });
 
-    try {
-      const response = await apiClient.post<RenewalResponse>(API_ENDPOINTS.MEMBERS_RENEW, data);
+  const submitRenewal = useCallback(
+    async (data: RenewalData) => {
+      try {
+        // Call API to initiate renewal
+        const response = await apiClient.post<RenewalResponse>(
+          API_ENDPOINTS.MEMBERS_RENEW,
+          data
+        );
 
-      const { checkoutRequestId, message } = response;
+        const { checkoutRequestId, transactionId, message } = response;
+        const renewalTransactionId = checkoutRequestId ?? transactionId;
 
-      if (data.paymentMethod === 'STK_PUSH' && checkoutRequestId) {
-        dispatch({ type: 'SET_PENDING_STK', transactionId: checkoutRequestId });
-        notificationService.info('STK push sent to your phone. Please complete the payment.');
-      } else if (data.paymentMethod === 'MANUAL') {
-        dispatch({ type: 'SET_PENDING_MANUAL' });
-        notificationService.success('Transaction submitted for verification.');
-      } else {
-        dispatch({ type: 'SET_SUCCESS' });
-        notificationService.success(message || 'Renewal successful!');
+        if (renewalTransactionId) {
+          setRenewalId(renewalTransactionId);
+        }
+
+        // Use shared payment flow for payment processing
+        const result = await paymentFlow.initiatePayment({
+          ...data,
+          renewalId: renewalTransactionId,
+        });
+
+        return {
+          success: result.success,
+          transactionId: renewalTransactionId,
+          message,
+        };
+      } catch {
+        return { success: false };
       }
+    },
+    [apiClient, paymentFlow]
+  );
 
-      return { success: true };
-    } catch {
-      notificationService.error('Renewal failed. Please try again.');
-      return { success: false };
-    } finally {
-      dispatch({ type: 'SUBMIT_END' });
-    }
-  };
-
-  const checkPaymentStatus = async (tid: string) => {
-    try {
-      const response = await apiClient.get<{ data: { status: string } }>(
-        `${API_ENDPOINTS.PAYMENTS_STATUS}/${tid}`
-      );
-
-      const { status } = response.data;
-      if (status === 'COMPLETED') {
-        dispatch({ type: 'SET_SUCCESS' });
-        return 'SUCCESS';
-      } else if (status === 'FAILED') {
-        dispatch({ type: 'SET_FAILED' });
-        return 'FAILED';
-      }
-      return 'PENDING';
-    } catch {
-      return 'PENDING';
-    }
-  };
+  const resetRenewal = useCallback(() => {
+    setRenewalId(null);
+    paymentFlow.resetPayment();
+  }, [paymentFlow]);
 
   return {
+    // Renewal-specific state
+    renewalId,
+
+    // Payment flow state and actions (delegated to shared hook)
+    isSubmitting: paymentFlow.isSubmitting,
+    paymentStatus: paymentFlow.paymentStatus,
+    transactionId: paymentFlow.transactionId,
+
+    // Actions
     submitRenewal,
-    checkPaymentStatus,
-    isSubmitting: state.isSubmitting,
-    paymentStatus: state.paymentStatus,
-    transactionId: state.transactionId,
+    checkPaymentStatus: paymentFlow.checkPaymentStatus,
+    resetRenewal,
   };
 }
+
+// Re-export PaymentStatus for convenience
+export { PaymentStatus } from '@/shared/types/payment';

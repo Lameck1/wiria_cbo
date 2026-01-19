@@ -16,7 +16,7 @@ export interface Resource {
   createdAt: string;
 }
 
-export interface CreateResourcePayload {
+interface CreateResourcePayload {
   title: string;
   category: string;
   fileType: string;

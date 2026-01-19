@@ -57,14 +57,24 @@ export function OpportunityCard({ opportunity, onViewDetails }: OpportunityCardP
   // Extract skills from requirements (first 3)
   const skillTags = opportunity.requirements?.slice(0, 3) || [];
 
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      onViewDetails();
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       whileHover={{ y: -4, boxShadow: '0 12px 24px rgba(0,0,0,0.1)' }}
-      className="group cursor-pointer rounded-xl border border-gray-200 bg-white p-6 transition-all"
+      className="group cursor-pointer rounded-xl border border-gray-200 bg-white p-6 transition-all focus:outline-none focus:ring-2 focus:ring-wiria-blue-dark focus:ring-offset-2"
       onClick={onViewDetails}
+      onKeyDown={handleKeyDown}
+      tabIndex={0}
+      role="button"
     >
       {/* Top Badges Row */}
       <div className="mb-3 flex flex-wrap items-center gap-2">

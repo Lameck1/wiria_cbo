@@ -6,11 +6,13 @@
  */
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, screen, waitFor } from '@testing-library/react';
+import { HelmetProvider } from 'react-helmet-async';
 import { MemoryRouter } from 'react-router-dom';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { AuthProvider } from '@/features/auth/context/AuthContext';
 import MembershipPage from '@/pages/MembershipPage';
+import { ServiceProvider, createMockServiceContainer } from '@/shared/services/di';
 
 vi.mock('@/shared/services/notification/notificationService', () => ({
   notificationService: {
@@ -32,13 +34,19 @@ const queryClient = new QueryClient({
   },
 });
 
+const services = createMockServiceContainer();
+
 function renderWithProviders(ui: React.ReactElement) {
   return render(
-    <QueryClientProvider client={queryClient}>
-      <MemoryRouter>
-        <AuthProvider>{ui}</AuthProvider>
-      </MemoryRouter>
-    </QueryClientProvider>
+    <ServiceProvider services={services}>
+      <HelmetProvider>
+        <QueryClientProvider client={queryClient}>
+          <MemoryRouter>
+            <AuthProvider>{ui}</AuthProvider>
+          </MemoryRouter>
+        </QueryClientProvider>
+      </HelmetProvider>
+    </ServiceProvider>
   );
 }
 

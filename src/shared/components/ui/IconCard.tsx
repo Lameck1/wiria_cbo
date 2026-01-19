@@ -8,15 +8,28 @@ import type { ReactNode } from 'react';
 
 import { motion } from 'framer-motion';
 
+/**
+ * Props for the IconCard component.
+ */
 interface IconCardProps {
+  /** The icon to display. */
   icon: ReactNode;
+  /** The title of the card. */
   title: string;
+  /** The description text. */
   description: string;
+  /** Background color class for the icon container. Defaults to 'bg-wiria-yellow'. */
   iconBgColor?: string;
+  /** Animation delay in seconds. Defaults to 0. */
   delay?: number;
+  /** Optional class name for the card container. */
   className?: string;
 }
 
+/**
+ * A reusable card component displaying an icon, title, and description.
+ * Features fade-in animation.
+ */
 export function IconCard({
   icon,
   title,

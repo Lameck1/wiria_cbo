@@ -7,7 +7,7 @@
  * Get the backend base URL (without /api path)
  * Uses VITE_API_BASE_URL environment variable or falls back to localhost:5001
  */
-export function getBackendBaseUrl(): string {
+function getBackendBaseUrl(): string {
   const apiUrl =
     (import.meta.env['VITE_API_BASE_URL'] as string | undefined) ?? 'http://localhost:5001/api';
   return apiUrl.replace('/api', '');

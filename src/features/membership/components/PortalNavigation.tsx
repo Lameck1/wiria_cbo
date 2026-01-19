@@ -15,7 +15,7 @@ const NAV_ITEMS = [
 
 export function PortalNavigation() {
   return (
-    <nav className="mb-6 overflow-x-auto rounded-xl bg-white shadow-md">
+    <nav className="mb-6 overflow-x-auto rounded-xl bg-white shadow-md" aria-label="Member Portal Navigation">
       <div className="flex">
         {NAV_ITEMS.map((item) => (
           <NavLink

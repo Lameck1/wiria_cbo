@@ -19,7 +19,7 @@ interface TrendChartProps {
   height?: number;
 }
 
-export function TrendChart({
+function TrendChart({
   data,
   title,
   color = 'bg-blue-500',

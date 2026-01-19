@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+import { queryClient } from '@/app/config/queryClient';
+import { ADMIN_KEYS } from '@/features/admin/hooks/useNotificationQueries';
 import { emailJsService } from '@/shared/services/emailJsService';
 import { logger } from '@/shared/services/logger';
 import { notificationService } from '@/shared/services/notification/notificationService';
@@ -48,9 +50,15 @@ export function useSafeguardingReport() {
         try {
           const result = await safeguardingApi.submit(data, evidenceFile);
           setSubmittedReference(result.data.referenceNumber);
+
           notificationService.success(
             'Report submitted successfully. Please save your reference number.'
           );
+
+          void queryClient.invalidateQueries({ queryKey: ADMIN_KEYS.notifications });
+          void queryClient.invalidateQueries({ queryKey: ['safeguarding'] });
+          void queryClient.invalidateQueries({ queryKey: ['admin', 'dashboard'] });
+
           return true;
         } catch (apiError) {
           logger.warn(

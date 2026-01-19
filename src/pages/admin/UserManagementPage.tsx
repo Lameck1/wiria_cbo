@@ -1,12 +1,7 @@
 import { useState } from 'react';
 
 import type { AdminUser, UserInvitation } from '@/features/admin/api/users.api';
-import {
-  cancelInvitation,
-  getInvitations,
-  getUsers,
-  updateUserStatus,
-} from '@/features/admin/api/users.api';
+import { cancelInvitation, getInvitations, getUsers, updateUserStatus } from '@/features/admin/api/users.api';
 import { AdminPageHeader } from '@/features/admin/components/layout/AdminPageHeader';
 import { InviteUserModal } from '@/features/admin/components/users/modals/InviteUserModal';
 import {
@@ -18,6 +13,7 @@ import { Button } from '@/shared/components/ui/Button';
 import { Card, CardBody } from '@/shared/components/ui/Card';
 import { DataTable } from '@/shared/components/ui/DataTable';
 import { useAdminAction, useAdminData } from '@/shared/hooks/useAdminData';
+import { notificationService } from '@/shared/services/notification/notificationService';
 
 export default function UserManagementPage() {
   const [activeTab, setActiveTab] = useState<'ACTIVE' | 'PENDING'>('ACTIVE');
@@ -39,13 +35,27 @@ export default function UserManagementPage() {
   const updateStatusAction = useAdminAction(
     ({ email, status }: { email: string; status: string }) => updateUserStatus(email, status),
     [['users']],
-    { successMessage: 'User status updated' }
+    {
+      onSuccess: () => {
+        notificationService.success('User status updated');
+      },
+      onError: () => {
+        notificationService.error('Failed to update user status');
+      },
+    }
   );
 
   const cancelInviteAction = useAdminAction(
     (id: string) => cancelInvitation(id),
     [['invitations']],
-    { successMessage: 'Invitation cancelled' }
+    {
+      onSuccess: () => {
+        notificationService.success('Invitation cancelled');
+      },
+      onError: () => {
+        notificationService.error('Failed to cancel invitation');
+      },
+    }
   );
 
   const handleStatusChange = (email: string, currentStatus: string) => {

@@ -10,11 +10,15 @@ export function FooterBrand() {
           src={`${import.meta.env.BASE_URL}images/Wiria_CBO_Logo_NEW_IV.png`}
           alt="WIRIA CBO"
           className="h-14 w-auto"
+          loading="lazy"
+          decoding="async"
+          width="56"
+          height="56"
         />
         <span className="text-2xl font-bold">WIRIA CBO</span>
       </Link>
       <p className="mb-6 text-sm leading-relaxed text-gray-300">
-        Wiria (Wellness, Inclusion, Rights, and Impact Advocates) Community Based Organization.
+        Wiria (Wellness, Inclusion, Rights, and Impact Advocacy) Community Based Organization.
         Empowering Communities, Enhancing Health, Championing Rights for Key and Vulnerable
         Populations.
       </p>

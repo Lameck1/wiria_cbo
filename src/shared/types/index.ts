@@ -41,10 +41,11 @@ export enum MembershipStatus {
 }
 
 // Auth Types
-export interface LoginCredentials {
-  identifier: string; // email or username
-  password: string;
-}
+// LoginCredentials interface removed - not currently used in the application
+// export interface LoginCredentials {
+//   identifier: string; // email or username
+//   password: string;
+// }
 
 export interface AuthTokens {
   accessToken: string;
@@ -59,48 +60,26 @@ export interface AuthResponse {
   message: string;
 }
 
-// API Response Types
-export interface ApiResponse<T = unknown> {
-  data: T;
-  message?: string;
-  success: boolean;
-}
 
-export interface PaginatedResponse<T> {
-  data: T[];
-  meta: {
-    total: number;
-    page: number;
-    limit: number;
-    totalPages: number;
-  };
-}
 
-// Payment Types
-export enum PaymentMethod {
-  STK_PUSH = 'STK_PUSH',
-  MANUAL = 'MANUAL',
-}
+// PaginatedResponse interface removed - not currently used in the application
+// export interface PaginatedResponse<T> {
+//   data: T[];
+//   meta: {
+//     total: number;
+//     page: number;
+//     limit: number;
+//     totalPages: number;
+//   };
+// }
 
-export enum PaymentStatus {
-  PENDING = 'PENDING',
-  COMPLETED = 'COMPLETED',
-  FAILED = 'FAILED',
-  CANCELLED = 'CANCELLED',
-}
 
-export interface Payment {
-  id: string;
-  amount: number;
-  method: PaymentMethod;
-  status: PaymentStatus;
-  transactionId?: string;
-  phone?: string;
-  createdAt: string;
-}
+
+
 
 // Form validation types
-export interface ValidationError {
-  field: string;
-  message: string;
-}
+// ValidationError interface removed - not currently used in the application
+// export interface ValidationError {
+//   field: string;
+//   message: string;
+// }

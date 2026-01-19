@@ -2,19 +2,73 @@
  * useRegistration Hook Tests
  */
 
-import { renderHook, act } from '@testing-library/react';
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { act, renderHook } from '@testing-library/react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { useRegistration } from '@/features/membership/hooks/useRegistration';
-import { apiClient } from '@/shared/services/api/client';
+import { apiClientAdapter } from '@/shared/services/adapters';
+import { useServices } from '@/shared/services/di';
 import { notificationService } from '@/shared/services/notification/notificationService';
 
-vi.mock('@/shared/services/api/client');
+vi.mock('@/shared/services/adapters', () => ({
+  apiClientAdapter: {
+    get: vi.fn(),
+    post: vi.fn(),
+    put: vi.fn(),
+    patch: vi.fn(),
+    delete: vi.fn(),
+    setTokenResolver: vi.fn(),
+    setUnauthorizedCallback: vi.fn(),
+  },
+  loggerAdapter: {
+    error: vi.fn(),
+    warn: vi.fn(),
+    debug: vi.fn(),
+  },
+  notificationServiceAdapter: {
+    success: vi.fn(),
+    error: vi.fn(),
+    warning: vi.fn(),
+    info: vi.fn(),
+    clearAll: vi.fn(),
+  },
+  storageServiceAdapter: {
+    getItem: vi.fn(),
+    setItem: vi.fn(),
+    removeItem: vi.fn(),
+    clear: vi.fn(),
+  },
+}));
+
 vi.mock('@/shared/services/notification/notificationService');
+vi.mock('@/shared/services/di', async () => {
+  const actual: any = await vi.importActual('@/shared/services/di');
+
+  return {
+    ...actual,
+    useServices: vi.fn(),
+  };
+});
 
 describe('useRegistration', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+
+    vi.mocked(useServices).mockReturnValue({
+      apiClient: apiClientAdapter,
+      notificationService,
+      logger: {
+        error: vi.fn(),
+        warn: vi.fn(),
+        debug: vi.fn(),
+      },
+      storageService: {
+        getItem: vi.fn(),
+        setItem: vi.fn(),
+        removeItem: vi.fn(),
+        clear: vi.fn(),
+      },
+    } as never);
   });
 
   describe('submitRegistration', () => {
@@ -31,7 +85,7 @@ describe('useRegistration', () => {
         },
       };
 
-      vi.mocked(apiClient.post).mockResolvedValue(mockResponse);
+      vi.mocked(apiClientAdapter.post).mockResolvedValue(mockResponse as never);
 
       const { result } = renderHook(() => useRegistration());
 
@@ -59,17 +113,19 @@ describe('useRegistration', () => {
         response = await result.current.submitRegistration(registrationData);
       });
 
-      expect(apiClient.post).toHaveBeenCalledWith('/members/register', registrationData);
+      expect(apiClientAdapter.post).toHaveBeenCalledWith('/members/register', registrationData);
       expect(result.current.memberId).toBe('mem-123');
       expect(result.current.membershipNumber).toBe('WIRIA-2024-001');
       expect(result.current.checkoutRequestId).toBe('req-789');
       expect(result.current.paymentStatus).toBe('PENDING');
-      expect(notificationService.info).toHaveBeenCalled();
-      expect(response).toEqual({
-        success: true,
-        memberId: 'mem-123',
-        membershipNumber: 'WIRIA-2024-001',
-      });
+      expect(notificationService.success).toHaveBeenCalled();
+      expect(response).toEqual(
+        expect.objectContaining({
+          success: true,
+          memberId: 'mem-123',
+          membershipNumber: 'WIRIA-2024-001',
+        })
+      );
     });
 
     it('should successfully register with Manual payment', async () => {
@@ -84,7 +140,7 @@ describe('useRegistration', () => {
         },
       };
 
-      vi.mocked(apiClient.post).mockResolvedValue(mockResponse);
+      vi.mocked(apiClientAdapter.post).mockResolvedValue(mockResponse as never);
 
       const { result } = renderHook(() => useRegistration());
 
@@ -116,7 +172,7 @@ describe('useRegistration', () => {
     });
 
     it('should handle registration failure', async () => {
-      vi.mocked(apiClient.post).mockRejectedValue(new Error('Network error'));
+      vi.mocked(apiClientAdapter.post).mockRejectedValue(new Error('Network error') as never);
 
       const { result } = renderHook(() => useRegistration());
 
@@ -159,7 +215,7 @@ describe('useRegistration', () => {
         },
       };
 
-      vi.mocked(apiClient.get).mockResolvedValue(mockResponse);
+      vi.mocked(apiClientAdapter.get).mockResolvedValue(mockResponse as never);
 
       const { result } = renderHook(() => useRegistration());
 

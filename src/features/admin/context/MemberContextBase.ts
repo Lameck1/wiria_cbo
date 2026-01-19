@@ -2,7 +2,7 @@ import { createContext } from 'react';
 
 import type { AdminMember } from '@/features/membership/api/members.api';
 
-export interface MemberContextValue {
+interface MemberContextValue {
   members: AdminMember[];
   isLoading: boolean;
   refetch: () => Promise<void>;

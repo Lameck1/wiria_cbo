@@ -76,6 +76,15 @@
     border-color: #002057;
     box-shadow: 0 0 0 3px rgba(0, 32, 87, 0.1);
   }
+
+  /* Skip Link for Accessibility */
+  .skip-link {
+    @apply absolute left-0 top-[-100px] z-[1000] bg-wiria-blue-dark px-4 py-2 text-white transition-all duration-300;
+  }
+
+  .skip-link:focus {
+    @apply top-0;
+  }
 }
 
 @layer components {

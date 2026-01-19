@@ -55,6 +55,13 @@ export function DocumentCard({ document, onClick, index = 0 }: DocumentCardProps
     window.open(fullUrl, '_blank');
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      onClick();
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -63,7 +70,10 @@ export function DocumentCard({ document, onClick, index = 0 }: DocumentCardProps
       transition={{ delay: index * 0.08, duration: 0.4 }}
       whileHover={{ y: -4, transition: { duration: 0.2 } }}
       onClick={onClick}
-      className="document-card group relative cursor-pointer overflow-hidden rounded-xl border border-gray-200 bg-white p-6 transition-shadow hover:border-wiria-blue-dark/20 hover:shadow-xl"
+      onKeyDown={handleKeyDown}
+      tabIndex={0}
+      role="button"
+      className="document-card group relative cursor-pointer overflow-hidden rounded-xl border border-gray-200 bg-white p-6 transition-shadow hover:border-wiria-blue-dark/20 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-wiria-blue-dark focus:ring-offset-2"
     >
       {/* Hover gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-wiria-blue-dark/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />

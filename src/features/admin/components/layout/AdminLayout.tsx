@@ -43,6 +43,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
       {/* Sidebar */}
       <aside
         className={`fixed inset-y-0 left-0 z-30 flex h-screen w-64 flex-shrink-0 transform flex-col bg-wiria-blue-dark text-white transition-transform duration-300 ease-in-out lg:sticky lg:top-0 lg:translate-x-0 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
+        aria-label="Admin Sidebar"
       >
         {/* Header - Fixed */}
         <div className="flex-shrink-0 border-b border-white border-opacity-10 p-6">
@@ -64,7 +65,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
         </div>
 
         {/* Navigation - Scrollable with custom scrollbar */}
-        <nav className="scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent hover:scrollbar-thumb-white/40 flex-1 space-y-2 overflow-y-auto overflow-x-hidden p-4">
+        <nav className="scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent hover:scrollbar-thumb-white/40 flex-1 space-y-2 overflow-y-auto overflow-x-hidden p-4" aria-label="Admin Navigation">
           {navItems.map((item) => (
             <Link
               key={item.path}
@@ -151,7 +152,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
           </div>
         </header>
 
-        <main className="flex-grow overflow-x-hidden p-8">{children}</main>
+        <main id="main-content" className="flex-grow overflow-x-hidden p-8">{children}</main>
       </div>
     </div>
   );

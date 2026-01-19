@@ -17,7 +17,7 @@ export const MembershipTypeToggle = memo(function MembershipTypeToggle({
         type="button"
         disabled={isDisabled}
         onClick={() => onChange('INDIVIDUAL')}
-        className={`rounded-lg px-4 py-2 text-sm font-semibold transition-all duration-200 ${
+        className={`rounded-lg px-4 py-2 text-sm font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-wiria-blue-dark/50 ${
           value === 'INDIVIDUAL'
             ? 'bg-white text-wiria-blue-dark shadow-sm'
             : 'text-gray-500 hover:text-gray-700'
@@ -29,7 +29,7 @@ export const MembershipTypeToggle = memo(function MembershipTypeToggle({
         type="button"
         disabled={isDisabled}
         onClick={() => onChange('GROUP')}
-        className={`rounded-lg px-4 py-2 text-sm font-semibold transition-all duration-200 ${
+        className={`rounded-lg px-4 py-2 text-sm font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-wiria-blue-dark/50 ${
           value === 'GROUP'
             ? 'bg-white text-wiria-blue-dark shadow-sm'
             : 'text-gray-500 hover:text-gray-700'

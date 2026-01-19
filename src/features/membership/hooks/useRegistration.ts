@@ -1,96 +1,89 @@
 /**
  * useRegistration Hook
+ * Refactored to use shared usePaymentFlow hook
  */
 
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
-import type { PaymentStatusResponse } from '@/features/donations/types';
-import { apiClient } from '@/shared/services/api/client';
+import { usePaymentFlow } from '@/shared/hooks/usePaymentFlow';
 import { API_ENDPOINTS } from '@/shared/services/api/endpoints';
-import { notificationService } from '@/shared/services/notification/notificationService';
+import { useServices } from '@/shared/services/di';
 
 import type { RegistrationFormData, RegistrationResponse } from '../types';
 
 export function useRegistration() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { apiClient, notificationService } = useServices();
   const [memberId, setMemberId] = useState<string | null>(null);
   const [membershipNumber, setMembershipNumber] = useState<string | null>(null);
-  const [checkoutRequestId, setCheckoutRequestId] = useState<string | null>(null);
-  const [paymentStatus, setPaymentStatus] = useState<
-    'PENDING' | 'COMPLETED' | 'FAILED' | 'CANCELLED' | null
-  >(null);
 
-  const submitRegistration = async (data: RegistrationFormData) => {
-    setIsSubmitting(true);
-    setPaymentStatus(null);
+  const paymentFlow = usePaymentFlow({
+    flowType: 'registration',
+    initiationEndpoint: API_ENDPOINTS.MEMBERS_REGISTER,
+    statusEndpoint: API_ENDPOINTS.PAYMENTS_STATUS,
+    messages: {
+      initiationSuccess: 'Registration successful!',
+      paymentCompleted: 'Payment completed! Your membership is now active.',
+      stkPushSent: 'STK push sent to your phone. Please complete the payment.',
+    },
+  });
 
-    try {
-      const response = await apiClient.post<RegistrationResponse>(
-        API_ENDPOINTS.MEMBERS_REGISTER,
-        data
-      );
+  const submitRegistration = useCallback(
+    async (data: RegistrationFormData) => {
+      try {
+        // Call API to register member
+        const response = await apiClient.post<RegistrationResponse>(
+          API_ENDPOINTS.MEMBERS_REGISTER,
+          data
+        );
 
-      const { member, checkoutRequestId: requestId, message } = response.data;
+        const { member, checkoutRequestId, message } = response.data;
 
-      setMemberId(member.id);
-      setMembershipNumber(member.membershipNumber);
+        setMemberId(member.id);
+        setMembershipNumber(member.membershipNumber);
 
-      if (data.paymentMethod === 'STK_PUSH' && requestId) {
-        setCheckoutRequestId(requestId);
-        setPaymentStatus('PENDING');
-        notificationService.info('STK push sent to your phone. Please complete the payment.');
-      } else {
-        notificationService.success(message || 'Registration successful!');
+        // Use shared payment flow for payment processing
+        const result = await paymentFlow.initiatePayment({
+          ...data,
+          memberId: member.id,
+        });
+
+        return {
+          success: result.success,
+          memberId: member.id,
+          membershipNumber: member.membershipNumber,
+          checkoutRequestId: checkoutRequestId ?? result.checkoutRequestId,
+          message,
+        };
+      } catch {
+        notificationService.error('Registration failed. Please try again.');
+        return { success: false };
       }
+    },
+    [apiClient, notificationService, paymentFlow]
+  );
 
-      return { success: true, memberId: member.id, membershipNumber: member.membershipNumber };
-    } catch {
-      notificationService.error('Registration failed. Please try again.');
-      return { success: false };
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const checkPaymentStatus = async (memberIdToCheck: string) => {
-    try {
-      const response = await apiClient.get<PaymentStatusResponse>(
-        `${API_ENDPOINTS.PAYMENTS_STATUS}/${memberIdToCheck}`
-      );
-
-      const { status } = response.data;
-      setPaymentStatus(status);
-
-      if (status === 'COMPLETED') {
-        notificationService.success('Payment completed! Your membership is now active.');
-        return 'COMPLETED';
-      } else if (status === 'FAILED') {
-        notificationService.error('Payment failed. Please try again.');
-        return 'FAILED';
-      }
-
-      return status;
-    } catch {
-      return 'PENDING';
-    }
-  };
-
-  const resetRegistration = () => {
+  const resetRegistration = useCallback(() => {
     setMemberId(null);
     setMembershipNumber(null);
-    setCheckoutRequestId(null);
-    setPaymentStatus(null);
-    setIsSubmitting(false);
-  };
+    paymentFlow.resetPayment();
+  }, [paymentFlow]);
 
   return {
-    submitRegistration,
-    checkPaymentStatus,
-    resetRegistration,
-    isSubmitting,
+    // Registration-specific state
     memberId,
     membershipNumber,
-    checkoutRequestId,
-    paymentStatus,
+
+    // Payment flow state and actions (delegated to shared hook)
+    isSubmitting: paymentFlow.isSubmitting,
+    checkoutRequestId: paymentFlow.checkoutRequestId,
+    paymentStatus: paymentFlow.paymentStatus,
+
+    // Actions
+    submitRegistration,
+    checkPaymentStatus: paymentFlow.checkPaymentStatus,
+    resetRegistration,
   };
 }
+
+// Re-export PaymentStatus for convenience
+export { PaymentStatus } from '@/shared/types/payment';

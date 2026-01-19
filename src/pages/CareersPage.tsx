@@ -12,10 +12,20 @@ import {
 } from '@/features/careers';
 import { CareerHeroStats } from '@/features/careers/components/CareerHeroStats';
 import { PageHero } from '@/shared/components/sections/PageHero';
+import { SEO } from '@/shared/components/Seo';
 
 function CareersPage() {
   return (
     <main>
+      <SEO
+        title="Careers & Jobs"
+        description="Join the WIRIA CBO team. View current job openings and career opportunities."
+        keywords="Careers, Jobs, Employment, Hiring, Work with Us"
+        breadcrumbs={[
+          { name: 'Home', item: '/' },
+          { name: 'Careers', item: '/careers' },
+        ]}
+      />
       {/* Hero Section - with stats */}
       <PageHero
         badge="Join Our Team"

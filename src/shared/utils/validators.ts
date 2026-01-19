@@ -19,26 +19,14 @@ export const emailSchema = z
   .min(5, 'Email is too short')
   .max(LIMITS.MAX_EMAIL_LENGTH, 'Email is too long');
 
-export const nameSchema = z
-  .string()
-  .min(LIMITS.MIN_NAME_LENGTH, `Name must be at least ${LIMITS.MIN_NAME_LENGTH} characters`)
-  .max(LIMITS.MAX_NAME_LENGTH, `Name must be at most ${LIMITS.MAX_NAME_LENGTH} characters`)
-  .regex(/^[\s'A-Za-z-]+$/, 'Name contains invalid characters');
 
-export const passwordSchema = z
-  .string()
-  .min(
-    LIMITS.MIN_PASSWORD_LENGTH,
-    `Password must be at least ${LIMITS.MIN_PASSWORD_LENGTH} characters`
-  )
-  .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
-  .regex(/\d/, 'Password must contain at least one number')
-  .regex(/[^\dA-Za-z]/, 'Password must contain at least one special character');
+
+
 
 /**
  * Validation Result Type
  */
-export interface ValidationResult {
+interface ValidationResult {
   valid: boolean;
   error?: string;
 }
@@ -153,18 +141,4 @@ export const validateRequired = (value: unknown, fieldName = 'Field'): Validatio
   return { valid: true };
 };
 
-/**
- * Validates names
- */
-export const validateName = (name: string): ValidationResult => {
-  if (!name || name.trim() === '') {
-    return { valid: false, error: 'Name is required' };
-  }
 
-  const result = nameSchema.safeParse(name);
-  if (!result.success) {
-    return { valid: false, error: result.error.errors[0]?.message ?? 'Invalid name' };
-  }
-
-  return { valid: true };
-};

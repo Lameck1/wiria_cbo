@@ -1,4 +1,6 @@
-import { useReducer } from 'react';
+import { useEffect, useReducer } from 'react';
+
+import { useLocation } from 'react-router-dom';
 
 import type { Career } from '@/features/admin/api/careers.api';
 import { deleteCareer, getAdminCareers as getCareers } from '@/features/admin/api/careers.api';
@@ -15,6 +17,7 @@ import { HRTabs } from '@/features/admin/components/hr/HrTabs';
 import { AdminPageHeader } from '@/features/admin/components/layout/AdminPageHeader';
 import { ConfirmDialog } from '@/shared/components/modals/ConfirmDialog';
 import { useAdminAction, useAdminData } from '@/shared/hooks/useAdminData';
+import { notificationService } from '@/shared/services/notification/notificationService';
 
 type HRState = {
   activeTab: HRTab;
@@ -95,6 +98,8 @@ function hrReducer(state: HRState, action: HRAction): HRState {
 }
 
 export default function HRManagementPage() {
+  const location = useLocation();
+
   const [state, dispatch] = useReducer(hrReducer, {
     activeTab: 'CAREERS',
     selectedCareer: null,
@@ -119,6 +124,19 @@ export default function HRManagementPage() {
     opportunityIdToDelete,
   } = state;
 
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const tabParameter = params.get('tab');
+
+    if (!tabParameter) return;
+
+    const normalizedTab = tabParameter.toUpperCase();
+
+    if (normalizedTab === 'CAREERS' || normalizedTab === 'OPPORTUNITIES' || normalizedTab === 'APPLICATIONS') {
+      dispatch({ type: 'SET_TAB', tab: normalizedTab as HRTab });
+    }
+  }, [location.search]);
+
   // Data Fetching
   const { items: careers, isLoading: isLoadingCareers } = useAdminData<Career>(
     ['careers'],
@@ -136,13 +154,29 @@ export default function HRManagementPage() {
   );
 
   // Actions
-  const deleteCareerAction = useAdminAction((id: string) => deleteCareer(id), [['careers']], {
-    successMessage: 'Job posting deleted',
-  });
+  const deleteCareerAction = useAdminAction(
+    (id: string) => deleteCareer(id),
+    [['careers']],
+    {
+      onSuccess: () => {
+        notificationService.success('Job posting deleted');
+      },
+      onError: () => {
+        notificationService.error('Failed to delete job posting');
+      },
+    }
+  );
   const deleteOppAction = useAdminAction(
     (id: string) => deleteOpportunity(id),
     [['opportunities']],
-    { successMessage: 'Opportunity deleted' }
+    {
+      onSuccess: () => {
+        notificationService.success('Opportunity deleted');
+      },
+      onError: () => {
+        notificationService.error('Failed to delete opportunity');
+      },
+    }
   );
 
   const handleDeleteCareer = (id: string) => {

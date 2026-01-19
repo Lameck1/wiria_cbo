@@ -15,7 +15,7 @@ import { useAdminData } from '@/shared/hooks/useAdminData';
 export default function DonationManagementPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [statusFilter, setStatusFilter] = useState<string>('');
-  const [selectedDonation, setSelectedDonation] = useState<Donation | null>(null);
+  const [selectedDonationId, setSelectedDonationId] = useState<string | null>(null);
   const highlightId = searchParams.get('highlight');
 
   const { items: donations, isLoading: isLoadingDonations } = useAdminData<Donation>(
@@ -33,21 +33,26 @@ export default function DonationManagementPage() {
 
   const statistics = statsList[0] ?? null;
 
+  const selectedDonation: Donation | null = useMemo(
+    () => donations.find((donation) => donation.id === selectedDonationId) ?? null,
+    [donations, selectedDonationId]
+  );
+
   const handleViewDetails = useCallback((donation: Donation) => {
-    setSelectedDonation(donation);
+    setSelectedDonationId(donation.id);
   }, []);
 
   const handleCloseModal = useCallback(() => {
-    setSelectedDonation(null);
+    setSelectedDonationId(null);
   }, []);
 
   useEffect(() => {
     if (!highlightId || donations.length === 0) return;
 
-    const target = donations.find((d: Donation) => d.id === highlightId);
-    if (!target) return;
+    const exists = donations.some((d: Donation) => d.id === highlightId);
+    if (!exists) return;
 
-    setSelectedDonation(target);
+    setSelectedDonationId(highlightId);
 
     const next = new URLSearchParams(searchParams);
     next.delete('highlight');

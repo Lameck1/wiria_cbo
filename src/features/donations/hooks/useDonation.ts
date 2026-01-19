@@ -1,129 +1,88 @@
 /**
  * useDonation Hook
  * Handles donation submission and payment processing
+ * Refactored to use shared usePaymentFlow hook
  */
 
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
-import { apiClient } from '@/shared/services/api/client';
+import { usePaymentFlow } from '@/shared/hooks/usePaymentFlow';
 import { API_ENDPOINTS } from '@/shared/services/api/endpoints';
-import { notificationService } from '@/shared/services/notification/notificationService';
+import { useServices } from '@/shared/services/di';
 
-import type { DonationFormData, DonationResponse, PaymentStatusResponse } from '../types';
+import type { DonationFormData, DonationResponse } from '../types';
 
 export function useDonation() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [checkoutRequestId, setCheckoutRequestId] = useState<string | null>(null);
   const [donationId, setDonationId] = useState<string | null>(null);
-  const [paymentStatus, setPaymentStatus] = useState<
-    'PENDING' | 'COMPLETED' | 'FAILED' | 'CANCELLED' | null
-  >(null);
-  const [isVerifying, setIsVerifying] = useState(false);
-  const [isManualPaymentVerified, setIsManualPaymentVerified] = useState(false);
+  const { apiClient, notificationService } = useServices();
 
-  const initiateDonation = async (data: DonationFormData) => {
-    setIsSubmitting(true);
-    setPaymentStatus(null);
+  const paymentFlow = usePaymentFlow({
+    flowType: 'donation',
+    initiationEndpoint: API_ENDPOINTS.DONATIONS_INITIATE,
+    statusEndpoint: API_ENDPOINTS.DONATIONS_STATUS,
+    manualVerificationEndpoint: API_ENDPOINTS.DONATIONS_VERIFY_MANUAL,
+    messages: {
+      initiationSuccess: 'Donation initiated successfully!',
+      paymentCompleted: 'Payment completed successfully! Thank you for your donation.',
+      stkPushSent: 'STK push sent to your phone. Please complete the payment.',
+    },
+  });
 
-    try {
-      const response = await apiClient.post<DonationResponse>(
-        API_ENDPOINTS.DONATIONS_INITIATE,
-        data
-      );
+  const initiateDonation = useCallback(
+    async (data: DonationFormData) => {
+      try {
+        // Call API to create donation record
+        const response = await apiClient.post<DonationResponse>(
+          API_ENDPOINTS.DONATIONS_INITIATE,
+          data
+        );
 
-      const { donation, checkoutRequestId: requestId, message } = response.data;
+        const { donation, checkoutRequestId, message } = response.data;
+        setDonationId(donation.id);
 
-      setDonationId(donation.id);
+        // Use shared payment flow for payment processing
+        const result = await paymentFlow.initiatePayment({
+          ...data,
+          donationId: donation.id,
+        });
 
-      if (data.paymentMethod === 'STK_PUSH' && requestId) {
-        setCheckoutRequestId(requestId);
-        setPaymentStatus('PENDING');
-        notificationService.info('STK push sent to your phone. Please complete the payment.');
-      } else {
-        notificationService.success(message || 'Donation initiated successfully!');
-      }
-
-      return { success: true, donationId: donation.id, checkoutRequestId: requestId };
-    } catch {
-      notificationService.error('Failed to initiate donation. Please try again.');
-      return { success: false };
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const checkPaymentStatus = async (donationIdToCheck: string) => {
-    try {
-      const response = await apiClient.get<PaymentStatusResponse>(
-        `${API_ENDPOINTS.DONATIONS_STATUS}/${donationIdToCheck}`
-      );
-
-      const { status } = response.data;
-      setPaymentStatus(status);
-
-      if (status === 'COMPLETED') {
-        notificationService.success('Payment completed successfully! Thank you for your donation.');
-        return 'COMPLETED';
-      } else if (status === 'FAILED') {
-        notificationService.error('Payment failed. Please try again.');
-        return 'FAILED';
-      }
-
-      return status;
-    } catch {
-      return 'PENDING';
-    }
-  };
-
-  const verifyManualPayment = async (phone: string, amount: number) => {
-    setIsVerifying(true);
-    setIsManualPaymentVerified(false);
-
-    try {
-      const response = await apiClient.post<{ verified: boolean; status?: string }>(
-        '/api/donations/verify-manual',
-        {
-          phone,
-          amount,
-          accountReference: 'DONATION',
-        }
-      );
-
-      if (response.verified || response.status === 'CONFIRMED') {
-        setIsManualPaymentVerified(true);
-        notificationService.success('Payment verified successfully!');
-        return { success: true };
-      } else {
-        notificationService.error('Payment not found yet. Please wait a moment and try again.');
+        return {
+          success: result.success,
+          donationId: donation.id,
+          checkoutRequestId: checkoutRequestId ?? result.checkoutRequestId,
+          message,
+        };
+      } catch {
+        notificationService.error('Failed to initiate donation. Please try again.');
         return { success: false };
       }
-    } catch {
-      notificationService.error('Verification failed. Please try again.');
-      return { success: false };
-    } finally {
-      setIsVerifying(false);
-    }
-  };
+    },
+    [apiClient, notificationService, paymentFlow]
+  );
 
-  const resetDonation = () => {
-    setCheckoutRequestId(null);
+  const resetDonation = useCallback(() => {
     setDonationId(null);
-    setPaymentStatus(null);
-    setIsSubmitting(false);
-    setIsVerifying(false);
-    setIsManualPaymentVerified(false);
-  };
+    paymentFlow.resetPayment();
+  }, [paymentFlow]);
 
   return {
-    initiateDonation,
-    checkPaymentStatus,
-    verifyManualPayment,
-    resetDonation,
-    isSubmitting,
-    isVerifying,
-    isManualPaymentVerified,
-    checkoutRequestId,
+    // Donation-specific state
     donationId,
-    paymentStatus,
+
+    // Payment flow state and actions (delegated to shared hook)
+    isSubmitting: paymentFlow.isSubmitting,
+    isVerifying: paymentFlow.isVerifying,
+    isManualPaymentVerified: paymentFlow.isManualPaymentVerified,
+    checkoutRequestId: paymentFlow.checkoutRequestId,
+    paymentStatus: paymentFlow.paymentStatus,
+
+    // Actions
+    initiateDonation,
+    checkPaymentStatus: paymentFlow.checkPaymentStatus,
+    verifyManualPayment: paymentFlow.verifyManualPayment,
+    resetDonation,
   };
 }
+
+// Re-export PaymentStatus for convenience
+// export { PaymentStatus } from '@/shared/types/payment';

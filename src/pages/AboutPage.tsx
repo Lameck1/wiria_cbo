@@ -12,10 +12,20 @@ import {
   AboutPartnersSection,
 } from '@/features/about';
 import { WhoWeServeSection } from '@/shared/components/sections/WhoWeServeSection';
+import { SEO } from '@/shared/components/Seo';
 
 function AboutPage() {
   return (
     <main>
+      <SEO
+        title="About Us"
+        description="Learn about WIRIA CBO's history, mission, vision, and leadership team."
+        keywords="About WIRIA, History, Mission, Vision, Governance, Team"
+        breadcrumbs={[
+          { name: 'Home', item: '/' },
+          { name: 'About Us', item: '/about' },
+        ]}
+      />
       {/* Hero Section */}
       <section className="relative bg-gradient-to-r from-wiria-blue-dark to-blue-800 py-24">
         {/* Background Image */}
