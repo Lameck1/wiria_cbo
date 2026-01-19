@@ -7,8 +7,8 @@ interface SEOProps {
   image?: string;
   url?: string;
   type?: 'website' | 'article' | 'profile';
-  schema?: Record<string, any>;
-  breadcrumbs?: Array<{ name: string; item: string }>;
+  schema?: Record<string, unknown>;
+  breadcrumbs?: { name: string; item: string }[];
 }
 
 const DOMAIN = 'https://wiriacbo.org';
