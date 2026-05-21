@@ -5,5 +5,5 @@ Disallow: /api/
 Disallow: /staff-login
 Disallow: /member-login
 
-Sitemap: https://wiriacbo.org/sitemap.xml
+Sitemap: https://www.wiriacbo.or.ke/sitemap.xml
 
