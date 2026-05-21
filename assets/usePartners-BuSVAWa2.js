@@ -1,2 +1,0 @@
-import{u as t}from"./query-vendor-DeB3i2OK.js";import{s as a}from"./partners-O14ZwRkw.js";import{a as n}from"./index-KPEJF22G.js";async function s(){const e=await fetch("/api/partners");if(!e.ok)throw new Error("Failed to fetch partners");const r=await e.json();return r.data?.data||r.data||[]}function c(){const{isBackendConnected:e,isChecking:r}=n();return t({queryKey:["partners",e],queryFn:()=>e?s():Promise.resolve(a),staleTime:300*1e3,enabled:!r})}export{c as u};
-//# sourceMappingURL=usePartners-BuSVAWa2.js.map
